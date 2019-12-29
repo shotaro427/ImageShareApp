@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "43040204567",
+    "firebase_url": "https://galleryapp-bbd85.firebaseio.com",
+    "project_id": "galleryapp-bbd85",
+    "storage_bucket": "galleryapp-bbd85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43040204567:android:bade1eb20714c8bdd93952",
+        "android_client_info": {
+          "package_name": "com.example.image_share_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43040204567-806i0267528695g2q9v7rkbfgarreqvc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-wSvvaJwkeH3Gm79FzZsDsZPW6qpZgYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43040204567-806i0267528695g2q9v7rkbfgarreqvc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "43040204567-mhtn0n0en21srv2rmq1ov3vn23t3tinp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.imageShareApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
