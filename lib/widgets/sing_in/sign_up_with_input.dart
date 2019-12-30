@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/sing_in/sign_in_page.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 
 class SignUpWithInput extends StatefulWidget {
   @override

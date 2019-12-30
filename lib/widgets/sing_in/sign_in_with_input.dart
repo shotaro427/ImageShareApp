@@ -2,8 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/sing_in/sign_in_page.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 
+/// メールアドレスとパスワードを入力してログインするページ
 class SignInWithInput extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -15,6 +16,7 @@ class SignInWithInput extends StatefulWidget {
 class SignInWithInputState extends State<SignInWithInput> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // メールアドレスとパスワードを入力する箇所のController
   final emailInputController = new TextEditingController();
   final passwordInputController = new TextEditingController();
 
@@ -26,7 +28,7 @@ class SignInWithInputState extends State<SignInWithInput> {
 
   Widget _layoutBody() {
     return Scaffold(
-      appBar: AppBar(title: Text("登録"),),
+      appBar: AppBar(title: const Text("登録"),),
       body: Center(
         child: Form(
           child: SingleChildScrollView(
@@ -34,7 +36,7 @@ class SignInWithInputState extends State<SignInWithInput> {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
                 TextFormField(
                   controller: emailInputController,
                   decoration: const InputDecoration(
@@ -73,6 +75,7 @@ class SignInWithInputState extends State<SignInWithInput> {
     );
   }
 
+  /// メールアドレスとパスワードを使ってサインインする
   Future<FirebaseUser> _signIn(String email, String password) async {
     final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
         email: email, password: password)).user;
@@ -80,6 +83,7 @@ class SignInWithInputState extends State<SignInWithInput> {
     return user;
   }
 
+  /// 次のページに遷移させる
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 
