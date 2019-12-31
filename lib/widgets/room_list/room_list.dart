@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_share_app/repositories/room_list_repository.dart';
 
 
 class NextPage extends StatefulWidget {
@@ -16,6 +17,11 @@ class _NextPageState extends State<NextPage> {
 
   _NextPageState(FirebaseUser userData) {
     this.email = userData.email;
+    try {
+      RoomListRepository().fetch();
+    } catch(e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override

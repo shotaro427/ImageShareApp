@@ -28,7 +28,7 @@ class SignInWithInputState extends State<SignInWithInput> {
 
   Widget _layoutBody() {
     return Scaffold(
-      appBar: AppBar(title: const Text("登録"),),
+      appBar: AppBar(title: const Text("ログイン"),),
       body: Center(
         child: Form(
           child: SingleChildScrollView(
