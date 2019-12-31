@@ -1,19 +1,22 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/sing_in/sign_in_page.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 
-class SignUpWithInput extends StatefulWidget {
+/// メールアドレスとパスワードを入力してログインするページ
+class SignInWithInput extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return SigUpWithInputState();
+    return SignInWithInputState();
   }
 }
 
-class SigUpWithInputState extends State<SignUpWithInput> {
+class SignInWithInputState extends State<SignInWithInput> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // メールアドレスとパスワードを入力する箇所のController
   final emailInputController = new TextEditingController();
   final passwordInputController = new TextEditingController();
 
@@ -25,7 +28,7 @@ class SigUpWithInputState extends State<SignUpWithInput> {
 
   Widget _layoutBody() {
     return Scaffold(
-      appBar: AppBar(title: Text("登録"),),
+      appBar: AppBar(title: const Text("ログイン"),),
       body: Center(
         child: Form(
           child: SingleChildScrollView(
@@ -33,7 +36,7 @@ class SigUpWithInputState extends State<SignUpWithInput> {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
                 TextFormField(
                   controller: emailInputController,
                   decoration: const InputDecoration(
@@ -53,15 +56,15 @@ class SigUpWithInputState extends State<SignUpWithInput> {
                 const SizedBox(height: 24.0),
                 Center(
                   child: RaisedButton(
-                    child: const Text('SingUp'),
+                    child: const Text('Login'),
                     onPressed: () {
                       var email = emailInputController.text;
                       var password = passwordInputController.text;
                       // 登録
-                      return _signUp(email, password)
-                          .then((FirebaseUser user) => transitionNextPage(user))
-                          .catchError((e) => print(e));
-                    },
+                      return _signIn(email, password)
+                        .then((FirebaseUser user) => transitionNextPage(user))
+                        .catchError((e) => debugPrint(e.toString()));
+                      },
                   ),
                 ),
               ],
@@ -72,13 +75,15 @@ class SigUpWithInputState extends State<SignUpWithInput> {
     );
   }
 
-  Future<FirebaseUser> _signUp(String email, String password) async {
-    AuthResult result = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    FirebaseUser user = result.user;
+  /// メールアドレスとパスワードを使ってサインインする
+  Future<FirebaseUser> _signIn(String email, String password) async {
+    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
+        email: email, password: password)).user;
+    debugPrint("User id is ${user.uid}");
     return user;
   }
 
+  /// 次のページに遷移させる
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 

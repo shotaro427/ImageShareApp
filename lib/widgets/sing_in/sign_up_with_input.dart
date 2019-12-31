@@ -1,18 +1,17 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/sing_in/sign_in_page.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 
-class SignInWithInput extends StatefulWidget {
+class SignUpWithInput extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return SignInWithInputState();
+    return SigUpWithInputState();
   }
 }
 
-class SignInWithInputState extends State<SignInWithInput> {
+class SigUpWithInputState extends State<SignUpWithInput> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final emailInputController = new TextEditingController();
@@ -54,15 +53,15 @@ class SignInWithInputState extends State<SignInWithInput> {
                 const SizedBox(height: 24.0),
                 Center(
                   child: RaisedButton(
-                    child: const Text('Login'),
+                    child: const Text('SingUp'),
                     onPressed: () {
                       var email = emailInputController.text;
                       var password = passwordInputController.text;
                       // 登録
-                      return _signIn(email, password)
-                        .then((FirebaseUser user) => transitionNextPage(user))
-                        .catchError((e) => debugPrint(e.toString()));
-                      },
+                      return _signUp(email, password)
+                          .then((FirebaseUser user) => transitionNextPage(user))
+                          .catchError((e) => print(e));
+                    },
                   ),
                 ),
               ],
@@ -73,10 +72,10 @@ class SignInWithInputState extends State<SignInWithInput> {
     );
   }
 
-  Future<FirebaseUser> _signIn(String email, String password) async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-        email: email, password: password)).user;
-    debugPrint("User id is ${user.uid}");
+  Future<FirebaseUser> _signUp(String email, String password) async {
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    FirebaseUser user = result.user;
     return user;
   }
 
