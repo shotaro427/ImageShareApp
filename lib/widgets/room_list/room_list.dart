@@ -54,8 +54,19 @@ class RoomListWidget extends StatelessWidget {
         if(snapshot.hasData) {
           return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(snapshot.data[index]["name"].toString()),
+              return Container(
+                margin: EdgeInsets.all(5),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(
+                    snapshot.data[index]["name"].toString(),
+                    style: const TextStyle(fontSize: 20),),
+                ),
               );
             },
             itemCount: 1,
