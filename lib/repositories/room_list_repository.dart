@@ -9,15 +9,15 @@ class RoomListRepository {
 
   final db = Firestore.instance;
 
-  Future<List<dynamic>> fetch() async {
+  Future<List<DocumentSnapshot>> fetch() async {
     debugPrint("所属しているルーム一覧を取得");
 
     var _user = await FirebaseAuth.instance.currentUser();
     var _authToken = _user.uid;
     List<DocumentReference> _roomRefs = [];
-    var _rooms = [];
+    List<DocumentSnapshot> _rooms = [];
 
-    /// ユーザーの参加しているルームIDを取得
+    /// ユーザーの参加しているルームの参照を取得
     await db.collection("users")
         .where("userId", isEqualTo: _authToken)
         .getDocuments()
@@ -30,8 +30,16 @@ class RoomListRepository {
           debugPrint(e.toString());
         });
 
-    debugPrint(_roomRefs.toString());
-
+    /// ルームの参照のリストから、ルームのSnapShotを追加
+    for (final ref in _roomRefs) {
+      await db.document(ref.path)
+          .get()
+          .then((data) {
+            _rooms.add(data);
+      }).catchError((e) {
+        debugPrint(e.toString());
+      });
+    }
     return _rooms;
   }
  }

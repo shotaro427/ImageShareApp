@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_with_input.dart';
 import 'package:image_share_app/widgets/sing_in/sign_up_with_input.dart';
 import 'sign_in_with_input.dart';
@@ -115,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (user == null) return;
 
     Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        NextPage(userData: user)
+        RoomListPage(RoomListRepository())
     ));
   }
 
