@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 
 /// メールアドレスとパスワードを入力してログインするページ
@@ -88,7 +89,7 @@ class SignInWithInputState extends State<SignInWithInput> {
     if (user == null) return;
 
     Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        NextPage(userData: user)
+        RoomListPage(RoomListRepository())
     ));
   }
 }
