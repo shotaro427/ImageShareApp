@@ -9,37 +9,74 @@ class RoomListRepository {
 
   final db = Firestore.instance;
 
+  /// FireStoreからユーザーが所属しているルーム一覧を取得する
   Future<List<DocumentSnapshot>> fetch() async {
     debugPrint("所属しているルーム一覧を取得");
 
-    var _user = await FirebaseAuth.instance.currentUser();
-    var _authToken = _user.uid;
+    DocumentReference userRef = await fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<DocumentSnapshot> _rooms = [];
 
     /// ユーザーの参加しているルームの参照を取得
-    await db.collection("users")
-        .where("userId", isEqualTo: _authToken)
-        .getDocuments()
-        .then((data) {
-          data.documents.forEach((doc) {
-            var newVal = List.from(doc.data["rooms"]);
-            _roomRefs.addAll(newVal.cast<DocumentReference>());
-          });
-        }).catchError((e) {
-          debugPrint(e.toString());
-        });
+    await db.document(userRef.path).collection("rooms")
+      .getDocuments()
+      .then((data) {
+        _roomRefs.addAll(data.documents.map((doc) {
+          return doc.data["room"];
+        }));
+
+      }).catchError((e) => debugPrint(e.toString()));
 
     /// ルームの参照のリストから、ルームのSnapShotを追加
     for (final ref in _roomRefs) {
-      await db.document(ref.path)
-          .get()
-          .then((data) {
-            _rooms.add(data);
+      await ref.get().then((data) {
+        _rooms.add(data);
       }).catchError((e) {
         debugPrint(e.toString());
       });
     }
     return _rooms;
   }
- }
+
+  Future<void> createRoom(String roomName) async {
+    DocumentReference _ref;
+    // roomsコレクションに新規部屋を追加
+    DocumentReference _roomRef = await db.collection("rooms").add({
+      "name": roomName.toString()
+    }).then((data) => _ref = data )
+    .catchError((e) {
+      debugPrint(e.toString());
+    });
+
+    DocumentReference userRef = await fetchUserRef();
+
+    await db.document(_ref.path).collection("participants").add({
+      "user": userRef
+    });
+    
+    await db.document(userRef.path).collection("rooms").add({
+      "room": _roomRef
+    });
+  }
+
+  /// ログインしているユーザーの参照を取得
+  Future<DocumentReference> fetchUserRef() async {
+    var _user = await FirebaseAuth.instance.currentUser();
+    var _authToken = _user.uid;
+
+    DocumentReference _userRef;
+
+    await db.collection("users")
+        .where("userId", isEqualTo: _authToken)
+        .getDocuments()
+        .then((data) {
+          data.documents.forEach((doc) {
+            _userRef = doc.reference;
+          });
+        }).catchError((e) {
+          debugPrint(e.toString());
+        });
+
+    return _userRef;
+  }
+}

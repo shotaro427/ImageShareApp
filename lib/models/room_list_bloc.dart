@@ -10,9 +10,9 @@ class RoomListBloc {
   final RoomListRepository _repository;
   final LoadingBloc _loadingBloc;
 
-  // TODO あとでStreamに流す型を変える
-  final _valueController = StreamController<List<DocumentSnapshot>>();
-  Stream<List<DocumentSnapshot>> get value => _valueController.stream;
+  /// ルーム一覧を取得したものを流すStreamControllerとStream
+  final _roomListController = StreamController<List<DocumentSnapshot>>();
+  Stream<List<DocumentSnapshot>> get roomListStream => _roomListController.stream;
 
   RoomListBloc(this._repository, this._loadingBloc);
 
@@ -21,7 +21,7 @@ class RoomListBloc {
     _loadingBloc.loading(true);
 
     try {
-      _valueController.sink.add(await _repository.fetch());
+      _roomListController.sink.add(await _repository.fetch());
     }catch(e) {
       debugPrint(e.toString());
     }
@@ -30,7 +30,7 @@ class RoomListBloc {
   }
 
   void dispose() {
-    _valueController.close();
+    _roomListController.close();
   }
 }
 
