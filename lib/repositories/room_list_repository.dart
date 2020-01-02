@@ -18,14 +18,14 @@ class RoomListRepository {
     List<DocumentSnapshot> _rooms = [];
 
     /// ユーザーの参加しているルームの参照を取得
-    await db.document(userRef.path)
-        .get()
-        .then((data) {
-          var newVal = List.from(data["rooms"]);
-          _roomRefs.addAll(newVal.cast<DocumentReference>());
-        }).catchError((e) {
-          debugPrint(e.toString());
-        });
+    await db.document(userRef.path).collection("rooms")
+      .getDocuments()
+      .then((data) {
+        _roomRefs.addAll(data.documents.map((doc) {
+          return doc.data["room"];
+        }));
+
+      }).catchError((e) => debugPrint(e.toString()));
 
     /// ルームの参照のリストから、ルームのSnapShotを追加
     for (final ref in _roomRefs) {
@@ -41,7 +41,7 @@ class RoomListRepository {
   Future<void> createRoom(String roomName) async {
     DocumentReference _ref;
     // roomsコレクションに新規部屋を追加
-    await db.collection("rooms").add({
+    DocumentReference _roomRef = await db.collection("rooms").add({
       "name": roomName.toString()
     }).then((data) => _ref = data )
     .catchError((e) {
@@ -53,9 +53,10 @@ class RoomListRepository {
     await db.document(_ref.path).collection("participants").add({
       "user": userRef
     });
-
-    debugPrint(_ref.path.toString());
-
+    
+    await db.document(userRef.path).collection("rooms").add({
+      "room": _roomRef
+    });
   }
 
   /// ログインしているユーザーの参照を取得

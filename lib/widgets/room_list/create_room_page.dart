@@ -102,23 +102,22 @@ class _LoadingWidgetInCreateRoomPage extends StatelessWidget {
             );
           }
           case LoadingType.COMPLETED: {
-            return SimpleDialog(
-              title: Text("完了しました"),
+            return AlertDialog(
+              title: const Text("完了しました"),
+              content: const Text("ルーム作成が完了しました。"),
+              actions: <Widget>[
+                FlatButton(
+                  child: const Text("OK"),
+                  // TODO TOP画面に遷移させる
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
             );
           }
           default: {
             return Container();
           }
         }
-//        return (snapshot.data)
-//            ? const DecoratedBox(
-//            decoration: const BoxDecoration(
-//                color: const Color(0x44000000)
-//            ),
-//            child: const Center(
-//              child: const CircularProgressIndicator(),
-//            ))
-//            : const SizedBox.shrink();
       },
     );
   }

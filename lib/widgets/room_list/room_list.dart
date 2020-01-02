@@ -84,7 +84,7 @@ class RoomListWidget extends StatelessWidget {
                 ),
               );
             },
-            itemCount: 1,
+            itemCount: snapshot.data.length,
           );
         } else {
           return Container();
