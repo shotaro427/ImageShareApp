@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:provider/provider.dart';
+import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 
 
 class RoomListPage extends StatelessWidget {
@@ -81,6 +81,9 @@ class RoomListWidget extends StatelessWidget {
                   title: Text(
                     snapshot.data[index]["name"].toString(),
                     style: const TextStyle(fontSize: 20),),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return TopImagesPage(snapshot.data[index]);
+                  })),
                 ),
               );
             },
