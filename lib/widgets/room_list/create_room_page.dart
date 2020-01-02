@@ -87,15 +87,38 @@ class _LoadingWidgetInCreateRoomPage extends StatelessWidget {
       stream: bloc.value,
       initialData: false,
       builder: (context, snapshot) {
-        return (snapshot.data)
-            ? const DecoratedBox(
-            decoration: const BoxDecoration(
-                color: const Color(0x44000000)
-            ),
-            child: const Center(
-              child: const CircularProgressIndicator(),
-            ))
-            : const SizedBox.shrink();
+        switch(snapshot.data) {
+          case LoadingType.NOT_YET:{
+            return const SizedBox.shrink();
+          }
+          case LoadingType.LOADING: {
+            return const DecoratedBox(
+              decoration: const BoxDecoration(
+                  color: const Color(0x44000000)
+              ),
+              child: const Center(
+                child: const CircularProgressIndicator(),
+              )
+            );
+          }
+          case LoadingType.COMPLETED: {
+            return SimpleDialog(
+              title: Text("完了しました"),
+            );
+          }
+          default: {
+            return Container();
+          }
+        }
+//        return (snapshot.data)
+//            ? const DecoratedBox(
+//            decoration: const BoxDecoration(
+//                color: const Color(0x44000000)
+//            ),
+//            child: const Center(
+//              child: const CircularProgressIndicator(),
+//            ))
+//            : const SizedBox.shrink();
       },
     );
   }

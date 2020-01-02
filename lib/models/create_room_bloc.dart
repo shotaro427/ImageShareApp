@@ -18,13 +18,13 @@ class AddRoomListBloc {
 
   pressed(String roomName) async {
     if (roomName.isEmpty || roomName == null) roomName = "名無し";
-    _loadingBloc.loading(true);
+    _loadingBloc.loading(LoadingType.LOADING);
     try {
       _addRoomController.sink.add(await _repository.createRoom(roomName));
     } catch(e) {
       debugPrint(e.toString());
     }
-    _loadingBloc.loading(false);
+    _loadingBloc.loading(LoadingType.COMPLETED);
   }
 
   void dispose() {
@@ -32,17 +32,23 @@ class AddRoomListBloc {
   }
 }
 
+enum LoadingType {
+  NOT_YET,
+  LOADING,
+  COMPLETED
+}
+
 /// ローディングクラス
 class LoadingBloc {
   LoadingBloc() {
-    loading(false);
+    loading(LoadingType.NOT_YET);
   }
 
-  final _valueController = StreamController<bool>();
+  final _valueController = StreamController<LoadingType>();
 
-  Stream<bool> get value => _valueController.stream;
+  Stream<LoadingType> get value => _valueController.stream;
 
-  loading(bool isLoading) {
+  loading(LoadingType isLoading) {
     _valueController.sink.add(isLoading);
   }
 
