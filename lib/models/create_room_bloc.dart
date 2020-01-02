@@ -1,36 +1,34 @@
 
+
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 
-/// ルーム一覧を取得するための BLoC
-class RoomListBloc {
+/// 部屋を追加を追われたときの処理
+class AddRoomListBloc {
   final RoomListRepository _repository;
   final LoadingBloc _loadingBloc;
 
-  /// ルーム一覧を取得したものを流すStreamControllerとStream
-  final _roomListController = StreamController<List<DocumentSnapshot>>();
-  Stream<List<DocumentSnapshot>> get roomListStream => _roomListController.stream;
+  AddRoomListBloc(this._repository, this._loadingBloc);
 
-  RoomListBloc(this._repository, this._loadingBloc);
+  /// 部屋を追加を追われたときに流れるStreamControllerとStream
+  final _addRoomController = StreamController<void>();
+  Stream<void> get addRoomStream => _addRoomController.stream;
 
-  /// ユーザーが所属するルームの一覧を取得する
-  void fetchRooms() async {
+  pressed(String roomName) async {
+    if (roomName.isEmpty || roomName == null) roomName = "名無し";
     _loadingBloc.loading(true);
-
     try {
-      _roomListController.sink.add(await _repository.fetch());
-    }catch(e) {
+      _addRoomController.sink.add(await _repository.createRoom(roomName));
+    } catch(e) {
       debugPrint(e.toString());
     }
-
     _loadingBloc.loading(false);
   }
 
   void dispose() {
-    _roomListController.close();
+    _addRoomController.close();
   }
 }
 
