@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 
 class TopImagesPage extends StatelessWidget {
@@ -22,8 +23,10 @@ class TopImagesPage extends StatelessWidget {
         body: ImagesWidget(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () => {
-            
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ImageUploadPage();
+            }));
           },
         ),
       ),
