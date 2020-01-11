@@ -25,7 +25,7 @@ class TopImagesPage extends StatelessWidget {
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return ImageUploadPage();
+              return ImageUploadPage(roomInfo.data["roomId"]);
             }));
           },
         ),

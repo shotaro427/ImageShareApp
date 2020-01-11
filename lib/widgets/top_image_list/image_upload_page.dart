@@ -5,10 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class ImageUploadPage extends StatelessWidget {
-  const ImageUploadPage({Key key}) : super(key: key);
 
+  final String roomId;
+
+  ImageUploadPage(this.roomId);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class ImageUploadPage extends StatelessWidget {
       dispose: (context, bloc) => bloc.dispose(),
       child: Scaffold(
         appBar: AppBar(title: const Text("投稿"),),
-        body: _LayoutUploadImagePage(),
+        body: _LayoutUploadImagePage(roomId),
       ),
     );
   }
@@ -26,40 +30,50 @@ class ImageUploadPage extends StatelessWidget {
 
 class _LayoutUploadImagePage extends StatelessWidget {
 
+  final String roomId;
+
+  _LayoutUploadImagePage(this.roomId);
+
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text("画像を投稿", style: TextStyle(fontSize: 22),),
-          StreamBuilder<File>(
-            stream: bloc.value,
-            builder: (context, snapshot) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
+      child: StreamBuilder(
+        stream: bloc.value,
+        builder: (context, snapshot) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("画像を投稿", style: TextStyle(fontSize: 22),),
+              SizedBox(
+                height: 200,
                 child: (snapshot.hasData)
                   ? Image.file(snapshot.data)
                   : Image.asset("images/image_placeholder.png")
-              );
-            },
-          ),
-          RaisedButton(
-            child: const Text("画像を選択する"),
-            onPressed: () {
-              // TODO 画像を選択させる処理の追加
-              var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-              bloc.pickUpImage();
-            },
-          ),
-          RaisedButton(
-            child: const Text("画像をアップロードする"),
-            onPressed: () {
-              // TODO 画像をFireStorageにアップロードする処理の追加
-            },
-          )
-        ],
+              ),
+              RaisedButton(
+                child: const Text("画像を選択する"),
+                onPressed: () {
+                  // TODO 画像を選択させる処理の追加
+                  var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
+                  bloc.pickUpImage();
+                },
+              ),
+              RaisedButton(
+                child: const Text("画像をアップロードする"),
+                onPressed: (!snapshot.hasData)
+                  ? null
+                  :  () {
+                      // 画像をアップロードする処理
+                      if (snapshot.hasData) {
+                        var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
+                        bloc.uploadImage(snapshot.data, roomId);
+                      }
+                    }
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -81,8 +95,8 @@ class ImageUploadBloc {
   }
 
   /// FireStorageに画像をアップロード
-  void uploadImage() async {
-
+  void uploadImage(File file, String roomId) async {
+    _repository.uploadImageToFireStorage(file, roomId);
   }
 
   void dispose() {
@@ -92,9 +106,28 @@ class ImageUploadBloc {
 
 class ImageUploadRepository {
 
+  /// ユーザーのローカルから画像を選択させて、取得する
   Future<File> getImageInGallery() async {
 
     return await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
+
+  Future uploadImageToFireStorage(File file, String roomId) async {
+    int timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    final StorageReference _ref = FirebaseStorage()
+        .ref()
+        .child("roomImages")
+        .child(roomId)
+        .child(timestamp.toString());
+
+    _ref.putFile(
+      file,
+      StorageMetadata(
+        contentType: "image/jpeg",
+      )
+    );
+
   }
 
 }
