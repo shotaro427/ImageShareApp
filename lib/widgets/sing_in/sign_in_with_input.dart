@@ -24,6 +24,8 @@ class SignInWithInputState extends State<SignInWithInput> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    emailInputController.text = "teat1@test.com";
+    passwordInputController.text = "password";
     return _layoutBody();
   }
 

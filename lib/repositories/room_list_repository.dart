@@ -57,6 +57,10 @@ class RoomListRepository {
     await db.document(userRef.path).collection("rooms").add({
       "room": _roomRef
     });
+
+    await db.document(userRef.path).updateData({
+      "roomId": userRef.documentID
+    });
   }
 
   /// ログインしているユーザーの参照を取得
