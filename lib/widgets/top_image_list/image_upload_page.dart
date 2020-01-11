@@ -33,13 +33,16 @@ class _LayoutUploadImagePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text("画像を投稿"),
+          const Text("画像を投稿", style: TextStyle(fontSize: 22),),
           StreamBuilder<File>(
             stream: bloc.value,
             builder: (context, snapshot) {
-              return (snapshot.hasData)
-              ? Image.file(snapshot.data)
-              : Image.asset("images/plus_icon.png");
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: (snapshot.hasData)
+                  ? Image.file(snapshot.data)
+                  : Image.asset("images/image_placeholder.png")
+              );
             },
           ),
           RaisedButton(
