@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
 
 class TopImagesPage extends StatelessWidget {
@@ -13,17 +12,6 @@ class TopImagesPage extends StatelessWidget {
 
   TopImagesPage(this.roomInfo);
 
-  final List<IconData> icons = [
-    Icons.access_alarm,
-    Icons.arrow_back_ios,
-    Icons.account_balance_wallet,
-    Icons.center_focus_weak,
-    Icons.blur_on,
-    Icons.dashboard,
-    Icons.phone,
-    Icons.tap_and_play,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Provider<TopImagesBloc>(
@@ -31,7 +19,13 @@ class TopImagesPage extends StatelessWidget {
       dispose: (_, bloc) => bloc.dispose(),
       child: Scaffold(
         appBar: AppBar(title: Text(roomInfo["name"].toString()),),
-        body: ImagesWidget()
+        body: ImagesWidget(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => {
+            
+          },
+        ),
       ),
     );
   }
