@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 
 /// 部屋を追加を追われたときの処理
 class AddRoomListBloc {
@@ -16,9 +17,11 @@ class AddRoomListBloc {
   final _addRoomController = StreamController<void>();
   Stream<void> get addRoomStream => _addRoomController.stream;
 
+  /// ルームを追加する
   pressed(String roomName) async {
     if (roomName.isEmpty || roomName == null) roomName = "名無し";
     _loadingBloc.loading(LoadingType.LOADING);
+    /// ルーム追加
     try {
       _addRoomController.sink.add(await _repository.createRoom(roomName));
     } catch(e) {
@@ -32,14 +35,8 @@ class AddRoomListBloc {
   }
 }
 
-enum LoadingType {
-  NOT_YET,
-  LOADING,
-  COMPLETED
-}
-
 /// ローディングクラス
-class LoadingBloc {
+class LoadingBloc extends AbstractLoadingBloc {
   LoadingBloc() {
     loading(LoadingType.NOT_YET);
   }

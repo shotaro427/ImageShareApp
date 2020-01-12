@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/create_room_bloc.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatelessWidget {
@@ -30,10 +31,10 @@ class CreateRoomPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(title: Text("ルーム作成"),),
+            appBar: AppBar(title: const Text("ルーム作成"),),
             body: _InputRoomPage()
           ),
-          _LoadingWidgetInCreateRoomPage()
+          CommonLoadingWidget<LoadingBloc>()
         ],
       ),
     );
