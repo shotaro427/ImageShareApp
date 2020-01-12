@@ -73,8 +73,9 @@ class RoomListWidget extends StatelessWidget {
               return Container(
                 margin: EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black38),
+                  ),
                 ),
                 child: ListTile(
                   leading: const Icon(Icons.home),
