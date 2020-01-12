@@ -4,9 +4,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_share_app/models/create_room_bloc.dart';
 
 
 class ImageUploadPage extends StatelessWidget {
@@ -21,7 +21,7 @@ class ImageUploadPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<LoadingBloc>(
-          create: (context) => LoadingBloc(),
+          create: (_) => LoadingBloc(),
           dispose: (_, bloc) => bloc.dispose(),
         ),
         Provider<ImageUploadBloc>(
@@ -29,7 +29,7 @@ class ImageUploadPage extends StatelessWidget {
             var bloc = Provider.of<LoadingBloc>(context, listen: false);
             return ImageUploadBloc(ImageUploadRepository(), bloc);
           },
-          dispose: (context, bloc) => bloc.dispose(),
+          dispose: (_, bloc) => bloc.dispose(),
         ),
       ],
       child: Stack(
@@ -38,7 +38,7 @@ class ImageUploadPage extends StatelessWidget {
             appBar: AppBar(title: const Text("投稿"),),
             body: _LayoutUploadImagePage(roomId),
           ),
-          _LoadingWidgetInCreateRoomPage()
+          CommonLoadingWidget<LoadingBloc>()
         ]
       ),
     );
@@ -173,8 +173,8 @@ class ImageUploadBloc {
   }
 }
 
-/// ローディングクラス
-class LoadingBloc {
+// ローディングクラス
+class LoadingBloc extends AbstractLoadingBloc {
   LoadingBloc() {
     loading(LoadingType.NOT_YET);
   }
