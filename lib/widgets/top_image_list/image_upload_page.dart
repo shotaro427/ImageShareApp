@@ -18,27 +18,16 @@ class ImageUploadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MultiProvider(
-      providers: [
-        Provider<LoadingBloc>(
-          create: (_) => LoadingBloc(),
-          dispose: (_, bloc) => bloc.dispose(),
-        ),
-        Provider<ImageUploadBloc>(
-          create: (context) {
-            var bloc = Provider.of<LoadingBloc>(context, listen: false);
-            return ImageUploadBloc(ImageUploadRepository(), bloc);
-          },
-          dispose: (_, bloc) => bloc.dispose(),
-        ),
-      ],
+    return Provider<ImageUploadBloc>(
+      create: (context) => ImageUploadBloc(ImageUploadRepository()),
+      dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
           Scaffold(
             appBar: AppBar(title: const Text("投稿"),),
             body: _LayoutUploadImagePage(roomId),
           ),
-          CommonLoadingWidget<LoadingBloc>()
+          CommonLoadingWidget<ImageUploadBloc>(dialogTitle: "画像のアップロード",)
         ]
       ),
     );
@@ -97,65 +86,22 @@ class _LayoutUploadImagePage extends StatelessWidget {
   }
 }
 
-/// インジケータ用のWidgetクラス
-class _LoadingWidgetInCreateRoomPage extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    var bloc = Provider.of<LoadingBloc>(context);
-    return StreamBuilder(
-      stream: bloc.value,
-      initialData: false,
-      builder: (context, snapshot) {
-        switch(snapshot.data) {
-          case LoadingType.NOT_YET:{
-            return const SizedBox.shrink();
-          }
-          case LoadingType.LOADING: {
-            return const DecoratedBox(
-                decoration: const BoxDecoration(
-                    color: const Color(0x44000000)
-                ),
-                child: const Center(
-                  child: const CircularProgressIndicator(),
-                )
-            );
-          }
-          case LoadingType.COMPLETED: {
-            return AlertDialog(
-              title: const Text("完了しました"),
-              content: const Text("アップロードが完了しました。"),
-              actions: <Widget>[
-                FlatButton(
-                  child: const Text("OK"),
-                  // TODO TOP画面に遷移させる
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            );
-          }
-          default: {
-            return Container();
-          }
-        }
-      },
-    );
-  }
-}
 
 /// 画像のアップロード
 /// ライブラリーなどから画像を取得する
 /// ためのBLoC
-class ImageUploadBloc {
+class ImageUploadBloc extends AbstractLoadingBloc {
 
   final ImageUploadRepository _repository;
-  final LoadingBloc _loadingBloc;
 
-  ImageUploadBloc(this._repository, this._loadingBloc);
+  ImageUploadBloc(this._repository);
 
   /// 選択された画像を発行
   final _valueController = StreamController<File>();
   Stream<File> get value => _valueController.stream;
+
+  final _loadingController = StreamController<LoadingType>();
+  Stream<LoadingType> get loadingValue => _loadingController.stream;
 
   /// ImagePickerから画像を取得
   void pickUpImage() async {
@@ -164,31 +110,14 @@ class ImageUploadBloc {
 
   /// FireStorageに画像をアップロード
   void uploadImage(File file, String roomId) async {
+    _loadingController.sink.add(LoadingType.LOADING);
     _repository.uploadImageToFireStorage(file, roomId);
-    _loadingBloc.loading(LoadingType.COMPLETED);
+    _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
   void dispose() {
     _valueController.close();
-  }
-}
-
-// ローディングクラス
-class LoadingBloc extends AbstractLoadingBloc {
-  LoadingBloc() {
-    loading(LoadingType.NOT_YET);
-  }
-
-  final _valueController = StreamController<LoadingType>();
-
-  Stream<LoadingType> get value => _valueController.stream;
-
-  loading(LoadingType isLoading) {
-    _valueController.sink.add(isLoading);
-  }
-
-  void dispose() {
-    _valueController.close();
+    _loadingController.close();
   }
 }
 
