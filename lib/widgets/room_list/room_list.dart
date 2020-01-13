@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
@@ -15,20 +16,9 @@ class RoomListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MultiProvider(
-      providers: [
-        Provider<LoadingBloc>(
-          create: (_) => LoadingBloc(),
-          dispose: (_, bloc) => bloc.dispose(),
-        ),
-        Provider<RoomListBloc>(
-          create: (context) {
-            var loadingBloc = Provider.of<LoadingBloc>(context, listen: false);
-            return RoomListBloc(_repository, loadingBloc);
-          },
-          dispose: (_, bloc) => bloc.dispose(),
-        )
-      ],
+    return Provider<RoomListBloc>(
+      create: (context) => RoomListBloc(_repository),
+      dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
           Scaffold(
@@ -50,7 +40,7 @@ class RoomListPage extends StatelessWidget {
             ),
             body: RoomListWidget(),
           ),
-          RoomListLoadingWidget()
+          CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
         ],
       ),
     );
@@ -95,30 +85,5 @@ class RoomListWidget extends StatelessWidget {
         }
       },
     );
-  }
-}
-
-class RoomListLoadingWidget extends StatelessWidget {
-  const RoomListLoadingWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    var bloc = Provider.of<LoadingBloc>(context);
-    return StreamBuilder(
-      initialData: false,
-      stream: bloc.value,
-      builder: (context, snapshot) {
-        return (snapshot.data)
-            ? const DecoratedBox(
-              decoration: const BoxDecoration(
-                color: const Color(0x44000000)
-              ),
-              child: const Center(
-                child: const CircularProgressIndicator(),
-              ))
-            : const SizedBox.shrink();
-      },
-    );
-
   }
 }
