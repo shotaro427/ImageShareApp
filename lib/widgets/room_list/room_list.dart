@@ -29,7 +29,6 @@ class RoomListPage extends StatelessWidget {
                   icon: const Icon(Icons.add),
                   tooltip: "ルームを追加",
                   onPressed: () {
-
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return CreateRoomPage(_repository);
                     }));
@@ -61,7 +60,7 @@ class RoomListWidget extends StatelessWidget {
           return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(color: Colors.black38),

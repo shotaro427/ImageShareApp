@@ -47,7 +47,7 @@ class _ImagesWidget extends StatelessWidget {
     return Container(
       child: StreamBuilder<List<String>>(
         stream: bloc.imagesValue,
-        initialData: [],
+        initialData: const [],
         builder: (context, snapshot) {
           return GridView.builder(
             itemCount: snapshot.data.length,

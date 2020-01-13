@@ -41,7 +41,7 @@ class _InputRoomPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
                 controller: _roomNameController,
                 decoration: const InputDecoration(
@@ -50,7 +50,7 @@ class _InputRoomPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
             RaisedButton(
