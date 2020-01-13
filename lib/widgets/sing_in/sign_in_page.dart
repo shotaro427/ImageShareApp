@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 RaisedButton(
-                  child: Text('Googleアカウントでログイン'),
+                  child: const Text('Googleアカウントでログイン'),
                   onPressed: () {
                     _handleSignIn()
                         .then((FirebaseUser user) =>
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                         .catchError((e) => print(e));
                   },
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))
                   ),
                   highlightElevation: 16.0,
@@ -55,11 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   onHighlightChanged: (value) {},
                 ),
                 RaisedButton(
-                  child: Text('メールアドレスでログイン'),
+                  child: const Text('メールアドレスでログイン'),
                   onPressed: () {
                     transitionSignInPage();
                   },
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))
                   ),
                   highlightElevation: 16.0,
@@ -67,12 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   onHighlightChanged: (value) {},
                 ),
                 RaisedButton(
-                  child: Text('メールアドレスで登録'),
+                  child: const Text('メールアドレスで登録'),
                   onPressed: () {
                     transitionSignUpPage();
                   },
                   color: Colors.white,
-                  shape: OutlineInputBorder(
+                  shape: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   highlightElevation: 16.0,

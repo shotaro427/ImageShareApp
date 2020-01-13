@@ -26,7 +26,7 @@ class SigUpWithInputState extends State<SignUpWithInput> {
 
   Widget _layoutBody() {
     return Scaffold(
-      appBar: AppBar(title: Text("登録"),),
+      appBar: AppBar(title: const Text("登録"),),
       body: Center(
         child: Form(
           child: SingleChildScrollView(
@@ -34,7 +34,7 @@ class SigUpWithInputState extends State<SignUpWithInput> {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
                 TextFormField(
                   controller: emailInputController,
                   decoration: const InputDecoration(

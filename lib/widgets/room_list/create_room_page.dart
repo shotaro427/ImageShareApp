@@ -14,27 +14,16 @@ class CreateRoomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<LoadingBloc>(
-          create: (_) => LoadingBloc(),
-          dispose: (_, bloc) => bloc.dispose(),
-        ),
-        Provider<AddRoomListBloc>(
-          create: (context) {
-            var bloc = Provider.of<LoadingBloc>(context, listen: false);
-            return AddRoomListBloc(_repository, bloc);
-          },
-          dispose: (_, bloc) => bloc.dispose(),
-        ),
-      ],
+    return Provider<AddRoomListBloc>(
+      create: (context) => AddRoomListBloc(_repository),
+      dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
           Scaffold(
             appBar: AppBar(title: const Text("ルーム作成"),),
             body: _InputRoomPage()
           ),
-          CommonLoadingWidget<LoadingBloc>()
+          CommonLoadingWidget<AddRoomListBloc>(dialogTitle: "ルーム作成",)
         ],
       ),
     );
@@ -52,7 +41,7 @@ class _InputRoomPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
                 controller: _roomNameController,
                 decoration: const InputDecoration(
@@ -61,7 +50,7 @@ class _InputRoomPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
             RaisedButton(
@@ -75,51 +64,6 @@ class _InputRoomPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _LoadingWidgetInCreateRoomPage extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    var bloc = Provider.of<LoadingBloc>(context);
-    return StreamBuilder(
-      stream: bloc.value,
-      initialData: false,
-      builder: (context, snapshot) {
-        switch(snapshot.data) {
-          case LoadingType.NOT_YET:{
-            return const SizedBox.shrink();
-          }
-          case LoadingType.LOADING: {
-            return const DecoratedBox(
-              decoration: const BoxDecoration(
-                  color: const Color(0x44000000)
-              ),
-              child: const Center(
-                child: const CircularProgressIndicator(),
-              )
-            );
-          }
-          case LoadingType.COMPLETED: {
-            return AlertDialog(
-              title: const Text("完了しました"),
-              content: const Text("ルーム作成が完了しました。"),
-              actions: <Widget>[
-                FlatButton(
-                  child: const Text("OK"),
-                  // TODO TOP画面に遷移させる
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            );
-          }
-          default: {
-            return Container();
-          }
-        }
-      },
     );
   }
 }

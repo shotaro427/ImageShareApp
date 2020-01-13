@@ -17,10 +17,7 @@ enum LoadingType {
 abstract class AbstractLoadingBloc {
 
   /// 外部監視用のStream
-  Stream value;
-
-  /// ローディングタイプの変更を通知/発行
-  loading(LoadingType isLoading);
+  Stream loadingValue;
 
   /// 破棄
   dispose();
@@ -29,13 +26,16 @@ abstract class AbstractLoadingBloc {
 
 class CommonLoadingWidget<T extends AbstractLoadingBloc> extends StatelessWidget {
 
-  CommonLoadingWidget();
+  final bool isShowDialog;
+  final String dialogTitle;
+
+  CommonLoadingWidget({ this.isShowDialog = true, this.dialogTitle = "" });
 
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<T>(context);
     return StreamBuilder(
-      stream: bloc.value,
+      stream: bloc.loadingValue,
       initialData: false,
       builder: (context, snapshot) {
         switch(snapshot.data) {
@@ -53,17 +53,21 @@ class CommonLoadingWidget<T extends AbstractLoadingBloc> extends StatelessWidget
             );
           }
           case LoadingType.COMPLETED: {
-            return AlertDialog(
-              title: const Text("完了しました"),
-              content: const Text("ルーム作成が完了しました。"),
-              actions: <Widget>[
-                FlatButton(
-                  child: const Text("OK"),
-                  // TODO TOP画面に遷移させる
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            );
+            return  (isShowDialog)
+              ? AlertDialog(
+                title: const Text("完了しました"),
+                content: (isShowDialog)
+                  ? Text("$dialogTitleが完了しました")
+                  : null,
+                actions: <Widget>[
+                  FlatButton(
+                    child: const Text("OK"),
+                    // TODO TOP画面に遷移させる
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+                : Container();
           }
           default: {
             return Container();
