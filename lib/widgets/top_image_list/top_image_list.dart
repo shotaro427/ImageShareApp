@@ -17,7 +17,7 @@ class TopImagesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<TopImagesBloc>(
-      create: (_) => TopImagesBloc(TopImagesRepository(), roomInfo),
+      create: (_) => TopImagesBloc(roomInfo),
       dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
@@ -59,7 +59,24 @@ class _ImagesWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black45),
                 ),
-                child: Image.network(snapshot.data[index]),
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: (snapshot.hasData)
+                    ? NetworkImage(snapshot.data[index])
+                    : Card(color: Colors.orange,),
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                            : null,
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );
