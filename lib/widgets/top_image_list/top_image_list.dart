@@ -46,7 +46,7 @@ class _ImagesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     TopImagesBloc bloc = Provider.of<TopImagesBloc>(context);
     return Container(
-      child: StreamBuilder<List<String>>(
+      child: StreamBuilder<List<DocumentSnapshot>>(
         stream: bloc.imagesValue,
         initialData: const [],
         builder: (context, snapshot) {
@@ -65,7 +65,7 @@ class _ImagesWidget extends StatelessWidget {
                   child: Image(
                     fit: BoxFit.fitWidth,
                     image: (snapshot.hasData)
-                      ? NetworkImage(snapshot.data[index])
+                      ? NetworkImage(snapshot.data[index].data['url'])
                       : Card(color: Colors.orange,),
                     loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
                       if (loadingProgress == null) {

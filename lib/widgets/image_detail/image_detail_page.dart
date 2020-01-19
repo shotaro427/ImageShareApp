@@ -1,28 +1,29 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
-  final String thumbnailUrl;
+  final DocumentSnapshot imageDocument;
 
-  ImageDetailPage(this.thumbnailUrl);
+  ImageDetailPage(this.imageDocument);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: const Text('詳細'),),
-      body: _LayoutDetailImage(thumbnailUrl),
+      body: _LayoutDetailImage(imageDocument),
     );
   }
 }
 
 class _LayoutDetailImage extends StatelessWidget {
 
-  final String thumbnailUrl;
+  final DocumentSnapshot imageDocument;
 
-  _LayoutDetailImage(this.thumbnailUrl);
+  _LayoutDetailImage(this.imageDocument);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _LayoutDetailImage extends StatelessWidget {
       child: Image(
         fit: BoxFit.contain,
         width: MediaQuery.of(context).size.width,
-        image: NetworkImage(thumbnailUrl),
+        image: NetworkImage(imageDocument.data['originalUrl']),
       ),
     );
   }

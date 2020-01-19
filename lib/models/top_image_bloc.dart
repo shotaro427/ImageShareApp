@@ -9,15 +9,16 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 /// トップ画面のBLoCクラス
 class TopImagesBloc extends AbstractLoadingBloc {
   final DocumentSnapshot _roomInfo;
+  bool isDispose = false;
 
   TopImagesBloc(this._roomInfo) {
     _loadingController.sink.add(LoadingType.NOT_YET);
     fetchImageUrlString();
   }
 
-  final _valueController = StreamController<List<String>>();
-  Stream<List<String>> get imagesValue => _valueController.stream;
-  List<String> _images = [];
+  final _valueController = StreamController<List<DocumentSnapshot>>();
+  Stream<List<DocumentSnapshot>> get imagesValue => _valueController.stream;
+  List<DocumentSnapshot> _images = [];
 
   final _loadingController = StreamController<LoadingType>();
   Stream<LoadingType> get loadingValue => _loadingController.stream;
@@ -35,15 +36,18 @@ class TopImagesBloc extends AbstractLoadingBloc {
         .document(_roomInfo.reference.path)
         .collection("images")
         .orderBy("created_at")
-        .limit(10);
+        .limit(20);
 
     await _imagesQuery.getDocuments().then((data) {
       if (data.documents.length > 0) {
         _imagesQuery.snapshots().listen((data) {
-          _images.addAll(data.documentChanges
-              .where((change) => change.type != DocumentChangeType.removed)
-              .map((change) => change.document.data["url"].toString()));
-          _valueController.sink.add(_images.reversed.toList());
+          if (!isDispose) {
+            _images.addAll(data.documentChanges
+                .where((change) => change.type != DocumentChangeType.removed)
+                .map((change) => change.document));
+            _valueController.sink.add(_images.reversed.toList());
+          }
+
         });
       }
     }).catchError((e) => debugPrint(e.toString()));
@@ -53,5 +57,6 @@ class TopImagesBloc extends AbstractLoadingBloc {
   void dispose() {
     _valueController.close();
     _loadingController.close();
+    isDispose = true;
   }
 }
