@@ -63,7 +63,7 @@ class _ImagesWidget extends StatelessWidget {
                     border: Border.all(color: Colors.black45),
                   ),
                   child: Image(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                     image: (snapshot.hasData)
                       ? NetworkImage(snapshot.data[index])
                       : Card(color: Colors.orange,),
