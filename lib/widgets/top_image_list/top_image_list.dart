@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 
@@ -55,27 +56,30 @@ class _ImagesWidget extends StatelessWidget {
               crossAxisCount: 2,
             ),
             itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black45),
-                ),
-                child: Image(
-                  fit: BoxFit.cover,
-                  image: (snapshot.hasData)
-                    ? NetworkImage(snapshot.data[index])
-                    : Card(color: Colors.orange,),
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                            : null,
-                      ),
-                    );
-                  },
+              return GestureDetector(
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage())),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black45),
+                  ),
+                  child: Image(
+                    fit: BoxFit.cover,
+                    image: (snapshot.hasData)
+                      ? NetworkImage(snapshot.data[index])
+                      : Card(color: Colors.orange,),
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               );
             },
