@@ -3,7 +3,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:filesize/filesize.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 
@@ -30,6 +32,7 @@ class ImageUploadBloc extends AbstractLoadingBloc {
 
   /// FireStorageに画像をアップロード
   void uploadImage(File file, String roomId) async {
+    debugPrint(filesize(file.lengthSync()));
     _loadingController.sink.add(LoadingType.LOADING);
     _repository.uploadImageToFireStorage(file, roomId);
     _loadingController.sink.add(LoadingType.COMPLETED);
