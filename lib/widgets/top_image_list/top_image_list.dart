@@ -57,7 +57,7 @@ class _ImagesWidget extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage())),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(snapshot.data[index]))),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black45),
