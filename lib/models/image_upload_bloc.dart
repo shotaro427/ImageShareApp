@@ -52,6 +52,7 @@ class ImageUploadRepository {
     return await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 
+  /// FireStorageに画像をアップロードする
   Future uploadImageToFireStorage(File file, String roomId) async {
     int timestamp = DateTime.now().millisecondsSinceEpoch;
 
