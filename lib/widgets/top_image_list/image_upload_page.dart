@@ -21,7 +21,10 @@ class ImageUploadPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(title: const Text("投稿"),),
+            appBar: AppBar(
+              title: const Text("投稿"),
+              elevation: 0,
+            ),
             body: _LayoutUploadImagePage(roomId),
           ),
           CommonLoadingWidget<ImageUploadBloc>(dialogTitle: "画像のアップロード",)
@@ -51,6 +54,25 @@ class _LayoutUploadImagePage extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              // タイトル入力欄
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                ),
+                child: TextFormField(
+                  autofocus: true,
+                  cursorColor: Theme.of(context).primaryTextTheme.title.color,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'タイトル',
+                    hintStyle: TextStyle(
+                      color: Colors.white
+                    )
+                  ),
+                ),
+              ),
+              // アップロードする画像を表示するWidget
               Container(
                 height: 300,
                 child: (snapshot.hasData)
@@ -64,6 +86,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                 padding: const EdgeInsets.all(5),
               ),
+              // 「画像を選択する」ボタン
               RaisedButton(
                 child: const Text("画像を選択する"),
                 onPressed: () {
@@ -72,6 +95,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   bloc.pickUpImage();
                 },
               ),
+              // 「画像をアップロードする」ボタン
               RaisedButton(
                 child: const Text("画像をアップロードする"),
                 onPressed: (!snapshot.hasData)
@@ -84,21 +108,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       }
                     }
               ),
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  border: const UnderlineInputBorder(),
-                  labelText: 'タイトル',
-                ),
-              ),
-              TextFormField(
-                controller: memoController,
-                decoration: const InputDecoration(
-                  border: const UnderlineInputBorder(),
-                  labelText: 'メモ',
-                ),
-              ),
-
             ],
           );
         },
