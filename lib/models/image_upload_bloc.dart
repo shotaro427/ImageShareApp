@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:filesize/filesize.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,10 +32,13 @@ class ImageUploadBloc extends AbstractLoadingBloc {
   }
 
   /// FireStorageに画像をアップロード
-  void uploadImage(File file, String roomId) async {
+  void uploadImage(File file, String roomId, {String title, String memoText}) async {
+    int _timestamp = DateTime.now().millisecondsSinceEpoch;
+
     debugPrint(filesize(file.lengthSync()));
     _loadingController.sink.add(LoadingType.LOADING);
-    _repository.uploadImageToFireStorage(file, roomId);
+    await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
+    await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
@@ -53,8 +57,9 @@ class ImageUploadRepository {
   }
 
   /// FireStorageに画像をアップロードする
-  Future uploadImageToFireStorage(File file, String roomId) async {
-    int timestamp = DateTime.now().millisecondsSinceEpoch;
+  Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
+
+    debugPrint(timestamp.toString());
 
     final StorageReference _ref = FirebaseStorage()
         .ref()
@@ -68,7 +73,27 @@ class ImageUploadRepository {
           contentType: "image/jpeg",
         )
     );
-
   }
 
+  Future postImageWithTitle(String roomId, int timestamp, {String title, String memoText}) async {
+
+    debugPrint(timestamp.toString());
+
+    String _title = "名無し";
+    String _memoText = "";
+    
+    if (title != null) { _title = title; }
+    if (memoText != null) { _memoText = memoText; }
+
+    Firestore.instance.collection("rooms/${roomId}/images").add({
+      'title': _title,
+      'memo': _memoText,
+      'created_at': timestamp.toString()
+    }).then((ref) {
+
+      ref.updateData({
+        'image_id': ref.documentID
+      });
+    });
+  }
 }
