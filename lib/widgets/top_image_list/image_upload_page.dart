@@ -38,6 +38,9 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   _LayoutUploadImagePage(this.roomId);
 
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController memoController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
@@ -46,14 +49,20 @@ class _LayoutUploadImagePage extends StatelessWidget {
         stream: bloc.value,
         builder: (context, snapshot) {
           return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const Text("画像を投稿", style: TextStyle(fontSize: 22),),
-              SizedBox(
-                height: 200,
+              Container(
+                height: 300,
                 child: (snapshot.hasData)
-                  ? Image.file(snapshot.data)
-                  : Image.asset("images/image_placeholder.png")
+                  ? Image(
+                    image: FileImage(snapshot.data),
+                    fit: BoxFit.scaleDown,
+                  )
+                  : const Image(
+                    image: const AssetImage("images/image_placeholder_500_300.png"),
+                    fit: BoxFit.cover,
+                  ),
+                padding: const EdgeInsets.all(5),
               ),
               RaisedButton(
                 child: const Text("画像を選択する"),
@@ -75,6 +84,21 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       }
                     }
               ),
+              TextFormField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  border: const UnderlineInputBorder(),
+                  labelText: 'タイトル',
+                ),
+              ),
+              TextFormField(
+                controller: memoController,
+                decoration: const InputDecoration(
+                  border: const UnderlineInputBorder(),
+                  labelText: 'メモ',
+                ),
+              ),
+
             ],
           );
         },
