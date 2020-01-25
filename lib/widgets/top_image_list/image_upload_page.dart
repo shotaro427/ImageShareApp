@@ -47,11 +47,11 @@ class _LayoutUploadImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-    return Center(
-      child: StreamBuilder(
-        stream: bloc.value,
-        builder: (context, snapshot) {
-          return Column(
+    return StreamBuilder(
+      stream: bloc.value,
+      builder: (context, snapshot) {
+        return SingleChildScrollView(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               // タイトル入力欄
@@ -108,10 +108,17 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       }
                     }
               ),
+              TextFormField(
+                controller: memoController,
+                decoration: const InputDecoration(
+                  border: const UnderlineInputBorder(),
+                  labelText: 'メモ',
+                ),
+              ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
