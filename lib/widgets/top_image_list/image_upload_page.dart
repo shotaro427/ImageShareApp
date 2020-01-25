@@ -21,7 +21,10 @@ class ImageUploadPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(title: const Text("投稿"),),
+            appBar: AppBar(
+              title: const Text("投稿"),
+              elevation: 0,
+            ),
             body: _LayoutUploadImagePage(roomId),
           ),
           CommonLoadingWidget<ImageUploadBloc>(dialogTitle: "画像のアップロード",)
@@ -44,65 +47,96 @@ class _LayoutUploadImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-    return Center(
-      child: StreamBuilder(
-        stream: bloc.value,
-        builder: (context, snapshot) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: 300,
-                child: (snapshot.hasData)
-                  ? Image(
+    return SingleChildScrollView(
+        child: StreamBuilder(
+          stream: bloc.value,
+          builder: (context, snapshot) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                // タイトル入力欄
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: Theme
+                        .of(context)
+                        .primaryColor,
+                  ),
+                  child: TextFormField(
+                    autofocus: true,
+                    cursorColor: Theme
+                        .of(context)
+                        .primaryTextTheme
+                        .title
+                        .color,
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'タイトル',
+                        hintStyle: TextStyle(
+                            color: Colors.white
+                        )
+                    ),
+                  ),
+                ),
+                // アップロードする画像を表示するWidget
+                Container(
+                  height: 300,
+                  child: (snapshot.hasData)
+                      ? Image(
                     image: FileImage(snapshot.data),
                     fit: BoxFit.scaleDown,
                   )
-                  : const Image(
+                      : const Image(
                     image: const AssetImage("images/image_placeholder_500_300.png"),
                     fit: BoxFit.cover,
                   ),
-                padding: const EdgeInsets.all(5),
-              ),
-              RaisedButton(
-                child: const Text("画像を選択する"),
-                onPressed: () {
-                  // TODO 画像を選択させる処理の追加
-                  var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-                  bloc.pickUpImage();
-                },
-              ),
-              RaisedButton(
-                child: const Text("画像をアップロードする"),
-                onPressed: (!snapshot.hasData)
-                  ? null
-                  :  () {
+                  padding: const EdgeInsets.all(5),
+                ),
+                // 「画像を選択する」ボタン
+                RaisedButton(
+                  child: const Text("画像を選択する"),
+                  onPressed: () {
+                    // TODO 画像を選択させる処理の追加
+                    var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
+                    bloc.pickUpImage();
+                  },
+                ),
+                // 「画像をアップロードする」ボタン
+                RaisedButton(
+                    child: const Text("画像をアップロードする"),
+                    onPressed: (!snapshot.hasData)
+                        ? null
+                        : () {
                       // 画像をアップロードする処理
                       if (snapshot.hasData) {
-                        var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
+                        var bloc = Provider.of<ImageUploadBloc>(
+                            context, listen: false);
                         bloc.uploadImage(snapshot.data, roomId);
                       }
                     }
-              ),
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                  border: const UnderlineInputBorder(),
-                  labelText: 'タイトル',
                 ),
-              ),
-              TextFormField(
-                controller: memoController,
-                decoration: const InputDecoration(
-                  border: const UnderlineInputBorder(),
-                  labelText: 'メモ',
+                Container(
+                  margin: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: const BorderRadius.all(Radius.circular(5.0))),
+                  child: TextFormField(
+                    controller: memoController,
+                    decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        hintText: 'メモ',
+                        hintStyle: TextStyle(
+                            color: Colors.white
+                        )
+                    ),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                  ),
                 ),
-              ),
-
-            ],
-          );
-        },
-      ),
+              ],
+            );
+          }
+        )
     );
   }
 }
