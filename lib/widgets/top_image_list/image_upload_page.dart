@@ -101,20 +101,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
                     bloc.pickUpImage();
                   },
                 ),
-                // 「画像をアップロードする」ボタン
-                RaisedButton(
-                    child: const Text("画像をアップロードする"),
-                    onPressed: (!snapshot.hasData)
-                        ? null
-                        : () {
-                      // 画像をアップロードする処理
-                      if (snapshot.hasData) {
-                        var bloc = Provider.of<ImageUploadBloc>(
-                            context, listen: false);
-                        bloc.uploadImage(snapshot.data, roomId);
-                      }
-                    }
-                ),
                 Container(
                   margin: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -125,13 +111,24 @@ class _LayoutUploadImagePage extends StatelessWidget {
                     decoration: const InputDecoration(
                         border: const UnderlineInputBorder(),
                         hintText: 'メモ',
-                        hintStyle: TextStyle(
-                            color: Colors.white
-                        )
                     ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
+                ),
+                // 「画像をアップロードする」ボタン
+                RaisedButton(
+                    child: const Text("画像をアップロードする"),
+                    onPressed: (!snapshot.hasData)
+                        ? null
+                        : () {
+                      // 画像をアップロードする処理
+                      if (snapshot.hasData) {
+                        var bloc = Provider.of<ImageUploadBloc>(
+                            context, listen: false);
+                        bloc.uploadImage(snapshot.data, roomId, title: titleController.text, memoText: memoController.text);
+                      }
+                    }
                 ),
               ],
             );
