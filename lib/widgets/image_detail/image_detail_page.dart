@@ -55,10 +55,60 @@ class _LayoutDetailImage extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Text(
-                  imageDocument.data['title'].toString(),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.title
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  child: Text(
+                    imageDocument.data['title'].toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 3,
+                        color: Colors.grey[300]
+                      )
+                    )
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.note, color: Colors.grey,),
+                              const Text('メモ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(left: 30, top: 10),
+                            child: Text(
+                              imageDocument.data['memo'].toString()
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 25,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.local_offer, color: Colors.grey,),
+                              const Text('タグ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
