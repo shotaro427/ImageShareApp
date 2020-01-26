@@ -34,8 +34,7 @@ class ImageUploadBloc extends AbstractLoadingBloc {
   /// FireStorageに画像をアップロード
   void uploadImage(File file, String roomId, {String title, String memoText}) async {
     int _timestamp = DateTime.now().millisecondsSinceEpoch;
-
-    debugPrint(filesize(file.lengthSync()));
+    
     _loadingController.sink.add(LoadingType.LOADING);
     await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
     await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
