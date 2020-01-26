@@ -56,7 +56,7 @@ class _LayoutDetailImage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Text(
-                  imageDocument.data['memo'].toString(),
+                  imageDocument.data['title'].toString(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.title
                 )
