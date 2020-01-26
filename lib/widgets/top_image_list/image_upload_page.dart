@@ -63,6 +63,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                         .primaryColor,
                   ),
                   child: TextFormField(
+                    controller: titleController,
                     autofocus: true,
                     cursorColor: Theme
                         .of(context)

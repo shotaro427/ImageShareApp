@@ -43,11 +43,11 @@ class TopImagesBloc extends AbstractLoadingBloc {
         _imagesQuery.snapshots().listen((data) {
           if (!isDispose) {
             _images.addAll(data.documentChanges
-                .where((change) => change.type != DocumentChangeType.removed)
+                .where((change) => change.type == DocumentChangeType.added || change.type == DocumentChangeType.modified)
+                .where((change) => change.document.data['url'] != null)
                 .map((change) => change.document));
             _valueController.sink.add(_images.reversed.toList());
           }
-
         });
       }
     }).catchError((e) => debugPrint(e.toString()));

@@ -82,7 +82,7 @@ class ImageUploadRepository {
     String _title = "名無し";
     String _memoText = "";
     
-    if (title != null) { _title = title; }
+    if (title != null && title.isNotEmpty) { _title = title; }
     if (memoText != null) { _memoText = memoText; }
 
     Firestore.instance.collection("rooms/${roomId}/images").add({
