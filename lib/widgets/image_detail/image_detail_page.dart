@@ -11,7 +11,6 @@ class ImageDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: const Text('詳細'),),
       body: _LayoutDetailImage(imageDocument),
@@ -27,13 +26,15 @@ class _LayoutDetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       padding: const EdgeInsets.all(3),
-      child: Image(
-        fit: BoxFit.contain,
-        width: MediaQuery.of(context).size.width,
-        image: NetworkImage(imageDocument.data['originalUrl']),
+      child: Container(
+        height: 300,
+        child: Image(
+          fit: BoxFit.contain,
+          width: MediaQuery.of(context).size.width,
+          image: NetworkImage(imageDocument.data['originalUrl']),
+        ),
       ),
     );
   }
