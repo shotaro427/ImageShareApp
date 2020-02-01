@@ -52,18 +52,19 @@ class _ImagesWidget extends StatelessWidget {
         builder: (context, snapshot) {
           return GridView.builder(
             itemCount: snapshot.data.length,
+            padding: const EdgeInsets.all(4),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(snapshot.data[index]))),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black45),
-                  ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
                   child: Image(
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                     image: (snapshot.hasData)
                       ? NetworkImage(snapshot.data[index].data['url'])
                       : Card(color: Colors.orange,),
