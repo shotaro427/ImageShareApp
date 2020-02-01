@@ -37,5 +37,21 @@ void main() {
         })
       );
     });
+
+    test('uploadImage()のテスト', () async {
+      ImageUploadRepository _repository = _MockImageUploadRepository();
+      ImageUploadBloc _target = ImageUploadBloc(_repository);
+
+      File testFile = File('test_resources/contacts.json');
+
+      when(_repository.uploadImageToFireStorage(testFile, 'roomId', any)).thenAnswer((_) => Future.value(null));
+      when(_repository.postImageWithTitle('roomId', any)).thenAnswer((_) => Future.value(null));
+      await _target.uploadImage(File('test_resources/contacts.json'), 'roomId');
+
+      verifyInOrder([
+        _repository.postImageWithTitle('roomId', any),
+        _repository.uploadImageToFireStorage(any, 'roomId', any)
+      ]);
+    });
   });
 }
