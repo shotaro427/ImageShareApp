@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
@@ -29,7 +30,6 @@ class _LayoutDetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(imageDocument.data['title'].toString());
     return Column(
       children: <Widget>[
         Container(
@@ -39,10 +39,13 @@ class _LayoutDetailImage extends StatelessWidget {
             color: Colors.white,
           ),
           padding: const EdgeInsets.all(3),   
-          child: Image(
-            fit: BoxFit.contain,
-            width: MediaQuery.of(context).size.width,
-            image: NetworkImage(imageDocument.data['originalUrl']),
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
+            child: Image(
+              fit: BoxFit.contain,
+              width: MediaQuery.of(context).size.width,
+              image: NetworkImage(imageDocument.data['originalUrl']),
+            ),
           ),
         ),
         const SizedBox(height: 3),
@@ -58,7 +61,7 @@ class _LayoutDetailImage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(15),
                   child: Text(
-                    imageDocument.data['title'].toString(),
+                    (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 20,
