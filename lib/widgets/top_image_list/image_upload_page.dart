@@ -47,7 +47,9 @@ class _LayoutUploadImagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-    return SingleChildScrollView(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+      child: SingleChildScrollView(
         child: StreamBuilder(
           stream: bloc.value,
           builder: (context, snapshot) {
@@ -97,7 +99,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                 RaisedButton(
                   child: const Text("画像を選択する"),
                   onPressed: () {
-                    // TODO 画像を選択させる処理の追加
+                    // 画像を選択させる処理の追加
                     var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
                     bloc.pickUpImage();
                   },
@@ -135,6 +137,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
             );
           }
         )
+      ),
     );
   }
 }
