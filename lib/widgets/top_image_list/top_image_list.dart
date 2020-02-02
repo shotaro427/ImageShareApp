@@ -61,17 +61,7 @@ class _ImagesWidget extends StatelessWidget {
               crossAxisSpacing: 4,
             ),
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(snapshot.data[index]))),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: FadeInImage.memoryNetwork(
-                    fit: BoxFit.cover,
-                    placeholder: kTransparentImage,
-                    image: snapshot.data[index].data['url'],
-                  ),
-                ),
-              );
+              return _ImageTile(snapshot, index);
             },
           );
         },
@@ -80,6 +70,31 @@ class _ImagesWidget extends StatelessWidget {
   }
 }
 
+/// 一覧の画像のセル
+class _ImageTile extends StatelessWidget {
+
+  final AsyncSnapshot<List<DocumentSnapshot>> _snapshot;
+  final int _index;
+
+  _ImageTile(this._snapshot, this._index);
+
+  @override 
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_snapshot.data[_index]))),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: FadeInImage.memoryNetwork(
+          fit: BoxFit.cover,
+          placeholder: kTransparentImage,
+          image: _snapshot.data[_index].data['url'],
+        ),
+      ),
+    );
+  }
+}
+
+/// フェードするアニメーション
 final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
   0x89,
   0x50,
