@@ -27,6 +27,7 @@ class TopImagesPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(title: Text(roomInfo["name"].toString()),),
+            backgroundColor: Theme.of(context).backgroundColor,
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
@@ -79,12 +80,29 @@ class _ImageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_data))),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: FadeInImage.memoryNetwork(
-          fit: BoxFit.cover,
-          placeholder: kTransparentImage,
-          image: _data['url'],
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: FadeInImage.memoryNetwork(
+                fit: BoxFit.fitWidth,
+                placeholder: kTransparentImage,
+                image: _data['url'],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: new Column(
+                children: <Widget>[
+                  Text(
+                    (_data['title'] != null) ? _data['title'] : "",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
