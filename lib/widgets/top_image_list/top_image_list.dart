@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_share_app/models/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
@@ -52,17 +53,14 @@ class _ImagesWidget extends StatelessWidget {
         stream: bloc.imagesValue,
         initialData: const [],
         builder: (context, snapshot) {
-          return GridView.builder(
-            itemCount: snapshot.data.length,
+          return StaggeredGridView.countBuilder(
+            crossAxisCount: 4,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
             padding: const EdgeInsets.all(4),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
-            ),
-            itemBuilder: (context, index) {
-              return _ImageTile(snapshot, index);
-            },
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) => _ImageTile(snapshot.data[index]),
+            staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
           );
         },
       ),
@@ -73,21 +71,20 @@ class _ImagesWidget extends StatelessWidget {
 /// 一覧の画像のセル
 class _ImageTile extends StatelessWidget {
 
-  final AsyncSnapshot<List<DocumentSnapshot>> _snapshot;
-  final int _index;
+  final DocumentSnapshot _data;
 
-  _ImageTile(this._snapshot, this._index);
+  _ImageTile(this._data);
 
   @override 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_snapshot.data[_index]))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_data))),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: FadeInImage.memoryNetwork(
           fit: BoxFit.cover,
           placeholder: kTransparentImage,
-          image: _snapshot.data[_index].data['url'],
+          image: _data['url'],
         ),
       ),
     );
