@@ -93,7 +93,7 @@ class _LayoutDetailImage extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.only(left: 30, top: 10),
                             child: Text(
-                              imageDocument.data['memo'].toString()
+                                (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
                             ),
                           )
                         ],

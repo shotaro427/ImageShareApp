@@ -24,7 +24,6 @@ class RoomSettingsBloc {
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
-
   Future<List<DocumentSnapshot>> _fetchRoomMembers() async {
 
     final List<DocumentReference> _refs = [];
