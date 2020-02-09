@@ -26,7 +26,15 @@ class TopImagesPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(title: Text(roomInfo["name"].toString()),),
+            appBar: AppBar(
+              title: Text(roomInfo["name"].toString()),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.settings, color: Colors.white,),
+                  onPressed: null,
+                )
+              ],
+              ),
             backgroundColor: Theme.of(context).backgroundColor,
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(

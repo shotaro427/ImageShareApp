@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 
 class ImageDetailViewPage extends StatelessWidget {
 
-  final String _imageUrlString;
+  String _imageUrlString;
   String _title = "名無し";
 
   ImageDetailViewPage(this._imageUrlString, String title) {
