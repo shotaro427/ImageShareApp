@@ -9,6 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_share_app/models/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
+import 'package:image_share_app/widgets/room_settings/room_settings_page.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,15 @@ class TopImagesPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(title: Text(roomInfo["name"].toString()),),
+            appBar: AppBar(
+              title: Text(roomInfo["name"].toString()),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.settings, color: Colors.white,),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(roomInfo))),
+                )
+              ],
+            ),
             backgroundColor: Theme.of(context).backgroundColor,
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
@@ -96,7 +105,7 @@ class _ImageTile extends StatelessWidget {
               child: new Column(
                 children: <Widget>[
                   Text(
-                    (_data['title'] != null) ? _data['title'] : "",
+                    (_data['title'] != null) ? _data['title'] : "名無し",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
