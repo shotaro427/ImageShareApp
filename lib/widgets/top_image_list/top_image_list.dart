@@ -96,7 +96,7 @@ class _ImageTile extends StatelessWidget {
               child: new Column(
                 children: <Widget>[
                   Text(
-                    (_data['title'] != null) ? _data['title'] : "",
+                    (_data['title'] != null) ? _data['title'] : "名無し",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

@@ -16,16 +16,21 @@ class ImageDetailViewPage extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
-        backgroundColor: Colors.black,  
-      ),
-      body: Container(
-        child: PhotoView(
-          imageProvider: NetworkImage(_imageUrlString),
-          minScale: PhotoViewComputedScale.contained * 1.0,
-          maxScale: 2.0,
+    return Dismissible(
+      key: Key(_imageUrlString),
+      direction: DismissDirection.vertical,
+      onDismissed: (direction) => Navigator.pop(context),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_title),
+          backgroundColor: Colors.black,  
+        ),
+        body: Container(
+          child: PhotoView(
+            imageProvider: NetworkImage(_imageUrlString),
+            minScale: PhotoViewComputedScale.contained * 1.0,
+            maxScale: 2.0,
+          ),
         ),
       ),
     );
