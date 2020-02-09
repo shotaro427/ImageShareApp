@@ -9,6 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_share_app/models/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
+import 'package:image_share_app/widgets/room_settings/room_settings_page.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 
@@ -31,10 +32,10 @@ class TopImagesPage extends StatelessWidget {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.settings, color: Colors.white,),
-                  onPressed: null,
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(roomInfo))),
                 )
               ],
-              ),
+            ),
             backgroundColor: Theme.of(context).backgroundColor,
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
