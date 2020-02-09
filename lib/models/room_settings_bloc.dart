@@ -24,7 +24,6 @@ class RoomSettingsBloc {
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
-
   Future<List<DocumentSnapshot>> _fetchRoomMembers() async {
 
     final List<DocumentReference> _refs = [];
@@ -44,7 +43,6 @@ class RoomSettingsBloc {
     for (final ref in _refs) {
       await ref.get().then((data) {
         _participants.add(data);
-        debugPrint("${data}");
       }).catchError((e) {
         debugPrint(e.toString());
       });
