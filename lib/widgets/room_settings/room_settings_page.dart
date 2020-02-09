@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/room_settings_bloc.dart';
+import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
 import 'package:provider/provider.dart';
 
 class RoomSettingsPage extends StatelessWidget {
@@ -14,7 +15,15 @@ class RoomSettingsPage extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_roomInfo['name']),),
+      appBar: AppBar(
+        title: Text(_roomInfo['name']),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.white,),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage())),
+          )
+        ],
+      ),
       body: RoomSettingsBodyPage(_roomInfo),
     );
   }

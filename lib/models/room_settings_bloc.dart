@@ -43,7 +43,6 @@ class RoomSettingsBloc {
     for (final ref in _refs) {
       await ref.get().then((data) {
         _participants.add(data);
-        debugPrint("${data}");
       }).catchError((e) {
         debugPrint(e.toString());
       });
