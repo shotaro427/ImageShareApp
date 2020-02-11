@@ -89,8 +89,10 @@ class SigUpWithInputState extends State<SignUpWithInput> {
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        RoomListPage(RoomListRepository())
-    ));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (BuildContext context) => RoomListPage(RoomListRepository())
+        )
+    );
   }
 }
