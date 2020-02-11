@@ -14,6 +14,10 @@ class RoomListBloc extends AbstractLoadingBloc {
   final _roomListController = StreamController<List<DocumentSnapshot>>.broadcast();
   Stream<List<DocumentSnapshot>> get roomListStream => _roomListController.stream;
 
+  /// 招待されているルーム一覧を取得したものを流すStreamControllerとStream
+  final _waitingRoomListController = StreamController<List<DocumentSnapshot>>();
+  Stream<List<DocumentSnapshot>> get waitingRoomStream => _waitingRoomListController.stream;
+
   /// ローディング
   final _loadingController = StreamController<LoadingType>.broadcast();
   Stream<LoadingType> get loadingValue => _loadingController.stream.asBroadcastStream();
@@ -35,8 +39,22 @@ class RoomListBloc extends AbstractLoadingBloc {
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
+  /// ユーザーが招待を受けているルーム一覧を取得する
+  void fetchWaitingRooms() async {
+    _loadingController.sink.add(LoadingType.LOADING);
+
+    try {
+      _waitingRoomListController.sink.add(await _repository.fetchWaitingRooms());
+    } catch(e) {
+      debugPrint(e.toString());
+    }
+
+    _loadingController.sink.add(LoadingType.COMPLETED);
+  }
+
   void dispose() {
     _roomListController.close();
     _loadingController.close();
+    _waitingRoomListController.close();
   }
 }

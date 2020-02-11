@@ -47,7 +47,7 @@ class RoomListPage extends StatelessWidget {
               body: TabBarView(
                 children: <Widget>[
                   _RoomListWidget(),
-                  WaitingRoomListWidget()
+                  _WaitingRoomListWidget()
                 ],
               ),
             ),
@@ -126,10 +126,67 @@ class _RoomListContainerWidget extends StatelessWidget {
   }
 }
 
-class WaitingRoomListWidget extends StatelessWidget {
+class _WaitingRoomListWidget extends StatefulWidget {
+
   @override
+  State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
+}
+
+class _WaitingRoomListWidgetState extends State<_WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var bloc = Provider.of<RoomListBloc>(context, listen: false);
+    bloc.fetchWaitingRooms();
+  }
+
+  @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container();
+    return _WaitingRoomListContainerWidget();
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+}
+
+class _WaitingRoomListContainerWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var bloc = Provider.of<RoomListBloc>(context, listen: false);
+    return StreamBuilder<List<DocumentSnapshot>>(
+      stream: bloc.waitingRoomStream,
+      builder: (context, snapshot) {
+        // データを持っていたらリストを表示させる
+        if(snapshot.hasData) {
+          return ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                margin: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black38),
+                  ),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(
+                    snapshot.data[index]["name"].toString(),
+                    style: const TextStyle(fontSize: 20),),
+                  onTap: null,
+                ),
+              );
+            },
+            itemCount: snapshot.data.length,
+          );
+        } else {
+          return Container();
+        }
+      },
+    );
   }
 }
