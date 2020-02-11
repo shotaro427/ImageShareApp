@@ -153,7 +153,6 @@ class _WaitingRoomListWidgetState extends State<_WaitingRoomListWidget> with Aut
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -214,7 +213,10 @@ class _WaitingRoomListContainerWidget extends StatelessWidget {
                                             actions: <Widget>[
                                               FlatButton(
                                                 child: const Text('OK'),
-                                                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(snapshot.data[index]))),
+                                                onPressed: () async {
+                                                  await bloc.joinRoom(snapshot.data[index].reference);
+                                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(snapshot.data[index])));
+                                                }
                                               )
                                             ],
                                           );
