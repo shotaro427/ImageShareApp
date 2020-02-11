@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
@@ -59,6 +60,7 @@ class RoomListPage extends StatelessWidget {
   }
 }
 
+/// すでに参加しているルーム一覧
 class _RoomListWidget extends StatefulWidget {
 
   @override
@@ -126,6 +128,7 @@ class _RoomListContainerWidget extends StatelessWidget {
   }
 }
 
+/// 招待されているルーム一覧
 class _WaitingRoomListWidget extends StatefulWidget {
 
   @override
@@ -150,7 +153,6 @@ class _WaitingRoomListWidgetState extends State<_WaitingRoomListWidget> with Aut
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -177,7 +179,70 @@ class _WaitingRoomListContainerWidget extends StatelessWidget {
                   title: Text(
                     snapshot.data[index]["name"].toString(),
                     style: const TextStyle(fontSize: 20),),
-                  onTap: null,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Center(
+                              child: const Text('招待されています')
+                          ),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: const Text(
+                                  'この部屋に参加しますか?',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: const Text('OK'),
+                                    onPressed: () async {
+                                      await Navigator.of(context).pop();
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('参加しました！'),
+                                            content: const Text('この部屋に参加しました！'),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: const Text('OK'),
+                                                onPressed: () async {
+                                                  await bloc.joinRoom(snapshot.data[index].reference);
+                                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(snapshot.data[index])));
+                                                }
+                                              )
+                                            ],
+                                          );
+                                        }
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                    width: 1,
+                                    child: Container(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    child: const Text(('Cancel')),
+                                    onPressed: () => Navigator.of(context).pop(),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    );
+                  },
                 ),
               );
             },

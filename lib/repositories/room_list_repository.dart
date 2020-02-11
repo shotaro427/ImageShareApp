@@ -64,6 +64,25 @@ class RoomListRepository {
     return _rooms;
   }
 
+  Future joinRoom(DocumentReference roomRef) async {
+
+    final DocumentReference _userRef = await fetchUserRef();
+
+    // waitingRoomsコレクションから該当する部屋を削除
+    await _userRef.collection('waitingRooms')
+        .where('room', isEqualTo: roomRef)
+        .getDocuments()
+        .then((data) {
+          data.documents.first.reference.delete();
+        }).catchError((e) => debugPrint(e.toString()));
+
+    // roomsコレクションに部屋を追加
+    await _userRef.collection('rooms').add({
+      'room': roomRef
+    });
+
+  }
+
   Future<void> createRoom(String roomName) async {
     DocumentReference _ref;
     // roomsコレクションに新規部屋を追加
