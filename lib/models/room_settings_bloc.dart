@@ -24,6 +24,7 @@ class RoomSettingsBloc {
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
+  /// 所属しているメンバーを取得する
   Future<List<DocumentSnapshot>> _fetchRoomMembers() async {
 
     final List<DocumentReference> _refs = [];
@@ -47,7 +48,6 @@ class RoomSettingsBloc {
         debugPrint(e.toString());
       });
     }
-
     return _participants;
   }
 

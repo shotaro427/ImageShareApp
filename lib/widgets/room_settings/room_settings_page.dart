@@ -20,7 +20,7 @@ class RoomSettingsPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add, color: Colors.white,),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage(_roomInfo.reference))),
           )
         ],
       ),

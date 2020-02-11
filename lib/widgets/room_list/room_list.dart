@@ -7,7 +7,6 @@ import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 
-
 class RoomListPage extends StatelessWidget {
   final RoomListRepository _repository;
 
@@ -21,23 +20,37 @@ class RoomListPage extends StatelessWidget {
       dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
-          Scaffold(
-            appBar: AppBar(
-              title: const Text("ルーム一覧"),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  tooltip: "ルームを追加",
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return CreateRoomPage(_repository);
-                    }));
-                    debugPrint("ルームを追加");
-                  },
-                )
-              ],
+          DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text("ルーム一覧"),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    tooltip: "ルームを追加",
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return CreateRoomPage(_repository);
+                      }));
+                      debugPrint("ルームを追加");
+                    },
+                  )
+                ],
+                bottom: const TabBar(
+                  tabs: <Widget>[
+                    Tab(text: 'ルーム',),
+                    Tab(text: '招待ルーム',)
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                children: <Widget>[
+                  _RoomListWidget(),
+                  WaitingRoomListWidget()
+                ],
+              ),
             ),
-            body: RoomListWidget(),
           ),
           CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
         ],
@@ -46,12 +59,38 @@ class RoomListPage extends StatelessWidget {
   }
 }
 
-class RoomListWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+class _RoomListWidget extends StatefulWidget {
 
+  @override
+  State<StatefulWidget> createState() => _RoomListWidgetState();
+}
+
+class _RoomListWidgetState extends State<_RoomListWidget> with AutomaticKeepAliveClientMixin {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     var bloc = Provider.of<RoomListBloc>(context, listen: false);
     bloc.fetchRooms();
+  }
+
+  @override
+  // ignore: must_call_super
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return _RoomListContainerWidget();
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+}
+
+class _RoomListContainerWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var bloc = Provider.of<RoomListBloc>(context, listen: false);
     return StreamBuilder<List<DocumentSnapshot>>(
       stream: bloc.roomListStream,
       builder: (context, snapshot) {
@@ -84,5 +123,13 @@ class RoomListWidget extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class WaitingRoomListWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container();
   }
 }

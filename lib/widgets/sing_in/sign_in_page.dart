@@ -115,22 +115,28 @@ class _MyHomePageState extends State<MyHomePage> {
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        RoomListPage(RoomListRepository())
-    ));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (BuildContext context) => RoomListPage(RoomListRepository())
+      )
+    );
   }
 
   /// 「メールアドレスでログイン」を押下したときの遷移処理
   void transitionSignInPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        SignInWithInput()
-    ));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (BuildContext context) => SignInWithInput()
+        )
+    );
   }
 
   /// 「メールアドレスで登録」を押下したときの遷移処理
   void transitionSignUpPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        SignUpWithInput()
-    ));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (BuildContext context) => SignUpWithInput()
+        )
+    );
   }
 }
