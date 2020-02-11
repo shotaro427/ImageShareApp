@@ -11,12 +11,12 @@ class RoomListBloc extends AbstractLoadingBloc {
   final RoomListRepository _repository;
 
   /// ルーム一覧を取得したものを流すStreamControllerとStream
-  final _roomListController = StreamController<List<DocumentSnapshot>>();
+  final _roomListController = StreamController<List<DocumentSnapshot>>.broadcast();
   Stream<List<DocumentSnapshot>> get roomListStream => _roomListController.stream;
 
   /// ローディング
-  final _loadingController = StreamController<LoadingType>();
-  Stream<LoadingType> get loadingValue => _loadingController.stream;
+  final _loadingController = StreamController<LoadingType>.broadcast();
+  Stream<LoadingType> get loadingValue => _loadingController.stream.asBroadcastStream();
 
   RoomListBloc(this._repository) {
     _loadingController.sink.add(LoadingType.NOT_YET);
