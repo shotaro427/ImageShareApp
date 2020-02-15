@@ -75,7 +75,7 @@ class RoomMembersPage extends StatelessWidget {
                 return Container();
               }
             },
-            itemCount: 1,
+            itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
         );
       },
     );
