@@ -57,8 +57,19 @@ class RoomMembersPage extends StatelessWidget {
         return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               if (snapshot.hasData) {
-                return ListTile(
-                  title: Text(snapshot.data[index].data['email'].toString()),
+                return Container(
+                  margin:  const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black38)
+                    )
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      snapshot.data[index].data['email'].toString(),
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
                 );
               } else {
                 return Container();
