@@ -56,15 +56,44 @@ class RoomMembersPage extends StatelessWidget {
       builder: (context, snapshot) {
         return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
+              // ヘッダー
+              if (index == 0) {
+                return Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black38)
+                    )
+                  ),
+                  child: Center(
+                    child: Text(
+                      '参加している人',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ),
+                );
+              }
+
               if (snapshot.hasData) {
-                return ListTile(
-                  title: Text(snapshot.data[index].data['email'].toString()),
+                return Container(
+                  margin:  const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.black38)
+                    )
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      snapshot.data[index - 1].data['email'].toString(),
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                  ),
                 );
               } else {
                 return Container();
               }
             },
-            itemCount: 1,
+            itemCount: (snapshot.hasData) ? snapshot.data.length + 1 : 0,
         );
       },
     );

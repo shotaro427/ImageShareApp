@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSettingsBloc {
 
@@ -30,6 +31,9 @@ class RoomSettingsBloc {
     final List<DocumentReference> _refs = [];
     final List<DocumentSnapshot> _participants = [];
 
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String _userId = _prefs.getString('uid') ?? "";
+
     Query _membersQuery = Firestore.instance
         .document(_roomInfo.reference.path)
         .collection('participants');
@@ -43,7 +47,10 @@ class RoomSettingsBloc {
 
     for (final ref in _refs) {
       await ref.get().then((data) {
-        _participants.add(data);
+        // 自分以外のメンバーを追加
+        if (data.data['userId'].toString() != _userId) {
+          _participants.add(data);
+        }
       }).catchError((e) {
         debugPrint(e.toString());
       });

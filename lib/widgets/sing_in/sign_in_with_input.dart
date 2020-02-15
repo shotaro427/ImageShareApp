@@ -1,9 +1,11 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// メールアドレスとパスワードを入力してログインするページ
 class SignInWithInput extends StatefulWidget {
@@ -82,6 +84,24 @@ class SignInWithInputState extends State<SignInWithInput> {
   Future<FirebaseUser> _signIn(String email, String password) async {
     final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
         email: email, password: password)).user;
+
+    // ローカルにuidを更新
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('uid', user.uid);
+    await _prefs.setString('email', user.email);
+
+    await Firestore.instance.collection('users').where('userId', isEqualTo: user.uid)
+        .getDocuments()
+        .then((docs) {
+      // ユーザーが存在しなかった場合追加する
+      if (docs.documents.length == 0) {
+        Firestore.instance.collection('users').add({
+          'email': user.email,
+          'userId': user.uid
+        });
+      }
+    }).catchError((e) => debugPrint(e.toString()));
+
     debugPrint("User id is ${user.uid}");
     return user;
   }
@@ -90,10 +110,11 @@ class SignInWithInputState extends State<SignInWithInput> {
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (BuildContext context) => RoomListPage(RoomListRepository())
-        )
+        ),
+      ModalRoute.withName("/home")
     );
   }
 }
