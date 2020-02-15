@@ -90,10 +90,11 @@ class SignInWithInputState extends State<SignInWithInput> {
   void transitionNextPage(FirebaseUser user) {
     if (user == null) return;
 
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
             builder: (BuildContext context) => RoomListPage(RoomListRepository())
-        )
+        ),
+      ModalRoute.withName("/home")
     );
   }
 }

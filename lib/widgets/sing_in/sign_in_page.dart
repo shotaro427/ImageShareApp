@@ -124,18 +124,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// 「メールアドレスでログイン」を押下したときの遷移処理
   void transitionSignInPage() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => SignInWithInput()
+          builder: (BuildContext context) => SignInWithInput(),
+          fullscreenDialog: true
         )
     );
   }
 
   /// 「メールアドレスで登録」を押下したときの遷移処理
   void transitionSignUpPage() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (BuildContext context) => SignUpWithInput()
+            builder: (BuildContext context) => SignUpWithInput(),
+            fullscreenDialog: true
         )
     );
   }
