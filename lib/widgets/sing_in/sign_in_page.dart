@@ -109,6 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // ローカルにuidを保存
       final SharedPreferences _prefs = await SharedPreferences.getInstance();
       await _prefs.setString('uid', user.uid);
+      await _prefs.setString('email', user.email);
       
       await Firestore.instance.collection('users').where('userId', isEqualTo: user.uid)
           .getDocuments()

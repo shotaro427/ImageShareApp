@@ -83,6 +83,7 @@ class SigUpWithInputState extends State<SignUpWithInput> {
     // ローカルにuidを保存
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString('uid', user.uid);
+    await _prefs.setString('email', user.email);
 
     // FireStoreに保存
     await Firestore.instance.collection('users').add({
