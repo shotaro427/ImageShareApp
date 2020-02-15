@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpWithInput extends StatefulWidget {
   @override
@@ -79,6 +80,11 @@ class SigUpWithInputState extends State<SignUpWithInput> {
         email: email, password: password);
     FirebaseUser user = result.user;
 
+    // ローカルにuidを保存
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('uid', user.uid);
+
+    // FireStoreに保存
     await Firestore.instance.collection('users').add({
       'email': email,
       'userId': user.uid,

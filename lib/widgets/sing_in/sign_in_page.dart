@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_with_input.dart';
 import 'package:image_share_app/widgets/sing_in/sign_up_with_input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'sign_in_with_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -103,6 +105,22 @@ class _MyHomePageState extends State<MyHomePage> {
       );
       final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
       print("signed in " + user.displayName);
+
+      // ローカルにuidを保存
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
+      await _prefs.setString('uid', user.uid);
+      
+      await Firestore.instance.collection('users').where('userId', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+            // ユーザーが存在しなかった場合追加する
+            if (docs.documents.length == 0) {
+              Firestore.instance.collection('users').add({
+                'email': user.email,
+                'userId': user.uid
+              });
+            }
+          }).catchError((e) => debugPrint(e.toString()));
 
       return user;
     } catch (e) {
