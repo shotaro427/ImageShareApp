@@ -42,6 +42,7 @@ class RoomSettingsBodyPage extends StatelessWidget {
       dispose: (_, bloc) => bloc.dispose(),
       child: Column(
         children: <Widget>[
+          _MyProfileInfoWidget(),
           // メンバー一覧のヘッダー
           Container(
             padding: const EdgeInsets.all(15),
@@ -65,11 +66,58 @@ class RoomSettingsBodyPage extends StatelessWidget {
   }
 }
 
+// 自分の名前を表示するWidget
+class _MyProfileInfoWidget extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
+    _bloc.fetchRoomMembersWithLoading();
+    return StreamBuilder<DocumentSnapshot>(
+      stream: _bloc.myProfileStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Container(
+            margin:  const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.black38)
+                )
+            ),
+            child: ListTile(
+              title: Text(
+                (snapshot.data.data['nickName'] != null) ? snapshot.data.data['nickName'].toString() : '名無し',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+          );
+        } else {
+          return Container(
+            margin:  const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.black38)
+                )
+            ),
+            child: const ListTile(
+              title: Text(
+                '名無し',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+// 部屋に参加しているメンバーの名前を表示するWidget
 class RoomMembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = Provider.of<RoomSettingsBloc>(context);
+    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
     _bloc.fetchRoomMembersWithLoading();
     return StreamBuilder<List<DocumentSnapshot>>(
       stream: _bloc.participantsStream,
