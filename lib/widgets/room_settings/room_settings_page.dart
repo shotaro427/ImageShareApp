@@ -102,7 +102,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
             ),
             child: ListTile(
               title: Text(
-                (snapshot.data.data['nickName'] != null) ? snapshot.data.data['nickName'].toString() : '名無し',
+                (snapshot.data.data['name'] != null) ? snapshot.data.data['name'].toString() : '名無し',
                 style: const TextStyle(fontSize: 20),
               ),
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
