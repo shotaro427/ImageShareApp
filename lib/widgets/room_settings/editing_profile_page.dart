@@ -1,17 +1,29 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/models/editing_profile_bloc.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:provider/provider.dart';
 
 class EditingProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('編集'),),
-        body: _EditingProfileWidget()
+    return Provider<EditingProfileBloc>(
+      create: (_) => EditingProfileBloc(EditingProfileRepository()),
+      dispose: (_, bloc) => bloc.dispose(),
+      child: Stack(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            child: Scaffold(
+              appBar: AppBar(title: const Text('編集'),),
+              body: _EditingProfileWidget()
+            ),
+          ),
+          CommonLoadingWidget<EditingProfileBloc>(dialogTitle: '名前の変更',)
+        ],
       ),
     );
   }
@@ -23,6 +35,7 @@ class _EditingProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EditingProfileBloc _bloc = Provider.of<EditingProfileBloc>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -34,13 +47,15 @@ class _EditingProfileWidget extends StatelessWidget {
               border: const UnderlineInputBorder(),
               labelText: 'ニックネーム',
             ),
-            obscureText: true,
           ),
           const SizedBox(height: 30,),
           FlatButton(
             child: const Text('編集'),
             onPressed: () {
-
+              final String _name = _nickNameController.text;
+              if (_name != null && _name.isNotEmpty) {
+                _bloc.editingName(_name);
+              }
             },
             color: Colors.white,
             shape: const OutlineInputBorder(
