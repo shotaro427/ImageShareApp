@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/room_settings_bloc.dart';
 import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
+import 'package:image_share_app/widgets/room_settings/editing_profile_page.dart';
 import 'package:provider/provider.dart';
 
 class RoomSettingsPage extends StatelessWidget {
@@ -104,6 +105,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
                 (snapshot.data.data['nickName'] != null) ? snapshot.data.data['nickName'].toString() : '名無し',
                 style: const TextStyle(fontSize: 20),
               ),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
             ),
           );
         } else {
@@ -114,11 +116,12 @@ class _MyProfileInfoWidget extends StatelessWidget {
                     bottom: BorderSide(color: Colors.black38)
                 )
             ),
-            child: const ListTile(
-              title: Text(
+            child: ListTile(
+              title: const Text(
                 '名無し',
                 style: const TextStyle(fontSize: 20),
               ),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
             ),
           );
         }
