@@ -19,9 +19,12 @@ class CreateRoomPage extends StatelessWidget {
       dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
-          Scaffold(
-            appBar: AppBar(title: const Text("ルーム作成"),),
-            body: _InputRoomPage()
+          GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            child: Scaffold(
+              appBar: AppBar(title: const Text("ルーム作成"),),
+              body: _InputRoomPage()
+            ),
           ),
           CommonLoadingWidget<AddRoomListBloc>(dialogTitle: "ルーム作成",)
         ],
