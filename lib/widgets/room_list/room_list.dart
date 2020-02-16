@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 
@@ -28,13 +30,36 @@ class RoomListPage extends StatelessWidget {
                 title: const Text("ルーム一覧"),
                 actions: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.add),
-                    tooltip: "ルームを追加",
+                    icon: const Icon(Icons.exit_to_app),
+                    tooltip: 'ログアウト',
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return CreateRoomPage(_repository);
-                      }));
-                      debugPrint("ルームを追加");
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('ログアウト'),
+                            content: const Text('ログアウトしますか？'),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: const Text('いいえ'),
+                                onPressed:  () => Navigator.of(context).pop()
+                              ),
+                              FlatButton(
+                                child: const Text('はい'),
+                                onPressed: () async {
+                                  await _logout();
+                                  await Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) => MyHomePage(title: 'ログイン',)
+                                      ),
+                                      ModalRoute.withName("/")
+                                  );
+                                },
+                              )
+                            ],
+                          );
+                        }
+                      );
                     },
                   )
                 ],
@@ -51,12 +76,29 @@ class RoomListPage extends StatelessWidget {
                   _WaitingRoomListWidget()
                 ],
               ),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.add),
+                tooltip: "ルームを追加",
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CreateRoomPage(_repository);
+                  }));
+                  debugPrint("ルームを追加");
+                },
+              ),
             ),
           ),
+
           CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
         ],
       ),
     );
+  }
+
+  /// ログアウトする
+  void _logout() async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    await _firebaseAuth.signOut();
   }
 }
 
