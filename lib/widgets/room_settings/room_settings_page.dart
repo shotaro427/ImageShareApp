@@ -42,6 +42,21 @@ class RoomSettingsBodyPage extends StatelessWidget {
       dispose: (_, bloc) => bloc.dispose(),
       child: Column(
         children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.black38)
+                )
+            ),
+            child: Center(
+              child: Text(
+                'あなた',
+                style: Theme.of(context).textTheme.headline,
+              ),
+            ),
+          ),
+          // 自分の名前
           _MyProfileInfoWidget(),
           // メンバー一覧のヘッダー
           Container(
