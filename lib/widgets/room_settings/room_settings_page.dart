@@ -40,7 +40,27 @@ class RoomSettingsBodyPage extends StatelessWidget {
     return Provider<RoomSettingsBloc>(
       create: (_) => RoomSettingsBloc(_roomInfo),
       dispose: (_, bloc) => bloc.dispose(),
-      child: RoomMembersPage()
+      child: Column(
+        children: <Widget>[
+          // メンバー一覧のヘッダー
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.black38)
+                )
+            ),
+            child: Center(
+              child: Text(
+                '参加している人',
+                style: Theme.of(context).textTheme.headline,
+              ),
+            ),
+          ),
+          // メンバー一覧
+          RoomMembersPage(),
+        ],
+      )
     );
   }
 }
@@ -55,44 +75,29 @@ class RoomMembersPage extends StatelessWidget {
       stream: _bloc.participantsStream,
       builder: (context, snapshot) {
         return ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              // ヘッダー
-              if (index == 0) {
-                return Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black38)
-                    )
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) {
+            if (snapshot.hasData) {
+              return Container(
+                margin:  const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black38)
+                  )
+                ),
+                child: ListTile(
+                  title: Text(
+                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
+                    style: const TextStyle(fontSize: 20),
                   ),
-                  child: Center(
-                    child: Text(
-                      '参加している人',
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                  ),
-                );
-              }
-              if (snapshot.hasData) {
-                return Container(
-                  margin:  const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.black38)
-                    )
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      (snapshot.data[index - 1].data['nickName'] != null) ? snapshot.data[index - 1].data['nickName'].toString() : 'GUEST${index}',
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
-            itemCount: (snapshot.hasData) ? snapshot.data.length + 1 : 0,
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+          itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
         );
       },
     );
