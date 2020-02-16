@@ -73,7 +73,6 @@ class RoomMembersPage extends StatelessWidget {
                   ),
                 );
               }
-
               if (snapshot.hasData) {
                 return Container(
                   margin:  const EdgeInsets.all(5),
@@ -84,7 +83,7 @@ class RoomMembersPage extends StatelessWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      snapshot.data[index - 1].data['email'].toString(),
+                      (snapshot.data[index - 1].data['nickName'] != null) ? snapshot.data[index - 1].data['nickName'].toString() : 'GUEST${index}',
                       style: const TextStyle(fontSize: 20),
                     ),
                   ),
