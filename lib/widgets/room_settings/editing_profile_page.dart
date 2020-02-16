@@ -12,13 +12,16 @@ class EditingProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('編集'),),
       body: Center(
-        child: TextFormField(
-          controller: _nickNameController,
-          decoration: const InputDecoration(
-            border: const UnderlineInputBorder(),
-            labelText: 'ニックネーム',
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: TextFormField(
+            controller: _nickNameController,
+            decoration: const InputDecoration(
+              border: const UnderlineInputBorder(),
+              labelText: 'ニックネーム',
+            ),
+            obscureText: true,
           ),
-          obscureText: true,
         ),
       ),
     );
