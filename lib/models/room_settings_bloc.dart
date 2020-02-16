@@ -16,6 +16,9 @@ class RoomSettingsBloc {
   final _participantsController  = StreamController<List<DocumentSnapshot>>();
   Stream<List<DocumentSnapshot>> get participantsStream => _participantsController.stream;
 
+  final StreamController<DocumentSnapshot> _myProfileController = StreamController();
+  Stream<DocumentSnapshot> get myProfileStream => _myProfileController.stream;
+
   final _loadingController = StreamController<LoadingType>();
   Stream<LoadingType> get loadingStream => _loadingController.stream;
 
@@ -48,7 +51,9 @@ class RoomSettingsBloc {
     for (final ref in _refs) {
       await ref.get().then((data) {
         // 自分以外のメンバーを追加
-        if (data.data['userId'].toString() != _userId) {
+        if (data.data['userId'].toString() == _userId) {
+          _myProfileController.sink.add(data);
+        } else {
           _participants.add(data);
         }
       }).catchError((e) {
@@ -60,6 +65,7 @@ class RoomSettingsBloc {
 
   void dispose() {
     _participantsController.close();
+    _myProfileController.close();
     _loadingController.close();
   }
 }
