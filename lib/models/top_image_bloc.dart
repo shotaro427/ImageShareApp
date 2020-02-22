@@ -23,14 +23,14 @@ class TopImagesBloc extends AbstractLoadingBloc {
   final _loadingController = StreamController<LoadingType>();
   Stream<LoadingType> get loadingValue => _loadingController.stream;
 
-  void fetchImageUrlString() async {
+  Future<void> fetchImageUrlString() async {
     _loadingController.sink.add(LoadingType.LOADING);
-    await fetchImages();
+    await listenImages();
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
-  /// 画像を取得してくる
-  Future<void> fetchImages() async {
+  /// 画像の変更を監視する
+  Future<void> listenImages() async {
 
     Query _imagesQuery = Firestore.instance
         .document(_roomInfo.reference.path)
@@ -52,6 +52,25 @@ class TopImagesBloc extends AbstractLoadingBloc {
       }
     }).catchError((e) => debugPrint(e.toString()));
 
+  }
+
+  /// 投稿を取得する
+  Future<void> fetchImages() async {
+    _loadingController.sink.add(LoadingType.LOADING);
+
+    Query _imagesQuery = Firestore.instance
+        .document(_roomInfo.reference.path)
+        .collection("images")
+        .orderBy("created_at", descending: true)
+        .limit(20);
+
+    await _imagesQuery.getDocuments().then((data) {
+      if (data.documents.length > 0) {
+        _valueController.sink.add(data.documents);
+      }
+    }).catchError((e) => debugPrint(e.toString()));
+
+    _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
   void dispose() {

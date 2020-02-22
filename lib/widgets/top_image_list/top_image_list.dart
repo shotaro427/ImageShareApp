@@ -58,21 +58,24 @@ class _ImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TopImagesBloc bloc = Provider.of<TopImagesBloc>(context);
-    return Container(
-      child: StreamBuilder<List<DocumentSnapshot>>(
-        stream: bloc.imagesValue,
-        initialData: const [],
-        builder: (context, snapshot) {
-          return StaggeredGridView.countBuilder(
-            crossAxisCount: 4,
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
-            padding: const EdgeInsets.all(4),
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) => _ImageTile(snapshot.data[index]),
-            staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-          );
-        },
+    return RefreshIndicator(
+      onRefresh: bloc.fetchImages,
+      child: Container(
+        child: StreamBuilder<List<DocumentSnapshot>>(
+          stream: bloc.imagesValue,
+          initialData: const [],
+          builder: (context, snapshot) {
+            return StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
+              padding: const EdgeInsets.all(4),
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) => _ImageTile(snapshot.data[index]),
+              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+            );
+          },
+        ),
       ),
     );
   }
