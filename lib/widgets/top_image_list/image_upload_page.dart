@@ -14,7 +14,6 @@ class ImageUploadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Provider<ImageUploadBloc>(
       create: (context) => ImageUploadBloc(ImageUploadRepository()),
       dispose: (_, bloc) => bloc.dispose(),
