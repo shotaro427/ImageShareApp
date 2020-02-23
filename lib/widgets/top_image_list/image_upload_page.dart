@@ -64,21 +64,45 @@ class _LayoutUploadImagePage extends StatelessWidget {
                         .of(context)
                         .primaryColor,
                   ),
-                  child: TextFormField(
-                    controller: titleController,
-                    autofocus: true,
-                    cursorColor: Theme
-                        .of(context)
-                        .primaryTextTheme
-                        .title
-                        .color,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'タイトル',
-                        hintStyle: TextStyle(
-                            color: Colors.white
-                        )
-                    ),
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: TextFormField(
+                          controller: titleController,
+                          autofocus: true,
+                          cursorColor: Theme
+                              .of(context)
+                              .primaryTextTheme
+                              .title
+                              .color,
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'タイトル',
+                              hintStyle: TextStyle(
+                                  color: Colors.white
+                              )
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.send,
+                          color: (!snapshot.hasData) ? Colors.grey : Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: (!snapshot.hasData)
+                            ? null
+                            : () {
+                          // 画像をアップロードする処理
+                          if (snapshot.hasData) {
+                            var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
+                            bloc.uploadImage(snapshot.data, roomId,
+                                title: titleController.text,
+                                memoText: memoController.text);
+                          }
+                        }
+                      ),
+                    ],
                   ),
                 ),
                 // アップロードする画像を表示するWidget
@@ -146,20 +170,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                // 「画像をアップロードする」ボタン
-                RaisedButton(
-                    child: const Text("画像をアップロードする"),
-                    onPressed: (!snapshot.hasData)
-                        ? null
-                        : () {
-                      // 画像をアップロードする処理
-                      if (snapshot.hasData) {
-                        var bloc = Provider.of<ImageUploadBloc>(
-                            context, listen: false);
-                        bloc.uploadImage(snapshot.data, roomId, title: titleController.text, memoText: memoController.text);
-                      }
-                    }
                 ),
               ],
             );
