@@ -5,7 +5,7 @@ import 'dart:async';
 class ImageDetailBloc {
 
   final StreamController<bool> _changeEditableStreamController = StreamController<bool>();
-  Stream<bool> get _changeEditableStream => _changeEditableStreamController.stream;
+  Stream<bool> get changeEditableStream => _changeEditableStreamController.stream;
 
   /// 編集可能かどうかの状態を操作する
   void changeEditableState(bool canEditable) {
@@ -13,6 +13,6 @@ class ImageDetailBloc {
   }
 
   void dispose() {
-
+    _changeEditableStreamController.close();
   }
 }

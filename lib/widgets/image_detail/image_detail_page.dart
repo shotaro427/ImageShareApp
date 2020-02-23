@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/image_detail_bloc.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
-import 'package:image_share_app/widgets/image_edit/image_editing_page.dart';
 import 'package:provider/provider.dart';
 
 class ImageDetailPage extends StatelessWidget {
@@ -21,15 +20,6 @@ class ImageDetailPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('詳細'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                // 編集可能状態に変更
-                Provider.of<ImageDetailBloc>(context).changeEditableState(true);
-              }
-            )
-          ],
         ),
         backgroundColor: Colors.black,
         body: _LayoutDetailImage(imageDocument),
@@ -46,80 +36,98 @@ class _LayoutDetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 300,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.all(3),   
-          child: GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
-            child: Image(
-              fit: BoxFit.contain,
-              width: MediaQuery.of(context).size.width,
-              image: NetworkImage(imageDocument.data['originalUrl']),
-            ),
-          ),
-        ),
-        const SizedBox(height: 3),
-        Expanded(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.white
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                      (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
-                      style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-                  const SizedBox(height: 25,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.local_offer, color: Colors.grey,),
-                          const Text('タグ', style: TextStyle(color: Colors.grey),)
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 15,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Icon(Icons.note, color: Colors.grey,),
-                          const Text('メモ', style: TextStyle(color: Colors.grey),)
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 30, top: 10),
-                        child: Text(
-                            (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+    ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
+
+    return StreamBuilder<bool>(
+      stream: _bloc.changeEditableStream,
+      builder: (context, snapshot) {
+        return Column(
+          children: <Widget>[
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.all(3),
+              child: GestureDetector(
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
+                child: Image(
+                  fit: BoxFit.contain,
+                  width: MediaQuery.of(context).size.width,
+                  image: NetworkImage(imageDocument.data['originalUrl']),
+                ),
               ),
             ),
-          ),
-        )
-      ],
+            const SizedBox(height: 3),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                              (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold
+                              )
+                          ),
+                          IconButton(
+                            icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                            onPressed: () {
+                              _bloc.changeEditableState(!snapshot.data);
+                            },
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 25,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.local_offer, color: Colors.grey,),
+                              const Text('タグ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 15,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.note, color: Colors.grey,),
+                              const Text('メモ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(left: 30, top: 10),
+                            child: Text(
+                                (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        );
+      }
     );
   }
 }
