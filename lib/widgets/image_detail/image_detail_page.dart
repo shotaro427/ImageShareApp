@@ -15,6 +15,14 @@ class ImageDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('詳細'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+
+            },
+          )
+        ],
       ),
       backgroundColor: Colors.black,
       body: _LayoutDetailImage(imageDocument),
