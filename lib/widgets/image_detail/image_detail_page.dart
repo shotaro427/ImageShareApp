@@ -19,6 +19,7 @@ class ImageDetailPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
+              // TODO 編集ボタンへ遷移する処理を書く
 
             },
           )
@@ -94,6 +95,18 @@ class _LayoutDetailImage extends StatelessWidget {
                         children: <Widget>[
                           Column(
                             children: <Widget>[
+                              Icon(Icons.local_offer, color: Colors.grey,),
+                              const Text('タグ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 25,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
                               Icon(Icons.note, color: Colors.grey,),
                               const Text('メモ', style: TextStyle(color: Colors.grey),)
                             ],
@@ -106,18 +119,6 @@ class _LayoutDetailImage extends StatelessWidget {
                           )
                         ],
                       ),
-                      const SizedBox(height: 25,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.local_offer, color: Colors.grey,),
-                              const Text('タグ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          )
-                        ],
-                      )
                     ],
                   ),
                 )
