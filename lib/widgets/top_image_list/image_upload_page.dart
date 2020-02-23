@@ -98,19 +98,54 @@ class _LayoutUploadImagePage extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    controller: memoController,
-                    decoration: const InputDecoration(
-                        border: const OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey)
-                        ),
-                        hintText: 'メモ',
+                // タグ追加欄
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
+                      child: Icon(
+                        Icons.local_offer,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
                     ),
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
+                    const Text('タグ', style: TextStyle(color: Colors.grey),)
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Divider(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
+                ),
+                // メモ入力画面
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 15, top: 13),
+                      child: Icon(
+                        Icons.note,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
+                    ),
+                    Flexible(
+                      child: TextFormField(
+                        controller: memoController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'メモ',
+                          hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14
+                          ),
+                        ),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                      ),
+                    ),
+                  ],
                 ),
                 // 「画像をアップロードする」ボタン
                 RaisedButton(
