@@ -2,7 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/models/image_detail_bloc.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
+import 'package:image_share_app/widgets/image_edit/image_editing_page.dart';
+import 'package:provider/provider.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
@@ -12,21 +15,25 @@ class ImageDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('詳細'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              // TODO 編集ボタンへ遷移する処理を書く
-
-            },
-          )
-        ],
+    return Provider<ImageDetailBloc>(
+      create: (_) => ImageDetailBloc(),
+      dispose: (_ ,bloc) => bloc.dispose(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('詳細'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                // 編集可能状態に変更
+                Provider.of<ImageDetailBloc>(context).changeEditableState(true);
+              }
+            )
+          ],
+        ),
+        backgroundColor: Colors.black,
+        body: _LayoutDetailImage(imageDocument),
       ),
-      backgroundColor: Colors.black,
-      body: _LayoutDetailImage(imageDocument),
     );
   }
 }
