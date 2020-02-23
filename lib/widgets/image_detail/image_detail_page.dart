@@ -2,7 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/models/image_detail_bloc.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
+import 'package:provider/provider.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
@@ -12,12 +14,16 @@ class ImageDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('詳細'),
+    return Provider<ImageDetailBloc>(
+      create: (_) => ImageDetailBloc(),
+      dispose: (_ ,bloc) => bloc.dispose(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('詳細'),
+        ),
+        backgroundColor: Colors.black,
+        body: _LayoutDetailImage(imageDocument),
       ),
-      backgroundColor: Colors.black,
-      body: _LayoutDetailImage(imageDocument),
     );
   }
 }
@@ -30,57 +36,73 @@ class _LayoutDetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 300,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.all(3),   
-          child: GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
-            child: Image(
-              fit: BoxFit.contain,
-              width: MediaQuery.of(context).size.width,
-              image: NetworkImage(imageDocument.data['originalUrl']),
-            ),
-          ),
-        ),
-        const SizedBox(height: 3),
-        Expanded(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.white
-            ),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                    )
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 3,
-                        color: Colors.grey[300]
-                      )
-                    )
-                  ),
+    ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
+
+    return StreamBuilder<bool>(
+      stream: _bloc.changeEditableStream,
+      builder: (context, snapshot) {
+        return Column(
+          children: <Widget>[
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.white,
+              ),
+              padding: const EdgeInsets.all(3),
+              child: GestureDetector(
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
+                child: Image(
+                  fit: BoxFit.contain,
+                  width: MediaQuery.of(context).size.width,
+                  image: NetworkImage(imageDocument.data['originalUrl']),
                 ),
-                Container(
+              ),
+            ),
+            const SizedBox(height: 3),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white
+                ),
+                child: Container(
                   padding: const EdgeInsets.all(30),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                              (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold
+                              )
+                          ),
+                          IconButton(
+                            icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                            onPressed: () {
+                              _bloc.changeEditableState(!snapshot.data);
+                            },
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 25,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.local_offer, color: Colors.grey,),
+                              const Text('タグ', style: TextStyle(color: Colors.grey),)
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 15,),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -98,26 +120,14 @@ class _LayoutDetailImage extends StatelessWidget {
                           )
                         ],
                       ),
-                      const SizedBox(height: 25,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.local_offer, color: Colors.grey,),
-                              const Text('タグ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          )
-                        ],
-                      )
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-        )
-      ],
+                ),
+              ),
+            )
+          ],
+        );
+      }
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// 画像のアップロード
 /// ライブラリーなどから画像を取得する
@@ -82,10 +83,14 @@ class ImageUploadRepository {
     if (title != null && title.isNotEmpty) { _title = title; }
     if (memoText != null) { _memoText = memoText; }
 
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final _uid = _prefs.getString('uid');
+
     Firestore.instance.collection("rooms/${roomId}/images").add({
       'title': _title,
       'memo': _memoText,
-      'created_at': timestamp.toString()
+      'created_at': timestamp.toString(),
+      'created_user_uid': _uid
     }).then((ref) {
 
       ref.updateData({
