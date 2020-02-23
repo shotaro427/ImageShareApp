@@ -22,7 +22,7 @@ class ImageUploadPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: const Text("投稿"),
+              title: const Text("投稿・編集"),
               elevation: 0,
             ),
             body: _LayoutUploadImagePage(roomId),
@@ -66,6 +66,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                   child: Row(
                     children: <Widget>[
+                      // タイトル入力欄
                       Flexible(
                         child: TextFormField(
                           controller: titleController,
@@ -84,6 +85,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // 投稿ボタン
                       IconButton(
                         icon: Icon(
                           Icons.send,
