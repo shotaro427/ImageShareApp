@@ -65,64 +65,50 @@ class _LayoutDetailImage extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
               color: Colors.white
             ),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold
-                    )
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 3,
-                        color: Colors.grey[300]
+            child: Container(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                      (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
+                      style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold
                       )
-                    )
                   ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
+                  const SizedBox(height: 25,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
                         children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.local_offer, color: Colors.grey,),
-                              const Text('タグ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          )
+                          Icon(Icons.local_offer, color: Colors.grey,),
+                          const Text('タグ', style: TextStyle(color: Colors.grey),)
                         ],
-                      ),
-                      const SizedBox(height: 25,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.note, color: Colors.grey,),
-                              const Text('メモ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(left: 30, top: 10),
-                            child: Text(
-                                (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
-                            ),
-                          )
-                        ],
-                      ),
+                      )
                     ],
                   ),
-                )
-              ],
+                  const SizedBox(height: 15,),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Icon(Icons.note, color: Colors.grey,),
+                          const Text('メモ', style: TextStyle(color: Colors.grey),)
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        child: Text(
+                            (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         )
