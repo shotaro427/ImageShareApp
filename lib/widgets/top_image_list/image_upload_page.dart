@@ -82,37 +82,30 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                 ),
                 // アップロードする画像を表示するWidget
-                Container(
-                  height: 300,
-                  child: (snapshot.hasData)
-                      ? Image(
-                    image: FileImage(snapshot.data),
-                    fit: BoxFit.scaleDown,
-                  )
-                      : const Image(
-                    image: const AssetImage("images/image_placeholder_500_300.png"),
-                    fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () => Provider.of<ImageUploadBloc>(context, listen: false).pickUpImage(),
+                  child: Container(
+                    height: 250,
+                    child: (snapshot.hasData)
+                        ? Image(
+                      image: FileImage(snapshot.data),
+                      fit: BoxFit.scaleDown,
+                    )
+                        : const Image(
+                      image: const AssetImage("images/image_placeholder_500_300.png"),
+                      fit: BoxFit.cover,
+                    ),
+                    padding: const EdgeInsets.all(5),
                   ),
-                  padding: const EdgeInsets.all(5),
-                ),
-                // 「画像を選択する」ボタン
-                RaisedButton(
-                  child: const Text("画像を選択する"),
-                  onPressed: () {
-                    // 画像を選択させる処理の追加
-                    var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-                    bloc.pickUpImage();
-                  },
                 ),
                 Container(
                   margin: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: const BorderRadius.all(Radius.circular(5.0))),
                   child: TextFormField(
                     controller: memoController,
                     decoration: const InputDecoration(
-                        border: const UnderlineInputBorder(),
+                        border: const OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.grey)
+                        ),
                         hintText: 'メモ',
                     ),
                     maxLines: null,
