@@ -25,7 +25,7 @@ class TopImagesBloc extends AbstractLoadingBloc {
 
   Future<void> fetchImageUrlString() async {
     _loadingController.sink.add(LoadingType.LOADING);
-    await listenImages();
+    await fetchImages();
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 

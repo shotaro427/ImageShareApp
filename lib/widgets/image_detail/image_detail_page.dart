@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/image_detail_bloc.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 import 'package:provider/provider.dart';
 
@@ -15,14 +16,19 @@ class ImageDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<ImageDetailBloc>(
-      create: (_) => ImageDetailBloc(),
+      create: (_) => ImageDetailBloc(imageDocument),
       dispose: (_ ,bloc) => bloc.dispose(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('詳細'),
-        ),
-        backgroundColor: Colors.black,
-        body: _LayoutDetailImage(imageDocument),
+      child: Stack(
+        children: <Widget>[
+          Scaffold(
+            appBar: AppBar(
+              title: const Text('詳細'),
+            ),
+            backgroundColor: Colors.black,
+            body: _LayoutDetailImage(imageDocument),
+          ),
+          CommonLoadingWidget<ImageDetailBloc>(dialogTitle: '投稿の変更',)
+        ],
       ),
     );
   }
@@ -39,6 +45,7 @@ class _LayoutDetailImage extends StatelessWidget {
     ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
 
     return StreamBuilder<bool>(
+      initialData: false,
       stream: _bloc.changeEditableStream,
       builder: (context, snapshot) {
         return Column(
@@ -49,7 +56,7 @@ class _LayoutDetailImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,
               ),
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(10),
               child: GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
                 child: Image(
@@ -75,18 +82,42 @@ class _LayoutDetailImage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                              (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
+                          Flexible(
+                            child: TextFormField(
                               style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold
-                              )
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black
+                              ),
+                              controller: _bloc.titleController,
+                              decoration: const InputDecoration.collapsed(
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                hintText: 'タイトル',
+                              ),
+                              // 編集モードのときはTextFormFieldの編集を可能にする
+                              enabled: (snapshot.hasData && snapshot.data),
+                            ),
                           ),
-                          IconButton(
-                            icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
-                            onPressed: () {
-                              _bloc.changeEditableState(!snapshot.data);
-                            },
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                                onPressed: () {
+                                  _bloc.changeEditableState(snapshot.data);
+                                },
+                              ),
+                              Visibility(
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    _bloc.cancelEdit();
+                                  },
+                                ),
+                                visible: (snapshot.hasData && snapshot.data),
+                              ),
+                            ],
                           )
                         ],
                       ),
@@ -112,12 +143,25 @@ class _LayoutDetailImage extends StatelessWidget {
                               const Text('メモ', style: TextStyle(color: Colors.grey),)
                             ],
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(left: 30, top: 10),
-                            child: Text(
-                                (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: TextFormField(
+                                style: const TextStyle(
+                                    color: Colors.black
+                                ),
+                                controller: _bloc.memoController,
+                                decoration: InputDecoration.collapsed(
+                                  hintStyle: TextStyle(
+                                    color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
+                                  ),
+                                  hintText: 'メモを書き込めます',
+                                ),
+                                // 編集モードのときはTextFormFieldの編集を可能にする
+                                enabled: (snapshot.hasData && snapshot.data),
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],

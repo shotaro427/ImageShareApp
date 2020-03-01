@@ -90,6 +90,7 @@ class ImageUploadRepository {
       'title': _title,
       'memo': _memoText,
       'created_at': timestamp.toString(),
+      'updated_at': timestamp.toString(),
       'created_user_uid': _uid
     }).then((ref) {
 
