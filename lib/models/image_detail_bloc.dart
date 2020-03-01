@@ -4,8 +4,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 
-class ImageDetailBloc {
+class ImageDetailBloc extends AbstractLoadingBloc {
 
   final DocumentSnapshot imageDocument;
 
@@ -17,6 +18,9 @@ class ImageDetailBloc {
   final StreamController<bool> _changeEditableStreamController = StreamController<bool>();
   Stream<bool> get changeEditableStream => _changeEditableStreamController.stream;
 
+  final _loadingController = StreamController<LoadingType>();
+  Stream<LoadingType> get loadingValue => _loadingController.stream;
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController memoController = TextEditingController();
 
@@ -24,7 +28,9 @@ class ImageDetailBloc {
   void changeEditableState(bool isEditingMode) async {
     // 編集モードの時
     if (isEditingMode) {
+      _loadingController.sink.add(LoadingType.LOADING);
       await _updateImageInfo(imageDocument);
+      _loadingController.sink.add(LoadingType.COMPLETED);
     }
     _changeEditableStreamController.sink.add(!isEditingMode);
   }
@@ -43,5 +49,6 @@ class ImageDetailBloc {
 
   void dispose() {
     _changeEditableStreamController.close();
+    _loadingController.close();
   }
 }

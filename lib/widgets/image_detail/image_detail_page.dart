@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/models/image_detail_bloc.dart';
+import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +18,17 @@ class ImageDetailPage extends StatelessWidget {
     return Provider<ImageDetailBloc>(
       create: (_) => ImageDetailBloc(imageDocument),
       dispose: (_ ,bloc) => bloc.dispose(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('詳細'),
-        ),
-        backgroundColor: Colors.black,
-        body: _LayoutDetailImage(imageDocument),
+      child: Stack(
+        children: <Widget>[
+          Scaffold(
+            appBar: AppBar(
+              title: const Text('詳細'),
+            ),
+            backgroundColor: Colors.black,
+            body: _LayoutDetailImage(imageDocument),
+          ),
+          CommonLoadingWidget<ImageDetailBloc>(dialogTitle: '投稿の変更',)
+        ],
       ),
     );
   }
