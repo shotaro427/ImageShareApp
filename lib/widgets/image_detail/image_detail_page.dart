@@ -15,7 +15,7 @@ class ImageDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<ImageDetailBloc>(
-      create: (_) => ImageDetailBloc(),
+      create: (_) => ImageDetailBloc(imageDocument),
       dispose: (_ ,bloc) => bloc.dispose(),
       child: Scaffold(
         appBar: AppBar(
@@ -75,12 +75,21 @@ class _LayoutDetailImage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                              (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し",
+                          Flexible(
+                            child: TextFormField(
                               style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold
-                              )
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black
+                              ),
+                              controller: _bloc.titleController,
+                              decoration: const InputDecoration.collapsed(
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                hintText: 'タイトル',
+                              ),
+                            ),
                           ),
                           IconButton(
                             icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
