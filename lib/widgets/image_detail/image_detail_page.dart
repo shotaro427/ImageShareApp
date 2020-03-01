@@ -56,7 +56,7 @@ class _LayoutDetailImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.white,
               ),
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(10),
               child: GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(imageDocument.data['originalUrl'], imageDocument.data['title']))),
                 child: Image(
