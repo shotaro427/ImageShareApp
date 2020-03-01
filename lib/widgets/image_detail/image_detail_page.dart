@@ -100,11 +100,24 @@ class _LayoutDetailImage extends StatelessWidget {
                               enabled: (snapshot.hasData && snapshot.data),
                             ),
                           ),
-                          IconButton(
-                            icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
-                            onPressed: () {
-                              _bloc.changeEditableState(snapshot.data);
-                            },
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                                onPressed: () {
+                                  _bloc.changeEditableState(snapshot.data);
+                                },
+                              ),
+                              Visibility(
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    _bloc.cancelEdit();
+                                  },
+                                ),
+                                visible: (snapshot.hasData && snapshot.data),
+                              ),
+                            ],
                           )
                         ],
                       ),
@@ -138,11 +151,11 @@ class _LayoutDetailImage extends StatelessWidget {
                                     color: Colors.black
                                 ),
                                 controller: _bloc.memoController,
-                                decoration: const InputDecoration.collapsed(
+                                decoration: InputDecoration.collapsed(
                                   hintStyle: TextStyle(
-                                    color: Colors.grey,
+                                    color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
                                   ),
-                                  hintText: 'メモ',
+                                  hintText: 'メモを書き込めます',
                                 ),
                                 // 編集モードのときはTextFormFieldの編集を可能にする
                                 enabled: (snapshot.hasData && snapshot.data),

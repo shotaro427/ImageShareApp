@@ -35,6 +35,10 @@ class ImageDetailBloc extends AbstractLoadingBloc {
     _changeEditableStreamController.sink.add(!isEditingMode);
   }
 
+  void cancelEdit() {
+    _changeEditableStreamController.sink.add(false);
+  }
+
   Future<void> _updateImageInfo(DocumentSnapshot imageInfo) {
 
     final String _title = (titleController.text.isEmpty || titleController.text == null) ? '名無し' : titleController.text.toString();
