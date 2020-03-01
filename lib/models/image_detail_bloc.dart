@@ -11,6 +11,7 @@ class ImageDetailBloc {
 
   ImageDetailBloc(this.imageDocument) {
     titleController.text =  (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し";
+    memoController.text = (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : "";
   }
 
   final StreamController<bool> _changeEditableStreamController = StreamController<bool>();

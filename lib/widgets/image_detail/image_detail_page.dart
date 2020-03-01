@@ -124,12 +124,25 @@ class _LayoutDetailImage extends StatelessWidget {
                               const Text('メモ', style: TextStyle(color: Colors.grey),)
                             ],
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(left: 30, top: 10),
-                            child: Text(
-                                (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : ""
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: TextFormField(
+                                style: const TextStyle(
+                                    color: Colors.black
+                                ),
+                                controller: _bloc.memoController,
+                                decoration: const InputDecoration.collapsed(
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: 'メモ',
+                                ),
+                                // 編集モードのときはTextFormFieldの編集を可能にする
+                                enabled: (snapshot.hasData && snapshot.data),
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
