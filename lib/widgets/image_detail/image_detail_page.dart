@@ -97,7 +97,7 @@ class _LayoutDetailImage extends StatelessWidget {
                           IconButton(
                             icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
                             onPressed: () {
-                              _bloc.changeEditableState(!snapshot.data);
+                              _bloc.changeEditableState(snapshot.data);
                             },
                           )
                         ],

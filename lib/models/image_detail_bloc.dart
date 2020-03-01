@@ -21,8 +21,24 @@ class ImageDetailBloc {
   final TextEditingController memoController = TextEditingController();
 
   /// 編集可能かどうかの状態を操作する
-  void changeEditableState(bool canEditable) {
-    _changeEditableStreamController.sink.add(canEditable);
+  void changeEditableState(bool isEditingMode) async {
+    // 編集モードの時
+    if (isEditingMode) {
+      await _updateImageInfo(imageDocument);
+    }
+    _changeEditableStreamController.sink.add(!isEditingMode);
+  }
+
+  Future<void> _updateImageInfo(DocumentSnapshot imageInfo) {
+
+    final String _title = (titleController.text.isEmpty || titleController.text == null) ? '名無し' : titleController.text.toString();
+    final String _memo = (memoController.text.isEmpty || memoController.text == null) ? '' : memoController.text.toString();
+
+    imageInfo.reference.updateData({
+      'title': _title,
+      'memo': _memo,
+      'updated_at': DateTime.now().millisecondsSinceEpoch.toString()
+    });
   }
 
   void dispose() {
