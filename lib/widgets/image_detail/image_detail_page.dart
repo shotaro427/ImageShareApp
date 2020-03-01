@@ -39,6 +39,7 @@ class _LayoutDetailImage extends StatelessWidget {
     ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
 
     return StreamBuilder<bool>(
+      initialData: false,
       stream: _bloc.changeEditableStream,
       builder: (context, snapshot) {
         return Column(
@@ -89,6 +90,8 @@ class _LayoutDetailImage extends StatelessWidget {
                                 ),
                                 hintText: 'タイトル',
                               ),
+                              // 編集モードのときはTextFormFieldの編集を可能にする
+                              enabled: (snapshot.hasData && snapshot.data),
                             ),
                           ),
                           IconButton(
