@@ -29,63 +29,90 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: SizedBox(
-          width: 250,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                RaisedButton(
-                  child: const Text('Googleアカウントでログイン'),
-                  onPressed: () {
-                    _handleSignIn()
-                        .then((FirebaseUser user) =>
-                        transitionNextPage(user)
-                    )
-                        .catchError((e) => print(e));
-                  },
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                  highlightElevation: 16.0,
-                  highlightColor: Colors.blue,
-                  onHighlightChanged: (value) {},
+    return FutureBuilder(
+      future: _isCheckSignIn(),
+      builder: (BuildContext context, AsyncSnapshot<bool> isSignIn) {
+        if (isSignIn.hasData && !isSignIn.data) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title),
+            ),
+            body: Center(
+              child: SizedBox(
+                width: 250,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: const Text('Googleアカウントでログイン'),
+                        onPressed: () {
+                          _handleSignIn()
+                              .then((FirebaseUser user) =>
+                              transitionNextPage(user)
+                          )
+                              .catchError((e) => print(e));
+                        },
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10))
+                        ),
+                        highlightElevation: 16.0,
+                        highlightColor: Colors.blue,
+                        onHighlightChanged: (value) {},
+                      ),
+                      RaisedButton(
+                        child: const Text('メールアドレスでログイン'),
+                        onPressed: () {
+                          transitionSignInPage();
+                        },
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10))
+                        ),
+                        highlightElevation: 16.0,
+                        highlightColor: Colors.blue,
+                        onHighlightChanged: (value) {},
+                      ),
+                      RaisedButton(
+                        child: const Text('メールアドレスで登録'),
+                        onPressed: () {
+                          transitionSignUpPage();
+                        },
+                        color: Colors.white,
+                        shape: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        highlightElevation: 16.0,
+                        highlightColor: Colors.blue,
+                        onHighlightChanged: (value) {},
+                      ),
+                    ]
                 ),
-                RaisedButton(
-                  child: const Text('メールアドレスでログイン'),
-                  onPressed: () {
-                    transitionSignInPage();
-                  },
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))
-                  ),
-                  highlightElevation: 16.0,
-                  highlightColor: Colors.blue,
-                  onHighlightChanged: (value) {},
-                ),
-                RaisedButton(
-                  child: const Text('メールアドレスで登録'),
-                  onPressed: () {
-                    transitionSignUpPage();
-                  },
-                  color: Colors.white,
-                  shape: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  highlightElevation: 16.0,
-                  highlightColor: Colors.blue,
-                  onHighlightChanged: (value) {},
-                ),
-              ]
-          ),
-        ),
-      ),
+              ),
+            ),
+          );
+        } else {
+          return RoomListPage(RoomListRepository());
+        }
+      },
     );
+  }
+
+  Future<bool> _isCheckSignIn() async {
+    bool isSignIn = false;
+
+    await _auth.currentUser().then((FirebaseUser user) {
+      debugPrint('${user.uid}');
+        if (user != null) {
+          isSignIn = true;
+        } else {
+          isSignIn = false;
+        }
+    }).catchError((e) {
+      debugPrint(e.toString());
+      isSignIn = false;
+    });
+
+    return isSignIn;
   }
 
   /// Googleアカウントでログインするときのハンドル処理
