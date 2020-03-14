@@ -90,14 +90,14 @@ class SignInWithInputState extends State<SignInWithInput> {
     await _prefs.setString('uid', user.uid);
     await _prefs.setString('email', user.email);
 
-    await Firestore.instance.collection('users').where('userId', isEqualTo: user.uid)
+    await Firestore.instance.collection('users').where('uid', isEqualTo: user.uid)
         .getDocuments()
         .then((docs) {
       // ユーザーが存在しなかった場合追加する
       if (docs.documents.length == 0) {
-        Firestore.instance.collection('users').add({
+        Firestore.instance.collection('users').document('${user.uid}').setData({
           'email': user.email,
-          'userId': user.uid
+          'uid': user.uid
         });
       }
     }).catchError((e) => debugPrint(e.toString()));

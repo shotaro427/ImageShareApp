@@ -35,7 +35,7 @@ class RoomSettingsBloc {
     final List<DocumentSnapshot> _participants = [];
 
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String _userId = _prefs.getString('uid') ?? "";
+    final String _uid = _prefs.getString('uid') ?? "";
 
     Query _membersQuery = Firestore.instance
         .document(_roomInfo.reference.path)
@@ -51,7 +51,7 @@ class RoomSettingsBloc {
     for (final ref in _refs) {
       await ref.get().then((data) {
         // 自分以外のメンバーを追加
-        if (data.data['userId'].toString() == _userId) {
+        if (data.data['uid'].toString() == _uid) {
           _myProfileController.sink.add(data);
         } else {
           _participants.add(data);
