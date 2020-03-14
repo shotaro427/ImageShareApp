@@ -43,7 +43,7 @@ class EditingProfileRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
-    await Firestore.instance.collection('users').where('userId', isEqualTo: _uid)
+    await Firestore.instance.collection('users').where('uid', isEqualTo: _uid)
       .getDocuments()
       .then((docs) {
         if (docs.documents.first.reference != null) {

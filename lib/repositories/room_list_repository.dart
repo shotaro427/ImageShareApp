@@ -104,7 +104,7 @@ class RoomListRepository {
     });
 
     await db.document(userRef.path).updateData({
-      "roomId": userRef.documentID
+      "userId": userRef.documentID
     });
   }
 
@@ -116,7 +116,7 @@ class RoomListRepository {
     DocumentReference _userRef;
 
     await db.collection("users")
-        .where("userId", isEqualTo: _authToken)
+        .where("uid", isEqualTo: _authToken)
         .getDocuments()
         .then((data) {
           data.documents.forEach((doc) {

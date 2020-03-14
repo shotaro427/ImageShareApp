@@ -86,9 +86,9 @@ class SigUpWithInputState extends State<SignUpWithInput> {
     await _prefs.setString('email', user.email);
 
     // FireStoreに保存
-    await Firestore.instance.collection('users').add({
-      'email': email,
-      'userId': user.uid,
+    await Firestore.instance.collection('users').document('${user.uid}').setData({
+      'email': user.email,
+      'uid': user.uid
     });
     return user;
   }
