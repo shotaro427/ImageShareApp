@@ -32,7 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder(
       future: _isCheckSignIn(),
       builder: (BuildContext context, AsyncSnapshot<bool> isSignIn) {
-        if (isSignIn.hasData && !isSignIn.data) {
+        if (isSignIn.hasData && isSignIn.data) {
+          return RoomListPage(RoomListRepository());
+        } else if (isSignIn.hasData && !isSignIn.data) {
           return Scaffold(
             appBar: AppBar(
               title: Text(widget.title),
@@ -91,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         } else {
-          return RoomListPage(RoomListRepository());
+          return Container();
         }
       },
     );
@@ -107,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           isSignIn = false;
         }
-    }).catchError((e) {
+    }).catchError((e)  {
       debugPrint(e.toString());
       isSignIn = false;
     });

@@ -68,7 +68,23 @@ class SignInWithInputState extends State<SignInWithInput> {
                       // 登録
                       return _signIn(email, password)
                         .then((FirebaseUser user) => transitionNextPage(user))
-                        .catchError((e) => debugPrint(e.toString()));
+                        .catchError((e) => {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('エラー'),
+                                content: const Text('ログインできませんでした。\nメールアドレスとパスワードを確認してください。'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: const Text('OK'),
+                                    onPressed: () => Navigator.of(context).pop(),
+                                  )
+                                ],
+                              );
+                            }
+                          )
+                        });
                       },
                   ),
                 ),
