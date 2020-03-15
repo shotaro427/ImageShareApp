@@ -18,10 +18,27 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.43040204567-mhtn0n0en21srv2rmq1ov3vn23t3tinp</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>画像投稿のため</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>画像投稿のため</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>画像投稿のため</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,22 +58,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.43040204567-mhtn0n0en21srv2rmq1ov3vn23t3tinp</string>
-			</array>
-		</dict>
-	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>画像投稿のため</string>
-	<key>NSCameraUsageDescription</key>
-	<string>画像投稿のため</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>画像投稿のため</string>
 </dict>
 </plist>
