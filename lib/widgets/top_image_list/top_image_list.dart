@@ -36,7 +36,6 @@ class TopImagesPage extends StatelessWidget {
                 )
               ],
             ),
-            backgroundColor: Theme.of(context).backgroundColor,
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
@@ -59,19 +58,22 @@ class _ImagesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     TopImagesBloc bloc = Provider.of<TopImagesBloc>(context);
     return RefreshIndicator(
-      onRefresh: bloc.fetchImages,
+      onRefresh: bloc.refreshImages,
       child: Container(
         child: StreamBuilder<List<DocumentSnapshot>>(
           stream: bloc.imagesValue,
           initialData: const [],
           builder: (context, snapshot) {
             return StaggeredGridView.countBuilder(
+              controller: bloc.scrollController,
               crossAxisCount: 4,
               mainAxisSpacing: 4.0,
               crossAxisSpacing: 4.0,
               padding: const EdgeInsets.all(4),
               itemCount: snapshot.data.length,
-              itemBuilder: (context, index) => _ImageTile(snapshot.data[index]),
+              itemBuilder: (context, index) {
+                return _ImageTile(snapshot.data[index]);
+              },
               staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             );
           },
@@ -93,6 +95,7 @@ class _ImageTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_data))),
       child: Card(
+        elevation: 10,
         child: Column(
           children: <Widget>[
             ClipRRect(
@@ -101,6 +104,7 @@ class _ImageTile extends StatelessWidget {
                 fit: BoxFit.fitWidth,
                 placeholder: kTransparentImage,
                 image: _data['url'],
+                fadeInCurve: Curves.easeInOut,
               ),
             ),
             Padding(

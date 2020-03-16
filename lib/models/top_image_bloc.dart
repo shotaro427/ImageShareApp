@@ -11,9 +11,14 @@ class TopImagesBloc extends AbstractLoadingBloc {
   final DocumentSnapshot _roomInfo;
   bool isDispose = false;
 
+  // 前件取得したかどうか
+  bool _isFinished = false;
+
+
   TopImagesBloc(this._roomInfo) {
     _loadingController.sink.add(LoadingType.NOT_YET);
     fetchImageUrlString();
+    scrollController.addListener(_pagingFetch);
   }
 
   final _valueController = StreamController<List<DocumentSnapshot>>();
@@ -22,6 +27,14 @@ class TopImagesBloc extends AbstractLoadingBloc {
 
   final _loadingController = StreamController<LoadingType>();
   Stream<LoadingType> get loadingValue => _loadingController.stream;
+
+  final scrollController = ScrollController();
+
+  void _pagingFetch() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      fetchImages();
+    }
+  }
 
   Future<void> fetchImageUrlString() async {
     _loadingController.sink.add(LoadingType.LOADING);
@@ -56,21 +69,44 @@ class TopImagesBloc extends AbstractLoadingBloc {
 
   /// 投稿を取得する
   Future<void> fetchImages() async {
-    _loadingController.sink.add(LoadingType.LOADING);
+    if (!_isFinished) {
+      _loadingController.sink.add(LoadingType.LOADING);
 
-    Query _imagesQuery = Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at", descending: true)
-        .limit(20);
+      Query _imagesQuery;
 
-    await _imagesQuery.getDocuments().then((data) {
-      if (data.documents.length > 0) {
-        _valueController.sink.add(data.documents);
+      if (_images.length > 0) {
+        _imagesQuery = Firestore.instance
+            .document(_roomInfo.reference.path)
+            .collection("images")
+            .orderBy("created_at")
+            .startAfterDocument(_images.last)
+            .limit(20);
+      } else {
+        _imagesQuery = Firestore.instance
+            .document(_roomInfo.reference.path)
+            .collection("images")
+            .orderBy("created_at")
+            .limit(20);
       }
-    }).catchError((e) => debugPrint(e.toString()));
 
-    _loadingController.sink.add(LoadingType.COMPLETED);
+      await _imagesQuery.getDocuments().then((data) {
+        if (data.documents.length > 0) {
+          _images.addAll(data.documents);
+          _valueController.sink.add(_images);
+        } else {
+          _isFinished = true;
+        }
+      }).catchError((e) => debugPrint(e.toString()));
+
+      _loadingController.sink.add(LoadingType.COMPLETED);
+    }
+  }
+
+  /// 一覧を初期化する
+  Future<void> refreshImages() async {
+    _isFinished = false;
+    _images = [];
+    await fetchImages();
   }
 
   void dispose() {
