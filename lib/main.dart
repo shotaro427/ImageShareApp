@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'sing_in/sign_in_page.dart';
+import 'widgets/sing_in/sign_in_page.dart';
 
 void main() => runApp(MyApp());
 
