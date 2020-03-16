@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: "ログイン"), // ログインページを生成
+      home: MyHomePage(), // ログインページを生成
     );
   }
 }
