@@ -9,17 +9,17 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 /// トップ画面のBLoCクラス
 class TopImagesBloc extends AbstractLoadingBloc {
   final DocumentSnapshot _roomInfo;
+
+  TopImagesBloc(this._roomInfo) {
+    _loadingController.sink.add(LoadingType.NOT_YET);
+    fetchImages();
+    scrollController.addListener(_pagingFetch);
+  }
+
   bool isDispose = false;
 
   // 前件取得したかどうか
   bool _isFinished = false;
-
-
-  TopImagesBloc(this._roomInfo) {
-    _loadingController.sink.add(LoadingType.NOT_YET);
-    fetchImageUrlString();
-    scrollController.addListener(_pagingFetch);
-  }
 
   final _valueController = StreamController<List<DocumentSnapshot>>();
   Stream<List<DocumentSnapshot>> get imagesValue => _valueController.stream;
@@ -30,41 +30,13 @@ class TopImagesBloc extends AbstractLoadingBloc {
 
   final scrollController = ScrollController();
 
+  // MARK: Functions
+
+  /// ページング処理
   void _pagingFetch() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent) {
       fetchImages();
     }
-  }
-
-  Future<void> fetchImageUrlString() async {
-    _loadingController.sink.add(LoadingType.LOADING);
-    await fetchImages();
-    _loadingController.sink.add(LoadingType.COMPLETED);
-  }
-
-  /// 画像の変更を監視する
-  Future<void> listenImages() async {
-
-    Query _imagesQuery = Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at")
-        .limit(20);
-
-    await _imagesQuery.getDocuments().then((data) {
-      if (data.documents.length > 0) {
-        _imagesQuery.snapshots().listen((data) {
-          if (!isDispose) {
-            _images.addAll(data.documentChanges
-                .where((change) => change.type == DocumentChangeType.added || change.type == DocumentChangeType.modified)
-                .where((change) => change.document.data['url'] != null)
-                .map((change) => change.document));
-            _valueController.sink.add(_images.reversed.toList());
-          }
-        });
-      }
-    }).catchError((e) => debugPrint(e.toString()));
-
   }
 
   /// 投稿を取得する
@@ -72,22 +44,7 @@ class TopImagesBloc extends AbstractLoadingBloc {
     if (!_isFinished) {
       _loadingController.sink.add(LoadingType.LOADING);
 
-      Query _imagesQuery;
-
-      if (_images.length > 0) {
-        _imagesQuery = Firestore.instance
-            .document(_roomInfo.reference.path)
-            .collection("images")
-            .orderBy("created_at")
-            .startAfterDocument(_images.last)
-            .limit(20);
-      } else {
-        _imagesQuery = Firestore.instance
-            .document(_roomInfo.reference.path)
-            .collection("images")
-            .orderBy("created_at")
-            .limit(20);
-      }
+      final Query _imagesQuery = _createImagesQuery();
 
       await _imagesQuery.getDocuments().then((data) {
         if (data.documents.length > 0) {
@@ -99,6 +56,25 @@ class TopImagesBloc extends AbstractLoadingBloc {
       }).catchError((e) => debugPrint(e.toString()));
 
       _loadingController.sink.add(LoadingType.COMPLETED);
+    }
+  }
+
+  /// ページング状況に合わせてクエリを変更
+  Query _createImagesQuery() {
+
+    if (_images.length > 0) {
+      return Firestore.instance
+        .document(_roomInfo.reference.path)
+        .collection("images")
+        .orderBy("created_at")
+        .startAfterDocument(_images.last)
+        .limit(20);
+    } else {
+      return Firestore.instance
+        .document(_roomInfo.reference.path)
+        .collection("images")
+        .orderBy("created_at")
+        .limit(20);
     }
   }
 
