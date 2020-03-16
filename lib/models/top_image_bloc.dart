@@ -8,13 +8,18 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 
 /// トップ画面のBLoCクラス
 class TopImagesBloc extends AbstractLoadingBloc {
-  final DocumentSnapshot _roomInfo;
+  final TopImageRepository _repository;
+
+  TopImagesBloc(this._repository) {
+    _loadingController.sink.add(LoadingType.NOT_YET);
+    fetchImages();
+    scrollController.addListener(_pagingFetch);
+  }
+
   bool isDispose = false;
 
-  TopImagesBloc(this._roomInfo) {
-    _loadingController.sink.add(LoadingType.NOT_YET);
-    fetchImageUrlString();
-  }
+  // 前件取得したかどうか
+  bool _isFinished = false;
 
   final _valueController = StreamController<List<DocumentSnapshot>>();
   Stream<List<DocumentSnapshot>> get imagesValue => _valueController.stream;
@@ -23,59 +28,76 @@ class TopImagesBloc extends AbstractLoadingBloc {
   final _loadingController = StreamController<LoadingType>();
   Stream<LoadingType> get loadingValue => _loadingController.stream;
 
-  Future<void> fetchImageUrlString() async {
-    _loadingController.sink.add(LoadingType.LOADING);
-    await fetchImages();
-    _loadingController.sink.add(LoadingType.COMPLETED);
-  }
+  final scrollController = ScrollController();
 
-  /// 画像の変更を監視する
-  Future<void> listenImages() async {
+  // MARK: Functions
 
-    Query _imagesQuery = Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at")
-        .limit(20);
-
-    await _imagesQuery.getDocuments().then((data) {
-      if (data.documents.length > 0) {
-        _imagesQuery.snapshots().listen((data) {
-          if (!isDispose) {
-            _images.addAll(data.documentChanges
-                .where((change) => change.type == DocumentChangeType.added || change.type == DocumentChangeType.modified)
-                .where((change) => change.document.data['url'] != null)
-                .map((change) => change.document));
-            _valueController.sink.add(_images.reversed.toList());
-          }
-        });
-      }
-    }).catchError((e) => debugPrint(e.toString()));
-
+  /// ページング処理
+  void _pagingFetch() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      fetchImages();
+    }
   }
 
   /// 投稿を取得する
   Future<void> fetchImages() async {
-    _loadingController.sink.add(LoadingType.LOADING);
+    if (!_isFinished) {
+      _loadingController.sink.add(LoadingType.LOADING);
 
-    Query _imagesQuery = Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at", descending: true)
-        .limit(20);
+      await _repository.fetchImages(_images).then((data) {
+        if (data.documents.length > 0) {
+          _images.addAll(data.documents);
+          _valueController.sink.add(_images);
+        } else {
+          _isFinished = true;
+        }
+      }).catchError((e) => debugPrint(e.toString()));
 
-    await _imagesQuery.getDocuments().then((data) {
-      if (data.documents.length > 0) {
-        _valueController.sink.add(data.documents);
-      }
-    }).catchError((e) => debugPrint(e.toString()));
+      _loadingController.sink.add(LoadingType.COMPLETED);
+    }
+  }
 
-    _loadingController.sink.add(LoadingType.COMPLETED);
+
+
+  /// 一覧を初期化する
+  Future<void> refreshImages() async {
+    _isFinished = false;
+    _images = [];
+    await fetchImages();
   }
 
   void dispose() {
     _valueController.close();
     _loadingController.close();
     isDispose = true;
+  }
+}
+
+class TopImageRepository {
+
+  final DocumentSnapshot _roomInfo;
+
+  TopImageRepository(this._roomInfo);
+
+  Future<QuerySnapshot> fetchImages(List<DocumentSnapshot> images) {
+    return _createImagesQuery(images).getDocuments();
+  }
+
+  /// ページング状況に合わせてクエリを変更
+  Query _createImagesQuery(List<DocumentSnapshot> images) {
+    if (images.length > 0) {
+      return Firestore.instance
+          .document(_roomInfo.reference.path)
+          .collection("images")
+          .orderBy("created_at")
+          .startAfterDocument(images.last)
+          .limit(20);
+    } else {
+      return Firestore.instance
+          .document(_roomInfo.reference.path)
+          .collection("images")
+          .orderBy("created_at")
+          .limit(20);
+    }
   }
 }
