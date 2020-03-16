@@ -22,7 +22,7 @@ class TopImagesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<TopImagesBloc>(
-      create: (_) => TopImagesBloc(roomInfo),
+      create: (_) => TopImagesBloc(TopImageRepository(roomInfo)),
       dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[

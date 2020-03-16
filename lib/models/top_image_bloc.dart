@@ -8,9 +8,9 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 
 /// トップ画面のBLoCクラス
 class TopImagesBloc extends AbstractLoadingBloc {
-  final DocumentSnapshot _roomInfo;
+  final TopImageRepository _repository;
 
-  TopImagesBloc(this._roomInfo) {
+  TopImagesBloc(this._repository) {
     _loadingController.sink.add(LoadingType.NOT_YET);
     fetchImages();
     scrollController.addListener(_pagingFetch);
@@ -44,9 +44,7 @@ class TopImagesBloc extends AbstractLoadingBloc {
     if (!_isFinished) {
       _loadingController.sink.add(LoadingType.LOADING);
 
-      final Query _imagesQuery = _createImagesQuery();
-
-      await _imagesQuery.getDocuments().then((data) {
+      await _repository.fetchImages(_images).then((data) {
         if (data.documents.length > 0) {
           _images.addAll(data.documents);
           _valueController.sink.add(_images);
@@ -59,24 +57,7 @@ class TopImagesBloc extends AbstractLoadingBloc {
     }
   }
 
-  /// ページング状況に合わせてクエリを変更
-  Query _createImagesQuery() {
 
-    if (_images.length > 0) {
-      return Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at")
-        .startAfterDocument(_images.last)
-        .limit(20);
-    } else {
-      return Firestore.instance
-        .document(_roomInfo.reference.path)
-        .collection("images")
-        .orderBy("created_at")
-        .limit(20);
-    }
-  }
 
   /// 一覧を初期化する
   Future<void> refreshImages() async {
@@ -89,5 +70,34 @@ class TopImagesBloc extends AbstractLoadingBloc {
     _valueController.close();
     _loadingController.close();
     isDispose = true;
+  }
+}
+
+class TopImageRepository {
+
+  final DocumentSnapshot _roomInfo;
+
+  TopImageRepository(this._roomInfo);
+
+  Future<QuerySnapshot> fetchImages(List<DocumentSnapshot> images) {
+    return _createImagesQuery(images).getDocuments();
+  }
+
+  /// ページング状況に合わせてクエリを変更
+  Query _createImagesQuery(List<DocumentSnapshot> images) {
+    if (images.length > 0) {
+      return Firestore.instance
+          .document(_roomInfo.reference.path)
+          .collection("images")
+          .orderBy("created_at")
+          .startAfterDocument(images.last)
+          .limit(20);
+    } else {
+      return Firestore.instance
+          .document(_roomInfo.reference.path)
+          .collection("images")
+          .orderBy("created_at")
+          .limit(20);
+    }
   }
 }
