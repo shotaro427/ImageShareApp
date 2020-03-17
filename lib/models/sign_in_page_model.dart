@@ -14,6 +14,7 @@ part 'sign_in_page_model.freezed.dart';
 
 @freezed
 abstract class SignInState with _$SignInState {
+  const factory SignInState() = _SignInState;
   const factory SignInState.loading() = Loading;
   const factory SignInState.success({@Default(false) bool isCompleted}) = Success;
   const factory SignInState.error({@Default('') String message}) = ErrorDetails;
@@ -23,13 +24,15 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   FirebaseUser user;
 
-  SignInStateNotifier(): super(const SignInState.loading());
+  SignInStateNotifier(): super(const SignInState());
 
   /// Googleアカウントでログインするときのハンドル処理
   Future<void> handleSignIn() async {
+
+    state = const SignInState.loading();
 
     // 現在のログインユーザー
     GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
@@ -50,11 +53,10 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
       await _saveUserInfo(_user);
       user = _user;
 
+      // 状態を更新
       state = const SignInState.success(isCompleted: true);
-
-      debugPrint('終わった');
-
     } catch (e) {
+      // 状態を更新
       state = SignInState.error(message: e.toString());
     }
   }

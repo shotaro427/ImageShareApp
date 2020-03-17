@@ -9,14 +9,16 @@ part of 'sign_in_page_model.dart';
 
 mixin _$SignInState {
   @optionalTypeArgs
-  Result when<Result extends Object>({
+  Result when<Result extends Object>(
+    Result $default(), {
     @required Result loading(),
     @required Result success(bool isCompleted),
     @required Result error(String message),
   });
 
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
     Result loading(),
     Result success(bool isCompleted),
     Result error(String message),
@@ -24,14 +26,16 @@ mixin _$SignInState {
   });
 
   @optionalTypeArgs
-  Result map<Result extends Object>({
+  Result map<Result extends Object>(
+    Result $default(_SignInState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   });
 
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
+  Result maybeMap<Result extends Object>(
+    Result $default(_SignInState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -41,6 +45,10 @@ mixin _$SignInState {
 
 class _$SignInStateTearOff {
   const _$SignInStateTearOff();
+
+  _SignInState call() {
+    return const _SignInState();
+  }
 
   Loading loading() {
     return const Loading();
@@ -60,6 +68,95 @@ class _$SignInStateTearOff {
 }
 
 const $SignInState = _$SignInStateTearOff();
+
+class _$_SignInState with DiagnosticableTreeMixin implements _SignInState {
+  const _$_SignInState();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'SignInState()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'SignInState'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _SignInState);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>(
+    Result $default(), {
+    @required Result loading(),
+    @required Result success(bool isCompleted),
+    @required Result error(String message),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(error != null);
+    return $default();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
+    Result loading(),
+    Result success(bool isCompleted),
+    Result error(String message),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if ($default != null) {
+      return $default();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(_SignInState value), {
+    @required Result loading(Loading value),
+    @required Result success(Success value),
+    @required Result error(ErrorDetails value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(error != null);
+    return $default(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(_SignInState value), {
+    Result loading(Loading value),
+    Result success(Success value),
+    Result error(ErrorDetails value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if ($default != null) {
+      return $default(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SignInState implements SignInState {
+  const factory _SignInState() = _$_SignInState;
+}
 
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
@@ -85,11 +182,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
+  Result when<Result extends Object>(
+    Result $default(), {
     @required Result loading(),
     @required Result success(bool isCompleted),
     @required Result error(String message),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -98,7 +197,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
     Result loading(),
     Result success(bool isCompleted),
     Result error(String message),
@@ -113,11 +213,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
+  Result map<Result extends Object>(
+    Result $default(_SignInState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -126,7 +228,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
+  Result maybeMap<Result extends Object>(
+    Result $default(_SignInState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -189,11 +292,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
+  Result when<Result extends Object>(
+    Result $default(), {
     @required Result loading(),
     @required Result success(bool isCompleted),
     @required Result error(String message),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -202,7 +307,8 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
     Result loading(),
     Result success(bool isCompleted),
     Result error(String message),
@@ -217,11 +323,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
+  Result map<Result extends Object>(
+    Result $default(_SignInState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -230,7 +338,8 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
+  Result maybeMap<Result extends Object>(
+    Result $default(_SignInState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -295,11 +404,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
+  Result when<Result extends Object>(
+    Result $default(), {
     @required Result loading(),
     @required Result success(bool isCompleted),
     @required Result error(String message),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -308,7 +419,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
     Result loading(),
     Result success(bool isCompleted),
     Result error(String message),
@@ -323,11 +435,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
+  Result map<Result extends Object>(
+    Result $default(_SignInState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   }) {
+    assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
@@ -336,7 +450,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
+  Result maybeMap<Result extends Object>(
+    Result $default(_SignInState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
