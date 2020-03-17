@@ -15,15 +15,7 @@ import 'package:image_share_app/widgets/room_list/room_list.dart';
 /// - Googleアカウント
 /// - メールアドレスとパスワード
 /// でログイン/登録が可能
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
+class SignInPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -31,6 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder(
       future: _isCheckSignIn(),
       builder: (BuildContext context, AsyncSnapshot<bool> isSignIn) {
+
         if (isSignIn.hasData && isSignIn.data) { // ログイン済の場合
           return RoomListPage(RoomListRepository());
         } else if (isSignIn.hasData && !isSignIn.data) { // ログインしていない場合
@@ -51,11 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     await _auth.currentUser().then((FirebaseUser user) {
       debugPrint('${user.uid}');
-        if (user != null) {
-          isSignIn = true;
-        } else {
-          isSignIn = false;
-        }
+      if (user != null) {
+        isSignIn = true;
+      } else {
+        isSignIn = false;
+      }
     }).catchError((e)  {
       debugPrint(e.toString());
       isSignIn = false;
@@ -63,8 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return isSignIn;
   }
-
 }
+
 
 class _SignInButtons extends StatelessWidget {
   @override
@@ -204,7 +197,7 @@ class SignInPageModel {
     await _prefs.setString('uid', user.uid);
     await _prefs.setString('email', user.email);
 
-    // Firestoreに保存
+    // FireStoreに保存
     await _usersCollectionRef.where('uid', isEqualTo: user.uid)
         .getDocuments()
         .then((docs) {

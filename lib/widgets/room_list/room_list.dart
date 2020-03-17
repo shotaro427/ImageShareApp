@@ -50,7 +50,7 @@ class RoomListPage extends StatelessWidget {
                                   await _logout();
                                   await Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (BuildContext context) => MyHomePage()
+                                          builder: (BuildContext context) => SignInPage()
                                       ),
                                       ModalRoute.withName("/")
                                   );
