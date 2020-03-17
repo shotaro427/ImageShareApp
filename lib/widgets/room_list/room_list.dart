@@ -6,6 +6,7 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/widgets/sing_in/app_start_page.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 import 'package:provider/provider.dart';
 import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
@@ -48,11 +49,11 @@ class RoomListPage extends StatelessWidget {
                                 child: const Text('はい'),
                                 onPressed: () async {
                                   await _logout();
-                                  await Navigator.of(context).pushAndRemoveUntil(
+                                  Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                           builder: (BuildContext context) => SignInPage()
                                       ),
-                                      ModalRoute.withName("/")
+                                      (_) => false
                                   );
                                 },
                               )

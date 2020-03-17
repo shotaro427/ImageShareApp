@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/sing_in/sign_in_page.dart';
+import 'package:image_share_app/widgets/sing_in/app_start_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignInPage(), // ログインページを生成
+      home: AppStartPage(), // ログインページを生成
     );
   }
 }

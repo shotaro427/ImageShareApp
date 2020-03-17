@@ -35,6 +35,7 @@ dependencies:
   photo_view: ^0.9.1
   shared_preferences: ^0.5.6
   freezed_annotation:
+  flutter_state_notifier:
 
 dev_dependencies:
   flutter_test:
