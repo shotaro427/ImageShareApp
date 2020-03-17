@@ -34,11 +34,16 @@ dependencies:
   flutter_staggered_grid_view: ^0.3.0
   photo_view: ^0.9.1
   shared_preferences: ^0.5.6
+  freezed_annotation:
+  flutter_state_notifier:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^4.1.1
+  json_serializable:
+  build_runner:
+  freezed:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

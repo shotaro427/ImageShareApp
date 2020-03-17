@@ -11,28 +11,5 @@ class _MockTopImageRepository extends Mock implements TopImageRepository {}
 
 main() {
 
-  final data = {
-    "name": "name",
-    "roomId": "roomId"
-  };
 
-  test('fetchImages()のテスト', () async {
-
-    final _MockTopImageRepository _mockTopImageRepository = _MockTopImageRepository();
-
-    DocumentSnapshot _doc = DocumentSnapshotMock('uid', data);
-    var target = TopImagesBloc(_mockTopImageRepository);
-
-    when(_mockTopImageRepository.fetchImages()).thenAnswer((_) => Future.value());
-
-    await target.fetchImages();
-
-//    expect(target.imagesValue, emits([]));
-    target.imagesValue.listen(
-      expectAsync1((event) {
-        expect(event.length, 0);
-      })
-    );
-
-  });
 }

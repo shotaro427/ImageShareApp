@@ -57,8 +57,6 @@ class TopImagesBloc extends AbstractLoadingBloc {
     }
   }
 
-
-
   /// 一覧を初期化する
   Future<void> refreshImages() async {
     _isFinished = false;
@@ -75,9 +73,9 @@ class TopImagesBloc extends AbstractLoadingBloc {
 
 class TopImageRepository {
 
-  final DocumentSnapshot _roomInfo;
+  final String _path;
 
-  TopImageRepository(this._roomInfo);
+  TopImageRepository(this._path);
 
   Future<QuerySnapshot> fetchImages(List<DocumentSnapshot> images) {
     return _createImagesQuery(images).getDocuments();
@@ -87,14 +85,14 @@ class TopImageRepository {
   Query _createImagesQuery(List<DocumentSnapshot> images) {
     if (images.length > 0) {
       return Firestore.instance
-          .document(_roomInfo.reference.path)
+          .document(_path)
           .collection("images")
           .orderBy("created_at")
           .startAfterDocument(images.last)
           .limit(20);
     } else {
       return Firestore.instance
-          .document(_roomInfo.reference.path)
+          .document(_path)
           .collection("images")
           .orderBy("created_at")
           .limit(20);
