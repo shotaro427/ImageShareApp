@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_share_app/Entities/user_entity/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPageRepository {
 
   /// Googleアカウントでログインする
-  Future<FirebaseUser> loginWithGoogle() async {
+  Future<UserEntity> loginWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,7 +31,9 @@ class SignInPageRepository {
       );
       final FirebaseUser _user = (await _auth.signInWithCredential(credential)).user;
 
-      return _user;
+      final UserEntity _userEntity = UserEntity(email: _user.email, uid: _user.uid, name: _user.displayName);
+
+      return _userEntity;
     } catch(e) {
       log(e.toString());
       return null;
@@ -38,7 +41,7 @@ class SignInPageRepository {
   }
 
   /// ユーザー情報をFireStoreに保存する処理
-  Future<void> saveUserInfo(FirebaseUser user) async {
+  Future<void> saveUserInfo(UserEntity user) async {
 
     CollectionReference _usersCollectionRef = Firestore.instance.collection('users');
 
@@ -52,10 +55,7 @@ class SignInPageRepository {
       final _documents = (await _usersCollectionRef.where('uid', isEqualTo: user.uid).getDocuments()).documents;
 
       if (_documents.length == 0) {
-        await _usersCollectionRef.document('${user.uid}').setData({
-          'email': user.email,
-          'uid': user.uid
-        });
+        await _usersCollectionRef.document('${user.uid}').setData(user.toJson());
       }
     } catch(e) {
       log(e.toString());

@@ -69,12 +69,20 @@ class _$SignInWithEmailStateTearOff {
 
 const $SignInWithEmailState = _$SignInWithEmailStateTearOff();
 
-class _$_SignInWithEmailState implements _SignInWithEmailState {
+class _$_SignInWithEmailState
+    with DiagnosticableTreeMixin
+    implements _SignInWithEmailState {
   const _$_SignInWithEmailState();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SignInWithEmailState()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'SignInWithEmailState'));
   }
 
   @override
@@ -152,12 +160,19 @@ abstract class _SignInWithEmailState implements SignInWithEmailState {
   const factory _SignInWithEmailState() = _$_SignInWithEmailState;
 }
 
-class _$Loading implements Loading {
+class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SignInWithEmailState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SignInWithEmailState.loading'));
   }
 
   @override
@@ -235,7 +250,7 @@ abstract class Loading implements SignInWithEmailState {
   const factory Loading() = _$Loading;
 }
 
-class _$Success implements Success {
+class _$Success with DiagnosticableTreeMixin implements Success {
   const _$Success({this.isCompleted = false});
 
   @JsonKey(defaultValue: false)
@@ -243,8 +258,16 @@ class _$Success implements Success {
   final bool isCompleted;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SignInWithEmailState.success(isCompleted: $isCompleted)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SignInWithEmailState.success'))
+      ..add(DiagnosticsProperty('isCompleted', isCompleted));
   }
 
   @override
@@ -341,7 +364,7 @@ abstract class Success implements SignInWithEmailState {
   Success copyWith({bool isCompleted});
 }
 
-class _$ErrorDetails implements ErrorDetails {
+class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails({this.message = ''});
 
   @JsonKey(defaultValue: '')
@@ -349,8 +372,16 @@ class _$ErrorDetails implements ErrorDetails {
   final String message;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SignInWithEmailState.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SignInWithEmailState.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override

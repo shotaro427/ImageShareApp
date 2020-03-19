@@ -1,9 +1,9 @@
 
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/Entities/user_entity/user_entity.dart';
 import 'package:image_share_app/repositories/room_list_repository.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_page_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
@@ -23,7 +23,7 @@ abstract class SignInState with _$SignInState {
 class SignInStateNotifier extends StateNotifier<SignInState> {
 
   final SignInPageRepository _repository;
-  FirebaseUser user;
+  UserEntity user;
 
   SignInStateNotifier(this._repository): super(const SignInState());
 
@@ -33,7 +33,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
     state = const SignInState.loading();
 
     try {
-      final FirebaseUser _user = (await _repository.loginWithGoogle());
+      final UserEntity _user = (await _repository.loginWithGoogle());
 
       // User情報を保存
       await _repository.saveUserInfo(_user);
