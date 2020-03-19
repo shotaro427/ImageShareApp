@@ -22,9 +22,6 @@ abstract class SignInState with _$SignInState {
 
 class SignInStateNotifier extends StateNotifier<SignInState> {
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   FirebaseUser user;
 
   SignInStateNotifier(): super(const SignInState());
@@ -34,9 +31,13 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
     state = const SignInState.loading();
 
-    // 現在のログインユーザー
-    GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
     try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn();
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      // 現在のログインユーザー
+      GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
+
       // SignInしていなかったら、SignInする
       if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signInSilently();
       if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signIn();
