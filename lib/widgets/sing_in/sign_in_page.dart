@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -44,7 +46,7 @@ class _SignInView extends StatelessWidget {
                           null,
                           success: (isCompleted) => (isCompleted) ? context.read<SignInStateNotifier>().transitionNextPage(context) : null,
                           error: (_) => _showErrorDialog(context),
-                          orElse: () => debugPrint('orElse')
+                          orElse: () => log('SignInState is not success or error')
                         );
                       },
                       shape: const RoundedRectangleBorder(
