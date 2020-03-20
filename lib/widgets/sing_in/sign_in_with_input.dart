@@ -1,23 +1,25 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
-import 'package:image_share_app/widgets/room_list/room_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:image_share_app/models/sign_in_with_email_model.dart';
+import 'package:image_share_app/repositories/sign_in_repositories/sign_in_with_email_repository.dart';
+import 'package:provider/provider.dart';
 
 /// メールアドレスとパスワードを入力してログインするページ
-class SignInWithInput extends StatefulWidget {
+class SignInWithEmail extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return SignInWithInputState();
+  Widget build(BuildContext context) {
+    return StateNotifierProvider<SignInWithEmailStateNotifier, SignInWithEmailState>(
+      create: (_) => SignInWithEmailStateNotifier(SignInWithEmailRepository()),
+      child: _SignInWithEmailWidget()
+    );
   }
 }
 
-class SignInWithInputState extends State<SignInWithInput> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _SignInWithEmailWidget extends StatelessWidget {
 
   // メールアドレスとパスワードを入力する箇所のController
   final emailInputController = new TextEditingController();
@@ -25,112 +27,104 @@ class SignInWithInputState extends State<SignInWithInput> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     emailInputController.text = "teat1@test.com";
     passwordInputController.text = "password";
-    return _layoutBody();
-  }
 
-  Widget _layoutBody() {
-    return Scaffold(
-      appBar: AppBar(title: const Text("ログイン"),),
-      body: Center(
-        child: Form(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 24.0),
-                TextFormField(
-                  controller: emailInputController,
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Email',
-                  ),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(title: const Text("ログイン"),),
+          body: Center(
+            child: Form(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const SizedBox(height: 24.0),
+                    TextFormField(
+                      controller: emailInputController,
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Email',
+                      ),
+                    ),
+                    const SizedBox(height: 24.0),
+                    TextFormField(
+                      controller: passwordInputController,
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 24.0),
+                    Center(
+                      child: RaisedButton(
+                        child: const Text('Login'),
+                        onPressed: () async => await _handleSignIn(context),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24.0),
-                TextFormField(
-                  controller: passwordInputController,
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 24.0),
-                Center(
-                  child: RaisedButton(
-                    child: const Text('Login'),
-                    onPressed: () {
-                      var email = emailInputController.text;
-                      var password = passwordInputController.text;
-                      // 登録
-                      return _signIn(email, password)
-                        .then((FirebaseUser user) => transitionNextPage(user))
-                        .catchError((e) => {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('エラー'),
-                                content: const Text('ログインできませんでした。\nメールアドレスとパスワードを確認してください。'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: const Text('OK'),
-                                    onPressed: () => Navigator.of(context).pop(),
-                                  )
-                                ],
-                              );
-                            }
-                          )
-                        });
-                      },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        _LoadingWidget()
+      ],
     );
   }
 
-  /// メールアドレスとパスワードを使ってサインインする
-  Future<FirebaseUser> _signIn(String email, String password) async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-        email: email, password: password)).user;
+  Future<void> _handleSignIn(BuildContext context) async {
 
-    // ローカルにuidを更新
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('uid', user.uid);
-    await _prefs.setString('email', user.email);
+    final email = emailInputController.text;
+    final password = passwordInputController.text;
 
-    await Firestore.instance.collection('users').where('uid', isEqualTo: user.uid)
-        .getDocuments()
-        .then((docs) {
-      // ユーザーが存在しなかった場合追加する
-      if (docs.documents.length == 0) {
-        Firestore.instance.collection('users').document('${user.uid}').setData({
-          'email': user.email,
-          'uid': user.uid
-        });
-      }
-    }).catchError((e) => debugPrint(e.toString()));
+    await context.read<SignInWithEmailStateNotifier>().logInWithEmail(email, password);
 
-    debugPrint("User id is ${user.uid}");
-    return user;
+    // ルーム一覧に遷移
+    context.read<SignInWithEmailState>().maybeWhen(
+        null,
+        success: (user) => (user != null) ? context.read<SignInWithEmailStateNotifier>().transitionRoomListPage(user, context) : null,
+        error: (_) => _showErrorDialog(context),
+        orElse: () => log('SignInWithEmailState is not success or error')
+    );
   }
 
-  /// 次のページに遷移させる
-  void transitionNextPage(FirebaseUser user) {
-    if (user == null) return;
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('エラー'),
+            content: const Text('ログインできませんでした。\nメールアドレスとパスワードを確認してください。'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        }
+    );
+  }
+}
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => RoomListPage(RoomListRepository())
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<SignInWithEmailState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
         ),
-      ModalRoute.withName("/home")
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }
