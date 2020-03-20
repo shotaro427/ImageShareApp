@@ -12,7 +12,7 @@ mixin _$SignInWithEmailState {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(bool isCompleted),
+    @required Result success(UserEntity user),
     @required Result error(String message),
   });
 
@@ -20,7 +20,7 @@ mixin _$SignInWithEmailState {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(bool isCompleted),
+    Result success(UserEntity user),
     Result error(String message),
     @required Result orElse(),
   });
@@ -54,9 +54,9 @@ class _$SignInWithEmailStateTearOff {
     return const Loading();
   }
 
-  Success success({bool isCompleted = false}) {
+  Success success({UserEntity user = const UserEntity(email: '', uid: '')}) {
     return Success(
-      isCompleted: isCompleted,
+      user: user,
     );
   }
 
@@ -98,7 +98,7 @@ class _$_SignInWithEmailState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(bool isCompleted),
+    @required Result success(UserEntity user),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -113,7 +113,7 @@ class _$_SignInWithEmailState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(bool isCompleted),
+    Result success(UserEntity user),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -188,7 +188,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(bool isCompleted),
+    @required Result success(UserEntity user),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -203,7 +203,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(bool isCompleted),
+    Result success(UserEntity user),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -251,15 +251,15 @@ abstract class Loading implements SignInWithEmailState {
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
-  const _$Success({this.isCompleted = false});
+  const _$Success({this.user = const UserEntity(email: '', uid: '')});
 
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: const UserEntity(email: '', uid: ''))
   @override
-  final bool isCompleted;
+  final UserEntity user;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SignInWithEmailState.success(isCompleted: $isCompleted)';
+    return 'SignInWithEmailState.success(user: $user)';
   }
 
   @override
@@ -267,29 +267,27 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'SignInWithEmailState.success'))
-      ..add(DiagnosticsProperty('isCompleted', isCompleted));
+      ..add(DiagnosticsProperty('user', user));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Success &&
-            (identical(other.isCompleted, isCompleted) ||
-                const DeepCollectionEquality()
-                    .equals(other.isCompleted, isCompleted)));
+            (identical(other.user, user) ||
+                const DeepCollectionEquality().equals(other.user, user)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(isCompleted);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(user);
 
   @override
   _$Success copyWith({
-    Object isCompleted = freezed,
+    Object user = freezed,
   }) {
     return _$Success(
-      isCompleted:
-          isCompleted == freezed ? this.isCompleted : isCompleted as bool,
+      user: user == freezed ? this.user : user as UserEntity,
     );
   }
 
@@ -298,14 +296,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(bool isCompleted),
+    @required Result success(UserEntity user),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
-    return success(isCompleted);
+    return success(user);
   }
 
   @override
@@ -313,13 +311,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(bool isCompleted),
+    Result success(UserEntity user),
     Result error(String message),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (success != null) {
-      return success(isCompleted);
+      return success(user);
     }
     return orElse();
   }
@@ -357,11 +355,11 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 }
 
 abstract class Success implements SignInWithEmailState {
-  const factory Success({bool isCompleted}) = _$Success;
+  const factory Success({UserEntity user}) = _$Success;
 
-  bool get isCompleted;
+  UserEntity get user;
 
-  Success copyWith({bool isCompleted});
+  Success copyWith({UserEntity user});
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -410,7 +408,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(bool isCompleted),
+    @required Result success(UserEntity user),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -425,7 +423,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(bool isCompleted),
+    Result success(UserEntity user),
     Result error(String message),
     @required Result orElse(),
   }) {

@@ -14,7 +14,7 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierProvider<SignInStateNotifier, SignInState>(
-      create: (BuildContext context) => SignInStateNotifier(SignInPageRepository()),
+      create: (_) => SignInStateNotifier(SignInPageRepository()),
       child: _SignInView()
     );
   }
@@ -110,7 +110,7 @@ class _SignInView extends StatelessWidget {
   void _transitionSignInPage(BuildContext context) {
     Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (BuildContext context) => SignInWithInput(),
+            builder: (BuildContext context) => SignInWithEmail(),
             fullscreenDialog: true
         )
     );
@@ -143,5 +143,3 @@ class _LoadingWidget extends StatelessWidget {
     );
   }
 }
-
-
