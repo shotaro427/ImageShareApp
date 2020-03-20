@@ -14,28 +14,23 @@ class SignInPageRepository {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    try {
-      // 現在のログインユーザー
-      GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
+    // 現在のログインユーザー
+    GoogleSignInAccount googleCurrentUser = _googleSignIn.currentUser;
 
-      // SignInしていなかったら、SignInする
-      if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signInSilently();
-      if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signIn();
-      if (googleCurrentUser == null) return null;
+    // SignInしていなかったら、SignInする
+    if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signInSilently();
+    if (googleCurrentUser == null) googleCurrentUser = await _googleSignIn.signIn();
+    if (googleCurrentUser == null) return null;
 
-      GoogleSignInAuthentication googleAuth = await googleCurrentUser
-          .authentication;
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final FirebaseUser _user = (await _auth.signInWithCredential(credential)).user;
+    GoogleSignInAuthentication googleAuth = await googleCurrentUser
+        .authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    final FirebaseUser _user = (await _auth.signInWithCredential(credential)).user;
 
-      return UserEntity(email: _user.email, uid: _user.uid, name: _user.displayName);
-    } catch(e) {
-      log(e.toString());
-      return null;
-    }
+    return UserEntity(email: _user.email, uid: _user.uid, name: _user.displayName);
   }
 
   /// ユーザー情報をFireStoreに保存する処理
