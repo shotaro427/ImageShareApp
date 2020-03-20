@@ -31,9 +31,7 @@ class SignInPageRepository {
       );
       final FirebaseUser _user = (await _auth.signInWithCredential(credential)).user;
 
-      final UserEntity _userEntity = UserEntity(email: _user.email, uid: _user.uid, name: _user.displayName);
-
-      return _userEntity;
+      return UserEntity(email: _user.email, uid: _user.uid, name: _user.displayName);
     } catch(e) {
       log(e.toString());
       return null;

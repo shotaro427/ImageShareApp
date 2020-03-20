@@ -9,23 +9,42 @@ import 'package:mockito/mockito.dart';
 void main() {
 
   group('SignInPageRepositoryのテスト', () {
+    // MOCK
+    final _googleSignIn = MockGoogleSignIn();
+    final _auth = MockFirebaseAuth();
 
-    test('loginWithGoogleのテスト', () async {
-      // MOCK
-      final _googleSignIn = MockGoogleSignIn();
-      final _auth = MockFirebaseAuth();
+    // テスト対象クラス
+    final _repository = SignInPageRepository();
 
-      // テスト対象クラス
-      final _repository = SignInPageRepository();
+    test('loginWithGoogleのテスト signInできないver', () async {
 
-      when(_googleSignIn.signInSilently()).thenAnswer((_) => null);
-      when(_googleSignIn.signIn()).thenAnswer((_) => null);
+      when(_googleSignIn.signInSilently()).thenAnswer((_) => Future.value(null));
+      when(_googleSignIn.signIn()).thenAnswer((_) => Future.value(null));
 
       UserEntity _user = await _repository.loginWithGoogle();
 
       expect(_user, null);
 
+    });
 
+    test('loginWithGoogleのテスト signInしたがuserがいない', () async {
+
+      when(_googleSignIn.signInSilently()).thenAnswer((_) => Future.value(MockGoogleSignInAccount()));
+
+      UserEntity _user = await _repository.loginWithGoogle();
+
+      expect(_user, null);
+
+    });
+
+    test('loginWithGoogleのテスト sigInしたがfirebaseにuserが見つからない', () async {
+      final _credential = MockAuthCredential();
+
+      when(_auth.signInWithCredential(_credential)).thenAnswer((_) => Future.value(MockAuthResult()));
+
+      UserEntity _user = await _repository.loginWithGoogle();
+
+      expect(_user, null);
 
     });
 
@@ -38,4 +57,22 @@ class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 
 class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
 
-class MockFirebaseUser extends Mock implements FirebaseUser {}
+class MockFirebaseUser extends Mock implements FirebaseUser {
+  final String email;
+  final String uid;
+  final String displayName;
+  MockFirebaseUser(this.email, this.uid, this.displayName);
+}
+
+class MockAuthResult extends Mock implements AuthResult {
+
+  final FirebaseUser user;
+
+  MockAuthResult({this.user});
+}
+
+class MockGoogleSignInAuthentication extends Mock implements GoogleSignInAuthentication {}
+
+class MockAuthCredential extends Mock implements AuthCredential {}
+
+class MockGoogleAuthProvider extends Mock implements GoogleAuthProvider {}
