@@ -1,106 +1,128 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
-import 'package:image_share_app/widgets/room_list/room_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:image_share_app/models/sign_in_model/sign_up_with_email_model.dart';
+import 'package:image_share_app/repositories/sign_in_repositories/sign_up_with_email_repository.dart';
 
-class SignUpWithInput extends StatefulWidget {
+/// ユーザー登録画面
+class SignUpWithEmail extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return SigUpWithInputState();
+  Widget build(BuildContext context) {
+    return StateNotifierProvider<SignUpWithEmailStateNotifier, SignUpWithEmailState>(
+      create: (_) => SignUpWithEmailStateNotifier(SignUpWithEmailRepository()),
+      child: _SignUpWithEmailWidget(),
+    );
   }
 }
 
-class SigUpWithInputState extends State<SignUpWithInput> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+class _SignUpWithEmailWidget extends StatelessWidget {
+  // メールアドレスとパスワードのController
   final emailInputController = new TextEditingController();
   final passwordInputController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return _layoutBody();
-  }
-
-  Widget _layoutBody() {
-    return Scaffold(
-      appBar: AppBar(title: const Text("登録"),),
-      body: Center(
-        child: Form(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 24.0),
-                TextFormField(
-                  controller: emailInputController,
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Email',
-                  ),
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          appBar: AppBar(title: const Text("登録"),),
+          body: Center(
+            child: Form(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const SizedBox(height: 24.0),
+                    TextFormField(
+                      controller: emailInputController,
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Email',
+                      ),
+                    ),
+                    const SizedBox(height: 24.0),
+                    TextFormField(
+                      controller: passwordInputController,
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 24.0),
+                    Center(
+                      child: RaisedButton(
+                        child: const Text('SingUp'),
+                        onPressed: () async => await _handleSignUp(context),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24.0),
-                TextFormField(
-                  controller: passwordInputController,
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Password',
-                  ),
-                  obscureText: true,
-                ),
-                const SizedBox(height: 24.0),
-                Center(
-                  child: RaisedButton(
-                    child: const Text('SingUp'),
-                    onPressed: () {
-                      var email = emailInputController.text;
-                      var password = passwordInputController.text;
-                      // 登録
-                      return _signUp(email, password)
-                          .then((FirebaseUser user) => transitionNextPage(user))
-                          .catchError((e) => print(e));
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+        _LoadingWidget(),
+      ],
     );
   }
 
-  Future<FirebaseUser> _signUp(String email, String password) async {
-    AuthResult result = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    FirebaseUser user = result.user;
+  /// 登録処理
+  Future<void> _handleSignUp(BuildContext context) async {
+    final email = emailInputController.text;
+    final password = passwordInputController.text;
+    // 登録
+    await context.read<SignUpWithEmailStateNotifier>().signUp(email, password);
 
-    // ローカルにuidを保存
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString('uid', user.uid);
-    await _prefs.setString('email', user.email);
+    // ルーム一覧に遷移
+    context.read<SignUpWithEmailState>().maybeWhen(
+        null,
+        success: (user) => (user != null) ? context.read<SignUpWithEmailStateNotifier>().transitionRoomListPage(user, context) : null,
+        error: (_) => _showErrorDialog(context),
+        orElse: () => log('SignUpWithEmailState is not success or error')
+    );
 
-    // FireStoreに保存
-    await Firestore.instance.collection('users').document('${user.uid}').setData({
-      'email': user.email,
-      'uid': user.uid
-    });
-    return user;
+    log(context.read<SignUpWithEmailState>().toString());
   }
 
-  void transitionNextPage(FirebaseUser user) {
-    if (user == null) return;
+  /// エラーダイアログを表示する
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('エラー'),
+            content: const Text('ログインできませんでした。\nメールアドレスとパスワードをもう一度お確かめください'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        }
+    );
+  }
+}
 
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => RoomListPage(RoomListRepository())
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<SignUpWithEmailState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
         ),
-        ModalRoute.withName('/home')
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

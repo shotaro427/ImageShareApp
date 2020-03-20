@@ -120,7 +120,7 @@ class _SignInView extends StatelessWidget {
   void _transitionSignUpPage(BuildContext context) {
     Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (BuildContext context) => SignUpWithInput(),
+            builder: (BuildContext context) => SignUpWithEmail(),
             fullscreenDialog: true
         )
     );
