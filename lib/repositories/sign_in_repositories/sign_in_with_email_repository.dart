@@ -12,21 +12,16 @@ class SignInWithEmailRepository {
   Future<UserEntity> loginWithEmailAndPassword(String email, String password) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    try {
-      // ログイン
-      final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-          email: email, password: password)).user;
+    // ログイン
+    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
+        email: email, password: password)).user;
 
-      final UserEntity _userEntity = UserEntity(
-          email: user.email, uid: user.uid);
+    final UserEntity _userEntity = UserEntity(
+        email: user.email, uid: user.uid);
 
-      _saveUserInfo(_userEntity);
+    _saveUserInfo(_userEntity);
 
-      return _userEntity;
-    } catch(e) {
-      log(e.toString());
-      return null;
-    }
+    return _userEntity;
   }
 
   /// ユーザー情報を保存する関数
