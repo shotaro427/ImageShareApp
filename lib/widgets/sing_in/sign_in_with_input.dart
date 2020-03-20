@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:image_share_app/models/sign_in_with_email_model.dart';
+import 'package:image_share_app/models/sign_in_model/sign_in_with_email_model.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_with_email_repository.dart';
 import 'package:provider/provider.dart';
 
