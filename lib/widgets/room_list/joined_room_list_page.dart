@@ -6,33 +6,35 @@ import 'package:image_share_app/models/room_list_model/room_list_model.dart';
 import 'package:provider/provider.dart';
 
 /// すでに参加しているルーム一覧
-class RoomListWidget extends StatefulWidget {
+//class RoomListWidget extends StatefulWidget {
+//
+//  @override
+//  State<StatefulWidget> createState() => _RoomListWidgetState();
+//}
+//
+//class _RoomListWidgetState extends State<RoomListWidget> with AutomaticKeepAliveClientMixin {
+//
+//  @override
+//  void initState() {
+//    // TODO: implement initState
+//    super.initState();
+//    context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms();
+//  }
+//
+//  @override
+//  // ignore: must_call_super
+//  Widget build(BuildContext context) {
+//    return RoomListContainerWidget();
+//  }
+//
+//  @override
+//  bool get wantKeepAlive => true;
+//}
 
+class RoomListContainerWidget extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _RoomListWidgetState();
-}
-
-class _RoomListWidgetState extends State<RoomListWidget> with AutomaticKeepAliveClientMixin {
-
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms();
-  }
-
-  @override
-  // ignore: must_call_super
-  Widget build(BuildContext context) {
-    return _RoomListContainerWidget();
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-class _RoomListContainerWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return StateNotifierBuilder<JoinedRoomListState>(
       stateNotifier: context.read<JoinedRoomListStateNotifier>(),
       builder: (context, state, _) {

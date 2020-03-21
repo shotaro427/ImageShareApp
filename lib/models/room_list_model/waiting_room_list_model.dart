@@ -22,7 +22,7 @@ class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
   WaitingRoomListStateNotifier(this._repository): super(const WaitingRoomListState());
 
-  void fetchWaitingRooms() async {
+  Future<void> fetchWaitingRooms() async {
     state = const WaitingRoomListState.loading();
 
     try {

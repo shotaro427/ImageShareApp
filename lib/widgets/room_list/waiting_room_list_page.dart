@@ -7,33 +7,34 @@ import 'package:image_share_app/models/room_list_model/waiting_room_list_model.d
 import 'package:provider/provider.dart';
 
 /// 招待されているルーム一覧
-class WaitingRoomListWidget extends StatefulWidget {
+//class WaitingRoomListWidget extends StatefulWidget {
+//
+//  @override
+//  State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
+//}
+//
+//class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
+//
+//  @override
+//  void initState() {
+//    super.initState();
+//    context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
+//  }
+//
+//  @override
+//  // ignore: must_call_super
+//  Widget build(BuildContext context) {
+//    return WaitingRoomListContainerWidget();
+//  }
+//
+//  @override
+//  bool get wantKeepAlive => true;
+//}
 
+class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
-}
-
-class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
-
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
-  }
-
-  @override
-  // ignore: must_call_super
-  Widget build(BuildContext context) {
-    return _WaitingRoomListContainerWidget();
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-class _WaitingRoomListContainerWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return StateNotifierBuilder<WaitingRoomListState>(
       stateNotifier: context.read<WaitingRoomListStateNotifier>(),
       builder: (context, state, _) {
