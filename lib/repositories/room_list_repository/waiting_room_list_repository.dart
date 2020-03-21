@@ -10,12 +10,12 @@ class WaitingRoomListRepository {
   /// 招待を受けているルーム一覧を表示する
   Future<List<RoomInfoEntity>> fetchWaitingRooms() async {
 
-    DocumentReference userRef = await fetchUserRef();
+    DocumentReference _userRef = await _fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<RoomInfoEntity> _rooms = [];
 
     /// ユーザーが招待されているルームの参照を取得
-    final _snapshots = await userRef.collection('waitingRooms').getDocuments();
+    final _snapshots = await _userRef.collection('waitingRooms').getDocuments();
     _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
 
     /// ルームの参照のリストから、ルームのSnapShotを追加
@@ -27,13 +27,14 @@ class WaitingRoomListRepository {
   }
 
   /// 招待を受けているグループに参加する
-  Future joinRoom(DocumentReference roomRef) async {
+  Future<void> joinRoom(String roomId) async {
 
-    final DocumentReference _userRef = await fetchUserRef();
+    final DocumentReference _userRef = await _fetchUserRef();
+    final DocumentReference _roomRef = (await _fetchRoomByRoomId(roomId)).reference;
 
     // waitingRoomsコレクションから該当する部屋を削除
     final _snapshots = await _userRef.collection('waitingRooms')
-        .where('room', isEqualTo: roomRef)
+        .where('room', isEqualTo: _roomRef)
         .getDocuments();
 
     if (_snapshots.documents.length > 0) {
@@ -43,12 +44,26 @@ class WaitingRoomListRepository {
 
     // roomsコレクションに該当する部屋を追加
     await _userRef.collection('rooms').add({
-      'room': roomRef
+      'room': _roomRef
     });
   }
 
+  /// roomIdからdocumentを取得する
+  Future<DocumentSnapshot> _fetchRoomByRoomId(String roomId) async {
+
+    final _snapshots = await db.collection('rooms')
+        .where('roomId', isEqualTo: roomId)
+        .getDocuments();
+
+    if (_snapshots.documents.length > 0) {
+      return _snapshots.documents.first;
+    } else{
+      return null;
+    }
+  }
+
   /// ログインしているユーザーの参照を取得
-  Future<DocumentReference> fetchUserRef() async {
+  Future<DocumentReference> _fetchUserRef() async {
     var _user = await FirebaseAuth.instance.currentUser();
     var _authToken = _user.uid;
 

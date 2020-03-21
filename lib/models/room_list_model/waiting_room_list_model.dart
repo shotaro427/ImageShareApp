@@ -1,7 +1,10 @@
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
+import 'package:image_share_app/repositories/room_list_repository/waiting_room_list_repository.dart';
 import 'package:state_notifier/state_notifier.dart';
 part 'waiting_room_list_model.freezed.dart';
 
@@ -15,8 +18,32 @@ abstract class WaitingRoomListState with _$WaitingRoomListState {
 
 class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
-  WaitingRoomListStateNotifier(): super(const WaitingRoomListState());
+  final WaitingRoomListRepository _repository;
 
+  WaitingRoomListStateNotifier(this._repository): super(const WaitingRoomListState());
 
+  void fetchWaitingRooms() async {
+    state = const WaitingRoomListState.loading();
 
+    try {
+      final _rooms = await _repository.fetchWaitingRooms();
+      state = WaitingRoomListState.success(rooms: _rooms);
+    } catch(e) {
+      log(e.toString());
+      state = WaitingRoomListState.error(message: e.toString());
+    }
+  }
+
+  void joinRoom(String roomId) async {
+    state = const WaitingRoomListState.loading();
+
+    try {
+      await _repository.joinRoom(roomId);
+      return;
+    } catch(e) {
+      log(e.toString());
+      state = WaitingRoomListState.error(message: e.toString());
+      return;
+    }
+  }
 }
