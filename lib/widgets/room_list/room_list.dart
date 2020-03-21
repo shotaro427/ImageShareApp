@@ -32,41 +32,13 @@ class RoomListPage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.exit_to_app),
                     tooltip: 'ログアウト',
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('ログアウト'),
-                            content: const Text('ログアウトしますか？'),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: const Text('いいえ'),
-                                onPressed:  () => Navigator.of(context).pop()
-                              ),
-                              FlatButton(
-                                child: const Text('はい'),
-                                onPressed: () async {
-                                  await _logout();
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) => SignInPage()
-                                      ),
-                                      (_) => false
-                                  );
-                                },
-                              )
-                            ],
-                          );
-                        }
-                      );
-                    },
+                    onPressed: () async => await _showLogoutDialog(context),
                   )
                 ],
                 bottom: const TabBar(
                   tabs: <Widget>[
-                    Tab(text: 'ルーム',),
-                    Tab(text: '招待ルーム',)
+                    Tab(text: '参加グループ',),
+                    Tab(text: '招待グループ',)
                   ],
                 ),
               ),
@@ -79,19 +51,42 @@ class RoomListPage extends StatelessWidget {
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.add),
                 tooltip: "ルームを追加",
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CreateRoomPage(_repository);
-                  }));
-                  debugPrint("ルームを追加");
-                },
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(_repository))),
               ),
             ),
           ),
-
           CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
         ],
       ),
+    );
+  }
+
+  /// ログアウトダイアログを表示
+  void _showLogoutDialog(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('ログアウト'),
+            content: const Text('ログアウトしますか？'),
+            actions: <Widget>[
+              FlatButton(
+                  child: const Text('いいえ'),
+                  onPressed:  () => Navigator.of(context).pop()
+              ),
+              FlatButton(
+                child: const Text('はい'),
+                onPressed: () async {
+                  await _logout();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (BuildContext context) => SignInPage()),
+                          (_) => false
+                  );
+                },
+              )
+            ],
+          );
+        }
     );
   }
 
@@ -221,70 +216,7 @@ class _WaitingRoomListContainerWidget extends StatelessWidget {
                   title: Text(
                     snapshot.data[index]["name"].toString(),
                     style: const TextStyle(fontSize: 20),),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Center(
-                              child: const Text('招待されています')
-                          ),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                child: const Text(
-                                  'この部屋に参加しますか?',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  FlatButton(
-                                    child: const Text('OK'),
-                                    onPressed: () async {
-                                      await Navigator.of(context).pop();
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('参加しました！'),
-                                            content: const Text('この部屋に参加しました！'),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: const Text('OK'),
-                                                onPressed: () async {
-                                                  await bloc.joinRoom(snapshot.data[index].reference);
-                                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(snapshot.data[index])));
-                                                }
-                                              )
-                                            ],
-                                          );
-                                        }
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                    width: 1,
-                                    child: Container(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    child: const Text(('Cancel')),
-                                    onPressed: () => Navigator.of(context).pop(),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                    );
-                  },
+                  onTap: () => _showConfirmLogoutDialog(context, snapshot.data[index])
                 ),
               );
             },
@@ -294,6 +226,78 @@ class _WaitingRoomListContainerWidget extends StatelessWidget {
           return Container();
         }
       },
+    );
+  }
+
+  /// グループに参加するかどうかを表示する処理
+  void _showConfirmLogoutDialog(BuildContext context, DocumentSnapshot document) {
+
+    var bloc = Provider.of<RoomListBloc>(context, listen: false);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+              child: const Text('招待されています')
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: const Text(
+                  'この部屋に参加しますか?',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    child: const Text('OK'),
+                    onPressed: () async {
+                      await Navigator.of(context).pop();
+                      await bloc.joinRoom(document.reference);
+                      _showCompletedDialog(context, document);
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                    width: 1,
+                    child: Container(
+                      color: Colors.black,
+                    ),
+                  ),
+                  FlatButton(
+                    child: const Text(('Cancel')),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  /// グループに参加したことを表示する処理
+  void _showCompletedDialog(BuildContext context, DocumentSnapshot document) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('参加しました！'),
+          content: const Text('この部屋に参加しました！'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(document)))
+            ),
+          ],
+        );
+      }
     );
   }
 }
