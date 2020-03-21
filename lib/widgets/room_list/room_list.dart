@@ -21,8 +21,8 @@ class RoomListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StateNotifierProvider(create: (_) => JoinedRoomListStateNotifier(RoomListRepository())),
-        StateNotifierProvider(create: (_) => WaitingRoomListStateNotifier(WaitingRoomListRepository())),
+        StateNotifierProvider<JoinedRoomListStateNotifier, JoinedRoomListState>(create: (_) => JoinedRoomListStateNotifier(RoomListRepository())),
+        StateNotifierProvider<WaitingRoomListStateNotifier, WaitingRoomListState>(create: (_) => WaitingRoomListStateNotifier(WaitingRoomListRepository())),
       ],
       child: _RoomListsWidget()
     );
@@ -55,8 +55,8 @@ class _RoomListsWidget extends StatelessWidget {
             ),
             body: TabBarView(
               children: <Widget>[
-                RoomListWidget(),
-                WaitingRoomListWidget()
+                RoomListContainerWidget(),
+                WaitingRoomListContainerWidget()
               ],
             ),
             floatingActionButton: FloatingActionButton(
@@ -66,7 +66,7 @@ class _RoomListsWidget extends StatelessWidget {
             ),
           ),
         ),
-
+//        _LoadingWidget(),
       ],
     );
   }
@@ -107,3 +107,35 @@ class _RoomListsWidget extends StatelessWidget {
   }
 }
 
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return context.read<JoinedRoomListState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+}
+
+class _LoadingWidget2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<WaitingRoomListState>().maybeWhen(
+      () => const SizedBox.shrink(),
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+}
