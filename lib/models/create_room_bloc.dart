@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 
 /// 部屋を追加を追われたときの処理

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_page_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:state_notifier/state_notifier.dart';

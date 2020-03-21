@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
@@ -30,9 +28,6 @@ class SignUpWithEmailRepository {
     await _prefs.setString('email', user.email);
 
     // FireStoreに保存
-    await Firestore.instance.collection('users').document('${user.uid}').setData({
-      'email': user.email,
-      'uid': user.uid
-    });
+    await Firestore.instance.collection('users').document('${user.uid}').setData(user.toJson());
   }
 }
