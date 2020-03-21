@@ -16,34 +16,34 @@ class _MockRoomListRepository extends Mock implements RoomListRepository {}
 
 main() {
 
-  List<DocumentSnapshotMock> rooms = [];
-  final data = {
-    "name": "name",
-    "roomId": "roomId"
-  };
-
-  setUp(() {
-    rooms.add(DocumentSnapshotMock("uid", data));
-  });
-
-  group("room_list_blocのテスト", () {
-    test("fetch()", () async {
-       _MockRoomListRepository repository = _MockRoomListRepository();
-
-       var target = RoomListBloc(repository);
-
-       when(repository.fetchJoinedRooms()).thenAnswer((_) => Future.value(rooms));
-       
-       await target.fetchRooms();
-       
-       target.roomListStream.listen(
-         expectAsync1((actual) {
-           expect(actual.length, 1);
-           expect(actual.first.data['name'], "name");
-           expect(actual.first.data['roomId'], "roomId");
-           expect(actual.first.documentID, "uid");
-         })
-       );
-    });
-  });
+//  List<DocumentSnapshotMock> rooms = [];
+//  final data = {
+//    "name": "name",
+//    "roomId": "roomId"
+//  };
+//
+//  setUp(() {
+//    rooms.add(DocumentSnapshotMock("uid", data));
+//  });
+//
+//  group("room_list_blocのテスト", () {
+//    test("fetch()", () async {
+//       _MockRoomListRepository repository = _MockRoomListRepository();
+//
+//       var target = RoomListBloc(repository);
+//
+//       when(repository.fetchJoinedRooms()).thenAnswer((_) => Future.value(rooms));
+//
+//       await target.fetchRooms();
+//
+//       target.roomListStream.listen(
+//         expectAsync1((actual) {
+//           expect(actual.length, 1);
+//           expect(actual.first.data['name'], "name");
+//           expect(actual.first.data['roomId'], "roomId");
+//           expect(actual.first.documentID, "uid");
+//         })
+//       );
+//    });
+//  });
 }
