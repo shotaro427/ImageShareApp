@@ -7,7 +7,7 @@ part of 'room_list_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$RoomListState {
+mixin _$JoinedRoomListState {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
@@ -27,7 +27,7 @@ mixin _$RoomListState {
 
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
@@ -35,7 +35,7 @@ mixin _$RoomListState {
 
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -43,11 +43,11 @@ mixin _$RoomListState {
   });
 }
 
-class _$RoomListStateTearOff {
-  const _$RoomListStateTearOff();
+class _$JoinedRoomListStateTearOff {
+  const _$JoinedRoomListStateTearOff();
 
-  _RoomListState call() {
-    return const _RoomListState();
+  _JoinedRoomListState call() {
+    return const _JoinedRoomListState();
   }
 
   Loading loading() {
@@ -67,25 +67,27 @@ class _$RoomListStateTearOff {
   }
 }
 
-const $RoomListState = _$RoomListStateTearOff();
+const $JoinedRoomListState = _$JoinedRoomListStateTearOff();
 
-class _$_RoomListState with DiagnosticableTreeMixin implements _RoomListState {
-  const _$_RoomListState();
+class _$_JoinedRoomListState
+    with DiagnosticableTreeMixin
+    implements _JoinedRoomListState {
+  const _$_JoinedRoomListState();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RoomListState()';
+    return 'JoinedRoomListState()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'RoomListState'));
+    properties..add(DiagnosticsProperty('type', 'JoinedRoomListState'));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _RoomListState);
+    return identical(this, other) || (other is _JoinedRoomListState);
   }
 
   @override
@@ -125,7 +127,7 @@ class _$_RoomListState with DiagnosticableTreeMixin implements _RoomListState {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
@@ -140,7 +142,7 @@ class _$_RoomListState with DiagnosticableTreeMixin implements _RoomListState {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -154,8 +156,8 @@ class _$_RoomListState with DiagnosticableTreeMixin implements _RoomListState {
   }
 }
 
-abstract class _RoomListState implements RoomListState {
-  const factory _RoomListState() = _$_RoomListState;
+abstract class _JoinedRoomListState implements JoinedRoomListState {
+  const factory _JoinedRoomListState() = _$_JoinedRoomListState;
 }
 
 class _$Loading with DiagnosticableTreeMixin implements Loading {
@@ -163,13 +165,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RoomListState.loading()';
+    return 'JoinedRoomListState.loading()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'RoomListState.loading'));
+    properties..add(DiagnosticsProperty('type', 'JoinedRoomListState.loading'));
   }
 
   @override
@@ -214,7 +216,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
@@ -229,7 +231,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -243,7 +245,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   }
 }
 
-abstract class Loading implements RoomListState {
+abstract class Loading implements JoinedRoomListState {
   const factory Loading() = _$Loading;
 }
 
@@ -255,14 +257,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RoomListState.success(rooms: $rooms)';
+    return 'JoinedRoomListState.success(rooms: $rooms)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'RoomListState.success'))
+      ..add(DiagnosticsProperty('type', 'JoinedRoomListState.success'))
       ..add(DiagnosticsProperty('rooms', rooms));
   }
 
@@ -321,7 +323,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
@@ -336,7 +338,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -350,7 +352,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   }
 }
 
-abstract class Success implements RoomListState {
+abstract class Success implements JoinedRoomListState {
   const factory Success({@required List<RoomInfoEntity> rooms}) = _$Success;
 
   List<RoomInfoEntity> get rooms;
@@ -367,14 +369,14 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RoomListState.error(message: $message)';
+    return 'JoinedRoomListState.error(message: $message)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'RoomListState.error'))
+      ..add(DiagnosticsProperty('type', 'JoinedRoomListState.error'))
       ..add(DiagnosticsProperty('message', message));
   }
 
@@ -433,7 +435,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
@@ -448,7 +450,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
-    Result $default(_RoomListState value), {
+    Result $default(_JoinedRoomListState value), {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
@@ -462,7 +464,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   }
 }
 
-abstract class ErrorDetails implements RoomListState {
+abstract class ErrorDetails implements JoinedRoomListState {
   const factory ErrorDetails({String message}) = _$ErrorDetails;
 
   String get message;

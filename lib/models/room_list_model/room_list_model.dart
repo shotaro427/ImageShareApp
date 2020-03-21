@@ -1,10 +1,11 @@
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/repositories/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import  'package:state_notifier/state_notifier.dart';
 import 'package:flutter/foundation.dart';
@@ -12,23 +13,31 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'room_list_model.freezed.dart';
 
 @freezed
-abstract class RoomListState with _$RoomListState {
-  const factory RoomListState() = _RoomListState;
-  const factory RoomListState.loading() = Loading;
-  const factory RoomListState.success({@required List<RoomInfoEntity> rooms}) = Success;
-  const factory RoomListState.error({@Default('') String message}) = ErrorDetails;
+abstract class JoinedRoomListState with _$JoinedRoomListState {
+  const factory JoinedRoomListState() = _JoinedRoomListState;
+  const factory JoinedRoomListState.loading() = Loading;
+  const factory JoinedRoomListState.success({@required List<RoomInfoEntity> rooms}) = Success;
+  const factory JoinedRoomListState.error({@Default('') String message}) = ErrorDetails;
 }
 
-class RoomListStateNotifier extends StateNotifier<RoomListState> {
+class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
 
   final RoomListRepository _repository;
 
-  RoomListStateNotifier(this._repository): super(const RoomListState());
+  JoinedRoomListStateNotifier(this._repository): super(const JoinedRoomListState());
 
   void fetchJoinedRooms() async {
-    state = const RoomListState.loading();
+    state = const JoinedRoomListState.loading();
 
-    await _repository.fetchJoinedRooms();
+    try {
+      final _rooms = await _repository.fetchJoinedRooms();
+      state = JoinedRoomListState.success(rooms: _rooms);
+
+    } catch(e) {
+      log(e.toString());
+      state = JoinedRoomListState.error(message: e.toString());
+
+    }
   }
 }
 

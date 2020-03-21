@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_share_app/repositories/room_list_repository.dart';
+import 'package:image_share_app/repositories/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 
