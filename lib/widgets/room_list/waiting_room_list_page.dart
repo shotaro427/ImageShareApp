@@ -7,39 +7,46 @@ import 'package:image_share_app/models/room_list_model/waiting_room_list_model.d
 import 'package:provider/provider.dart';
 
 /// 招待されているルーム一覧
-//class WaitingRoomListWidget extends StatefulWidget {
-//
-//  @override
-//  State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
-//}
-//
-//class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
-//  }
-//
-//  @override
-//  // ignore: must_call_super
-//  Widget build(BuildContext context) {
-//    return WaitingRoomListContainerWidget();
-//  }
-//
-//  @override
-//  bool get wantKeepAlive => true;
-//}
+class WaitingRoomListWidget extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
+}
+
+class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
+  }
+
+  @override
+  // ignore: must_call_super
+  Widget build(BuildContext context) {
+    return WaitingRoomListContainerWidget();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
 
 class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
     return StateNotifierBuilder<WaitingRoomListState>(
       stateNotifier: context.read<WaitingRoomListStateNotifier>(),
       builder: (context, state, _) {
         return state.maybeWhen(
-          () => Container(),
+          () => const SizedBox.shrink(),
+          loading: () {
+            return const DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0x44000000),
+              ),
+              child: Center(child: const CircularProgressIndicator()),
+            );
+          },
           success: (rooms) {
             return ListView.builder(
               itemBuilder: (context, index) {
@@ -63,7 +70,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
               itemCount: rooms.length,
             );
           },
-          orElse: () => Container(),
+          orElse: () => const SizedBox.shrink(),
         );
       },
     );
