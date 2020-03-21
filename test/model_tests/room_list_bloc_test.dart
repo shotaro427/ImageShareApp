@@ -32,7 +32,7 @@ main() {
 
        var target = RoomListBloc(repository);
 
-       when(repository.fetch()).thenAnswer((_) => Future.value(rooms));
+       when(repository.fetchJoinedRooms()).thenAnswer((_) => Future.value(rooms));
        
        await target.fetchRooms();
        

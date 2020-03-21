@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// ユーザーが所属しているルームの一覧を取得する
@@ -11,30 +12,22 @@ class RoomListRepository {
   final db = Firestore.instance;
 
   /// FireStoreからユーザーが所属しているルーム一覧を取得する
-  Future<List<DocumentSnapshot>> fetch() async {
+  Future<List<RoomInfoEntity>> fetchJoinedRooms() async {
 
     DocumentReference userRef = await fetchUserRef();
     List<DocumentReference> _roomRefs = [];
-    List<DocumentSnapshot> _rooms = [];
+    List<RoomInfoEntity> _rooms = [];
 
     /// ユーザーの参加しているルームの参照を取得
-    await db.document(userRef.path).collection("rooms")
-      .getDocuments()
-      .then((data) {
-        _roomRefs.addAll(data.documents.map((doc) {
-          return doc.data["room"];
-        }));
-
-      }).catchError((e) => debugPrint(e.toString()));
+    final _snapshots = await db.document(userRef.path).collection('rooms').getDocuments();
+    _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
 
     /// ルームの参照のリストから、ルームのSnapShotを追加
     for (final ref in _roomRefs) {
-      await ref.get().then((data) {
-        _rooms.add(data);
-      }).catchError((e) {
-        debugPrint(e.toString());
-      });
+      final _room = await ref.get();
+      _rooms.add(RoomInfoEntity.fromJson(_room.data));
     }
+
     return _rooms;
   }
 
