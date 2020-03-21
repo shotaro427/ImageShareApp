@@ -8,7 +8,6 @@ import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_model/room_list_model.dart';
 import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
-import 'package:provider/provider.dart';
 
 class RoomListPage extends StatelessWidget {
   final RoomListRepository _repository;
@@ -17,46 +16,42 @@ class RoomListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<RoomListBloc>(
-      create: (context) => RoomListBloc(_repository),
-      dispose: (_, bloc) => bloc.dispose(),
-      child: Stack(
-        children: <Widget>[
-          DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text("ルーム一覧"),
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.exit_to_app),
-                    tooltip: 'ログアウト',
-                    onPressed: () async => await _showLogoutDialog(context),
-                  )
+    return Stack(
+      children: <Widget>[
+        DefaultTabController(
+          length: 2,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text("ルーム一覧"),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.exit_to_app),
+                  tooltip: 'ログアウト',
+                  onPressed: () async => await _showLogoutDialog(context),
+                )
+              ],
+              bottom: const TabBar(
+                tabs: <Widget>[
+                  Tab(text: '参加グループ',),
+                  Tab(text: '招待グループ',)
                 ],
-                bottom: const TabBar(
-                  tabs: <Widget>[
-                    Tab(text: '参加グループ',),
-                    Tab(text: '招待グループ',)
-                  ],
-                ),
-              ),
-              body: TabBarView(
-                children: <Widget>[
-                  RoomListWidget(),
-                  WaitingRoomListWidget()
-                ],
-              ),
-              floatingActionButton: FloatingActionButton(
-                child: const Icon(Icons.add),
-                tooltip: "ルームを追加",
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(_repository))),
               ),
             ),
+            body: TabBarView(
+              children: <Widget>[
+                RoomListWidget(),
+                WaitingRoomListWidget()
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              child: const Icon(Icons.add),
+              tooltip: "ルームを追加",
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(_repository))),
+            ),
           ),
-          CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
-        ],
-      ),
+        ),
+        CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
+      ],
     );
   }
 
