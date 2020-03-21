@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter_test/flutter_test.dart";
 import 'package:image_share_app/models/room_list_model/room_list_model.dart';
-import 'package:image_share_app/repositories/joined_room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:mockito/mockito.dart';
 
 class DocumentSnapshotMock extends Mock implements DocumentSnapshot {

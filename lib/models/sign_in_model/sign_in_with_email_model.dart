@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
-import 'package:image_share_app/repositories/joined_room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_with_email_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:state_notifier/state_notifier.dart';

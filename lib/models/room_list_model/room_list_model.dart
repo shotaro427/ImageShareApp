@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
-import 'package:image_share_app/repositories/joined_room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import  'package:state_notifier/state_notifier.dart';
 import 'package:flutter/foundation.dart';
