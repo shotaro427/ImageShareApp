@@ -12,7 +12,7 @@ mixin _$WaitingRoomListState {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required List<dynamic> rooms),
+    @required Result success(@required List<RoomInfoEntity> rooms),
     @required Result error(String message),
   });
 
@@ -20,7 +20,7 @@ mixin _$WaitingRoomListState {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required List<dynamic> rooms),
+    Result success(@required List<RoomInfoEntity> rooms),
     Result error(String message),
     @required Result orElse(),
   });
@@ -54,7 +54,7 @@ class _$WaitingRoomListStateTearOff {
     return const Loading();
   }
 
-  Success success({@required List<dynamic> rooms}) {
+  Success success({@required List<RoomInfoEntity> rooms}) {
     return Success(
       rooms: rooms,
     );
@@ -98,7 +98,7 @@ class _$_WaitingRoomListState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required List<dynamic> rooms),
+    @required Result success(@required List<RoomInfoEntity> rooms),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -113,7 +113,7 @@ class _$_WaitingRoomListState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required List<dynamic> rooms),
+    Result success(@required List<RoomInfoEntity> rooms),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -188,7 +188,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required List<dynamic> rooms),
+    @required Result success(@required List<RoomInfoEntity> rooms),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -203,7 +203,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required List<dynamic> rooms),
+    Result success(@required List<RoomInfoEntity> rooms),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -254,7 +254,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   const _$Success({@required this.rooms}) : assert(rooms != null);
 
   @override
-  final List<dynamic> rooms;
+  final List<RoomInfoEntity> rooms;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -286,7 +286,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Object rooms = freezed,
   }) {
     return _$Success(
-      rooms: rooms == freezed ? this.rooms : rooms as List<dynamic>,
+      rooms: rooms == freezed ? this.rooms : rooms as List<RoomInfoEntity>,
     );
   }
 
@@ -295,7 +295,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required List<dynamic> rooms),
+    @required Result success(@required List<RoomInfoEntity> rooms),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -310,7 +310,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required List<dynamic> rooms),
+    Result success(@required List<RoomInfoEntity> rooms),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -354,11 +354,11 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 }
 
 abstract class Success implements WaitingRoomListState {
-  const factory Success({@required List<dynamic> rooms}) = _$Success;
+  const factory Success({@required List<RoomInfoEntity> rooms}) = _$Success;
 
-  List<dynamic> get rooms;
+  List<RoomInfoEntity> get rooms;
 
-  Success copyWith({List<dynamic> rooms});
+  Success copyWith({List<RoomInfoEntity> rooms});
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -407,7 +407,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required List<dynamic> rooms),
+    @required Result success(@required List<RoomInfoEntity> rooms),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -422,7 +422,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required List<dynamic> rooms),
+    Result success(@required List<RoomInfoEntity> rooms),
     Result error(String message),
     @required Result orElse(),
   }) {

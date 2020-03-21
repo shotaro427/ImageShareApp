@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:image_share_app/models/room_list_model/waiting_room_list_model.dart';
+import 'package:image_share_app/repositories/room_list_repository/waiting_room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/waiting_room_list_page.dart';
+import 'package:provider/provider.dart';
 import 'joined_room_list_page.dart';
-import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/room_list/create_room_page.dart';
 import 'package:image_share_app/models/room_list_model/room_list_model.dart';
 import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
@@ -14,6 +17,19 @@ class RoomListPage extends StatelessWidget {
 
   RoomListPage(this._repository);
 
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        StateNotifierProvider(create: (_) => JoinedRoomListStateNotifier(RoomListRepository())),
+        StateNotifierProvider(create: (_) => WaitingRoomListStateNotifier(WaitingRoomListRepository())),
+      ],
+      child: _RoomListsWidget()
+    );
+  }
+}
+
+class _RoomListsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -46,11 +62,11 @@ class RoomListPage extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
               tooltip: "ルームを追加",
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(_repository))),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(RoomListRepository()))),
             ),
           ),
         ),
-        CommonLoadingWidget<RoomListBloc>(isShowDialog: false,)
+
       ],
     );
   }
@@ -90,3 +106,4 @@ class RoomListPage extends StatelessWidget {
     await _firebaseAuth.signOut();
   }
 }
+
