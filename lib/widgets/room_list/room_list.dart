@@ -60,7 +60,7 @@ class _RoomListsWidget extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           tooltip: "ルームを追加",
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(RoomListRepository()))),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage())),
         ),
       ),
     );

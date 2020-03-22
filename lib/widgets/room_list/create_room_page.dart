@@ -9,14 +9,10 @@ import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatelessWidget {
 
-  final RoomListRepository _repository;
-
-  CreateRoomPage(this._repository);
-
   @override
   Widget build(BuildContext context) {
     return Provider<AddRoomListBloc>(
-      create: (context) => AddRoomListBloc(_repository),
+      create: (context) => AddRoomListBloc(RoomListRepository()),
       dispose: (_, bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
