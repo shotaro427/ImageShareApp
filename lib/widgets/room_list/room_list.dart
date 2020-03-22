@@ -13,9 +13,6 @@ import 'package:image_share_app/repositories/room_list_repository/joined_room_li
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 
 class RoomListPage extends StatelessWidget {
-  final RoomListRepository _repository;
-
-  RoomListPage(this._repository);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +57,7 @@ class _RoomListsWidget extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           tooltip: "ルームを追加",
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage(RoomListRepository()))),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage())),
         ),
       ),
     );
@@ -85,7 +82,7 @@ class _RoomListsWidget extends StatelessWidget {
                   await _logout();
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (BuildContext context) => SignInPage()),
-                          (_) => false
+                      (_) => false
                   );
                 },
               )

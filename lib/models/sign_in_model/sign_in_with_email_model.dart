@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
-import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_with_email_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:state_notifier/state_notifier.dart';
@@ -46,9 +45,7 @@ class SignInWithEmailStateNotifier extends StateNotifier<SignInWithEmailState> {
     if (user == null) return;
 
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => RoomListPage(RoomListRepository())
-        ),
+        MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
         (_) => false
     );
   }
