@@ -3,7 +3,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 
@@ -21,7 +20,7 @@ class AppStartPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<bool> isSignIn) {
 
         if (isSignIn.hasData && isSignIn.data) { // ログイン済の場合
-          return RoomListPage(RoomListRepository());
+          return RoomListPage();
         } else if (isSignIn.hasData && !isSignIn.data) { // ログインしていない場合
           return SignInPage();
         } else {
