@@ -1,10 +1,7 @@
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// ユーザーが所属しているルームの一覧を取得する
 class RoomListRepository {
