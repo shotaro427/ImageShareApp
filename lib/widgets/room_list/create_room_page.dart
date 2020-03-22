@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_share_app/models/create_room_bloc.dart';
+import 'package:image_share_app/models/room_list_model/create_room_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:provider/provider.dart';
