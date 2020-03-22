@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/create_room_bloc.dart';
-import 'package:image_share_app/repositories/room_list_repository/joined_room_list_repository.dart';
+import 'package:image_share_app/repositories/room_list_repository/create_room_repository.dart';
 import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class CreateRoomPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierProvider<CreateRoomStateNotifier, CreateRoomState>(
-      create: (_) => CreateRoomStateNotifier(RoomListRepository()),
+      create: (_) => CreateRoomStateNotifier(CreateRoomRepository()),
       child: Stack(
         children: <Widget>[
           GestureDetector(
