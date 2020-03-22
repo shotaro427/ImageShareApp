@@ -14,7 +14,7 @@ class RoomListRepository {
   /// FireStoreからユーザーが所属しているルーム一覧を取得する
   Future<List<RoomInfoEntity>> fetchJoinedRooms() async {
 
-    DocumentReference userRef = await fetchUserRef();
+    DocumentReference userRef = await _fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<RoomInfoEntity> _rooms = [];
 
@@ -31,65 +31,16 @@ class RoomListRepository {
     return _rooms;
   }
 
-  Future<List<DocumentSnapshot>> fetchWaitingRooms() async {
-
-    DocumentReference userRef = await fetchUserRef();
-    List<DocumentReference> _roomRefs = [];
-    List<DocumentSnapshot> _rooms = [];
-
-    /// ユーザーが招待されているルームの参照を取得
-    await db.document(userRef.path).collection("waitingRooms")
-        .getDocuments()
-        .then((data) {
-      _roomRefs.addAll(data.documents.map((doc) {
-        return doc.data["room"];
-      }));
-
-    }).catchError((e) => debugPrint(e.toString()));
-
-    /// ルームの参照のリストから、ルームのSnapShotを追加
-    for (final ref in _roomRefs) {
-      await ref.get().then((data) {
-        _rooms.add(data);
-      }).catchError((e) {
-        debugPrint(e.toString());
-      });
-    }
-    return _rooms;
-  }
-
-  Future joinRoom(DocumentReference roomRef) async {
-
-    final DocumentReference _userRef = await fetchUserRef();
-
-    // waitingRoomsコレクションから該当する部屋を削除
-    await _userRef.collection('waitingRooms')
-        .where('room', isEqualTo: roomRef)
-        .getDocuments()
-        .then((data) {
-          data.documents.first.reference.delete();
-        }).catchError((e) => debugPrint(e.toString()));
-
-    // roomsコレクションに部屋を追加
-    await _userRef.collection('rooms').add({
-      'room': roomRef
-    });
-
-  }
-
   Future<void> createRoom(String roomName) async {
-    DocumentReference _ref;
+
     // roomsコレクションに新規部屋を追加
-    DocumentReference _roomRef = await db.collection("rooms").add({
-      "name": roomName.toString()
-    }).then((data) => _ref = data )
-    .catchError((e) {
-      debugPrint(e.toString());
+    DocumentReference _roomRef = await db.collection('rooms').add({
+      'name': roomName.toString()
     });
 
-    DocumentReference userRef = await fetchUserRef();
+    DocumentReference userRef = await _fetchUserRef();
 
-    await db.document(_ref.path).collection("participants").add({
+    await db.document(_roomRef.path).collection("participants").add({
       "user": userRef
     });
     
@@ -103,22 +54,19 @@ class RoomListRepository {
   }
 
   /// ログインしているユーザーの参照を取得
-  Future<DocumentReference> fetchUserRef() async {
+  Future<DocumentReference> _fetchUserRef() async {
     var _user = await FirebaseAuth.instance.currentUser();
     var _authToken = _user.uid;
 
     DocumentReference _userRef;
 
-    await db.collection("users")
-        .where("uid", isEqualTo: _authToken)
-        .getDocuments()
-        .then((data) {
-          data.documents.forEach((doc) {
-            _userRef = doc.reference;
-          });
-        }).catchError((e) {
-          debugPrint(e.toString());
-        });
+    final _snapshots = await db.collection('users')
+        .where('uid', isEqualTo: _authToken)
+        .getDocuments();
+
+    if (_snapshots.documents.length > 0) {
+      _userRef = _snapshots.documents.first.reference;
+    }
 
     return _userRef;
   }
