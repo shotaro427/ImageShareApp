@@ -14,18 +14,14 @@ class CreateRoomRepository {
       'name': roomName.toString()
     });
 
-    DocumentReference userRef = await _fetchUserRef();
+    DocumentReference _userRef = await _fetchUserRef();
 
     await db.document(_roomRef.path).collection("participants").add({
-      "user": userRef
+      "user": _userRef
     });
 
-    await db.document(userRef.path).collection("rooms").add({
+    await db.document(_userRef.path).collection("rooms").add({
       "room": _roomRef
-    });
-
-    await db.document(userRef.path).updateData({
-      "userId": userRef.documentID
     });
   }
 

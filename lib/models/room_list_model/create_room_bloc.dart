@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/repositories/room_list_repository/create_room_repository.dart';
 import 'package:state_notifier/state_notifier.dart';
@@ -28,6 +30,7 @@ class CreateRoomStateNotifier extends StateNotifier<CreateRoomState> {
       await _repository.createRoom(roomName);
       state = const CreateRoomState.success();
     } catch(e) {
+      log(e.toString());
       state = CreateRoomState.error(message: e.toString());
     }
   }

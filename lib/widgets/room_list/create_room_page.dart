@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -22,6 +21,7 @@ class CreateRoomPage extends StatelessWidget {
               body: _InputRoomPage()
             ),
           ),
+          _LoadingWidget(),
         ],
       ),
     );
@@ -75,6 +75,48 @@ class _InputRoomPage extends StatelessWidget {
     if (_formKey.currentState.validate()) {
       String roomName = _roomNameController.text;
       await context.read<CreateRoomStateNotifier>().createRoom(roomName);
+
+      context.read<CreateRoomState>().maybeWhen(
+        null,
+        success: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Placeholder())),
+        error: (_) => _showErrorDialog(context),
+        orElse: () => null,
+      );
     }
+  }
+
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('エラー'),
+            content: const Text('グループを作成できませんでした。\n通信状況などを確認してから、もう一度お試しください'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        }
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<CreateRoomState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }
