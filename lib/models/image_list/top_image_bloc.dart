@@ -80,7 +80,7 @@ class TopImageRepository {
           .collection('rooms')
           .document(_roomId)
           .collection("images")
-          .orderBy("created_at")
+          .orderBy("created_at", descending: true)
           .startAfter([images.last.created_at])
           .limit(20);
     } else {
@@ -88,7 +88,7 @@ class TopImageRepository {
           .collection('rooms')
           .document(_roomId)
           .collection("images")
-          .orderBy("created_at")
+          .orderBy("created_at", descending: true)
           .limit(20);
     }
   }
