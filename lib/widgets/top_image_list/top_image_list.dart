@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_list/top_image_bloc.dart';
+import 'package:image_share_app/repositories/image_list_repositories/top_image_repository.dart';
+import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -18,8 +22,11 @@ class TopImagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(
-      create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),
+    return MultiProvider(
+      providers: [
+        StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),),
+        Provider<RoomInfoEntity>.value(value: _roomInfoEntity),
+      ],
       child: Stack(
         children: <Widget>[
           Scaffold(
@@ -42,7 +49,33 @@ class TopImagesPage extends StatelessWidget {
           _LoadingWidget()
         ],
       ),
+
     );
+//    return StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(
+//      create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),
+//      child: Stack(
+//        children: <Widget>[
+//          Scaffold(
+//            appBar: AppBar(
+//              title: Text(_roomInfoEntity.name),
+//              actions: <Widget>[
+//                IconButton(
+//                  icon: const Icon(Icons.settings, color: Colors.white,),
+//                  // TODO: 設定画面のコンストラクタの作成
+//                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
+//                )
+//              ],
+//            ),
+//            body: _ImagesWidget(),
+//            floatingActionButton: FloatingActionButton(
+//              child: const Icon(Icons.add),
+//              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
+//            ),
+//          ),
+//          _LoadingWidget()
+//        ],
+//      ),
+//    );
   }
 }
 
@@ -89,9 +122,10 @@ class _ImageTile extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
+    final _roomInfoEntity = context.read<RoomInfoEntity>();
     return GestureDetector(
       // TODO: 画像詳細画面のコンストラクタの設定
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_entity, _roomInfoEntity))),
       child: Card(
         elevation: 10,
         child: Column(

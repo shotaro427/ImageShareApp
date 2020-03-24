@@ -4,15 +4,18 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_share_app/Entities/image_entity/image_entity.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 
 class ImageDetailBloc extends AbstractLoadingBloc {
 
-  final DocumentSnapshot imageDocument;
+  final ImageEntity _entity;
+  final RoomInfoEntity _roomInfoEntity;
 
-  ImageDetailBloc(this.imageDocument) {
-    titleController.text =  (imageDocument.data['title'] != null) ? imageDocument.data['title'].toString() : "名無し";
-    memoController.text = (imageDocument.data['memo'] != null) ? imageDocument.data['memo'].toString() : "";
+  ImageDetailBloc(this._entity, this._roomInfoEntity) {
+    titleController.text =  (_entity.title != null) ? _entity.title : "名無し";
+    memoController.text = (_entity.memo != null) ? _entity.memo : "";
   }
 
   final StreamController<bool> _changeEditableStreamController = StreamController<bool>();
@@ -29,7 +32,7 @@ class ImageDetailBloc extends AbstractLoadingBloc {
     // 編集モードの時
     if (isEditingMode) {
       _loadingController.sink.add(LoadingType.LOADING);
-      await _updateImageInfo(imageDocument);
+      await _updateImageInfo();
       _loadingController.sink.add(LoadingType.COMPLETED);
     }
     _changeEditableStreamController.sink.add(!isEditingMode);
@@ -39,16 +42,18 @@ class ImageDetailBloc extends AbstractLoadingBloc {
     _changeEditableStreamController.sink.add(false);
   }
 
-  Future<void> _updateImageInfo(DocumentSnapshot imageInfo) {
+  Future<void> _updateImageInfo() async {
 
     final String _title = (titleController.text.isEmpty || titleController.text == null) ? '名無し' : titleController.text.toString();
     final String _memo = (memoController.text.isEmpty || memoController.text == null) ? '' : memoController.text.toString();
 
-    imageInfo.reference.updateData({
-      'title': _title,
-      'memo': _memo,
-      'updated_at': DateTime.now().millisecondsSinceEpoch.toString()
-    });
+    await Firestore.instance
+        .document('rooms/${_roomInfoEntity.roomId}/images/${_entity.image_id}')
+        .updateData({
+          'title': _title,
+          'memo': _memo,
+          'updated_at': DateTime.now().millisecondsSinceEpoch.toString()
+        });
   }
 
   void dispose() {
