@@ -18,7 +18,7 @@ class ImageDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<ImageDetailBloc>(
-      create: (_) => ImageDetailBloc(imageDocument),
+      create: (_) => ImageDetailBloc(imageDocument, _entity),
       dispose: (_ ,bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
