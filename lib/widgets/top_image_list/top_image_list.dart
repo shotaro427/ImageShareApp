@@ -1,53 +1,46 @@
 
-
-import 'dart:typed_data';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:image_share_app/models/top_image_bloc.dart';
-import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
-import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
-import 'package:image_share_app/widgets/room_settings/room_settings_page.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:image_share_app/Entities/image_entity/image_entity.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
+import 'package:image_share_app/models/image_list/top_image_bloc.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class TopImagesPage extends StatelessWidget {
 
-  final DocumentSnapshot roomInfo;
+  final RoomInfoEntity _roomInfoEntity;
 
-  TopImagesPage(this.roomInfo);
+  TopImagesPage(this._roomInfoEntity);
 
   @override
   Widget build(BuildContext context) {
-    return Provider<TopImagesBloc>(
-      create: (_) => TopImagesBloc(TopImageRepository(roomInfo.reference.path)),
-      dispose: (_, bloc) => bloc.dispose(),
+    return StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(
+      create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),
       child: Stack(
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: Text(roomInfo["name"].toString()),
+              title: Text(_roomInfoEntity.name),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.settings, color: Colors.white,),
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(roomInfo))),
+                  icon: const Icon(Icons.settings, color: Colors.white,),
+                  // TODO: 設定画面のコンストラクタの作成
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
                 )
               ],
             ),
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ImageUploadPage(roomInfo.data["roomId"]);
-                }));
-                },
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
             ),
           ),
-          CommonLoadingWidget<TopImagesBloc>(isShowDialog: false,)
-        ]
+          _LoadingWidget()
+        ],
       ),
     );
   }
@@ -56,25 +49,29 @@ class TopImagesPage extends StatelessWidget {
 class _ImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TopImagesBloc bloc = Provider.of<TopImagesBloc>(context);
+    TopImageListStateNotifier notifier = context.read<TopImageListStateNotifier>();
     return RefreshIndicator(
-      onRefresh: bloc.refreshImages,
+      onRefresh: notifier.refresh,
       child: Container(
-        child: StreamBuilder<List<DocumentSnapshot>>(
-          stream: bloc.imagesValue,
-          initialData: const [],
-          builder: (context, snapshot) {
-            return StaggeredGridView.countBuilder(
-              controller: bloc.scrollController,
-              crossAxisCount: 4,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              padding: const EdgeInsets.all(4),
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                return _ImageTile(snapshot.data[index]);
+        child: StateNotifierBuilder<TopImageListState>(
+          stateNotifier: notifier,
+          builder: (context, state, _) {
+            return state.maybeWhen(
+              () => const SizedBox.shrink(),
+              success: (images) {
+                return StaggeredGridView.countBuilder(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 4.0,
+                  crossAxisSpacing: 4.0,
+                  padding: const EdgeInsets.all(4),
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return _ImageTile(images[index]);
+                  },
+                  staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+                );
               },
-              staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+              orElse: () => const SizedBox.shrink(),
             );
           },
         ),
@@ -86,14 +83,15 @@ class _ImagesWidget extends StatelessWidget {
 /// 一覧の画像のセル
 class _ImageTile extends StatelessWidget {
 
-  final DocumentSnapshot _data;
+  final ImageEntity _entity;
 
-  _ImageTile(this._data);
+  _ImageTile(this._entity);
 
   @override 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_data))),
+      // TODO: 画像詳細画面のコンストラクタの設定
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
       child: Card(
         elevation: 10,
         child: Column(
@@ -103,7 +101,7 @@ class _ImageTile extends StatelessWidget {
               child: FadeInImage.memoryNetwork(
                 fit: BoxFit.fitWidth,
                 placeholder: kTransparentImage,
-                image: _data['url'],
+                image: _entity.url,
                 fadeInCurve: Curves.easeInOut,
               ),
             ),
@@ -112,7 +110,7 @@ class _ImageTile extends StatelessWidget {
               child: new Column(
                 children: <Widget>[
                   Text(
-                    (_data['title'] != null) ? _data['title'] : "名無し",
+                    (_entity.title != null) ? _entity.title : "名無し",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -125,70 +123,19 @@ class _ImageTile extends StatelessWidget {
   }
 }
 
-/// フェードするアニメーション
-final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
-  0x89,
-  0x50,
-  0x4E,
-  0x47,
-  0x0D,
-  0x0A,
-  0x1A,
-  0x0A,
-  0x00,
-  0x00,
-  0x00,
-  0x0D,
-  0x49,
-  0x48,
-  0x44,
-  0x52,
-  0x00,
-  0x00,
-  0x00,
-  0x01,
-  0x00,
-  0x00,
-  0x00,
-  0x01,
-  0x08,
-  0x06,
-  0x00,
-  0x00,
-  0x00,
-  0x1F,
-  0x15,
-  0xC4,
-  0x89,
-  0x00,
-  0x00,
-  0x00,
-  0x0A,
-  0x49,
-  0x44,
-  0x41,
-  0x54,
-  0x78,
-  0x9C,
-  0x63,
-  0x00,
-  0x01,
-  0x00,
-  0x00,
-  0x05,
-  0x00,
-  0x01,
-  0x0D,
-  0x0A,
-  0x2D,
-  0xB4,
-  0x00,
-  0x00,
-  0x00,
-  0x00,
-  0x49,
-  0x45,
-  0x4E,
-  0x44,
-  0xAE,
-]);
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<TopImageListState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
+  }
+}

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,8 +56,6 @@ class ImageUploadRepository {
   /// FireStorageに画像をアップロードする
   Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
 
-    debugPrint(timestamp.toString());
-
     final StorageReference _ref = FirebaseStorage()
         .ref()
         .child("roomImages")
@@ -74,8 +71,6 @@ class ImageUploadRepository {
   }
 
   Future postImageWithTitle(String roomId, int timestamp, {String title, String memoText}) async {
-
-    debugPrint(timestamp.toString());
 
     String _title = "名無し";
     String _memoText = "";
