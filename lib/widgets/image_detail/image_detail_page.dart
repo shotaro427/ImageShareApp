@@ -1,8 +1,10 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_detail_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
@@ -10,15 +12,15 @@ import 'package:provider/provider.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
-  final DocumentSnapshot imageDocument;
-  final ImageEntity _entity;
+  final ImageEntity _imageEntity;
+  final RoomInfoEntity _roomInfoEntity;
 
-  ImageDetailPage(this.imageDocument, this._entity);
+  ImageDetailPage(this._imageEntity, this._roomInfoEntity);
 
   @override
   Widget build(BuildContext context) {
     return Provider<ImageDetailBloc>(
-      create: (_) => ImageDetailBloc(imageDocument, _entity),
+      create: (_) => ImageDetailBloc( _imageEntity, _roomInfoEntity),
       dispose: (_ ,bloc) => bloc.dispose(),
       child: Stack(
         children: <Widget>[
@@ -27,7 +29,7 @@ class ImageDetailPage extends StatelessWidget {
               title: const Text('詳細'),
             ),
             backgroundColor: Colors.black,
-            body: _LayoutDetailImage(imageDocument, _entity),
+            body: _LayoutDetailImage(_imageEntity),
           ),
           CommonLoadingWidget<ImageDetailBloc>(dialogTitle: '投稿の変更',)
         ],
@@ -38,10 +40,9 @@ class ImageDetailPage extends StatelessWidget {
 
 class _LayoutDetailImage extends StatelessWidget {
 
-  final DocumentSnapshot imageDocument;
   final ImageEntity _entity;
 
-  _LayoutDetailImage(this.imageDocument, this._entity);
+  _LayoutDetailImage(this._entity);
 
   @override
   Widget build(BuildContext context) {
