@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
@@ -14,8 +15,9 @@ import 'package:transparent_image/transparent_image.dart';
 class TopImagesPage extends StatelessWidget {
 
   final DocumentSnapshot roomInfo;
+  final RoomInfoEntity _roomInfoEntity;
 
-  TopImagesPage(this.roomInfo);
+  TopImagesPage(this.roomInfo, this._roomInfoEntity);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class TopImagesPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: Text(roomInfo["name"].toString()),
+              title: Text(_roomInfoEntity.name),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.settings, color: Colors.white,),
@@ -37,11 +39,7 @@ class TopImagesPage extends StatelessWidget {
             body: _ImagesWidget(),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ImageUploadPage(roomInfo.data["roomId"]);
-                }));
-                },
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
             ),
           ),
           CommonLoadingWidget<TopImagesBloc>(isShowDialog: false,)
