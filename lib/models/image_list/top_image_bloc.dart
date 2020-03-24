@@ -46,6 +46,7 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
           state = TopImageListState.success(images: _images);
         } else {
           _isFinished = true;
+          state = const TopImageListState.success(images: []);
         }
       }
     } catch(e) {
