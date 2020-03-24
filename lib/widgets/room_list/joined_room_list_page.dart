@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/room_list_model.dart';
+import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 import 'package:provider/provider.dart';
 
 /// すでに参加しているルーム一覧
@@ -63,7 +64,7 @@ class RoomListContainerWidget extends StatelessWidget {
                         rooms[index].name,
                         style: const TextStyle(fontSize: 20),
                       ),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const Placeholder())),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
                     ),
                   );
                 },

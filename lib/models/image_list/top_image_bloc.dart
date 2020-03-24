@@ -24,7 +24,9 @@ abstract class TopImageListState with _$TopImageListState {
 class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
   final TopImageRepository _repository;
 
-  TopImageListStateNotifier(this._repository): super(const TopImageListState());
+  TopImageListStateNotifier(this._repository): super(const TopImageListState()) {
+    fetchImages();
+  }
 
   /// 取得した投稿情報
   List<ImageEntity> _images = [];
@@ -54,7 +56,7 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
   }
 
   /// 一覧を初期化してから再取得する
-  void refresh() async {
+  Future<void> refresh() async {
     _images = [];
     _isFinished = false;
     await fetchImages();
