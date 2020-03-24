@@ -4,7 +4,19 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'top_image_bloc.freezed.dart';
+
+@freezed
+abstract class TopImageListState with _$TopImageListState {
+  const factory TopImageListState() = _TopImageListState;
+  const factory TopImageListState.loading() = Loading;
+  const factory TopImageListState.success({@required List<ImageEntity> images}) = Success;
+  const factory TopImageListState.error({@Default('') String message}) = ErrorDetails;
+}
 
 /// トップ画面のBLoCクラス
 class TopImagesBloc extends AbstractLoadingBloc {

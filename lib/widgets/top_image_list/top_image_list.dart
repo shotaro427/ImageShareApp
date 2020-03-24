@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
-import 'package:image_share_app/models/top_image_bloc.dart';
+import 'package:image_share_app/models/image_list/top_image_bloc.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
 import 'package:image_share_app/widgets/room_settings/room_settings_page.dart';
@@ -32,7 +32,8 @@ class TopImagesPage extends StatelessWidget {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.settings, color: Colors.white,),
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(roomInfo))),
+                  // TODO: 設定画面のコンストラクタの作成
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
                 )
               ],
             ),
@@ -89,6 +90,7 @@ class _ImageTile extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
     return GestureDetector(
+      // TODO: 画像詳細画面のコンストラクタの設定
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_data))),
       child: Card(
         elevation: 10,
