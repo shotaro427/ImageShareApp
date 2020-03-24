@@ -13,6 +13,7 @@ ImageEntity _$ImageEntityFromJson(Map<String, dynamic> json) {
 
 mixin _$ImageEntity {
   String get title;
+  String get image_id;
   String get memo;
   String get created_at;
   String get updated_at;
@@ -21,6 +22,7 @@ mixin _$ImageEntity {
 
   ImageEntity copyWith(
       {String title,
+      String image_id,
       String memo,
       String created_at,
       String updated_at,
@@ -35,6 +37,7 @@ class _$ImageEntityTearOff {
 
   _ImageEntity call(
       {String title,
+      String image_id,
       String memo,
       String created_at,
       String updated_at,
@@ -42,6 +45,7 @@ class _$ImageEntityTearOff {
       String url}) {
     return _ImageEntity(
       title: title,
+      image_id: image_id,
       memo: memo,
       created_at: created_at,
       updated_at: updated_at,
@@ -54,9 +58,10 @@ class _$ImageEntityTearOff {
 const $ImageEntity = _$ImageEntityTearOff();
 
 @JsonSerializable()
-class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
+class _$_ImageEntity implements _ImageEntity {
   const _$_ImageEntity(
       {this.title,
+      this.image_id,
       this.memo,
       this.created_at,
       this.updated_at,
@@ -69,6 +74,8 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
   @override
   final String title;
   @override
+  final String image_id;
+  @override
   final String memo;
   @override
   final String created_at;
@@ -80,21 +87,8 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
   final String url;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageEntity(title: $title, memo: $memo, created_at: $created_at, updated_at: $updated_at, originalUrl: $originalUrl, url: $url)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'ImageEntity'))
-      ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('memo', memo))
-      ..add(DiagnosticsProperty('created_at', created_at))
-      ..add(DiagnosticsProperty('updated_at', updated_at))
-      ..add(DiagnosticsProperty('originalUrl', originalUrl))
-      ..add(DiagnosticsProperty('url', url));
+  String toString() {
+    return 'ImageEntity(title: $title, image_id: $image_id, memo: $memo, created_at: $created_at, updated_at: $updated_at, originalUrl: $originalUrl, url: $url)';
   }
 
   @override
@@ -103,6 +97,9 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
         (other is _ImageEntity &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.image_id, image_id) ||
+                const DeepCollectionEquality()
+                    .equals(other.image_id, image_id)) &&
             (identical(other.memo, memo) ||
                 const DeepCollectionEquality().equals(other.memo, memo)) &&
             (identical(other.created_at, created_at) ||
@@ -122,6 +119,7 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(image_id) ^
       const DeepCollectionEquality().hash(memo) ^
       const DeepCollectionEquality().hash(created_at) ^
       const DeepCollectionEquality().hash(updated_at) ^
@@ -131,6 +129,7 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
   @override
   _$_ImageEntity copyWith({
     Object title = freezed,
+    Object image_id = freezed,
     Object memo = freezed,
     Object created_at = freezed,
     Object updated_at = freezed,
@@ -139,6 +138,7 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
   }) {
     return _$_ImageEntity(
       title: title == freezed ? this.title : title as String,
+      image_id: image_id == freezed ? this.image_id : image_id as String,
       memo: memo == freezed ? this.memo : memo as String,
       created_at:
           created_at == freezed ? this.created_at : created_at as String,
@@ -159,6 +159,7 @@ class _$_ImageEntity with DiagnosticableTreeMixin implements _ImageEntity {
 abstract class _ImageEntity implements ImageEntity {
   const factory _ImageEntity(
       {String title,
+      String image_id,
       String memo,
       String created_at,
       String updated_at,
@@ -170,6 +171,8 @@ abstract class _ImageEntity implements ImageEntity {
 
   @override
   String get title;
+  @override
+  String get image_id;
   @override
   String get memo;
   @override
@@ -184,6 +187,7 @@ abstract class _ImageEntity implements ImageEntity {
   @override
   _ImageEntity copyWith(
       {String title,
+      String image_id,
       String memo,
       String created_at,
       String updated_at,
