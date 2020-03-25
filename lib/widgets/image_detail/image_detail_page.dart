@@ -28,7 +28,6 @@ class ImageDetailPage extends StatelessWidget {
             appBar: AppBar(
               title: const Text('詳細'),
             ),
-            backgroundColor: Colors.black,
             body: _LayoutDetailImage(_imageEntity),
           ),
           CommonLoadingWidget<ImageDetailBloc>(dialogTitle: '投稿の変更',)
@@ -56,10 +55,6 @@ class _LayoutDetailImage extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 300,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.white,
-              ),
               padding: const EdgeInsets.all(10),
               child: GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
@@ -70,20 +65,39 @@ class _LayoutDetailImage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 3),
             Expanded(
               child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
+                  boxShadow: const [
+                    const BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 20,
+                      spreadRadius: 5,
+                      offset: const Offset(0, 10,),
+                    ),
+                  ],
                   color: Colors.white
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Center(
+                      child: const SizedBox(
+                        width: 60,
+                        height: 3,
+                        child: const DecoratedBox(
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Flexible(
@@ -106,11 +120,18 @@ class _LayoutDetailImage extends StatelessWidget {
                           ),
                           Row(
                             children: <Widget>[
-                              IconButton(
-                                icon: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                              OutlineButton(
+                                child: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
                                 onPressed: () {
                                   _bloc.changeEditableState(snapshot.data);
                                 },
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.greenAccent,
+                                    width: 3
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
                               ),
                               Visibility(
                                 child: IconButton(
@@ -125,51 +146,51 @@ class _LayoutDetailImage extends StatelessWidget {
                           )
                         ],
                       ),
-                      const SizedBox(height: 25,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.local_offer, color: Colors.grey,),
-                              const Text('タグ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 15,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Icon(Icons.note, color: Colors.grey,),
-                              const Text('メモ', style: TextStyle(color: Colors.grey),)
-                            ],
-                          ),
-                          Flexible(
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 30),
-                              child: TextFormField(
-                                style: const TextStyle(
-                                    color: Colors.black
-                                ),
-                                controller: _bloc.memoController,
-                                decoration: InputDecoration.collapsed(
-                                  hintStyle: TextStyle(
-                                    color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
-                                  ),
-                                  hintText: 'メモを書き込めます',
-                                ),
-                                // 編集モードのときはTextFormFieldの編集を可能にする
-                                enabled: (snapshot.hasData && snapshot.data),
+                    ),
+                    const SizedBox(height: 25,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Icon(Icons.local_offer, color: Colors.grey,),
+                            const Text('タグ', style: TextStyle(color: Colors.grey),)
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 15,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Icon(Icons.note, color: Colors.grey,),
+                            const Text('メモ', style: TextStyle(color: Colors.grey),)
+                          ],
+                        ),
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: TextFormField(
+                              style: const TextStyle(
+                                  color: Colors.black
                               ),
+                              controller: _bloc.memoController,
+                              decoration: InputDecoration.collapsed(
+                                hintStyle: TextStyle(
+                                  color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
+                                ),
+                                hintText: 'メモを書き込めます',
+                              ),
+                              // 編集モードのときはTextFormFieldの編集を可能にする
+                              enabled: (snapshot.hasData && snapshot.data),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             )
