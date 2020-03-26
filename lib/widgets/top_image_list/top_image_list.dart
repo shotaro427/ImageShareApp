@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -51,31 +49,6 @@ class TopImagesPage extends StatelessWidget {
       ),
 
     );
-//    return StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(
-//      create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),
-//      child: Stack(
-//        children: <Widget>[
-//          Scaffold(
-//            appBar: AppBar(
-//              title: Text(_roomInfoEntity.name),
-//              actions: <Widget>[
-//                IconButton(
-//                  icon: const Icon(Icons.settings, color: Colors.white,),
-//                  // TODO: 設定画面のコンストラクタの作成
-//                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
-//                )
-//              ],
-//            ),
-//            body: _ImagesWidget(),
-//            floatingActionButton: FloatingActionButton(
-//              child: const Icon(Icons.add),
-//              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
-//            ),
-//          ),
-//          _LoadingWidget()
-//        ],
-//      ),
-//    );
   }
 }
 
