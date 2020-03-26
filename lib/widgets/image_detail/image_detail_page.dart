@@ -48,7 +48,6 @@ class _LayoutDetailImage extends StatelessWidget {
       children: <Widget>[
         Container(
           height: 300,
-          padding: const EdgeInsets.all(10),
           child: GestureDetector(
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
             child: Image(
