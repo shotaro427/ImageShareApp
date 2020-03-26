@@ -58,6 +58,9 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
     } else {
       // viewingモードに変更
       state = ImageDetailState.viewing(imageEntity: _imageEntity);
+      // テキストを初期化
+      titleController.text =  (_imageEntity.title != null) ? _imageEntity.title : "名無し";
+      memoController.text = (_imageEntity.memo != null) ? _imageEntity.memo : "";
     }
   }
 
