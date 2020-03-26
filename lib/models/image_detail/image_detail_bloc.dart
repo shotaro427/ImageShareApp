@@ -7,6 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'image_detail_bloc.freezed.dart';
+
+@freezed
+abstract class ImageDetailState with _$ImageDetailState {
+  const factory ImageDetailState() = _ImageDetailState;
+  const factory ImageDetailState.loading() = Loading;
+  const factory ImageDetailState.success({@required ImageEntity imageEntity}) = Success;
+  const factory ImageDetailState.editing({@required ImageEntity imageEntity}) = Editing;
+  const factory ImageDetailState.error({@Default('') String message}) = ErrorDetails;
+}
 
 class ImageDetailBloc extends AbstractLoadingBloc {
 
