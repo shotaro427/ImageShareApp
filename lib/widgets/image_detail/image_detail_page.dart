@@ -134,12 +134,10 @@ class _LayoutDetailImage extends StatelessWidget {
                                   );
                                   context.read<ImageDetailStateNotifier>().switchingMode(!mode, withSave: true);
                                 },
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Colors.greenAccent,
-                                      width: 3
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
+                                borderSide: const BorderSide(
+                                  width: 2,
+                                  color: Colors.black26
                                 ),
                               ),
                               Visibility(
