@@ -7,7 +7,7 @@ import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 class ImageDetailRepository {
 
   /// 該当の投稿の情報を上書きする処理
-  Future<ImageEntity> _updateFirestore(ImageEntity imageEntity, RoomInfoEntity roomInfoEntity, String title, String memo) async {
+  Future<ImageEntity> updateFirestore(ImageEntity imageEntity, RoomInfoEntity roomInfoEntity, String title, String memo) async {
     await Firestore.instance
         .document('rooms/${roomInfoEntity.roomId}/images/${imageEntity.image_id}')
         .updateData({

@@ -28,8 +28,7 @@ class ImageDetailPage extends StatelessWidget {
             ),
             body: _LayoutDetailImage(_imageEntity),
           ),
-          // TODO: ローディングWidgetを追加する
-
+          _LoadingWidget(),
         ],
       ),
     );
@@ -217,6 +216,23 @@ class _LayoutDetailImage extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<ImageDetailState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

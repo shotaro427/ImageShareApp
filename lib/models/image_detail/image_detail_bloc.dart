@@ -68,7 +68,7 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
     final String _memo = (memoController.text.isEmpty || memoController.text == null) ? '' : memoController.text.toString();
 
     // repositoryからfirestoreに保存する関数を呼び出す
-    final _newImage = await _repository._updateFirestore(_imageEntity, _roomInfoEntity, _title, _memo);
+    final _newImage = await _repository.updateFirestore(_imageEntity, _roomInfoEntity, _title, _memo);
 
     return _imageEntity.copyWith(
         title: _newImage.title,
