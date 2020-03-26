@@ -5,6 +5,7 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_detail/image_detail_bloc.dart';
+import 'package:image_share_app/repositories/image_detail/image_detail_repository.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 import 'package:provider/provider.dart';
 
