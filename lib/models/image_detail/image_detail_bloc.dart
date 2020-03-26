@@ -17,7 +17,7 @@ part 'image_detail_bloc.freezed.dart';
 abstract class ImageDetailState with _$ImageDetailState {
   const factory ImageDetailState() = _ImageDetailState;
   const factory ImageDetailState.loading() = Loading;
-  const factory ImageDetailState.success({@required ImageEntity imageEntity}) = Success;
+  const factory ImageDetailState.viewing({@required ImageEntity imageEntity}) = Success;
   const factory ImageDetailState.editing({@required ImageEntity imageEntity}) = Editing;
   const factory ImageDetailState.error({@Default('') String message}) = ErrorDetails;
 }
@@ -38,21 +38,27 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController memoController = TextEditingController();
 
-  void changeEditingMode(bool toEditingMode) async {
+  /// viewingモードとeditingモードを切り替える
+  void switchingMode(bool toEditingMode, {bool withSave = false}) async {
     if (toEditingMode) {
+      // editingモードに変更
+      state = ImageDetailState.editing(imageEntity: _imageEntity);
+    } else if (withSave) {
       // ローディング
       state = const ImageDetailState.loading();
-
       try {
         // 投稿を更新
         final ImageEntity _newImage = await _updateImageInfo();
-        // 更新を反映
-        state = ImageDetailState.editing(imageEntity: _newImage);
+        // viewingモードに変更
+        state = ImageDetailState.viewing(imageEntity: _newImage);
       } catch(e) {
         // エラー時の処理
         log(e.toString());
         state = ImageDetailState.error(message: e.toString());
       }
+    } else {
+      // viewingモードに変更
+      state = ImageDetailState.viewing(imageEntity: _imageEntity);
     }
   }
 

@@ -1,12 +1,10 @@
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_detail/image_detail_bloc.dart';
-import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +17,8 @@ class ImageDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ImageDetailBloc>(
-      create: (_) => ImageDetailBloc( _imageEntity, _roomInfoEntity),
-      dispose: (_ ,bloc) => bloc.dispose(),
+    return StateNotifierProvider<ImageDetailStateNotifier, ImageDetailState>(
+      create: (_) => ImageDetailStateNotifier(_imageEntity, _roomInfoEntity, ImageDetailRepository()),
       child: Stack(
         children: <Widget>[
           Scaffold(
@@ -30,7 +27,8 @@ class ImageDetailPage extends StatelessWidget {
             ),
             body: _LayoutDetailImage(_imageEntity),
           ),
-          CommonLoadingWidget<ImageDetailBloc>(dialogTitle: '投稿の変更',)
+          // TODO: ローディングWidgetを追加する
+
         ],
       ),
     );
@@ -45,43 +43,41 @@ class _LayoutDetailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
 
-    return StreamBuilder<bool>(
-      initialData: false,
-      stream: _bloc.changeEditableStream,
-      builder: (context, snapshot) {
-        return Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              padding: const EdgeInsets.all(10),
-              child: GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
-                child: Image(
-                  fit: BoxFit.contain,
-                  width: MediaQuery.of(context).size.width,
-                  image: NetworkImage(_entity.originalUrl),
-                ),
-              ),
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 300,
+          padding: const EdgeInsets.all(10),
+          child: GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
+            child: Image(
+              fit: BoxFit.contain,
+              width: MediaQuery.of(context).size.width,
+              image: NetworkImage(_entity.originalUrl),
             ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: const [
-                    const BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                      offset: const Offset(0, 10,),
-                    ),
-                  ],
-                  color: Colors.white
-                ),
-                child: Column(
+          ),
+        ),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  const BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                    offset: const Offset(0, 10,),
+                  ),
+                ],
+                color: Colors.white
+            ),
+            child: StateNotifierBuilder<ImageDetailState>(
+              stateNotifier: context.read<ImageDetailStateNotifier>(),
+              builder: (context, state, _) {
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Center(
@@ -103,11 +99,11 @@ class _LayoutDetailImage extends StatelessWidget {
                           Flexible(
                             child: TextFormField(
                               style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
                               ),
-                              controller: _bloc.titleController,
+                              controller: context.read<ImageDetailStateNotifier>().titleController,
                               decoration: const InputDecoration.collapsed(
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
@@ -115,20 +111,33 @@ class _LayoutDetailImage extends StatelessWidget {
                                 hintText: 'タイトル',
                               ),
                               // 編集モードのときはTextFormFieldの編集を可能にする
-                              enabled: (snapshot.hasData && snapshot.data),
+                              enabled: state.maybeWhen(
+                                  () => false,
+                                  editing: (_) => true,
+                                  orElse: () => false
+                              ),
                             ),
                           ),
                           Row(
                             children: <Widget>[
                               OutlineButton(
-                                child: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+                                child: state.maybeWhen(
+                                    () => const Text('編集'),
+                                    editing: (_) => const Text('保存'),
+                                    orElse: () => const Text('編集')
+                                ),
                                 onPressed: () {
-                                  _bloc.changeEditableState(snapshot.data);
+                                  final bool mode = state.maybeWhen(
+                                      () => false,
+                                      editing: (_) => true,
+                                      orElse: () => false
+                                  );
+                                  context.read<ImageDetailStateNotifier>().switchingMode(!mode, withSave: true);
                                 },
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: Colors.greenAccent,
-                                    width: 3
+                                      color: Colors.greenAccent,
+                                      width: 3
                                   ),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -136,11 +145,13 @@ class _LayoutDetailImage extends StatelessWidget {
                               Visibility(
                                 child: IconButton(
                                   icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    _bloc.cancelEdit();
-                                  },
+                                  onPressed: () => context.read<ImageDetailStateNotifier>().switchingMode(false),
                                 ),
-                                visible: (snapshot.hasData && snapshot.data),
+                                visible: state.maybeWhen(
+                                    () => false,
+                                    editing: (_) => true,
+                                    orElse: () => false
+                                ),
                               ),
                             ],
                           )
@@ -154,7 +165,8 @@ class _LayoutDetailImage extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             Icon(Icons.local_offer, color: Colors.grey,),
-                            const Text('タグ', style: TextStyle(color: Colors.grey),)
+                            const Text(
+                              'タグ', style: TextStyle(color: Colors.grey),)
                           ],
                         )
                       ],
@@ -166,37 +178,198 @@ class _LayoutDetailImage extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             Icon(Icons.note, color: Colors.grey,),
-                            const Text('メモ', style: TextStyle(color: Colors.grey),)
+                            const Text(
+                              'メモ', style: TextStyle(color: Colors.grey),)
                           ],
                         ),
                         Flexible(
                           child: Container(
                             padding: const EdgeInsets.only(left: 30),
                             child: TextFormField(
-                              style: const TextStyle(
-                                  color: Colors.black
-                              ),
-                              controller: _bloc.memoController,
+                              style: const TextStyle(color: Colors.black),
+                              controller: context.read<ImageDetailStateNotifier>().memoController,
                               decoration: InputDecoration.collapsed(
                                 hintStyle: TextStyle(
-                                  color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
+                                  color: state.maybeWhen(
+                                      () => Colors.transparent,
+                                      editing: (_) => Colors.grey,
+                                      orElse: () => Colors.transparent
+                                  ),
                                 ),
                                 hintText: 'メモを書き込めます',
                               ),
                               // 編集モードのときはTextFormFieldの編集を可能にする
-                              enabled: (snapshot.hasData && snapshot.data),
+                              enabled: state.maybeWhen(
+                                  () => false,
+                                  editing: (_) => true,
+                                  orElse: () => false
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ],
-                ),
-              ),
-            )
-          ],
-        );
-      }
+                );
+              }
+            ),
+          ),
+        )
+      ],
     );
+
+//    ImageDetailBloc _bloc = Provider.of<ImageDetailBloc>(context, listen: false);
+//
+//    return StreamBuilder<bool>(
+//      initialData: false,
+//      stream: _bloc.changeEditableStream,
+//      builder: (context, snapshot) {
+//        return Column(
+//          children: <Widget>[
+//            Container(
+//              height: 300,
+//              padding: const EdgeInsets.all(10),
+//              child: GestureDetector(
+//                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
+//                child: Image(
+//                  fit: BoxFit.contain,
+//                  width: MediaQuery.of(context).size.width,
+//                  image: NetworkImage(_entity.originalUrl),
+//                ),
+//              ),
+//            ),
+//            Expanded(
+//              child: Container(
+//                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+//                width: MediaQuery.of(context).size.width,
+//                decoration: BoxDecoration(
+//                  borderRadius: BorderRadius.circular(30),
+//                  boxShadow: const [
+//                    const BoxShadow(
+//                      color: Colors.black,
+//                      blurRadius: 20,
+//                      spreadRadius: 5,
+//                      offset: const Offset(0, 10,),
+//                    ),
+//                  ],
+//                  color: Colors.white
+//                ),
+//                child: Column(
+//                  crossAxisAlignment: CrossAxisAlignment.start,
+//                  children: <Widget>[
+//                    const Center(
+//                      child: const SizedBox(
+//                        width: 60,
+//                        height: 3,
+//                        child: const DecoratedBox(
+//                          decoration: const BoxDecoration(
+//                            color: Colors.grey,
+//                          ),
+//                        ),
+//                      ),
+//                    ),
+//                    Padding(
+//                      padding: const EdgeInsets.only(top: 20),
+//                      child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                        children: <Widget>[
+//                          Flexible(
+//                            child: TextFormField(
+//                              style: const TextStyle(
+//                                fontSize: 30,
+//                                fontWeight: FontWeight.bold,
+//                                color: Colors.black
+//                              ),
+//                              controller: _bloc.titleController,
+//                              decoration: const InputDecoration.collapsed(
+//                                hintStyle: TextStyle(
+//                                  color: Colors.grey,
+//                                ),
+//                                hintText: 'タイトル',
+//                              ),
+//                              // 編集モードのときはTextFormFieldの編集を可能にする
+//                              enabled: (snapshot.hasData && snapshot.data),
+//                            ),
+//                          ),
+//                          Row(
+//                            children: <Widget>[
+//                              OutlineButton(
+//                                child: (snapshot.hasData && snapshot.data) ? const Text('保存') : const Text('編集'),
+//                                onPressed: () {
+//                                  _bloc.changeEditableState(snapshot.data);
+//                                },
+//                                shape: RoundedRectangleBorder(
+//                                  side: BorderSide(
+//                                    color: Colors.greenAccent,
+//                                    width: 3
+//                                  ),
+//                                  borderRadius: BorderRadius.circular(5),
+//                                ),
+//                              ),
+//                              Visibility(
+//                                child: IconButton(
+//                                  icon: const Icon(Icons.close),
+//                                  onPressed: () {
+//                                    _bloc.cancelEdit();
+//                                  },
+//                                ),
+//                                visible: (snapshot.hasData && snapshot.data),
+//                              ),
+//                            ],
+//                          )
+//                        ],
+//                      ),
+//                    ),
+//                    const SizedBox(height: 25,),
+//                    Row(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        Column(
+//                          children: <Widget>[
+//                            Icon(Icons.local_offer, color: Colors.grey,),
+//                            const Text('タグ', style: TextStyle(color: Colors.grey),)
+//                          ],
+//                        )
+//                      ],
+//                    ),
+//                    const SizedBox(height: 15,),
+//                    Row(
+//                      crossAxisAlignment: CrossAxisAlignment.start,
+//                      children: <Widget>[
+//                        Column(
+//                          children: <Widget>[
+//                            Icon(Icons.note, color: Colors.grey,),
+//                            const Text('メモ', style: TextStyle(color: Colors.grey),)
+//                          ],
+//                        ),
+//                        Flexible(
+//                          child: Container(
+//                            padding: const EdgeInsets.only(left: 30),
+//                            child: TextFormField(
+//                              style: const TextStyle(
+//                                  color: Colors.black
+//                              ),
+//                              controller: _bloc.memoController,
+//                              decoration: InputDecoration.collapsed(
+//                                hintStyle: TextStyle(
+//                                  color: (snapshot.hasData && snapshot.data) ? Colors.grey : Colors.transparent,
+//                                ),
+//                                hintText: 'メモを書き込めます',
+//                              ),
+//                              // 編集モードのときはTextFormFieldの編集を可能にする
+//                              enabled: (snapshot.hasData && snapshot.data),
+//                            ),
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ],
+//                ),
+//              ),
+//            )
+//          ],
+//        );
+//      }
+//    );
   }
 }
