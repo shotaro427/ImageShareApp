@@ -59,43 +59,6 @@ class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
   }
 }
 
-/// 画像のアップロード
-/// ライブラリーなどから画像を取得する
-/// ためのBLoC
-class ImageUploadBloc extends AbstractLoadingBloc {
-
-  final ImageUploadRepository _repository;
-
-  ImageUploadBloc(this._repository);
-
-  /// 選択された画像を発行
-  final _valueController = StreamController<File>();
-  Stream<File> get value => _valueController.stream;
-
-  final _loadingController = StreamController<LoadingType>();
-  Stream<LoadingType> get loadingValue => _loadingController.stream;
-
-  /// ImagePickerから画像を取得
-  void pickUpImage() async {
-    _valueController.sink.add(await _repository.getImageInGallery());
-  }
-
-  /// FireStorageに画像をアップロード
-  void uploadImage(File file, String roomId, {String title, String memoText}) async {
-    int _timestamp = DateTime.now().millisecondsSinceEpoch;
-    
-    _loadingController.sink.add(LoadingType.LOADING);
-//    await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
-//    await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
-    _loadingController.sink.add(LoadingType.COMPLETED);
-  }
-
-  void dispose() {
-    _valueController.close();
-    _loadingController.close();
-  }
-}
-
 class ImageUploadRepository {
 
   /// ユーザーのローカルから画像を選択させて、取得する
