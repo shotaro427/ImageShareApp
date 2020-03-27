@@ -37,6 +37,7 @@ dependencies:
   freezed_annotation:
   flutter_state_notifier:
   transparent_image: ^1.0.0
+  flutter_native_image: ^0.0.5+2
 
 dev_dependencies:
   flutter_test:
