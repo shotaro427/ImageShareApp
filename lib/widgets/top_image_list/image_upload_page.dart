@@ -21,7 +21,7 @@ class ImageUploadPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: const Text("投稿・編集"),
+              title: const Text("投稿"),
               elevation: 0,
             ),
             body: _LayoutUploadImagePage(roomId),
@@ -68,6 +68,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       // タイトル入力欄
                       Flexible(
                         child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
                           controller: titleController,
                           autofocus: true,
                           cursorColor: Theme
@@ -76,11 +77,9 @@ class _LayoutUploadImagePage extends StatelessWidget {
                               .title
                               .color,
                           decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'タイトル',
-                              hintStyle: TextStyle(
-                                  color: Colors.white
-                              )
+                            border: InputBorder.none,
+                            hintText: 'タイトル',
+                            hintStyle: const TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
