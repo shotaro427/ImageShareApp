@@ -1,9 +1,11 @@
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,21 +58,47 @@ class ImageUploadRepository {
   /// FireStorageに画像をアップロードする
   Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
 
-    final StorageReference _ref = FirebaseStorage()
+    final ImageProperties _properties = await FlutterNativeImage.getImageProperties(file.path);
+    File compressedFile = await FlutterNativeImage.compressImage(file.path, targetHeight: 200, targetWidth: (_properties.height  / _properties.width * 200).round());
+
+    log(roomId);
+
+    final StorageReference _ref = FirebaseStorage.instance
         .ref()
         .child("roomImages")
         .child(roomId)
         .child(timestamp.toString());
 
-    _ref.putFile(
+    final StorageReference _thumbnailsRef = FirebaseStorage.instance
+        .ref()
+        .child("roomImages")
+        .child(roomId)
+        .child('thumbnails')
+        .child(timestamp.toString() + '_200x200');
+
+    await _ref.putFile(
         file,
         StorageMetadata(
           contentType: "image/jpeg",
         )
     );
+
+    await _thumbnailsRef.putFile(
+      compressedFile,
+      StorageMetadata(
+        contentType: "image/jpeg",
+      )
+    );
   }
 
-  Future postImageWithTitle(String roomId, int timestamp, {String title, String memoText}) async {
+  /// firestoreに投稿情報を保存する
+  Future postImageWithTitle(
+      String roomId,
+      int timestamp,
+      {
+        String title,
+        String memoText
+      }) async {
 
     String _title = "名無し";
     String _memoText = "";
@@ -81,17 +109,16 @@ class ImageUploadRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
-    Firestore.instance.collection("rooms/${roomId}/images").add({
+    final _ref = await Firestore.instance.collection("rooms/${roomId}/images").add({
       'title': _title,
       'memo': _memoText,
       'created_at': timestamp.toString(),
       'updated_at': timestamp.toString(),
       'created_user_uid': _uid
-    }).then((ref) {
+    });
 
-      ref.updateData({
-        'image_id': ref.documentID
-      });
+    await _ref.updateData({
+      'image_id': _ref.documentID
     });
   }
 }

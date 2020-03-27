@@ -108,7 +108,7 @@ class _ImageTile extends StatelessWidget {
               child: FadeInImage.memoryNetwork(
                 fit: BoxFit.fitWidth,
                 placeholder: kTransparentImage,
-                image: _entity.url,
+                image: (_entity.url != null) ? _entity.url : '',
                 fadeInCurve: Curves.easeInOut,
               ),
             ),
