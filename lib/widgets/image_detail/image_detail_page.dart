@@ -8,6 +8,7 @@ import 'package:image_share_app/models/image_detail/image_detail_bloc.dart';
 import 'package:image_share_app/repositories/image_detail/image_detail_repository.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ImageDetailPage extends StatelessWidget {
 
@@ -53,7 +54,7 @@ class _LayoutDetailImage extends StatelessWidget {
             child: Image(
               fit: BoxFit.contain,
               width: MediaQuery.of(context).size.width,
-              image: NetworkImage(_entity.originalUrl),
+              image: (_entity.originalUrl != null) ? NetworkImage(_entity.originalUrl) : Image.memory(kTransparentImage),
             ),
           ),
         ),

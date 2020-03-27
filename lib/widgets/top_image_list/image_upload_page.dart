@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import "package:image_share_app/models/image_upload_bloc.dart";
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
+import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
 import 'package:provider/provider.dart';
 
 
@@ -14,20 +17,20 @@ class ImageUploadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ImageUploadBloc>(
-      create: (context) => ImageUploadBloc(ImageUploadRepository()),
-      dispose: (_, bloc) => bloc.dispose(),
+    return StateNotifierProvider<ImageUploadStateNotifier, ImageUploadState>(
+      create: (_) => ImageUploadStateNotifier(ImageUploadRepository()),
       child: Stack(
-        children: <Widget>[
-          Scaffold(
-            appBar: AppBar(
-              title: const Text("投稿・編集"),
-              elevation: 0,
+          children: <Widget>[
+            Scaffold(
+              appBar: AppBar(
+                title: const Text("投稿"),
+                elevation: 0,
+              ),
+              body: _LayoutUploadImagePage(roomId),
             ),
-            body: _LayoutUploadImagePage(roomId),
-          ),
-          CommonLoadingWidget<ImageUploadBloc>(dialogTitle: "画像のアップロード",)
-        ]
+            // TODO: ローディングのWidgetを追加
+            _LoadingWidget(),
+          ]
       ),
     );
   }
@@ -45,13 +48,12 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: SingleChildScrollView(
-        child: StreamBuilder(
-          stream: bloc.value,
-          builder: (context, snapshot) {
+        child: StateNotifierBuilder<ImageUploadState>(
+          stateNotifier: context.read<ImageUploadStateNotifier>(),
+          builder: (context, state, _) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -68,6 +70,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       // タイトル入力欄
                       Flexible(
                         child: TextFormField(
+                          style: const TextStyle(color: Colors.white),
                           controller: titleController,
                           autofocus: true,
                           cursorColor: Theme
@@ -76,51 +79,41 @@ class _LayoutUploadImagePage extends StatelessWidget {
                               .title
                               .color,
                           decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'タイトル',
-                              hintStyle: TextStyle(
-                                  color: Colors.white
-                              )
+                            border: InputBorder.none,
+                            hintText: 'タイトル',
+                            hintStyle: const TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
                       // 投稿ボタン
                       IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: (!snapshot.hasData) ? Colors.grey : Colors.white,
-                          size: 30,
-                        ),
-                        onPressed: (!snapshot.hasData)
-                            ? null
-                            : () {
-                          // 画像をアップロードする処理
-                          if (snapshot.hasData) {
-                            var bloc = Provider.of<ImageUploadBloc>(context, listen: false);
-                            bloc.uploadImage(snapshot.data, roomId,
-                                title: titleController.text,
-                                memoText: memoController.text);
-                          }
-                        }
+                          icon: Icon(
+                            Icons.send,
+                            color: state.maybeWhen(
+                                () => Colors.grey,
+                                success: (_) => Colors.white,
+                                orElse: () => Colors.grey
+                            ),
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            await state.maybeWhen(
+                              () => null,
+                              success: (imageFile) => _uploadImage(context, imageFile),
+                              orElse: () => null
+                            );
+                          },
                       ),
                     ],
                   ),
                 ),
                 // アップロードする画像を表示するWidget
                 GestureDetector(
-                  onTap: () => Provider.of<ImageUploadBloc>(context, listen: false).pickUpImage(),
+                  onTap: () => context.read<ImageUploadStateNotifier>().pickUpImage(),
                   child: Container(
                     height: 250,
-                    child: (snapshot.hasData)
-                        ? Image(
-                      image: FileImage(snapshot.data),
-                      fit: BoxFit.scaleDown,
-                    )
-                        : const Image(
-                      image: const AssetImage("images/image_placeholder_500_300.png"),
-                      fit: BoxFit.cover,
-                    ),
                     padding: const EdgeInsets.all(5),
+                    child: setImage(state),
                   ),
                 ),
                 // タグ追加欄
@@ -174,9 +167,112 @@ class _LayoutUploadImagePage extends StatelessWidget {
                 ),
               ],
             );
-          }
-        )
+          },
+        ),
       ),
+    );
+  }
+
+  /// 画像を状態に合わせてセットする関数
+  Widget setImage(ImageUploadState state) {
+    return state.maybeWhen(
+      // デフォルト時
+          () => const Image(
+        image: const AssetImage("images/image_placeholder_500_300.png"),
+        fit: BoxFit.cover,
+      ),
+      loading: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      success: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      successUpload: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      error: (_, imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      // そのほかの時
+      orElse: () => const Image(
+        image: const AssetImage("images/image_placeholder_500_300.png"),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  /// 画像を投稿
+  Future<void> _uploadImage(BuildContext context, File imageFile) async {
+
+    // 処理を実行
+    await context.read<ImageUploadStateNotifier>().uploadImage(imageFile, roomId, title: titleController.text, memo: memoController.text);
+
+    context.read<ImageUploadState>().maybeWhen(
+      () => null,
+      successUpload: (_) => _showSuccessDialog(context),
+      error: (message, _) => _showErrorDialog(context),
+      orElse: () => null,
+    );
+  }
+
+  /// エラーダイアログを表示する
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('エラー'),
+            content: const Text('投稿できませんでした。\nもう一度お確かめください'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  /// 投稿完了ダイアログを表示する
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('投稿しました。'),
+            content: const Text('投稿が完了しました。'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+}
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<ImageUploadState>().maybeWhen(
+      null,
+      loading: (_) => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

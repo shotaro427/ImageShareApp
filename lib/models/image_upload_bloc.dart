@@ -1,97 +1,55 @@
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
+import 'package:flutter/foundation.dart';
+import 'package:state_notifier/state_notifier.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'image_upload_bloc.freezed.dart';
 
-/// 画像のアップロード
-/// ライブラリーなどから画像を取得する
-/// ためのBLoC
-class ImageUploadBloc extends AbstractLoadingBloc {
-
-  final ImageUploadRepository _repository;
-
-  ImageUploadBloc(this._repository);
-
-  /// 選択された画像を発行
-  final _valueController = StreamController<File>();
-  Stream<File> get value => _valueController.stream;
-
-  final _loadingController = StreamController<LoadingType>();
-  Stream<LoadingType> get loadingValue => _loadingController.stream;
-
-  /// ImagePickerから画像を取得
-  void pickUpImage() async {
-    _valueController.sink.add(await _repository.getImageInGallery());
-  }
-
-  /// FireStorageに画像をアップロード
-  void uploadImage(File file, String roomId, {String title, String memoText}) async {
-    int _timestamp = DateTime.now().millisecondsSinceEpoch;
-    
-    _loadingController.sink.add(LoadingType.LOADING);
-    await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
-    await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
-    _loadingController.sink.add(LoadingType.COMPLETED);
-  }
-
-  void dispose() {
-    _valueController.close();
-    _loadingController.close();
-  }
+@freezed
+abstract class ImageUploadState with _$ImageUploadState {
+  const factory ImageUploadState() = _ImageUploadState;
+  const factory ImageUploadState.loading({@required File file}) = Loading;
+  const factory ImageUploadState.success({@required File file}) = Success;
+  const factory ImageUploadState.successUpload({@required File file}) = SuccessUpload;
+  const factory ImageUploadState.error({@Default('') String message, @required File file}) = ErrorDetails;
 }
 
-class ImageUploadRepository {
+/**
+ * 画像を投稿するときの状態を通知するstate_notifier
+ */
+class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
 
-  /// ユーザーのローカルから画像を選択させて、取得する
-  Future<File> getImageInGallery() async {
+  final ImageUploadRepository _repository;
+  ImageUploadStateNotifier(this._repository): super(const ImageUploadState());
 
-    return await ImagePicker.pickImage(source: ImageSource.gallery);
+  /// ギャラリーを表示して画像を選択
+  Future<void> pickUpImage() async {
+    try {
+      final _imageFile = await _repository.getImageInGallery();
+      state = ImageUploadState.success(file: _imageFile);
+    } catch(e) {
+      log(e.toString());
+      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
+    }
   }
 
-  /// FireStorageに画像をアップロードする
-  Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
+  /// CloudStorageとFireStoreに保存
+  Future<void> uploadImage(File imageFile, String roomId, {String title, String memo}) async {
+    final String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-    final StorageReference _ref = FirebaseStorage()
-        .ref()
-        .child("roomImages")
-        .child(roomId)
-        .child(timestamp.toString());
+    state = ImageUploadState.loading(file: imageFile);
 
-    _ref.putFile(
-        file,
-        StorageMetadata(
-          contentType: "image/jpeg",
-        )
-    );
-  }
-
-  Future postImageWithTitle(String roomId, int timestamp, {String title, String memoText}) async {
-
-    String _title = "名無し";
-    String _memoText = "";
-    
-    if (title != null && title.isNotEmpty) { _title = title; }
-    if (memoText != null) { _memoText = memoText; }
-
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final _uid = _prefs.getString('uid');
-
-    Firestore.instance.collection("rooms/${roomId}/images").add({
-      'title': _title,
-      'memo': _memoText,
-      'created_at': timestamp.toString(),
-      'updated_at': timestamp.toString(),
-      'created_user_uid': _uid
-    }).then((ref) {
-
-      ref.updateData({
-        'image_id': ref.documentID
-      });
-    });
+    try {
+      await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memo);
+      await _repository.uploadImageToFireStorage(imageFile, roomId, _timestamp);
+      state = ImageUploadState.successUpload(file: imageFile);
+    } catch(e) {
+      log(e.toString());
+      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
+    }
   }
 }

@@ -43,7 +43,9 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
       if (!_isFinished) {
         final QuerySnapshot _snapshot = await _repository.fetchImages(_images);
         if (_snapshot.documents.length > 0) {
-          _images.addAll(_snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)));
+          final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
+          _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
+          _images.addAll(_newImages);
           state = TopImageListState.success(images: _images);
         } else {
           _isFinished = true;
