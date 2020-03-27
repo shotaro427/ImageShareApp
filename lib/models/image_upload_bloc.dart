@@ -59,7 +59,7 @@ class ImageUploadRepository {
   Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
 
     final ImageProperties _properties = await FlutterNativeImage.getImageProperties(file.path);
-    File compressedFile = await FlutterNativeImage.compressImage(file.path, targetHeight: 200, targetWidth: (_properties.height  / _properties.width * 200).round());
+    File compressedFile = await FlutterNativeImage.compressImage(file.path, targetHeight: 200, targetWidth: (_properties.width / _properties.height * 200).round());
 
     log(roomId);
 
