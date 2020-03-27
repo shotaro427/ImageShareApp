@@ -26,7 +26,7 @@ class ImageUploadPage extends StatelessWidget {
               body: _LayoutUploadImagePage(roomId),
             ),
             // TODO: ローディングのWidgetを追加
-
+            _LoadingWidget(),
           ]
       ),
     );
@@ -183,6 +183,22 @@ class _LayoutUploadImagePage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<ImageUploadState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }

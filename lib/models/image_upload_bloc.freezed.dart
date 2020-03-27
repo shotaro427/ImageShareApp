@@ -11,19 +11,19 @@ mixin _$ImageUploadState {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   });
 
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   });
 
@@ -54,8 +54,10 @@ class _$ImageUploadStateTearOff {
     return const _ImageUploadState();
   }
 
-  Loading loading() {
-    return const Loading();
+  Loading loading({@required File file}) {
+    return Loading(
+      file: file,
+    );
   }
 
   Success success({@required File file}) {
@@ -64,13 +66,16 @@ class _$ImageUploadStateTearOff {
     );
   }
 
-  SuccessUpload successUpload() {
-    return const SuccessUpload();
+  SuccessUpload successUpload({@required File file}) {
+    return SuccessUpload(
+      file: file,
+    );
   }
 
-  ErrorDetails error({String message = ''}) {
+  ErrorDetails error({String message = '', @required File file}) {
     return ErrorDetails(
       message: message,
+      file: file,
     );
   }
 }
@@ -105,10 +110,10 @@ class _$_ImageUploadState
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -122,10 +127,10 @@ class _$_ImageUploadState
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -175,57 +180,75 @@ abstract class _ImageUploadState implements ImageUploadState {
 }
 
 class _$Loading with DiagnosticableTreeMixin implements Loading {
-  const _$Loading();
+  const _$Loading({@required this.file}) : assert(file != null);
+
+  @override
+  final File file;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageUploadState.loading()';
+    return 'ImageUploadState.loading(file: $file)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'ImageUploadState.loading'));
+    properties
+      ..add(DiagnosticsProperty('type', 'ImageUploadState.loading'))
+      ..add(DiagnosticsProperty('file', file));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Loading);
+    return identical(this, other) ||
+        (other is Loading &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
+
+  @override
+  _$Loading copyWith({
+    Object file = freezed,
+  }) {
+    return _$Loading(
+      file: file == freezed ? this.file : file as File,
+    );
+  }
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(successUpload != null);
     assert(error != null);
-    return loading();
+    return loading(file);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (loading != null) {
-      return loading();
+      return loading(file);
     }
     return orElse();
   }
@@ -266,7 +289,11 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 }
 
 abstract class Loading implements ImageUploadState {
-  const factory Loading() = _$Loading;
+  const factory Loading({@required File file}) = _$Loading;
+
+  File get file;
+
+  Loading copyWith({File file});
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
@@ -313,10 +340,10 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -330,10 +357,10 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -387,58 +414,75 @@ abstract class Success implements ImageUploadState {
 }
 
 class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
-  const _$SuccessUpload();
+  const _$SuccessUpload({@required this.file}) : assert(file != null);
+
+  @override
+  final File file;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageUploadState.successUpload()';
+    return 'ImageUploadState.successUpload(file: $file)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ImageUploadState.successUpload'));
+      ..add(DiagnosticsProperty('type', 'ImageUploadState.successUpload'))
+      ..add(DiagnosticsProperty('file', file));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SuccessUpload);
+    return identical(this, other) ||
+        (other is SuccessUpload &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
+
+  @override
+  _$SuccessUpload copyWith({
+    Object file = freezed,
+  }) {
+    return _$SuccessUpload(
+      file: file == freezed ? this.file : file as File,
+    );
+  }
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(successUpload != null);
     assert(error != null);
-    return successUpload();
+    return successUpload(file);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (successUpload != null) {
-      return successUpload();
+      return successUpload(file);
     }
     return orElse();
   }
@@ -479,19 +523,26 @@ class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
 }
 
 abstract class SuccessUpload implements ImageUploadState {
-  const factory SuccessUpload() = _$SuccessUpload;
+  const factory SuccessUpload({@required File file}) = _$SuccessUpload;
+
+  File get file;
+
+  SuccessUpload copyWith({File file});
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
-  const _$ErrorDetails({this.message = ''});
+  const _$ErrorDetails({this.message = '', @required this.file})
+      : assert(file != null);
 
   @JsonKey(defaultValue: '')
   @override
   final String message;
+  @override
+  final File file;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageUploadState.error(message: $message)';
+    return 'ImageUploadState.error(message: $message, file: $file)';
   }
 
   @override
@@ -499,7 +550,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ImageUploadState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('message', message))
+      ..add(DiagnosticsProperty('file', file));
   }
 
   @override
@@ -507,19 +559,26 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     return identical(this, other) ||
         (other is ErrorDetails &&
             (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+                const DeepCollectionEquality()
+                    .equals(other.message, message)) &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(message) ^
+      const DeepCollectionEquality().hash(file);
 
   @override
   _$ErrorDetails copyWith({
     Object message = freezed,
+    Object file = freezed,
   }) {
     return _$ErrorDetails(
       message: message == freezed ? this.message : message as String,
+      file: file == freezed ? this.file : file as File,
     );
   }
 
@@ -527,32 +586,32 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(),
+    @required Result loading(@required File file),
     @required Result success(@required File file),
-    @required Result successUpload(),
-    @required Result error(String message),
+    @required Result successUpload(@required File file),
+    @required Result error(String message, @required File file),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(successUpload != null);
     assert(error != null);
-    return error(message);
+    return error(message, file);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(),
+    Result loading(@required File file),
     Result success(@required File file),
-    Result successUpload(),
-    Result error(String message),
+    Result successUpload(@required File file),
+    Result error(String message, @required File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (error != null) {
-      return error(message);
+      return error(message, file);
     }
     return orElse();
   }
@@ -593,9 +652,11 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
 }
 
 abstract class ErrorDetails implements ImageUploadState {
-  const factory ErrorDetails({String message}) = _$ErrorDetails;
+  const factory ErrorDetails({String message, @required File file}) =
+      _$ErrorDetails;
 
   String get message;
+  File get file;
 
-  ErrorDetails copyWith({String message});
+  ErrorDetails copyWith({String message, File file});
 }

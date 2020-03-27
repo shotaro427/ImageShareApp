@@ -17,10 +17,10 @@ part 'image_upload_bloc.freezed.dart';
 @freezed
 abstract class ImageUploadState with _$ImageUploadState {
   const factory ImageUploadState() = _ImageUploadState;
-  const factory ImageUploadState.loading() = Loading;
+  const factory ImageUploadState.loading({@required File file}) = Loading;
   const factory ImageUploadState.success({@required File file}) = Success;
-  const factory ImageUploadState.successUpload() = SuccessUpload;
-  const factory ImageUploadState.error({@Default('') String message}) = ErrorDetails;
+  const factory ImageUploadState.successUpload({@required File file}) = SuccessUpload;
+  const factory ImageUploadState.error({@Default('') String message, @required File file}) = ErrorDetails;
 }
 
 /**
