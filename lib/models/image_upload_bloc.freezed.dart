@@ -12,7 +12,8 @@ mixin _$ImageUploadState {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
     @required Result error(String message),
   });
 
@@ -20,7 +21,8 @@ mixin _$ImageUploadState {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required File file),
+    Result successUpload(),
     Result error(String message),
     @required Result orElse(),
   });
@@ -30,6 +32,7 @@ mixin _$ImageUploadState {
     Result $default(_ImageUploadState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   });
 
@@ -38,6 +41,7 @@ mixin _$ImageUploadState {
     Result $default(_ImageUploadState value), {
     Result loading(Loading value),
     Result success(Success value),
+    Result successUpload(SuccessUpload value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   });
@@ -54,8 +58,14 @@ class _$ImageUploadStateTearOff {
     return const Loading();
   }
 
-  Success success() {
-    return const Success();
+  Success success({@required File file}) {
+    return Success(
+      file: file,
+    );
+  }
+
+  SuccessUpload successUpload() {
+    return const SuccessUpload();
   }
 
   ErrorDetails error({String message = ''}) {
@@ -96,12 +106,14 @@ class _$_ImageUploadState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return $default();
   }
@@ -111,7 +123,8 @@ class _$_ImageUploadState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required File file),
+    Result successUpload(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -128,11 +141,13 @@ class _$_ImageUploadState
     Result $default(_ImageUploadState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return $default(this);
   }
@@ -143,6 +158,7 @@ class _$_ImageUploadState
     Result $default(_ImageUploadState value), {
     Result loading(Loading value),
     Result success(Success value),
+    Result successUpload(SuccessUpload value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -185,12 +201,14 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return loading();
   }
@@ -200,7 +218,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required File file),
+    Result successUpload(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -217,11 +236,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result $default(_ImageUploadState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return loading(this);
   }
@@ -232,6 +253,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result $default(_ImageUploadState value), {
     Result loading(Loading value),
     Result success(Success value),
+    Result successUpload(SuccessUpload value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -248,40 +270,60 @@ abstract class Loading implements ImageUploadState {
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
-  const _$Success();
+  const _$Success({@required this.file}) : assert(file != null);
+
+  @override
+  final File file;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageUploadState.success()';
+    return 'ImageUploadState.success(file: $file)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'ImageUploadState.success'));
+    properties
+      ..add(DiagnosticsProperty('type', 'ImageUploadState.success'))
+      ..add(DiagnosticsProperty('file', file));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Success);
+    return identical(this, other) ||
+        (other is Success &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
+
+  @override
+  _$Success copyWith({
+    Object file = freezed,
+  }) {
+    return _$Success(
+      file: file == freezed ? this.file : file as File,
+    );
+  }
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
-    return success();
+    return success(file);
   }
 
   @override
@@ -289,13 +331,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required File file),
+    Result successUpload(),
     Result error(String message),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (success != null) {
-      return success();
+      return success(file);
     }
     return orElse();
   }
@@ -306,11 +349,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result $default(_ImageUploadState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return success(this);
   }
@@ -321,6 +366,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result $default(_ImageUploadState value), {
     Result loading(Loading value),
     Result success(Success value),
+    Result successUpload(SuccessUpload value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -333,7 +379,107 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 }
 
 abstract class Success implements ImageUploadState {
-  const factory Success() = _$Success;
+  const factory Success({@required File file}) = _$Success;
+
+  File get file;
+
+  Success copyWith({File file});
+}
+
+class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
+  const _$SuccessUpload();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ImageUploadState.successUpload()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ImageUploadState.successUpload'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is SuccessUpload);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>(
+    Result $default(), {
+    @required Result loading(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
+    @required Result error(String message),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(successUpload != null);
+    assert(error != null);
+    return successUpload();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
+    Result loading(),
+    Result success(@required File file),
+    Result successUpload(),
+    Result error(String message),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (successUpload != null) {
+      return successUpload();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(_ImageUploadState value), {
+    @required Result loading(Loading value),
+    @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
+    @required Result error(ErrorDetails value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(successUpload != null);
+    assert(error != null);
+    return successUpload(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(_ImageUploadState value), {
+    Result loading(Loading value),
+    Result success(Success value),
+    Result successUpload(SuccessUpload value),
+    Result error(ErrorDetails value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (successUpload != null) {
+      return successUpload(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SuccessUpload implements ImageUploadState {
+  const factory SuccessUpload() = _$SuccessUpload;
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -382,12 +528,14 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required File file),
+    @required Result successUpload(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return error(message);
   }
@@ -397,7 +545,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required File file),
+    Result successUpload(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -414,11 +563,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result $default(_ImageUploadState value), {
     @required Result loading(Loading value),
     @required Result success(Success value),
+    @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
+    assert(successUpload != null);
     assert(error != null);
     return error(this);
   }
@@ -429,6 +580,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result $default(_ImageUploadState value), {
     Result loading(Loading value),
     Result success(Success value),
+    Result successUpload(SuccessUpload value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {

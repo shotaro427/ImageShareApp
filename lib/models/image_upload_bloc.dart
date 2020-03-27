@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
+import 'package:state_notifier/state_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'image_upload_bloc.freezed.dart';
 
@@ -17,8 +18,45 @@ part 'image_upload_bloc.freezed.dart';
 abstract class ImageUploadState with _$ImageUploadState {
   const factory ImageUploadState() = _ImageUploadState;
   const factory ImageUploadState.loading() = Loading;
-  const factory ImageUploadState.success() = Success;
+  const factory ImageUploadState.success({@required File file}) = Success;
+  const factory ImageUploadState.successUpload() = SuccessUpload;
   const factory ImageUploadState.error({@Default('') String message}) = ErrorDetails;
+}
+
+/**
+ * 画像を投稿するときの状態を通知するstate_notifier
+ */
+class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
+
+  final ImageUploadRepository _repository;
+  ImageUploadStateNotifier(this._repository): super(const ImageUploadState());
+
+  /// ギャラリーを表示して画像を選択
+  Future<void> pickUpImage() async {
+    try {
+      final _imageFile = await _repository.getImageInGallery();
+      state = ImageUploadState.success(file: _imageFile);
+    } catch(e) {
+      log(e.toString());
+      state = ImageUploadState.error(message: e.toString());
+    }
+  }
+
+  /// CloudStorageとFireStoreに保存
+  Future<void> uploadImage(File imageFile, String roomId, {String title, String memo}) async {
+    final String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+    state = const ImageUploadState.loading();
+
+    try {
+      await _repository.postImageWithTitle(roomId, _timestamp);
+      await _repository.uploadImageToFireStorage(imageFile, roomId, _timestamp);
+      state = const ImageUploadState.successUpload();
+    } catch(e) {
+      log(e.toString());
+      state = ImageUploadState.error(message: e.toString());
+    }
+  }
 }
 
 /// 画像のアップロード
@@ -47,8 +85,8 @@ class ImageUploadBloc extends AbstractLoadingBloc {
     int _timestamp = DateTime.now().millisecondsSinceEpoch;
     
     _loadingController.sink.add(LoadingType.LOADING);
-    await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
-    await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
+//    await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memoText);
+//    await _repository.uploadImageToFireStorage(file, roomId, _timestamp);
     _loadingController.sink.add(LoadingType.COMPLETED);
   }
 
@@ -67,7 +105,7 @@ class ImageUploadRepository {
   }
 
   /// FireStorageに画像をアップロードする
-  Future uploadImageToFireStorage(File file, String roomId, int timestamp) async {
+  Future uploadImageToFireStorage(File file, String roomId, String timestamp) async {
 
     final ImageProperties _properties = await FlutterNativeImage.getImageProperties(file.path);
     File compressedFile = await FlutterNativeImage.compressImage(file.path, targetHeight: 200, targetWidth: (_properties.width / _properties.height * 200).round());
@@ -105,7 +143,7 @@ class ImageUploadRepository {
   /// firestoreに投稿情報を保存する
   Future postImageWithTitle(
       String roomId,
-      int timestamp,
+      String timestamp,
       {
         String title,
         String memoText
