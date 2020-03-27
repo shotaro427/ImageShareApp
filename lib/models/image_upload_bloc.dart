@@ -114,16 +114,11 @@ class ImageUploadRepository {
 
     final StorageReference _ref = FirebaseStorage.instance
         .ref()
-        .child("roomImages")
-        .child(roomId)
-        .child(timestamp.toString());
+        .child("roomImages/${roomId}/${timestamp}");
 
     final StorageReference _thumbnailsRef = FirebaseStorage.instance
         .ref()
-        .child("roomImages")
-        .child(roomId)
-        .child('thumbnails')
-        .child(timestamp.toString() + '_200x200');
+        .child('roomImages/${roomId}/thumbnails/${timestamp}_200x200');
 
     await _ref.putFile(
         file,
