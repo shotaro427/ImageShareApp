@@ -38,7 +38,7 @@ class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
       state = ImageUploadState.success(file: _imageFile);
     } catch(e) {
       log(e.toString());
-      state = ImageUploadState.error(message: e.toString());
+      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
     }
   }
 
@@ -46,15 +46,15 @@ class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
   Future<void> uploadImage(File imageFile, String roomId, {String title, String memo}) async {
     final String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
-    state = const ImageUploadState.loading();
+    state = ImageUploadState.loading(file: imageFile);
 
     try {
-      await _repository.postImageWithTitle(roomId, _timestamp);
+      await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memo);
       await _repository.uploadImageToFireStorage(imageFile, roomId, _timestamp);
-      state = const ImageUploadState.successUpload();
+      state = ImageUploadState.successUpload(file: imageFile);
     } catch(e) {
       log(e.toString());
-      state = ImageUploadState.error(message: e.toString());
+      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
     }
   }
 }

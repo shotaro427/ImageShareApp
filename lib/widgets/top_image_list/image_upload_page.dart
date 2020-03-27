@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import "package:image_share_app/models/image_upload_bloc.dart";
 import 'package:flutter/cupertino.dart';
@@ -94,12 +96,12 @@ class _LayoutUploadImagePage extends StatelessWidget {
                             size: 30,
                           ),
                           onPressed: () async {
-                            state.maybeWhen(
-                                () => null,
-                                success: (imageFile) async => await context.read<ImageUploadStateNotifier>().uploadImage(imageFile, roomId, title: titleController.text, memo: memoController.text),
-                                orElse: () => null
+                            await state.maybeWhen(
+                              () => null,
+                              success: (imageFile) => _uploadImage(context, imageFile),
+                              orElse: () => null
                             );
-                          }
+                          },
                       ),
                     ],
                   ),
@@ -110,23 +112,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   child: Container(
                     height: 250,
                     padding: const EdgeInsets.all(5),
-                    child: state.maybeWhen(
-                        // デフォルト時
-                        () => const Image(
-                          image: const AssetImage("images/image_placeholder_500_300.png"),
-                          fit: BoxFit.cover,
-                        ),
-                        //　画像選択が成功したとき
-                        success: (imageFile) => Image(
-                          image: FileImage(imageFile),
-                          fit: BoxFit.scaleDown,
-                        ),
-                        // そのほかの時
-                        orElse: () => const Image(
-                          image: const AssetImage("images/image_placeholder_500_300.png"),
-                          fit: BoxFit.cover,
-                        ),
-                    ),
+                    child: setImage(state),
                   ),
                 ),
                 // タグ追加欄
@@ -185,6 +171,93 @@ class _LayoutUploadImagePage extends StatelessWidget {
       ),
     );
   }
+
+  /// 画像を状態に合わせてセットする関数
+  Widget setImage(ImageUploadState state) {
+    return state.maybeWhen(
+      // デフォルト時
+          () => const Image(
+        image: const AssetImage("images/image_placeholder_500_300.png"),
+        fit: BoxFit.cover,
+      ),
+      loading: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      success: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      successUpload: (imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      error: (_, imageFile) => Image(
+        image: FileImage(imageFile),
+        fit: BoxFit.scaleDown,
+      ),
+      // そのほかの時
+      orElse: () => const Image(
+        image: const AssetImage("images/image_placeholder_500_300.png"),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  /// 画像を投稿
+  Future<void> _uploadImage(BuildContext context, File imageFile) async {
+
+    // 処理を実行
+    await context.read<ImageUploadStateNotifier>().uploadImage(imageFile, roomId, title: titleController.text, memo: memoController.text);
+
+    context.read<ImageUploadState>().maybeWhen(
+      () => null,
+      successUpload: (_) => _showSuccessDialog(context),
+      error: (message, _) => _showErrorDialog(context),
+      orElse: () => null,
+    );
+  }
+
+  /// エラーダイアログを表示する
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('エラー'),
+            content: const Text('投稿できませんでした。\nもう一度お確かめください'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  /// 投稿完了ダイアログを表示する
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('投稿しました。'),
+            content: const Text('投稿が完了しました。'),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
 }
 class _LoadingWidget extends StatelessWidget {
   @override
@@ -192,7 +265,7 @@ class _LoadingWidget extends StatelessWidget {
 
     return context.watch<ImageUploadState>().maybeWhen(
       null,
-      loading: () => const DecoratedBox(
+      loading: (_) => const DecoratedBox(
         decoration: BoxDecoration(
           color: Color(0x44000000),
         ),
