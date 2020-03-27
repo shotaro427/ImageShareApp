@@ -9,6 +9,17 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'image_upload_bloc.freezed.dart';
+
+@freezed
+abstract class ImageUploadState with _$ImageUploadState {
+  const factory ImageUploadState() = _ImageUploadState;
+  const factory ImageUploadState.loading() = Loading;
+  const factory ImageUploadState.success() = Success;
+  const factory ImageUploadState.error({@Default('') String message}) = ErrorDetails;
+}
 
 /// 画像のアップロード
 /// ライブラリーなどから画像を取得する

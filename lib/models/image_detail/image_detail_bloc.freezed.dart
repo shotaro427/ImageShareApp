@@ -12,7 +12,7 @@ mixin _$ImageDetailState {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   });
@@ -21,7 +21,7 @@ mixin _$ImageDetailState {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
@@ -31,7 +31,7 @@ mixin _$ImageDetailState {
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   });
@@ -40,7 +40,7 @@ mixin _$ImageDetailState {
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
@@ -58,7 +58,7 @@ class _$ImageDetailStateTearOff {
     return const Loading();
   }
 
-  Success success({@required ImageEntity imageEntity}) {
+  Success viewing({@required ImageEntity imageEntity}) {
     return Success(
       imageEntity: imageEntity,
     );
@@ -108,13 +108,13 @@ class _$_ImageDetailState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return $default();
@@ -125,7 +125,7 @@ class _$_ImageDetailState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
@@ -142,13 +142,13 @@ class _$_ImageDetailState
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return $default(this);
@@ -159,7 +159,7 @@ class _$_ImageDetailState
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
@@ -203,13 +203,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return loading();
@@ -220,7 +220,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
@@ -237,13 +237,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return loading(this);
@@ -254,7 +254,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
@@ -279,14 +279,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ImageDetailState.success(imageEntity: $imageEntity)';
+    return 'ImageDetailState.viewing(imageEntity: $imageEntity)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ImageDetailState.success'))
+      ..add(DiagnosticsProperty('type', 'ImageDetailState.viewing'))
       ..add(DiagnosticsProperty('imageEntity', imageEntity));
   }
 
@@ -319,16 +319,16 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
-    return success(imageEntity);
+    return viewing(imageEntity);
   }
 
   @override
@@ -336,14 +336,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (success != null) {
-      return success(imageEntity);
+    if (viewing != null) {
+      return viewing(imageEntity);
     }
     return orElse();
   }
@@ -353,16 +353,16 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
-    return success(this);
+    return viewing(this);
   }
 
   @override
@@ -370,14 +370,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (success != null) {
-      return success(this);
+    if (viewing != null) {
+      return viewing(this);
     }
     return orElse();
   }
@@ -439,13 +439,13 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return editing(imageEntity);
@@ -456,7 +456,7 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
@@ -473,13 +473,13 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return editing(this);
@@ -490,7 +490,7 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
@@ -557,13 +557,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(@required ImageEntity imageEntity),
+    @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return error(message);
@@ -574,7 +574,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(@required ImageEntity imageEntity),
+    Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
     Result error(String message),
     @required Result orElse(),
@@ -591,13 +591,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
     @required Result loading(Loading value),
-    @required Result success(Success value),
+    @required Result viewing(Success value),
     @required Result editing(Editing value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
-    assert(success != null);
+    assert(viewing != null);
     assert(editing != null);
     assert(error != null);
     return error(this);
@@ -608,7 +608,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
     Result loading(Loading value),
-    Result success(Success value),
+    Result viewing(Success value),
     Result editing(Editing value),
     Result error(ErrorDetails value),
     @required Result orElse(),
