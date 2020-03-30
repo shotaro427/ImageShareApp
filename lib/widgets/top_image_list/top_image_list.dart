@@ -32,10 +32,14 @@ class TopImagesPage extends StatelessWidget {
               title: Text(_roomInfoEntity.name),
               actions: <Widget>[
                 IconButton(
+                  icon: const Icon(Icons.search, color: Colors.white,),
+                  onPressed: () {},
+                ),
+                IconButton(
                   icon: const Icon(Icons.settings, color: Colors.white,),
                   // TODO: 設定画面のコンストラクタの作成
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
-                )
+                ),
               ],
             ),
             body: _ImagesWidget(),
