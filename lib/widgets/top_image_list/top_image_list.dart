@@ -34,9 +34,17 @@ class TopImagesPage extends StatelessWidget {
                   builder: (context) {
                     return context.watch<SearchBarState>().isSearchMode
                         ? TextField(
-                          style: const TextStyle(color: Colors.white),
-                          onSubmitted: _searchSubmitted,
-                        )
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              fillColor: Colors.lightBlueAccent,
+                              filled: true,
+                              prefixIcon: const Icon(Icons.search, color: Colors.white,),
+                              hintText: 'キーワードを入力',
+                              hintStyle: const TextStyle(color: Colors.white),
+                              border: InputBorder.none,
+                            ),
+                            onSubmitted: _searchSubmitted,
+                          )
                         : Text(_roomInfoEntity.name);
                   }
               ),
