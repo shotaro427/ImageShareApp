@@ -29,25 +29,26 @@ class TopImagesPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: Builder(
-                  builder: (context) {
-                    return context.watch<TopImageListState>().maybeWhen(
-                          () => Text(_roomInfoEntity.name),
-                      searching: () => TextField(
-                        style: const TextStyle(color: Colors.white),
-                        onSubmitted: _searchSubmitted,
-                      ),
-                      orElse: () => Text(_roomInfoEntity.name)
-                    );
+              title: Text(_roomInfoEntity.name),
+//              title: Builder(
+//                  builder: (context) {
+//                    return context.watch<TopImageListState>().maybeWhen(
+//                          () => Text(_roomInfoEntity.name),
+//                      searching: () => TextField(
+//                        style: const TextStyle(color: Colors.white),
+//                        onSubmitted: _searchSubmitted,
+//                      ),
+//                      orElse: () => Text(_roomInfoEntity.name)
+//                    );
 //                    return Text(_roomInfoEntity.name);
-                  }
-              ),
+//                  }
+//              ),
               actions: <Widget>[
                 Builder(
                   builder: (context) {
                     return IconButton(
                       icon: const Icon(Icons.search, color: Colors.white,),
-                      onPressed: () => context.read<TopImageListStateNotifier>().switchAppBarWidget(),
+                      onPressed: () => {},
                     );
                   },
                 ),

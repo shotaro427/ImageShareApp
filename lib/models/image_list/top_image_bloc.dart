@@ -64,14 +64,21 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
     _isFinished = false;
     await fetchImages();
   }
+}
 
-  /// サーチバーとグループ名のwidgetを切り替える
-  void switchAppBarWidget() {
-    // 状態を切り替え
-    state.maybeWhen(
-            () => null,
-        searching: () => state = TopImageListState.success(images: _images),
-        orElse: () => state = const TopImageListState.searching(),
-    );
+// AppBarの状態管理
+
+/// AppBarの状態
+class SearchBarState {
+  SearchBarState(this.isSearchMode);
+  final bool isSearchMode;
+}
+
+/// AppBarの状態通知
+class SearchBarStateNotifier extends StateNotifier<SearchBarState> {
+  SearchBarStateNotifier(): super(SearchBarState(false));
+
+  void switchSearchingMode() {
+    state = SearchBarState(!state.isSearchMode);
   }
 }
