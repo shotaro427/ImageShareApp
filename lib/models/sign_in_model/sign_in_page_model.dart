@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
@@ -24,7 +25,15 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
   final SignInPageRepository _repository;
   UserEntity user;
 
-  SignInStateNotifier(this._repository): super(const SignInState());
+  SignInStateNotifier(this._repository): super(const SignInState()) {
+
+    FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
+
+    myBanner..load()..show(
+      anchorOffset: 0.0,
+      anchorType: AnchorType.bottom,
+    );
+  }
 
   /// Googleアカウントでログインするときのハンドル処理
   Future<void> handleSignIn() async {
@@ -55,5 +64,30 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
       MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
       (_) => false
     );
+  }
+
+  /// 広告ターゲット
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: <String>['7AC426FD-8338-4B41-947C-AEF71C81A937'],
+    keywords: <String>['flutterio', 'beautiful apps'],
+    contentUrl: 'https://flutter.io',
+    childDirected: false,
+    nonPersonalizedAds: true,
+  );
+
+  /// 広告バナーのWidget
+  final BannerAd myBanner = BannerAd(
+      adUnitId: BannerAd.testAdUnitId,
+      size: AdSize.smartBanner,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        log('BannerAd event is $event');
+      }
+  );
+
+  @override
+  void dispose() {
+    myBanner.dispose();
+    super.dispose();
   }
 }
