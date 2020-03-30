@@ -29,7 +29,19 @@ class TopImagesPage extends StatelessWidget {
         children: <Widget>[
           Scaffold(
             appBar: AppBar(
-              title: Text(_roomInfoEntity.name),
+              title: Builder(
+                  builder: (context) {
+                    return context.watch<TopImageListState>().maybeWhen(
+                          () => Text(_roomInfoEntity.name),
+                      searching: () => TextField(
+                        style: const TextStyle(color: Colors.white),
+                        onSubmitted: _searchSubmitted,
+                      ),
+                      orElse: () => Text(_roomInfoEntity.name)
+                    );
+//                    return Text(_roomInfoEntity.name);
+                  }
+              ),
               actions: <Widget>[
                 Builder(
                   builder: (context) {
@@ -57,6 +69,11 @@ class TopImagesPage extends StatelessWidget {
       ),
 
     );
+  }
+
+  /// サーチバーに検索キーワードが入力されたときの処理
+  void _searchSubmitted(String keyWord) {
+
   }
 }
 

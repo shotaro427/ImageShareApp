@@ -18,7 +18,6 @@ abstract class TopImageListState with _$TopImageListState {
   const factory TopImageListState.loading() = Loading;
   const factory TopImageListState.success({@required List<ImageEntity> images}) = Success;
   const factory TopImageListState.error({@Default('') String message}) = ErrorDetails;
-  const factory TopImageListState.searching() = Searching;
 }
 
 /// 投稿一覧のModelクラス
