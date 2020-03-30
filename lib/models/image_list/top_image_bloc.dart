@@ -68,6 +68,11 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
 
   /// サーチバーとグループ名のwidgetを切り替える
   void switchAppBarWidget() {
-
+    // 状態を切り替え
+    state.maybeWhen(
+            () => null,
+        searching: () => state = TopImageListState.success(images: _images),
+        orElse: () => state = const TopImageListState.searching(),
+    );
   }
 }
