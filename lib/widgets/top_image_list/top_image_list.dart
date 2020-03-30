@@ -44,7 +44,9 @@ class TopImagesPage extends StatelessWidget {
                 Builder(
                   builder: (context) {
                     return IconButton(
-                      icon: const Icon(Icons.search, color: Colors.white,),
+                      icon: context.watch<SearchBarState>().isSearchMode
+                        ? const Icon(Icons.clear, color: Colors.white,)
+                        : const Icon(Icons.search, color: Colors.white,),
                       onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
                     );
                   },
