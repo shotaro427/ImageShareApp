@@ -18,6 +18,7 @@ abstract class TopImageListState with _$TopImageListState {
   const factory TopImageListState.loading() = Loading;
   const factory TopImageListState.success({@required List<ImageEntity> images}) = Success;
   const factory TopImageListState.error({@Default('') String message}) = ErrorDetails;
+  const factory TopImageListState.searching() = Searching;
 }
 
 /// 投稿一覧のModelクラス
@@ -63,5 +64,10 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
     _images = [];
     _isFinished = false;
     await fetchImages();
+  }
+
+  /// サーチバーとグループ名のwidgetを切り替える
+  void switchAppBarWidget() {
+
   }
 }

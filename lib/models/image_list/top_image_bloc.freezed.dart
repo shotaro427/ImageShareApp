@@ -14,6 +14,7 @@ mixin _$TopImageListState {
     @required Result loading(),
     @required Result success(@required List<ImageEntity> images),
     @required Result error(String message),
+    @required Result searching(),
   });
 
   @optionalTypeArgs
@@ -22,6 +23,7 @@ mixin _$TopImageListState {
     Result loading(),
     Result success(@required List<ImageEntity> images),
     Result error(String message),
+    Result searching(),
     @required Result orElse(),
   });
 
@@ -31,6 +33,7 @@ mixin _$TopImageListState {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
   });
 
   @optionalTypeArgs
@@ -39,6 +42,7 @@ mixin _$TopImageListState {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
+    Result searching(Searching value),
     @required Result orElse(),
   });
 }
@@ -64,6 +68,10 @@ class _$TopImageListStateTearOff {
     return ErrorDetails(
       message: message,
     );
+  }
+
+  Searching searching() {
+    return const Searching();
   }
 }
 
@@ -100,11 +108,13 @@ class _$_TopImageListState
     @required Result loading(),
     @required Result success(@required List<ImageEntity> images),
     @required Result error(String message),
+    @required Result searching(),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return $default();
   }
 
@@ -115,6 +125,7 @@ class _$_TopImageListState
     Result loading(),
     Result success(@required List<ImageEntity> images),
     Result error(String message),
+    Result searching(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -131,11 +142,13 @@ class _$_TopImageListState
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return $default(this);
   }
 
@@ -146,6 +159,7 @@ class _$_TopImageListState
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
+    Result searching(Searching value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -189,11 +203,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     @required Result loading(),
     @required Result success(@required List<ImageEntity> images),
     @required Result error(String message),
+    @required Result searching(),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return loading();
   }
 
@@ -204,6 +220,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result loading(),
     Result success(@required List<ImageEntity> images),
     Result error(String message),
+    Result searching(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -220,11 +237,13 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return loading(this);
   }
 
@@ -235,6 +254,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
+    Result searching(Searching value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -296,11 +316,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     @required Result loading(),
     @required Result success(@required List<ImageEntity> images),
     @required Result error(String message),
+    @required Result searching(),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return success(images);
   }
 
@@ -311,6 +333,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result loading(),
     Result success(@required List<ImageEntity> images),
     Result error(String message),
+    Result searching(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -327,11 +350,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return success(this);
   }
 
@@ -342,6 +367,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
+    Result searching(Searching value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -408,11 +434,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     @required Result loading(),
     @required Result success(@required List<ImageEntity> images),
     @required Result error(String message),
+    @required Result searching(),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return error(message);
   }
 
@@ -423,6 +451,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result loading(),
     Result success(@required List<ImageEntity> images),
     Result error(String message),
+    Result searching(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -439,11 +468,13 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     @required Result loading(Loading value),
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
+    assert(searching != null);
     return error(this);
   }
 
@@ -454,6 +485,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result loading(Loading value),
     Result success(Success value),
     Result error(ErrorDetails value),
+    Result searching(Searching value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -470,4 +502,99 @@ abstract class ErrorDetails implements TopImageListState {
   String get message;
 
   ErrorDetails copyWith({String message});
+}
+
+class _$Searching with DiagnosticableTreeMixin implements Searching {
+  const _$Searching();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'TopImageListState.searching()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'TopImageListState.searching'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is Searching);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>(
+    Result $default(), {
+    @required Result loading(),
+    @required Result success(@required List<ImageEntity> images),
+    @required Result error(String message),
+    @required Result searching(),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(error != null);
+    assert(searching != null);
+    return searching();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
+    Result loading(),
+    Result success(@required List<ImageEntity> images),
+    Result error(String message),
+    Result searching(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (searching != null) {
+      return searching();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(_TopImageListState value), {
+    @required Result loading(Loading value),
+    @required Result success(Success value),
+    @required Result error(ErrorDetails value),
+    @required Result searching(Searching value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(success != null);
+    assert(error != null);
+    assert(searching != null);
+    return searching(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(_TopImageListState value), {
+    Result loading(Loading value),
+    Result success(Success value),
+    Result error(ErrorDetails value),
+    Result searching(Searching value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (searching != null) {
+      return searching(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Searching implements TopImageListState {
+  const factory Searching() = _$Searching;
 }

@@ -31,9 +31,13 @@ class TopImagesPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(_roomInfoEntity.name),
               actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.search, color: Colors.white,),
-                  onPressed: () {},
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      icon: const Icon(Icons.search, color: Colors.white,),
+                      onPressed: () => context.read<TopImageListStateNotifier>().switchAppBarWidget(),
+                    );
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.settings, color: Colors.white,),
