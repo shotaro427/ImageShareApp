@@ -65,3 +65,22 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
     await fetchImages();
   }
 }
+
+// AppBarの状態管理
+
+/// AppBarの状態
+class SearchBarState {
+  SearchBarState(this.isSearchMode);
+  /// 検索状態かどうか
+  /// text_fieldが出ている時はtrue
+  final bool isSearchMode;
+}
+
+/// AppBarの状態通知
+class SearchBarStateNotifier extends StateNotifier<SearchBarState> {
+  SearchBarStateNotifier(): super(SearchBarState(false));
+
+  void switchSearchingMode() {
+    state = SearchBarState(!state.isSearchMode);
+  }
+}

@@ -8,38 +8,9 @@ import 'package:image_share_app/repositories/sign_in_repositories/sign_in_page_r
 import 'package:image_share_app/widgets/sing_in/sign_in_with_input.dart';
 import 'package:image_share_app/widgets/sing_in/sign_up_with_input.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'sign_in_with_input.dart';
 
 class SignInPage extends StatelessWidget {
-  
-  SignInPage() {
-    FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
-
-    myBanner..load()..show(
-      anchorOffset: 0.0,
-      anchorType: AnchorType.bottom,
-    );
-  }
-
-  /// 広告ターゲット
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: <String>['7AC426FD-8338-4B41-947C-AEF71C81A937'],
-    keywords: <String>['flutterio', 'beautiful apps'],
-    contentUrl: 'https://flutter.io',
-    childDirected: false,
-    nonPersonalizedAds: true,
-  );
-
-  /// 広告バナーのWidget
-  final BannerAd myBanner = BannerAd(
-    adUnitId: BannerAd.testAdUnitId,
-    size: AdSize.smartBanner,
-    targetingInfo: targetingInfo,
-    listener: (MobileAdEvent event) {
-      log('BannerAd event is $event');
-    }
-  );
 
   @override
   Widget build(BuildContext context) {
