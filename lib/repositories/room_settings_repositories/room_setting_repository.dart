@@ -14,7 +14,7 @@ class RoomSettingsRepository {
   Future<List<UserEntity>> fetchRoomMembers() async {
 
     final List<DocumentReference> _refs = [];
-    final List<DocumentSnapshot> _participants = [];
+    final List<UserEntity> _participants = [];
 
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String _uid = _prefs.getString('uid') ?? "";
@@ -22,28 +22,21 @@ class RoomSettingsRepository {
     Query _membersQuery = Firestore.instance
         .collection('rooms/${_roomInfoEntity.roomId}/participants');
 
-    return [];
-//
-//    // 参加者の参照を取得
-//    await _membersQuery.getDocuments().then((data) {
-//      if (data.documents.length > 0) {
-//        _refs.addAll(data.documents.map((e) => e.data['user']));
-//      }
-//    });
-//
-//    for (final ref in _refs) {
-//      await ref.get().then((data) {
-//        // 自分以外のメンバーを追加
-//        if (data.data['uid'].toString() == _uid) {
-//          _myProfileController.sink.add(data);
-//        } else {
-//          _participants.add(data);
-//        }
-//      }).catchError((e) {
-//        debugPrint(e.toString());
-//      });
-//    }
-//    return _participants;
-  }
+    final QuerySnapshot snapshot = await _membersQuery.getDocuments();
 
+    // 参加メンバーの参照をリストに追加
+    if (snapshot.documents.length >0) {
+      _refs.addAll(snapshot.documents.map((e) => e.data['user']));
+    }
+
+    _refs.forEach((ref) async {
+      final DocumentSnapshot documentSnapshot = await ref.get();
+      // 自分以外のメンバーを追加
+      if (documentSnapshot.data['uid'].toString() != _uid) {
+        _participants.add(UserEntity.fromJson(documentSnapshot.data));
+      }
+    });
+
+    return _participants;
+  }
 }
