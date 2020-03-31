@@ -15,6 +15,7 @@ class RoomSettingsRepository {
 
     final List<DocumentReference> _refs = [];
     final List<UserEntity> _participants = [];
+    UserEntity _myProfile;
 
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String _uid = _prefs.getString('uid') ?? "";
@@ -34,8 +35,13 @@ class RoomSettingsRepository {
       // 自分以外のメンバーを追加
       if (documentSnapshot.data['uid'].toString() != _uid) {
         _participants.add(UserEntity.fromJson(documentSnapshot.data));
+      } else {
+        _myProfile = UserEntity.fromJson(documentSnapshot.data);
       }
     });
+
+    // 最初に自分のプロフィールを代入
+    _participants.insert(0, _myProfile);
 
     return _participants;
   }
