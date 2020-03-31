@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_list_model/waiting_room_list_model.dart';
+import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 import 'package:provider/provider.dart';
 
 /// 招待されているルーム一覧
@@ -140,7 +141,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
             actions: <Widget>[
               FlatButton(
                   child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Placeholder()))
+                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)))
               ),
             ],
           );
