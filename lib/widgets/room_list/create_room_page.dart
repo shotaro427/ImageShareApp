@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/create_room_bloc.dart';
 import 'package:image_share_app/repositories/room_list_repository/create_room_repository.dart';
+import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatelessWidget {
@@ -78,7 +79,7 @@ class _InputRoomPage extends StatelessWidget {
 
       context.read<CreateRoomState>().maybeWhen(
         null,
-        success: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Placeholder())),
+        success: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TopImagesPage())),
         error: (_) => _showErrorDialog(context),
         orElse: () => null,
       );

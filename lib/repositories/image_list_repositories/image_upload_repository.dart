@@ -65,7 +65,7 @@ class ImageUploadRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
-    final _ref = await Firestore.instance.collection("rooms/${roomId}/images").add({
+    final _ref = await Firestore.instance.collection('rooms/${roomId}/images').add({
       'title': _title,
       'memo': _memoText,
       'created_at': timestamp.toString(),
