@@ -28,12 +28,15 @@ abstract class RoomSettingsState with _$RoomSettingsState {
 class RoomSettingsStateNotifier extends StateNotifier<RoomSettingsState> {
 
   final RoomSettingsRepository _repository;
-  RoomSettingsStateNotifier(this._repository): super(const RoomSettingsState());
+  RoomSettingsStateNotifier(this._repository): super(const RoomSettingsState()) {
+    fetchRoomMembers();
+  }
 
   /// グループのメンバーを取得する
   void fetchRoomMembers() async {
 
     state = const RoomSettingsState.loading();
+
     try {
       final _members = await _repository.fetchRoomMembers();
       final UserEntity _myProfile = _members.removeAt(0);

@@ -15,7 +15,6 @@ class RoomSettingsRepository {
 
     final List<DocumentReference> _refs = [];
     final List<UserEntity> _participants = [];
-    UserEntity _myProfile;
 
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String _uid = _prefs.getString('uid') ?? "";
@@ -26,22 +25,27 @@ class RoomSettingsRepository {
     final QuerySnapshot snapshot = await _membersQuery.getDocuments();
 
     // 参加メンバーの参照をリストに追加
-    if (snapshot.documents.length >0) {
+    if (snapshot.documents.length > 0) {
       _refs.addAll(snapshot.documents.map((e) => e.data['user']));
     }
 
-    _refs.forEach((ref) async {
-      final DocumentSnapshot documentSnapshot = await ref.get();
-      // 自分以外のメンバーを追加
-      if (documentSnapshot.data['uid'].toString() != _uid) {
-        _participants.add(UserEntity.fromJson(documentSnapshot.data));
-      } else {
-        _myProfile = UserEntity.fromJson(documentSnapshot.data);
-      }
-    });
+    // プロフィールを取得
+    for (final ref in _refs) {
 
-    // 最初に自分のプロフィールを代入
-    _participants.insert(0, _myProfile);
+      DocumentSnapshot documentSnapshot = await ref.get();
+
+      // プロフィール
+      final _profile = UserEntity.fromJson(documentSnapshot.data);
+
+      // リストに追加
+      if (_profile.uid == _uid && _participants.length > 0) {
+        // 自分のプロフィールを追加
+        _participants.insert(0, _profile);
+      } else {
+        // その他メンバーのプロフィールを追加
+        _participants.add(_profile);
+      }
+    }
 
     return _participants;
   }

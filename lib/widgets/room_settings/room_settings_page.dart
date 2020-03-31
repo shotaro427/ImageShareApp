@@ -1,83 +1,79 @@
 
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_settings_bloc.dart';
-import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
+import 'package:image_share_app/repositories/room_settings_repositories/room_setting_repository.dart';
 import 'package:image_share_app/widgets/room_settings/editing_profile_page.dart';
 import 'package:provider/provider.dart';
 
 class RoomSettingsPage extends StatelessWidget {
 
-  final DocumentSnapshot _roomInfo;
+  final RoomInfoEntity _roomInfo;
 
   RoomSettingsPage(this._roomInfo);
 
   @override 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_roomInfo['name']),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add, color: Colors.white,),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage(_roomInfo.reference))),
-          )
-        ],
+    return StateNotifierProvider<RoomSettingsStateNotifier, RoomSettingsState>(
+      create: (_) => RoomSettingsStateNotifier(RoomSettingsRepository(_roomInfo)),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_roomInfo.name),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add, color: Colors.white,),
+              // TODO: AddMemberPageを実装する
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
+            )
+          ],
+        ),
+        body: _RoomSettingsBodyPage(),
       ),
-      body: RoomSettingsBodyPage(_roomInfo),
     );
   }
 }
 
-class RoomSettingsBodyPage extends StatelessWidget {
-
-  final DocumentSnapshot _roomInfo;
-
-  RoomSettingsBodyPage(this._roomInfo);
+class _RoomSettingsBodyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<RoomSettingsBloc>(
-      create: (_) => RoomSettingsBloc(_roomInfo),
-      dispose: (_, bloc) => bloc.dispose(),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black38)
-                )
-            ),
-            child: Center(
-              child: Text(
-                'あなた',
-                style: Theme.of(context).textTheme.headline,
-              ),
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: Colors.black38)
+              )
+          ),
+          child: Center(
+            child: Text(
+              'あなた',
+              style: Theme.of(context).textTheme.headline,
             ),
           ),
-          // 自分の名前
-          _MyProfileInfoWidget(),
-          // メンバー一覧のヘッダー
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black38)
-                )
-            ),
-            child: Center(
-              child: Text(
-                '参加している人',
-                style: Theme.of(context).textTheme.headline,
-              ),
+        ),
+        // 自分の名前
+        _MyProfileInfoWidget(),
+        // メンバー一覧のヘッダー
+        Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(color: Colors.black38)
+              )
+          ),
+          child: Center(
+            child: Text(
+              '参加している人',
+              style: Theme.of(context).textTheme.headline,
             ),
           ),
-          // メンバー一覧
-          _RoomMembersPage(),
-        ],
-      )
+        ),
+        // メンバー一覧
+        _RoomMembersPage(),
+      ],
     );
   }
 }
@@ -87,45 +83,87 @@ class _MyProfileInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
-    _bloc.fetchRoomMembersWithLoading();
-    return StreamBuilder<DocumentSnapshot>(
-      stream: _bloc.myProfileStream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Container(
-            margin:  const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black38)
-                )
-            ),
-            child: ListTile(
-              title: Text(
-                (snapshot.data.data['name'] != null) ? snapshot.data.data['name'].toString() : '名無し',
-                style: const TextStyle(fontSize: 20),
+    return StateNotifierBuilder<RoomSettingsState>(
+      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      builder: (context, state, _) {
+        return state.maybeWhen(
+                () => createPlaceholderWidget(context),
+            success: (myProfile, _) => Container(
+              margin:  const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Colors.black38)
+                  )
               ),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
-            ),
-          );
-        } else {
-          return Container(
-            margin:  const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(color: Colors.black38)
-                )
-            ),
-            child: ListTile(
-              title: const Text(
-                '名無し',
-                style: const TextStyle(fontSize: 20),
+              child: ListTile(
+                  title: Text(
+                    (myProfile.name != null) ? myProfile.name : '名無し',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
               ),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
             ),
-          );
-        }
+            orElse: () => createPlaceholderWidget(context),
+        );
       },
+    );
+//    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
+//    _bloc.fetchRoomMembersWithLoading();
+//    return StreamBuilder<DocumentSnapshot>(
+//      stream: _bloc.myProfileStream,
+//      builder: (context, snapshot) {
+//        if (snapshot.hasData) {
+//          return Container(
+//            margin:  const EdgeInsets.all(5),
+//            decoration: BoxDecoration(
+//                border: Border(
+//                    bottom: BorderSide(color: Colors.black38)
+//                )
+//            ),
+//            child: ListTile(
+//              title: Text(
+//                (snapshot.data.data['name'] != null) ? snapshot.data.data['name'].toString() : '名無し',
+//                style: const TextStyle(fontSize: 20),
+//              ),
+//              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
+//            ),
+//          );
+//        } else {
+//          return Container(
+//            margin:  const EdgeInsets.all(5),
+//            decoration: BoxDecoration(
+//                border: Border(
+//                    bottom: BorderSide(color: Colors.black38)
+//                )
+//            ),
+//            child: ListTile(
+//              title: const Text(
+//                '名無し',
+//                style: const TextStyle(fontSize: 20),
+//              ),
+//              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
+//            ),
+//          );
+//        }
+//      },
+//    );
+  }
+
+  Widget createPlaceholderWidget(BuildContext context) {
+    return Container(
+      margin:  const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(color: Colors.black38)
+          )
+      ),
+      child: ListTile(
+          title: const Text(
+            '名無し',
+            style: const TextStyle(fontSize: 20),
+          ),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
+      ),
     );
   }
 }
@@ -135,37 +173,89 @@ class _RoomMembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
-    _bloc.fetchRoomMembersWithLoading();
-    return StreamBuilder<List<DocumentSnapshot>>(
-      stream: _bloc.participantsStream,
-      builder: (context, snapshot) {
+    return StateNotifierBuilder<RoomSettingsState>(
+      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      builder: (context, state, _) {
         return ListView.builder(
           shrinkWrap: true,
           physics: const ScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            if (snapshot.hasData) {
-              return Container(
-                margin:  const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.black38)
-                  )
-                ),
-                child: ListTile(
-                  title: Text(
-                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
-                    style: const TextStyle(fontSize: 20),
+            return state.maybeWhen(
+                    () => Container(),
+                success: (_, members) => Container(
+                  margin:  const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Colors.black38)
+                      )
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      (members[index].name != null) ? members[index].name : 'GUEST${index + 1}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
                   ),
                 ),
-              );
-            } else {
-              return Container();
-            }
+                orElse: () => Container()
+            );
+//            if (snapshot.hasData) {
+//              return Container(
+//                margin:  const EdgeInsets.all(5),
+//                decoration: BoxDecoration(
+//                    border: Border(
+//                        bottom: BorderSide(color: Colors.black38)
+//                    )
+//                ),
+//                child: ListTile(
+//                  title: Text(
+//                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
+//                    style: const TextStyle(fontSize: 20),
+//                  ),
+//                ),
+//              );
+//            } else {
+//              return Container();
+//            }
           },
-          itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
+          itemCount: state.maybeWhen(
+                  () => 0,
+              success: (_, members) => members.length,
+              orElse: () => 0
+          ),
         );
       },
     );
+//    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
+//    _bloc.fetchRoomMembersWithLoading();
+//    return StreamBuilder<List<DocumentSnapshot>>(
+//      stream: _bloc.participantsStream,
+//      builder: (context, snapshot) {
+//        return ListView.builder(
+//          shrinkWrap: true,
+//          physics: const ScrollPhysics(),
+//          itemBuilder: (BuildContext context, int index) {
+//            if (snapshot.hasData) {
+//              return Container(
+//                margin:  const EdgeInsets.all(5),
+//                decoration: BoxDecoration(
+//                  border: Border(
+//                    bottom: BorderSide(color: Colors.black38)
+//                  )
+//                ),
+//                child: ListTile(
+//                  title: Text(
+//                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
+//                    style: const TextStyle(fontSize: 20),
+//                  ),
+//                ),
+//              );
+//            } else {
+//              return Container();
+//            }
+//          },
+//          itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
+//        );
+//      },
+//    );
   }
 }

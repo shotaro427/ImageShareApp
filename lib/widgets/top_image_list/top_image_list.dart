@@ -8,6 +8,7 @@ import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_list/top_image_bloc.dart';
 import 'package:image_share_app/repositories/image_list_repositories/top_image_repository.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_page.dart';
+import 'package:image_share_app/widgets/room_settings/room_settings_page.dart';
 import 'package:image_share_app/widgets/top_image_list/image_upload_page.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -62,7 +63,7 @@ class TopImagesPage extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.settings, color: Colors.white,),
                   // TODO: 設定画面のコンストラクタの作成
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(_roomInfoEntity))),
                 ),
               ],
             ),
