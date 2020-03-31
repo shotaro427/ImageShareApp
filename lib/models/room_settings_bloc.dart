@@ -4,8 +4,23 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_share_app/Entities/user_entity/user_entity.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'room_settings_bloc.freezed.dart';
+
+@freezed
+abstract class RoomSettingsState with _$RoomSettingsState {
+  const factory RoomSettingsState() = _RoomSettingsState;
+  const factory RoomSettingsState.loading() = Loading;
+  const factory RoomSettingsState.success({
+    @required UserEntity myProfile,
+    @required List<UserEntity> roomMembers,
+  }) = Success;
+  const factory RoomSettingsState.error({@Default('') String message}) = ErrorDetails;
+}
 
 class RoomSettingsBloc {
 
