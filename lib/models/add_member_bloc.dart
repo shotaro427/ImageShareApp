@@ -2,6 +2,17 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'add_member_bloc.freezed.dart';
+
+@freezed
+abstract class AddMemberState with _$AddMemberState {
+  const factory AddMemberState() = _AddMemberState;
+  const factory AddMemberState.loading() = Loading;
+  const factory AddMemberState.success() = Success;
+  const factory AddMemberState.error({@Default('') String message}) = ErrorDetails;
+}
 
 class AddMemberBloc {
 
