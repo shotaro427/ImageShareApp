@@ -4,6 +4,7 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_settings_bloc.dart';
 import 'package:image_share_app/repositories/room_settings_repositories/room_setting_repository.dart';
+import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
 import 'package:image_share_app/widgets/room_settings/editing_profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -17,18 +18,23 @@ class RoomSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StateNotifierProvider<RoomSettingsStateNotifier, RoomSettingsState>(
       create: (_) => RoomSettingsStateNotifier(RoomSettingsRepository(_roomInfo)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(_roomInfo.name),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add, color: Colors.white,),
-              // TODO: AddMemberPageを実装する
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Placeholder())),
-            )
-          ],
-        ),
-        body: _RoomSettingsBodyPage(),
+      child: Stack(
+        children: <Widget>[
+          Scaffold(
+            appBar: AppBar(
+              title: Text(_roomInfo.name),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add, color: Colors.white,),
+                  // TODO: AddMemberPageを実装する
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage(_roomInfo))),
+                )
+              ],
+            ),
+            body: _RoomSettingsBodyPage(),
+          ),
+          _LoadingWidget(),
+        ],
       ),
     );
   }
@@ -167,6 +173,23 @@ class _RoomMembersPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<RoomSettingsState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }
