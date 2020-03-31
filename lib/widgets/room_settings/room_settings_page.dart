@@ -107,48 +107,9 @@ class _MyProfileInfoWidget extends StatelessWidget {
         );
       },
     );
-//    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
-//    _bloc.fetchRoomMembersWithLoading();
-//    return StreamBuilder<DocumentSnapshot>(
-//      stream: _bloc.myProfileStream,
-//      builder: (context, snapshot) {
-//        if (snapshot.hasData) {
-//          return Container(
-//            margin:  const EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//                border: Border(
-//                    bottom: BorderSide(color: Colors.black38)
-//                )
-//            ),
-//            child: ListTile(
-//              title: Text(
-//                (snapshot.data.data['name'] != null) ? snapshot.data.data['name'].toString() : '名無し',
-//                style: const TextStyle(fontSize: 20),
-//              ),
-//              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
-//            ),
-//          );
-//        } else {
-//          return Container(
-//            margin:  const EdgeInsets.all(5),
-//            decoration: BoxDecoration(
-//                border: Border(
-//                    bottom: BorderSide(color: Colors.black38)
-//                )
-//            ),
-//            child: ListTile(
-//              title: const Text(
-//                '名無し',
-//                style: const TextStyle(fontSize: 20),
-//              ),
-//              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
-//            ),
-//          );
-//        }
-//      },
-//    );
   }
 
+  /// デフォルトのwidget
   Widget createPlaceholderWidget(BuildContext context) {
     return Container(
       margin:  const EdgeInsets.all(5),
@@ -198,24 +159,6 @@ class _RoomMembersPage extends StatelessWidget {
                 ),
                 orElse: () => Container()
             );
-//            if (snapshot.hasData) {
-//              return Container(
-//                margin:  const EdgeInsets.all(5),
-//                decoration: BoxDecoration(
-//                    border: Border(
-//                        bottom: BorderSide(color: Colors.black38)
-//                    )
-//                ),
-//                child: ListTile(
-//                  title: Text(
-//                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
-//                    style: const TextStyle(fontSize: 20),
-//                  ),
-//                ),
-//              );
-//            } else {
-//              return Container();
-//            }
           },
           itemCount: state.maybeWhen(
                   () => 0,
@@ -225,37 +168,5 @@ class _RoomMembersPage extends StatelessWidget {
         );
       },
     );
-//    final _bloc = Provider.of<RoomSettingsBloc>(context, listen: false);
-//    _bloc.fetchRoomMembersWithLoading();
-//    return StreamBuilder<List<DocumentSnapshot>>(
-//      stream: _bloc.participantsStream,
-//      builder: (context, snapshot) {
-//        return ListView.builder(
-//          shrinkWrap: true,
-//          physics: const ScrollPhysics(),
-//          itemBuilder: (BuildContext context, int index) {
-//            if (snapshot.hasData) {
-//              return Container(
-//                margin:  const EdgeInsets.all(5),
-//                decoration: BoxDecoration(
-//                  border: Border(
-//                    bottom: BorderSide(color: Colors.black38)
-//                  )
-//                ),
-//                child: ListTile(
-//                  title: Text(
-//                    (snapshot.data[index].data['nickName'] != null) ? snapshot.data[index].data['nickName'].toString() : 'GUEST${index + 1}',
-//                    style: const TextStyle(fontSize: 20),
-//                  ),
-//                ),
-//              );
-//            } else {
-//              return Container();
-//            }
-//          },
-//          itemCount: (snapshot.hasData) ? snapshot.data.length : 0,
-//        );
-//      },
-//    );
   }
 }
