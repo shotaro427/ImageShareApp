@@ -12,7 +12,7 @@ mixin _$CreateRoomState {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required RoomInfoEntity roomInfoEntity),
     @required Result error(String message),
   });
 
@@ -20,7 +20,7 @@ mixin _$CreateRoomState {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required RoomInfoEntity roomInfoEntity),
     Result error(String message),
     @required Result orElse(),
   });
@@ -54,8 +54,10 @@ class _$CreateRoomStateTearOff {
     return const Loading();
   }
 
-  Success success() {
-    return const Success();
+  Success success({@required RoomInfoEntity roomInfoEntity}) {
+    return Success(
+      roomInfoEntity: roomInfoEntity,
+    );
   }
 
   ErrorDetails error({String message = ''}) {
@@ -96,7 +98,7 @@ class _$_CreateRoomState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required RoomInfoEntity roomInfoEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -111,7 +113,7 @@ class _$_CreateRoomState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required RoomInfoEntity roomInfoEntity),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -185,7 +187,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required RoomInfoEntity roomInfoEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -200,7 +202,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required RoomInfoEntity roomInfoEntity),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -248,40 +250,63 @@ abstract class Loading implements CreateRoomState {
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
-  const _$Success();
+  const _$Success({@required this.roomInfoEntity})
+      : assert(roomInfoEntity != null);
+
+  @override
+  final RoomInfoEntity roomInfoEntity;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CreateRoomState.success()';
+    return 'CreateRoomState.success(roomInfoEntity: $roomInfoEntity)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'CreateRoomState.success'));
+    properties
+      ..add(DiagnosticsProperty('type', 'CreateRoomState.success'))
+      ..add(DiagnosticsProperty('roomInfoEntity', roomInfoEntity));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Success);
+    return identical(this, other) ||
+        (other is Success &&
+            (identical(other.roomInfoEntity, roomInfoEntity) ||
+                const DeepCollectionEquality()
+                    .equals(other.roomInfoEntity, roomInfoEntity)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(roomInfoEntity);
+
+  @override
+  _$Success copyWith({
+    Object roomInfoEntity = freezed,
+  }) {
+    return _$Success(
+      roomInfoEntity: roomInfoEntity == freezed
+          ? this.roomInfoEntity
+          : roomInfoEntity as RoomInfoEntity,
+    );
+  }
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required RoomInfoEntity roomInfoEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(success != null);
     assert(error != null);
-    return success();
+    return success(roomInfoEntity);
   }
 
   @override
@@ -289,13 +314,13 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required RoomInfoEntity roomInfoEntity),
     Result error(String message),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (success != null) {
-      return success();
+      return success(roomInfoEntity);
     }
     return orElse();
   }
@@ -333,7 +358,11 @@ class _$Success with DiagnosticableTreeMixin implements Success {
 }
 
 abstract class Success implements CreateRoomState {
-  const factory Success() = _$Success;
+  const factory Success({@required RoomInfoEntity roomInfoEntity}) = _$Success;
+
+  RoomInfoEntity get roomInfoEntity;
+
+  Success copyWith({RoomInfoEntity roomInfoEntity});
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -382,7 +411,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result success(),
+    @required Result success(@required RoomInfoEntity roomInfoEntity),
     @required Result error(String message),
   }) {
     assert($default != null);
@@ -397,7 +426,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result success(),
+    Result success(@required RoomInfoEntity roomInfoEntity),
     Result error(String message),
     @required Result orElse(),
   }) {
