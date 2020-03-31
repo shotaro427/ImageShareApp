@@ -17,9 +17,14 @@ class AddMemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StateNotifierProvider<AddMemberStateNotifier, AddMemberState>(
       create: (_) => AddMemberStateNotifier(AddMemberRepository()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text("メンバー招待"),),
-        body: Center(child: _AddMemberLayout(_roomInfoEntity))
+      child: Stack(
+        children: <Widget>[
+          Scaffold(
+            appBar: AppBar(title: const Text("メンバー招待"),),
+            body: Center(child: _AddMemberLayout(_roomInfoEntity))
+          ),
+          _LoadingWidget(),
+        ],
       ),
     );
   }
@@ -63,7 +68,6 @@ class _AddMemberLayout extends StatelessWidget {
                       error: (_) => _showErrorDialog(context),
                       orElse: () => null
                   );
-
                 },
               )
             ],
@@ -79,7 +83,7 @@ class _AddMemberLayout extends StatelessWidget {
         builder: (context) {
           return AlertDialog(
             title: const Text('エラー'),
-            content: const Text('ログインできませんでした。\nもう一度お確かめください'),
+            content: const Text('招待できませんでした。\nもう一度お確かめください'),
             actions: <Widget>[
               FlatButton(
                 child: const Text('OK'),
@@ -88,6 +92,23 @@ class _AddMemberLayout extends StatelessWidget {
             ],
           );
         }
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return context.watch<AddMemberState>().maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
     );
   }
 }
