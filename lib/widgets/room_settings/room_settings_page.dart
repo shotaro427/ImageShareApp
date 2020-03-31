@@ -75,7 +75,7 @@ class RoomSettingsBodyPage extends StatelessWidget {
             ),
           ),
           // メンバー一覧
-          RoomMembersPage(),
+          _RoomMembersPage(),
         ],
       )
     );
@@ -131,7 +131,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
 }
 
 // 部屋に参加しているメンバーの名前を表示するWidget
-class RoomMembersPage extends StatelessWidget {
+class _RoomMembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
