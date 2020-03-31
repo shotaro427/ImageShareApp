@@ -1,13 +1,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 
 class CreateRoomRepository {
 
   final db = Firestore.instance;
 
   /// グループを作成
-  Future<void> createRoom(String roomName) async {
+  Future<RoomInfoEntity> createRoom(String roomName) async {
 
     // roomsコレクションに新規部屋を追加
     DocumentReference _roomRef = await db.collection('rooms').add({
@@ -24,9 +25,15 @@ class CreateRoomRepository {
       "user": _userRef
     });
 
+    db.document(_roomRef.path).collection('images').add({
+      'isFirst': true,
+    });
+
     await db.document(_userRef.path).collection("rooms").add({
       "room": _roomRef
     });
+
+    return RoomInfoEntity(name: roomName, roomId: _roomRef.documentID);
   }
 
   /// ログインしているユーザーの参照を取得
