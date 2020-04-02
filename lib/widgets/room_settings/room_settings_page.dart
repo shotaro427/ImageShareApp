@@ -106,7 +106,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
                     (myProfile.name != null) ? myProfile.name : '名無し',
                     style: const TextStyle(fontSize: 20),
                   ),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage((myProfile.name != null) ? myProfile.name : '名無し')))
               ),
             ),
             orElse: () => createPlaceholderWidget(context),
@@ -129,7 +129,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
             '名無し',
             style: const TextStyle(fontSize: 20),
           ),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage()))
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage('名無し')))
       ),
     );
   }

@@ -8,6 +8,10 @@ import 'package:provider/provider.dart';
 
 class EditingProfilePage extends StatelessWidget {
 
+  final String name;
+
+  EditingProfilePage(this.name);
+
   @override
   Widget build(BuildContext context) {
     return StateNotifierProvider<EditingProfileStateNotifier, EditingProfileState>(
@@ -18,7 +22,7 @@ class EditingProfilePage extends StatelessWidget {
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: Scaffold(
                 appBar: AppBar(title: const Text('編集'),),
-                body: _EditingProfileWidget()
+                body: _EditingProfileWidget(name)
             ),
           ),
           _LoadingWidget(),
@@ -30,7 +34,12 @@ class EditingProfilePage extends StatelessWidget {
 
 class _EditingProfileWidget extends StatelessWidget {
 
+  final String name;
   final TextEditingController _nickNameController = TextEditingController();
+
+  _EditingProfileWidget(this.name) {
+    _nickNameController.text = name;
+  }
 
   @override
   Widget build(BuildContext context) {
