@@ -42,6 +42,8 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
       // まだ全件取得していなかったら、fetchする
       if (!_isFinished) {
         final QuerySnapshot _snapshot = await _repository.fetchImages(_images);
+
+        // 投稿を整列
         if (_snapshot.documents.length > 0) {
           final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
           _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
