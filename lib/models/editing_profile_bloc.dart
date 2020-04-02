@@ -76,14 +76,12 @@ class EditingProfileRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
-    await Firestore.instance.collection('users').where('uid', isEqualTo: _uid)
-      .getDocuments()
-      .then((docs) {
-        if (docs.documents.first.reference != null) {
-          docs.documents.first.reference.updateData({
-            'name': name
-          });
-        }
-      }).catchError((e) => debugPrint(e.toString()));
+    final QuerySnapshot _querySnapshot = await Firestore.instance.collection('users').where('uid', isEqualTo: _uid).getDocuments();
+
+    if (_querySnapshot.documents.first.reference != null) {
+      await  _querySnapshot.documents.first.reference.updateData({
+        'name': name,
+      });
+    }
   }
 }
