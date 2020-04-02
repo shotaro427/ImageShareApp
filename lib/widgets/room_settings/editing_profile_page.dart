@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:image_share_app/models/editing_profile_bloc.dart';
+import 'package:image_share_app/models/room_settings/editing_profile_bloc.dart';
 import 'package:provider/provider.dart';
 
 class EditingProfilePage extends StatelessWidget {

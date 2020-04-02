@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
-import 'package:image_share_app/models/room_settings_bloc.dart';
+import 'package:image_share_app/models/room_settings/room_settings_bloc.dart';
 import 'package:image_share_app/repositories/room_settings_repositories/room_setting_repository.dart';
 import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
 import 'package:image_share_app/widgets/room_settings/editing_profile_page.dart';
