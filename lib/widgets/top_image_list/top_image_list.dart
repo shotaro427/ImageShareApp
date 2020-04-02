@@ -29,53 +29,56 @@ class TopImagesPage extends StatelessWidget {
       ],
       child: Stack(
         children: <Widget>[
-          Scaffold(
-            appBar: AppBar(
-              title: Builder(
-                  builder: (context) {
-                    return context.watch<SearchBarState>().isSearchMode
-                        ? TextField(
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              fillColor: Colors.lightBlueAccent,
-                              filled: true,
-                              prefixIcon: const Icon(Icons.search, color: Colors.white,),
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.clear, color: Colors.white,),
-                                onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+          GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            child: Scaffold(
+              appBar: AppBar(
+                title: Builder(
+                    builder: (context) {
+                      return context.watch<SearchBarState>().isSearchMode
+                          ? TextField(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                fillColor: Colors.lightBlueAccent,
+                                filled: true,
+                                prefixIcon: const Icon(Icons.search, color: Colors.white,),
+                                suffixIcon: IconButton(
+                                  icon: const Icon(Icons.clear, color: Colors.white,),
+                                  onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                                ),
+                                hintText: 'キーワードを入力',
+                                hintStyle: const TextStyle(color: Colors.white),
+                                border: InputBorder.none,
                               ),
-                              hintText: 'キーワードを入力',
-                              hintStyle: const TextStyle(color: Colors.white),
-                              border: InputBorder.none,
-                            ),
-                            onSubmitted: _searchSubmitted,
-                          )
-                        : Text(_roomInfoEntity.name);
-                  }
+                              onSubmitted: _searchSubmitted,
+                            )
+                          : Text(_roomInfoEntity.name);
+                    }
+                ),
+                actions: <Widget>[
+                  Builder(
+                    builder: (context) {
+                      return Visibility(
+                        visible: !context.watch<SearchBarState>().isSearchMode,
+                        child: IconButton(
+                          icon: const Icon(Icons.search, color: Colors.white,),
+                          onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: Colors.white,),
+                    // TODO: 設定画面のコンストラクタの作成
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(_roomInfoEntity))),
+                  ),
+                ],
               ),
-              actions: <Widget>[
-                Builder(
-                  builder: (context) {
-                    return Visibility(
-                      visible: !context.watch<SearchBarState>().isSearchMode,
-                      child: IconButton(
-                        icon: const Icon(Icons.search, color: Colors.white,),
-                        onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
-                      ),
-                    );
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings, color: Colors.white,),
-                  // TODO: 設定画面のコンストラクタの作成
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(_roomInfoEntity))),
-                ),
-              ],
-            ),
-            body: _ImagesWidget(),
-            floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
+              body: _ImagesWidget(),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
+              ),
             ),
           ),
           _LoadingWidget()
