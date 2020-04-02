@@ -1,6 +1,7 @@
 
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.da
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:state_notifier/state_notifier.dart';
 part 'editing_profile_bloc.freezed.dart';
 
 @freezed
@@ -16,6 +18,26 @@ abstract class EditingProfileState with _$EditingProfileState {
   const factory EditingProfileState.loading() = Loading;
   const factory EditingProfileState.success() = Success;
   const factory EditingProfileState.error({@Default('') String message}) = ErrorDetails;
+}
+
+class EditingProfileStateNotifier extends StateNotifier<EditingProfileState> {
+  final EditingProfileRepository _repository;
+
+  EditingProfileStateNotifier(this._repository): super(const EditingProfileState());
+
+  void editingName(String name) async {
+    // loading
+    state = const EditingProfileState.loading();
+
+    try {
+      await _repository.setNickNameIntoFireStore(name);
+      await _repository.setNickNameIntoFireStore(name);
+      state = const EditingProfileState.success();
+    } catch(e) {
+      log(e.toString());
+      state = EditingProfileState.error(message: e.toString());
+    }
+  }
 }
 
 class EditingProfileBloc extends AbstractLoadingBloc {
