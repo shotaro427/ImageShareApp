@@ -6,6 +6,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/widgets/commont_widgets/common_loading_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'editing_profile_bloc.freezed.dart';
+
+@freezed
+abstract class EditingProfileState with _$EditingProfileState {
+  const factory EditingProfileState() = _EditingProfileState;
+  const factory EditingProfileState.loading() = Loading;
+  const factory EditingProfileState.success() = Success;
+  const factory EditingProfileState.error({@Default('') String message}) = ErrorDetails;
+}
 
 class EditingProfileBloc extends AbstractLoadingBloc {
 
