@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -52,7 +50,7 @@ class TopImagesPage extends StatelessWidget {
                                 hintStyle: const TextStyle(color: Colors.white),
                                 border: InputBorder.none,
                               ),
-                              onSubmitted: _searchSubmitted,
+                              onSubmitted: (searchText) => context.read<TopImageListStateNotifier>().searchImages(keyWord: searchText),
                             )
                           : Text(_roomInfoEntity.name);
                     }
@@ -88,13 +86,6 @@ class TopImagesPage extends StatelessWidget {
       ),
 
     );
-  }
-
-  /// サーチバーに検索キーワードが入力されたときの処理
-  void _searchSubmitted(String keyWord) {
-
-    log('search $keyWord');
-
   }
 }
 
