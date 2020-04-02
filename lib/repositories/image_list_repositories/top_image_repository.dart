@@ -16,18 +16,12 @@ class TopImageRepository {
   /// ページング状況に合わせてクエリを変更
   Query _createImagesQuery(List<ImageEntity> images) {
     if (images.length > 0) {
-      return Firestore.instance
-          .collection('rooms')
-          .document(_roomId)
-          .collection("images")
+      return Firestore.instance.collection('rooms/$_roomId/images')
           .orderBy("created_at", descending: true)
           .startAfter([images.last.created_at])
           .limit(20);
     } else {
-      return Firestore.instance
-          .collection('rooms')
-          .document(_roomId)
-          .collection("images")
+      return Firestore.instance.collection('rooms/$_roomId/images')
           .orderBy("created_at", descending: true)
           .limit(20);
     }
