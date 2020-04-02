@@ -40,27 +40,6 @@ class EditingProfileStateNotifier extends StateNotifier<EditingProfileState> {
   }
 }
 
-class EditingProfileBloc extends AbstractLoadingBloc {
-
-  final EditingProfileRepository _repository;
-
-  final StreamController<LoadingType> _loadingController = StreamController();
-  Stream<LoadingType> get loadingValue => _loadingController.stream;
-
-  EditingProfileBloc(this._repository);
-
-  void editingName(String name) async {
-    _loadingController.sink.add(LoadingType.LOADING);
-    await _repository.setNickNameIntoLocalStorage(name);
-    await _repository.setNickNameIntoFireStore(name);
-    _loadingController.sink.add(LoadingType.COMPLETED);
-  }
-
-  void dispose() {
-    _loadingController.close();
-  }
-}
-
 class EditingProfileRepository {
 
   /// ローカルストレージに名前を保存する関数
