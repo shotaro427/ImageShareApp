@@ -40,6 +40,10 @@ class TopImagesPage extends StatelessWidget {
                               fillColor: Colors.lightBlueAccent,
                               filled: true,
                               prefixIcon: const Icon(Icons.search, color: Colors.white,),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.clear, color: Colors.white,),
+                                onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                              ),
                               hintText: 'キーワードを入力',
                               hintStyle: const TextStyle(color: Colors.white),
                               border: InputBorder.none,
@@ -52,11 +56,12 @@ class TopImagesPage extends StatelessWidget {
               actions: <Widget>[
                 Builder(
                   builder: (context) {
-                    return IconButton(
-                      icon: context.watch<SearchBarState>().isSearchMode
-                        ? const Icon(Icons.clear, color: Colors.white,)
-                        : const Icon(Icons.search, color: Colors.white,),
-                      onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                    return Visibility(
+                      visible: !context.watch<SearchBarState>().isSearchMode,
+                      child: IconButton(
+                        icon: const Icon(Icons.search, color: Colors.white,),
+                        onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                      ),
                     );
                   },
                 ),
