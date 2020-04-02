@@ -42,6 +42,8 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
       // まだ全件取得していなかったら、fetchする
       if (!_isFinished) {
         final QuerySnapshot _snapshot = await _repository.fetchImages(_images);
+
+        // 投稿を整列
         if (_snapshot.documents.length > 0) {
           final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
           _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
@@ -52,6 +54,36 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
           state = const TopImageListState.success(images: []);
         }
       }
+    } catch(e) {
+      log(e.toString());
+      state = TopImageListState.error(message: e.toString());
+    }
+  }
+
+  /// 投稿一覧を検索条件から取得する
+  Future<void> searchImages({@Default('') String keyWord}) async {
+    // 初期化
+    _images = [];
+    // ローディング
+    state = const TopImageListState.loading();
+
+    try {
+      final QuerySnapshot _snapshot = await _repository.fetchImages(_images, keyWord: keyWord);
+
+      // 投稿を整列
+      if (_snapshot.documents.length > 0) {
+
+        final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
+        _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
+        _images.addAll(_newImages);
+        state = TopImageListState.success(images: _images);
+
+      } else {
+
+        log('search result is empty');
+        state = const TopImageListState.success(images: []);
+      }
+
     } catch(e) {
       log(e.toString());
       state = TopImageListState.error(message: e.toString());
