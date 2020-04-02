@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_share_app/models/image_upload_bloc.dart';
+import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
 import 'package:mockito/mockito.dart';
 
 class _MockImageUploadRepository extends Mock implements ImageUploadRepository {}
