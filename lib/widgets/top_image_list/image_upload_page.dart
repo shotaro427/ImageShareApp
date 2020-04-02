@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import "package:image_share_app/models/image_upload_bloc.dart";
+import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
