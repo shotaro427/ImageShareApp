@@ -50,15 +50,38 @@ class ImageDetailPage extends StatelessWidget {
     showDialog(context: context, builder: (context) {
       return AlertDialog(
         title: const Text('削除しますか'),
-        content: const Text('本当に削除しますか？'),
+        content: const Text('本当に削除しますか？\n※復元できません。'),
         actions: <Widget>[
           FlatButton(
             child: const Text('OK', style: TextStyle(color: Colors.red),),
-            onPressed: () => _notifier.deleteImage(),
+            onPressed: () async {
+              await _notifier.deleteImage();
+
+              _showDeletedDialog(context);
+            },
           ),
           FlatButton(
             child: const Text('キャンセル'),
             onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      );
+    });
+  }
+
+  void _showDeletedDialog(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: const Text('削除しました'),
+        content: const Text('削除が完了しました。'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
           )
         ],
       );
