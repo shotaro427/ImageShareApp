@@ -18,6 +18,7 @@ abstract class ImageDetailState with _$ImageDetailState {
   const factory ImageDetailState.loading() = Loading;
   const factory ImageDetailState.viewing({@required ImageEntity imageEntity}) = Success;
   const factory ImageDetailState.editing({@required ImageEntity imageEntity}) = Editing;
+  const factory ImageDetailState.delete() = Deleted;
   const factory ImageDetailState.error({@Default('') String message}) = ErrorDetails;
 }
 
