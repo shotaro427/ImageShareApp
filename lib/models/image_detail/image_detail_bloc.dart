@@ -18,6 +18,7 @@ abstract class ImageDetailState with _$ImageDetailState {
   const factory ImageDetailState.loading() = Loading;
   const factory ImageDetailState.viewing({@required ImageEntity imageEntity}) = Success;
   const factory ImageDetailState.editing({@required ImageEntity imageEntity}) = Editing;
+  const factory ImageDetailState.delete() = Deleted;
   const factory ImageDetailState.error({@Default('') String message}) = ErrorDetails;
 }
 
@@ -78,6 +79,20 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
         memo: _newImage.memo,
         updated_at: _newImage.updated_at
     );
+  }
+
+  /// 投稿を削除する処理
+  Future<void> deleteImage() async {
+
+    state = const ImageDetailState.loading();
+
+    try {
+      await _repository.deleteImage(_imageEntity, _roomInfoEntity);
+      state = const ImageDetailState.delete();
+    } catch(e) {
+      log(e.toString());
+      state = ImageDetailState.error(message: e.toString());
+    }
   }
 
   @override

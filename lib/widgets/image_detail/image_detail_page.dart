@@ -26,6 +26,16 @@ class ImageDetailPage extends StatelessWidget {
           Scaffold(
             appBar: AppBar(
               title: const Text('詳細'),
+              actions: <Widget>[
+                Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _showDeleteConfirmDialog(context),
+                    );
+                  },
+                )
+              ],
             ),
             body: _LayoutDetailImage(_imageEntity),
           ),
@@ -33,6 +43,49 @@ class ImageDetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showDeleteConfirmDialog(BuildContext context) {
+    final ImageDetailStateNotifier _notifier = context.read<ImageDetailStateNotifier>();
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: const Text('削除しますか'),
+        content: const Text('本当に削除しますか？\n※復元できません。'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK', style: TextStyle(color: Colors.red),),
+            onPressed: () async {
+              await _notifier.deleteImage();
+
+              _showDeletedDialog(context);
+            },
+          ),
+          FlatButton(
+            child: const Text('キャンセル'),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      );
+    });
+  }
+
+  void _showDeletedDialog(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: const Text('削除しました'),
+        content: const Text('削除が完了しました。'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    });
   }
 }
 
@@ -47,18 +100,22 @@ class _LayoutDetailImage extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Container(
-          height: 300,
-          child: GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
-            child: Image(
-              fit: BoxFit.contain,
-              width: MediaQuery.of(context).size.width,
-              image: (_entity.originalUrl != null) ? NetworkImage(_entity.originalUrl) : Image.memory(kTransparentImage),
+        Flexible(
+          flex: 1,
+          child: Container(
+            height: 300,
+            child: GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
+              child: Image(
+                fit: BoxFit.contain,
+                width: MediaQuery.of(context).size.width,
+                image: (_entity.originalUrl != null) ? NetworkImage(_entity.originalUrl) : Image.memory(kTransparentImage),
+              ),
             ),
           ),
         ),
         Expanded(
+          flex: 2,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             width: MediaQuery.of(context).size.width,
