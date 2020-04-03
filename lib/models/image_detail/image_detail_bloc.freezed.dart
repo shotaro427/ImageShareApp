@@ -14,6 +14,7 @@ mixin _$ImageDetailState {
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   });
 
@@ -23,6 +24,7 @@ mixin _$ImageDetailState {
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   });
@@ -33,6 +35,7 @@ mixin _$ImageDetailState {
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   });
 
@@ -42,6 +45,7 @@ mixin _$ImageDetailState {
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   });
@@ -68,6 +72,10 @@ class _$ImageDetailStateTearOff {
     return Editing(
       imageEntity: imageEntity,
     );
+  }
+
+  Deleted delete() {
+    return const Deleted();
   }
 
   ErrorDetails error({String message = ''}) {
@@ -110,12 +118,14 @@ class _$_ImageDetailState
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return $default();
   }
@@ -127,6 +137,7 @@ class _$_ImageDetailState
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -144,12 +155,14 @@ class _$_ImageDetailState
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return $default(this);
   }
@@ -161,6 +174,7 @@ class _$_ImageDetailState
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -205,12 +219,14 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return loading();
   }
@@ -222,6 +238,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -239,12 +256,14 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return loading(this);
   }
@@ -256,6 +275,7 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -321,12 +341,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return viewing(imageEntity);
   }
@@ -338,6 +360,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -355,12 +378,14 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return viewing(this);
   }
@@ -372,6 +397,7 @@ class _$Success with DiagnosticableTreeMixin implements Success {
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -441,12 +467,14 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return editing(imageEntity);
   }
@@ -458,6 +486,7 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -475,12 +504,14 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return editing(this);
   }
@@ -492,6 +523,7 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
@@ -509,6 +541,107 @@ abstract class Editing implements ImageDetailState {
   ImageEntity get imageEntity;
 
   Editing copyWith({ImageEntity imageEntity});
+}
+
+class _$Deleted with DiagnosticableTreeMixin implements Deleted {
+  const _$Deleted();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ImageDetailState.delete()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'ImageDetailState.delete'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is Deleted);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>(
+    Result $default(), {
+    @required Result loading(),
+    @required Result viewing(@required ImageEntity imageEntity),
+    @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
+    @required Result error(String message),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(viewing != null);
+    assert(editing != null);
+    assert(delete != null);
+    assert(error != null);
+    return delete();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>(
+    Result $default(), {
+    Result loading(),
+    Result viewing(@required ImageEntity imageEntity),
+    Result editing(@required ImageEntity imageEntity),
+    Result delete(),
+    Result error(String message),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (delete != null) {
+      return delete();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>(
+    Result $default(_ImageDetailState value), {
+    @required Result loading(Loading value),
+    @required Result viewing(Success value),
+    @required Result editing(Editing value),
+    @required Result delete(Deleted value),
+    @required Result error(ErrorDetails value),
+  }) {
+    assert($default != null);
+    assert(loading != null);
+    assert(viewing != null);
+    assert(editing != null);
+    assert(delete != null);
+    assert(error != null);
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>(
+    Result $default(_ImageDetailState value), {
+    Result loading(Loading value),
+    Result viewing(Success value),
+    Result editing(Editing value),
+    Result delete(Deleted value),
+    Result error(ErrorDetails value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Deleted implements ImageDetailState {
+  const factory Deleted() = _$Deleted;
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
@@ -559,12 +692,14 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     @required Result loading(),
     @required Result viewing(@required ImageEntity imageEntity),
     @required Result editing(@required ImageEntity imageEntity),
+    @required Result delete(),
     @required Result error(String message),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return error(message);
   }
@@ -576,6 +711,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result loading(),
     Result viewing(@required ImageEntity imageEntity),
     Result editing(@required ImageEntity imageEntity),
+    Result delete(),
     Result error(String message),
     @required Result orElse(),
   }) {
@@ -593,12 +729,14 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     @required Result loading(Loading value),
     @required Result viewing(Success value),
     @required Result editing(Editing value),
+    @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   }) {
     assert($default != null);
     assert(loading != null);
     assert(viewing != null);
     assert(editing != null);
+    assert(delete != null);
     assert(error != null);
     return error(this);
   }
@@ -610,6 +748,7 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
     Result loading(Loading value),
     Result viewing(Success value),
     Result editing(Editing value),
+    Result delete(Deleted value),
     Result error(ErrorDetails value),
     @required Result orElse(),
   }) {
