@@ -81,6 +81,20 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
     );
   }
 
+  /// 投稿を削除する処理
+  Future<void> deleteImage() async {
+
+    state = const ImageDetailState.loading();
+
+    try {
+      await _repository.deleteImage(_imageEntity, _roomInfoEntity);
+      state = const ImageDetailState.delete();
+    } catch(e) {
+      log(e.toString());
+      state = ImageDetailState.error(message: e.toString());
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
