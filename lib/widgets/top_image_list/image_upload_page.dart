@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +42,19 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   final String roomId;
 
-  _LayoutUploadImagePage(this.roomId);
+  _LayoutUploadImagePage(this.roomId) {
+    // 広告をロード
+    RewardedVideoAd.instance.load(adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetingInfo);
+  }
+
+  /// 広告ターゲット
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: <String>['7AC426FD-8338-4B41-947C-AEF71C81A937'],
+    keywords: <String>['flutterio', 'beautiful apps'],
+    contentUrl: 'https://flutter.io',
+    childDirected: false,
+    nonPersonalizedAds: true,
+  );
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController memoController = TextEditingController();
@@ -238,26 +251,33 @@ class _LayoutUploadImagePage extends StatelessWidget {
     );
   }
 
-  /// 投稿完了ダイアログを表示する
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('投稿しました。'),
-            content: const Text('投稿が完了しました。'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        }
-    );
+  /// 投稿完了後に広告を表示する
+  void _showSuccessDialog(BuildContext context) async {
+
+    RewardedVideoAd.instance.show();
+
+    RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+      if (event == RewardedVideoAdEvent.rewarded) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('投稿しました。'),
+                content: const Text('投稿が完了しました。'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            }
+        );
+      }
+    };
   }
 }
 class _LoadingWidget extends StatelessWidget {
