@@ -26,6 +26,12 @@ class ImageDetailPage extends StatelessWidget {
           Scaffold(
             appBar: AppBar(
               title: const Text('詳細'),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _showDeleteConfirmDialog(context),
+                )
+              ],
             ),
             body: _LayoutDetailImage(_imageEntity),
           ),
@@ -33,6 +39,25 @@ class ImageDetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showDeleteConfirmDialog(BuildContext context) {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: const Text('削除しますか'),
+        content: const Text('本当に削除しますか？'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK', style: TextStyle(color: Colors.red),),
+            onPressed: () {},
+          ),
+          FlatButton(
+            child: const Text('キャンセル'),
+            onPressed: () => Navigator.of(context).pop(),
+          )
+        ],
+      );
+    });
   }
 }
 
