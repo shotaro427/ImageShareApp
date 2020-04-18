@@ -64,7 +64,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                       rooms[index].name,
                       style: const TextStyle(fontSize: 20),
                     ),
-                    onTap: () => _showConfirmJoinRoomDialog(context, rooms[index]),
+                    onTap: () => _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>()),
                   ),
                 );
               },
@@ -78,7 +78,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   }
 
   /// グループに参加するかどうかを表示する処理
-  void _showConfirmJoinRoomDialog(BuildContext context, RoomInfoEntity room) {
+  void _showConfirmJoinRoomDialog(BuildContext context, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
 
     showDialog(
         context: context,
@@ -103,8 +103,8 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                     FlatButton(
                       child: const Text('OK'),
                       onPressed: () async {
-                        await Navigator.of(context).pop();
-                        await context.read<WaitingRoomListStateNotifier>().joinRoom(room.roomId);
+//                        Navigator.of(context).pop();
+                        await notifier.joinRoom(room.roomId);
                         _showCompletedDialog(context, room);
                       },
                     ),

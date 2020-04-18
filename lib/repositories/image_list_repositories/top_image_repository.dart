@@ -23,14 +23,14 @@ class TopImageRepository {
             .where('title', isEqualTo: keyWord)
             .orderBy("created_at", descending: true)
             .startAfter([images.last.created_at])
-            .limit(20);
+            .limit(100);
 
       // 最初のクエリ
       } else {
         return Firestore.instance.collection('rooms/$_roomId/images')
             .where('title', isEqualTo: keyWord)
             .orderBy("created_at", descending: true)
-            .limit(20);
+            .limit(100);
       }
     } else {
       // 1ページ以降のクエリ
@@ -38,13 +38,13 @@ class TopImageRepository {
         return Firestore.instance.collection('rooms/$_roomId/images')
             .orderBy("created_at", descending: true)
             .startAfter([images.last.created_at])
-            .limit(20);
+            .limit(100);
 
       // 最初のクエリ
       } else {
         return Firestore.instance.collection('rooms/$_roomId/images')
             .orderBy("created_at", descending: true)
-            .limit(20);
+            .limit(100);
       }
     }
   }
