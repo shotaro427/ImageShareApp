@@ -28,8 +28,8 @@ class _SignInWithEmailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    emailInputController.text = "teat1@test.com";
-    passwordInputController.text = "password";
+    // emailInputController.text = "teat1@test.com";
+    // passwordInputController.text = "password";
 
     return Stack(
       children: <Widget>[
