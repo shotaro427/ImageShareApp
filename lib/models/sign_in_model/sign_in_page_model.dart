@@ -77,7 +77,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
   /// 広告バナーのWidget
   final BannerAd myBanner = BannerAd(
-      adUnitId: BannerAd.testAdUnitId,
+      adUnitId: "ca-app-pub-9097303817244208/8550614410",
       size: AdSize.smartBanner,
       targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {

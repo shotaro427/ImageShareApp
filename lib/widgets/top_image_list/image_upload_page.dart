@@ -44,7 +44,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   _LayoutUploadImagePage(this.roomId) {
     // 広告をロード
-    RewardedVideoAd.instance.load(adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetingInfo);
+    RewardedVideoAd.instance.load(adUnitId: "ca-app-pub-9097303817244208/3182791560", targetingInfo: targetingInfo);
   }
 
   /// 広告ターゲット
