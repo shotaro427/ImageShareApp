@@ -35,45 +35,48 @@ class _RoomListWidgetState extends State<RoomListWidget> with AutomaticKeepAlive
 class RoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierBuilder<JoinedRoomListState>(
-      stateNotifier: context.read<JoinedRoomListStateNotifier>(),
-      builder: (context, state, _) {
-        return state.maybeWhen(
-            () => const SizedBox.shrink(),
-            loading: () {
-              return const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0x44000000),
-                ),
-                child: Center(child: const CircularProgressIndicator()),
-              );
-            },
-            success: (rooms) {
-              return ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                        border: const Border(
-                            bottom: const BorderSide(color: Colors.black)
-                        )
-                    ),
-                    child: ListTile(
-                      leading: const Icon(Icons.home),
-                      title: Text(
-                        rooms[index].name,
-                        style: const TextStyle(fontSize: 20),
+    return RefreshIndicator(
+      onRefresh: context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms,
+      child: StateNotifierBuilder<JoinedRoomListState>(
+        stateNotifier: context.read<JoinedRoomListStateNotifier>(),
+        builder: (context, state, _) {
+          return state.maybeWhen(
+              () => const SizedBox.shrink(),
+              loading: () {
+                return const DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Color(0x44000000),
+                  ),
+                  child: Center(child: const CircularProgressIndicator()),
+                );
+              },
+              success: (rooms) {
+                return ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                          border: const Border(
+                              bottom: const BorderSide(color: Colors.black)
+                          )
                       ),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
-                    ),
-                  );
-                },
-                itemCount: rooms.length,
-              );
-            },
-            orElse: () => const SizedBox.shrink()
-        );
-      },
+                      child: ListTile(
+                        leading: const Icon(Icons.home),
+                        title: Text(
+                          rooms[index].name,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
+                      ),
+                    );
+                  },
+                  itemCount: rooms.length,
+                );
+              },
+              orElse: () => const SizedBox.shrink()
+          );
+        },
+      ),
     );
   }
 }

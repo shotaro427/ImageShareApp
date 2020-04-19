@@ -35,45 +35,48 @@ class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with Auto
 class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierBuilder<WaitingRoomListState>(
-      stateNotifier: context.read<WaitingRoomListStateNotifier>(),
-      builder: (context, state, _) {
-        return state.maybeWhen(
-          () => const SizedBox.shrink(),
-          loading: () {
-            return const DecoratedBox(
-              decoration: BoxDecoration(
-                color: Color(0x44000000),
-              ),
-              child: Center(child: const CircularProgressIndicator()),
-            );
-          },
-          success: (rooms) {
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    border: const Border(
-                      bottom: const BorderSide(color: Colors.black38),
+    return RefreshIndicator(
+      onRefresh: context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
+      child: StateNotifierBuilder<WaitingRoomListState>(
+        stateNotifier: context.read<WaitingRoomListStateNotifier>(),
+        builder: (context, state, _) {
+          return state.maybeWhen(
+            () => const SizedBox.shrink(),
+            loading: () {
+              return const DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color(0x44000000),
+                ),
+                child: Center(child: const CircularProgressIndicator()),
+              );
+            },
+            success: (rooms) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
+                      border: const Border(
+                        bottom: const BorderSide(color: Colors.black38),
+                      ),
                     ),
-                  ),
-                  child: ListTile(
-                    leading: const Icon(Icons.home),
-                    title: Text(
-                      rooms[index].name,
-                      style: const TextStyle(fontSize: 20),
+                    child: ListTile(
+                      leading: const Icon(Icons.home),
+                      title: Text(
+                        rooms[index].name,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      onTap: () => _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>()),
                     ),
-                    onTap: () => _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>()),
-                  ),
-                );
-              },
-              itemCount: rooms.length,
-            );
-          },
-          orElse: () => const SizedBox.shrink(),
-        );
-      },
+                  );
+                },
+                itemCount: rooms.length,
+              );
+            },
+            orElse: () => const SizedBox.shrink(),
+          );
+        },
+      ),
     );
   }
 

@@ -98,179 +98,186 @@ class _LayoutDetailImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      children: <Widget>[
-        Flexible(
-          flex: 1,
-          child: Container(
-            height: 300,
-            child: GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
-              child: Image(
-                fit: BoxFit.contain,
-                width: MediaQuery.of(context).size.width,
-                image: (_entity.originalUrl != null) ? NetworkImage(_entity.originalUrl) : Image.memory(kTransparentImage),
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+        child: Column(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: Container(
+                height: 300,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailViewPage(_entity.originalUrl, _entity.title))),
+                  child: Image(
+                    fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width,
+                    image: (_entity.originalUrl != null) ? NetworkImage(_entity.originalUrl) : Image.memory(kTransparentImage),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  const BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                    offset: const Offset(0, 10,),
-                  ),
-                ],
-                color: Colors.white
-            ),
-            child: StateNotifierBuilder<ImageDetailState>(
-              stateNotifier: context.read<ImageDetailStateNotifier>(),
-              builder: (context, state, _) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Center(
-                      child: const SizedBox(
-                        width: 60,
-                        height: 3,
-                        child: const DecoratedBox(
-                          decoration: const BoxDecoration(
-                            color: Colors.grey,
-                          ),
-                        ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: const [
+                      const BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                        offset: const Offset(0, 10,),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(
-                            child: TextFormField(
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black
-                              ),
-                              controller: context.read<ImageDetailStateNotifier>().titleController,
-                              decoration: const InputDecoration.collapsed(
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                                hintText: 'タイトル',
-                              ),
-                              // 編集モードのときはTextFormFieldの編集を可能にする
-                              enabled: state.maybeWhen(
-                                  () => false,
-                                  editing: (_) => true,
-                                  orElse: () => false
+                    ],
+                    color: Colors.white
+                ),
+                child: StateNotifierBuilder<ImageDetailState>(
+                  stateNotifier: context.read<ImageDetailStateNotifier>(),
+                  builder: (context, state, _) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Center(
+                          child: const SizedBox(
+                            width: 60,
+                            height: 3,
+                            child: const DecoratedBox(
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
                               ),
                             ),
                           ),
-                          Row(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              OutlineButton(
-                                child: state.maybeWhen(
-                                    () => const Text('編集'),
-                                    editing: (_) => const Text('保存'),
-                                    orElse: () => const Text('編集')
-                                ),
-                                onPressed: () {
-                                  final bool mode = state.maybeWhen(
+                              Flexible(
+                                child: TextFormField(
+                                  style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black
+                                  ),
+                                  controller: context.read<ImageDetailStateNotifier>().titleController,
+                                  decoration: const InputDecoration.collapsed(
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    hintText: 'タイトル',
+                                  ),
+                                  // 編集モードのときはTextFormFieldの編集を可能にする
+                                  enabled: state.maybeWhen(
                                       () => false,
                                       editing: (_) => true,
                                       orElse: () => false
-                                  );
-                                  context.read<ImageDetailStateNotifier>().switchingMode(!mode, withSave: true);
-                                },
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
-                                borderSide: const BorderSide(
-                                  width: 2,
-                                  color: Colors.black26
-                                ),
-                              ),
-                              Visibility(
-                                child: IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () => context.read<ImageDetailStateNotifier>().switchingMode(false),
-                                ),
-                                visible: state.maybeWhen(
-                                    () => false,
-                                    editing: (_) => true,
-                                    orElse: () => false
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 25,),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Icon(Icons.local_offer, color: Colors.grey,),
-                            const Text(
-                              'タグ', style: TextStyle(color: Colors.grey),)
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 15,),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Icon(Icons.note, color: Colors.grey,),
-                            const Text(
-                              'メモ', style: TextStyle(color: Colors.grey),)
-                          ],
-                        ),
-                        Flexible(
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 30),
-                            child: TextFormField(
-                              style: const TextStyle(color: Colors.black),
-                              controller: context.read<ImageDetailStateNotifier>().memoController,
-                              decoration: InputDecoration.collapsed(
-                                hintStyle: TextStyle(
-                                  color: state.maybeWhen(
-                                      () => Colors.transparent,
-                                      editing: (_) => Colors.grey,
-                                      orElse: () => Colors.transparent
                                   ),
                                 ),
-                                hintText: 'メモを書き込めます',
                               ),
-                              // 編集モードのときはTextFormFieldの編集を可能にする
-                              enabled: state.maybeWhen(
-                                  () => false,
-                                  editing: (_) => true,
-                                  orElse: () => false
-                              ),
-                            ),
+                              Row(
+                                children: <Widget>[
+                                  OutlineButton(
+                                    child: state.maybeWhen(
+                                        () => const Text('編集'),
+                                        editing: (_) => const Text('保存'),
+                                        orElse: () => const Text('編集')
+                                    ),
+                                    onPressed: () {
+                                      final bool mode = state.maybeWhen(
+                                          () => false,
+                                          editing: (_) => true,
+                                          orElse: () => false
+                                      );
+                                      context.read<ImageDetailStateNotifier>().switchingMode(!mode, withSave: true);
+                                    },
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
+                                    borderSide: const BorderSide(
+                                      width: 2,
+                                      color: Colors.black26
+                                    ),
+                                  ),
+                                  Visibility(
+                                    child: IconButton(
+                                      icon: const Icon(Icons.close),
+                                      onPressed: () => context.read<ImageDetailStateNotifier>().switchingMode(false),
+                                    ),
+                                    visible: state.maybeWhen(
+                                        () => false,
+                                        editing: (_) => true,
+                                        orElse: () => false
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
+                        const SizedBox(height: 25,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.local_offer, color: Colors.grey,),
+                                const Text(
+                                  'タグ', style: TextStyle(color: Colors.grey),)
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 15,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Icon(Icons.note, color: Colors.grey,),
+                                const Text(
+                                  'メモ', style: TextStyle(color: Colors.grey),)
+                              ],
+                            ),
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: TextFormField(
+                                  style: const TextStyle(color: Colors.black),
+                                  controller: context.read<ImageDetailStateNotifier>().memoController,
+                                  decoration: InputDecoration.collapsed(
+                                    hintStyle: TextStyle(
+                                      color: state.maybeWhen(
+                                          () => Colors.transparent,
+                                          editing: (_) => Colors.grey,
+                                          orElse: () => Colors.transparent
+                                      ),
+                                    ),
+                                    hintText: 'メモを書き込めます',
+                                  ),
+                                  // 編集モードのときはTextFormFieldの編集を可能にする
+                                  enabled: state.maybeWhen(
+                                      () => false,
+                                      editing: (_) => true,
+                                      orElse: () => false
+                                  ),
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: null,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                    ),
-                  ],
-                );
-              }
-            ),
-          ),
-        )
-      ],
+                    );
+                  }
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
