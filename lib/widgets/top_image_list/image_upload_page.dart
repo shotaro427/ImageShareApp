@@ -29,7 +29,6 @@ class ImageUploadPage extends StatelessWidget {
               ),
               body: _LayoutUploadImagePage(roomId),
             ),
-            // TODO: ローディングのWidgetを追加
             _LoadingWidget(),
           ]
       ),
@@ -130,19 +129,19 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                 ),
                 // タグ追加欄
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
-                      child: Icon(
-                        Icons.local_offer,
-                        color: Colors.grey,
-                        size: 22,
-                      ),
-                    ),
-                    const Text('タグ', style: TextStyle(color: Colors.grey),)
-                  ],
-                ),
+                // Row(
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
+                //       child: Icon(
+                //         Icons.local_offer,
+                //         color: Colors.grey,
+                //         size: 22,
+                //       ),
+                //     ),
+                //     const Text('タグ', style: TextStyle(color: Colors.grey),)
+                //   ],
+                // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Divider(
@@ -254,10 +253,10 @@ class _LayoutUploadImagePage extends StatelessWidget {
   /// 投稿完了後に広告を表示する
   void _showSuccessDialog(BuildContext context) async {
 
-    RewardedVideoAd.instance.show();
+    // RewardedVideoAd.instance.show();
 
-    RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
-      if (event == RewardedVideoAdEvent.rewarded) {
+    // RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
+    //   if (event == RewardedVideoAdEvent.rewarded) {
         showDialog(
             context: context,
             builder: (context) {
@@ -276,8 +275,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
               );
             }
         );
-      }
-    };
+      // }
+    // };
   }
 }
 class _LoadingWidget extends StatelessWidget {
