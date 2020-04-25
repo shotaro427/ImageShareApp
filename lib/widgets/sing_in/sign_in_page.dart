@@ -67,6 +67,7 @@ class _SignInView extends StatelessWidget {
                       highlightColor: Colors.blue,
                       onHighlightChanged: (value) {},
                     ),
+                    const Center(child: const Text('or', style: TextStyle(fontSize: 20),)),
                     RaisedButton(
                       child: const Text('メールアドレスで登録'),
                       onPressed: () => _transitionSignUpPage(context),
