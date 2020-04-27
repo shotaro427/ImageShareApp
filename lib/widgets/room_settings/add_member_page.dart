@@ -19,9 +19,12 @@ class AddMemberPage extends StatelessWidget {
       create: (_) => AddMemberStateNotifier(AddMemberRepository()),
       child: Stack(
         children: <Widget>[
-          Scaffold(
-            appBar: AppBar(title: const Text("メンバー招待"),),
-            body: Center(child: _AddMemberLayout(_roomInfoEntity))
+          GestureDetector(
+            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+            child: Scaffold(
+              appBar: AppBar(title: const Text("メンバー招待"),),
+              body: Center(child: _AddMemberLayout(_roomInfoEntity))
+            ),
           ),
           _LoadingWidget(),
         ],
@@ -60,11 +63,7 @@ class _AddMemberLayout extends StatelessWidget {
 
                   state.maybeWhen(
                           () => null,
-                      success: () {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: const Text('招待しました'),),
-                        );
-                      },
+                      success: () => _showSuccessDialog(context),
                       error: (_) => _showErrorDialog(context),
                       orElse: () => null
                   );
@@ -77,6 +76,27 @@ class _AddMemberLayout extends StatelessWidget {
     );
   }
 
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('招待しました'),
+          content: const Text('招待が完了しました'),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      }
+    );
+  }
+ 
   void _showErrorDialog(BuildContext context) {
     showDialog(
         context: context,
