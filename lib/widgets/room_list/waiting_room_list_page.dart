@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -84,71 +86,28 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   void _showConfirmJoinRoomDialog(BuildContext context, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
 
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Center(
-                child: const Text('招待されています')
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('招待されています'),
+          content: const Text(
+            'この部屋に参加しますか?',
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text(('キャンセル')),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    'この部屋に参加しますか?',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    FlatButton(
-                      child: const Text('OK'),
-                      onPressed: () async {
-//                        Navigator.of(context).pop();
-                        await notifier.joinRoom(room.roomId);
-                        _showCompletedDialog(context, room);
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                      width: 1,
-                      child: const DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: Colors.black
-                        ),
-                      )
-                    ),
-                    FlatButton(
-                      child: const Text(('Cancel')),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                )
-              ],
+            FlatButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                await notifier.joinRoom(room.roomId);
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+              }
             ),
-          );
-        }
-    );
-  }
-
-  /// グループに参加したことを表示する処理
-  void _showCompletedDialog(BuildContext context, RoomInfoEntity room) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('参加しました！'),
-            content: const Text('この部屋に参加しました！'),
-            actions: <Widget>[
-              FlatButton(
-                  child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)))
-              ),
-            ],
-          );
-        }
+          ],
+        );
+      }
     );
   }
 }

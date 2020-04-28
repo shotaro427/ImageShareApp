@@ -22,11 +22,14 @@ class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
   WaitingRoomListStateNotifier(this._repository): super(const WaitingRoomListState());
 
+  // グループの配列　
+  List<RoomInfoEntity> _rooms = [];
+
   Future<void> fetchWaitingRooms() async {
     state = const WaitingRoomListState.loading();
 
     try {
-      final _rooms = await _repository.fetchWaitingRooms();
+      _rooms = await _repository.fetchWaitingRooms();
       state = WaitingRoomListState.success(rooms: _rooms);
     } catch(e) {
       log(e.toString());
@@ -39,7 +42,8 @@ class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
     try {
       await _repository.joinRoom(roomId);
-      return;
+      _rooms = _rooms.where((ele) => ele.roomId != roomId).toList();
+      state = WaitingRoomListState.success(rooms: _rooms);
     } catch(e) {
       log(e.toString());
       state = WaitingRoomListState.error(message: e.toString());

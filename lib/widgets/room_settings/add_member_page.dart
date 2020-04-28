@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
@@ -60,8 +62,8 @@ class _AddMemberLayout extends StatelessWidget {
                 child: const Text("招待"),
                 onPressed: () async {
                   await context.read<AddMemberStateNotifier>().inviteUser(_emailController.text, _roomInfoEntity);
-
-                  state.maybeWhen(
+                  
+                  context.read<AddMemberState>().maybeWhen(
                           () => null,
                       success: () => _showSuccessDialog(context),
                       error: (_) => _showErrorDialog(context),
