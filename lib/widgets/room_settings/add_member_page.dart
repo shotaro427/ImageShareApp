@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
@@ -65,7 +63,7 @@ class _AddMemberLayout extends StatelessWidget {
                   
                   context.read<AddMemberState>().maybeWhen(
                           () => null,
-                      success: () => _showSuccessDialog(context),
+                      success: () => _showSuccessDialog(context, _emailController),
                       error: (_) => _showErrorDialog(context),
                       orElse: () => null
                   );
@@ -78,7 +76,8 @@ class _AddMemberLayout extends StatelessWidget {
     );
   }
 
-  void _showSuccessDialog(BuildContext context) {
+  void _showSuccessDialog(BuildContext context, TextEditingController controller) {
+    controller.text = '';
     showDialog(
       context: context,
       builder: (_) {

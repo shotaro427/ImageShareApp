@@ -83,10 +83,10 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   }
 
   /// グループに参加するかどうかを表示する処理
-  void _showConfirmJoinRoomDialog(BuildContext context, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
+  void _showConfirmJoinRoomDialog(BuildContext parentContext, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
 
-    showDialog(
-      context: context,
+    showDialog<bool>(
+      context: parentContext,
       builder: (context) {
         return AlertDialog(
           title: const Text('招待されています'),
@@ -96,13 +96,28 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: const Text(('キャンセル')),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                parentContext.read<WaitingRoomListState>().maybeWhen(
+                  () => Navigator.of(context).pop(false),
+                  loading: () => null,
+                  orElse: () => Navigator.of(context).pop(false),
+                );
+              }
             ),
             FlatButton(
               child: const Text('OK'),
-              onPressed: () async {
-                await notifier.joinRoom(room.roomId);
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+              onPressed: () {
+                parentContext.read<WaitingRoomListState>().maybeWhen(
+                  () async {
+                    await notifier.joinRoom(room.roomId);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+                  },
+                  loading: () => null,
+                  orElse: () async {
+                    await notifier.joinRoom(room.roomId);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+                  },
+                );
               }
             ),
           ],
