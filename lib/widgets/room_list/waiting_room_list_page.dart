@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -36,11 +34,11 @@ class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with Auto
 
 class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext parentContext) {
     return RefreshIndicator(
-      onRefresh: context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
+      onRefresh: parentContext.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
       child: StateNotifierBuilder<WaitingRoomListState>(
-        stateNotifier: context.read<WaitingRoomListStateNotifier>(),
+        stateNotifier: parentContext.read<WaitingRoomListStateNotifier>(),
         builder: (context, state, _) {
           return state.maybeWhen(
             () => const SizedBox.shrink(),
@@ -62,13 +60,24 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                         bottom: const BorderSide(color: Colors.black38),
                       ),
                     ),
-                    child: ListTile(
-                      leading: const Icon(Icons.home),
-                      title: Text(
-                        rooms[index].name,
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      onTap: () => _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>()),
+                    child: Builder(
+                      builder: (context) {
+                        return ListTile(
+                          leading: const Icon(Icons.home),
+                          title: Text(
+                            rooms[index].name,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          onTap: () async {
+                            final _result = await _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>());
+
+                            if(_result != null && _result) {
+                              await context.read<WaitingRoomListStateNotifier>().joinRoom(rooms[index].roomId);
+                              Navigator.of(parentContext).push(MaterialPageRoute(builder: (context) => TopImagesPage(rooms[index])));
+                            }
+                          }
+                        );
+                      }
                     ),
                   );
                 },
@@ -83,9 +92,9 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   }
 
   /// グループに参加するかどうかを表示する処理
-  void _showConfirmJoinRoomDialog(BuildContext parentContext, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
+  Future<bool> _showConfirmJoinRoomDialog(BuildContext parentContext, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
 
-    showDialog<bool>(
+    return showDialog<bool>(
       context: parentContext,
       builder: (context) {
         return AlertDialog(
@@ -96,28 +105,12 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               child: const Text(('キャンセル')),
-              onPressed: () {
-                parentContext.read<WaitingRoomListState>().maybeWhen(
-                  () => Navigator.of(context).pop(false),
-                  loading: () => null,
-                  orElse: () => Navigator.of(context).pop(false),
-                );
-              }
+              onPressed: () => Navigator.of(context).pop(false),
             ),
             FlatButton(
               child: const Text('OK'),
-              onPressed: () {
-                parentContext.read<WaitingRoomListState>().maybeWhen(
-                  () async {
-                    await notifier.joinRoom(room.roomId);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
-                  },
-                  loading: () => null,
-                  orElse: () async {
-                    await notifier.joinRoom(room.roomId);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
-                  },
-                );
+              onPressed: () async {
+                Navigator.of(context).pop(true);
               }
             ),
           ],
