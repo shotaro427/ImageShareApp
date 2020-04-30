@@ -46,6 +46,11 @@ class WaitingRoomListRepository {
     await _userRef.collection('rooms').add({
       'room': _roomRef
     });
+
+    // roomsのparticipantsコレクションにユーザーを追加
+    await db.document(_roomRef.path).collection("participants").add({
+      "user": _userRef
+    });
   }
 
   /// roomIdからdocumentを取得する
