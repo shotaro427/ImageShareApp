@@ -41,9 +41,9 @@ class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
     state = const WaitingRoomListState.loading();
 
     try {
-      await _repository.joinRoom(roomId);
       _rooms = _rooms.where((ele) => ele.roomId != roomId).toList();
       state = WaitingRoomListState.success(rooms: _rooms);
+      await _repository.joinRoom(roomId);
     } catch(e) {
       log(e.toString());
       state = WaitingRoomListState.error(message: e.toString());
