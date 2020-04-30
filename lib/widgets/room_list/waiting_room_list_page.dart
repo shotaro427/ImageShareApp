@@ -40,7 +40,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
       child: StateNotifierBuilder<WaitingRoomListState>(
         stateNotifier: parentContext.read<WaitingRoomListStateNotifier>(),
         builder: (context, state, _) {
-          return state.maybeWhen(
+          return context.read<WaitingRoomListState>().maybeWhen(
             () => const SizedBox.shrink(),
             loading: () {
               return const DecoratedBox(
