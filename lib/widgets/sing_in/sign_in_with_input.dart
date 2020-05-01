@@ -97,6 +97,7 @@ class _SignInWithEmailWidget extends StatelessWidget {
   void _showErrorDialog(BuildContext context) {
     AwesomeDialog(
       context: context,
+      headerAnimationLoop: false,
       animType: AnimType.SCALE,
       tittle: 'エラー',
       dialogType: DialogType.ERROR,

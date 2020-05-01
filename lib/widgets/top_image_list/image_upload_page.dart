@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
@@ -233,21 +234,16 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   /// エラーダイアログを表示する
   void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('エラー'),
-            content: const Text('投稿できませんでした。\nもう一度お確かめください'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: 'エラー',
+      desc: '投稿できませんでした。\nもう一度お確かめください',
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () {},
+    ).show();
   }
 
   /// 投稿完了後に広告を表示する
@@ -257,26 +253,20 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
     // RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
     //   if (event == RewardedVideoAdEvent.rewarded) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('投稿しました。'),
-                content: const Text('投稿が完了しました。'),
-                actions: <Widget>[
-                  FlatButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              );
-            }
-        );
+
       // }
     // };
+
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '投稿しました。',
+      desc: '投稿が完了しました。',
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () => Navigator.of(context).pop(),
+    ).show();
   }
 }
 class _LoadingWidget extends StatelessWidget {
