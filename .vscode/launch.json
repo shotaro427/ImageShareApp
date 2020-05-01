@@ -8,7 +8,7 @@
             "name": "Flutter",
             "request": "launch",
             "type": "dart",
-            "program": "/Users/shotaro/programming/flutter/image_share_app/lib/widgets/main.dart"
+            "program": "/Users/shotaro/programming/flutter/image_share_app/lib/main.dart"
         }
     ]
 }
