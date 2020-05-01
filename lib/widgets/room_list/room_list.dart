@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,31 +67,24 @@ class _RoomListsWidget extends StatelessWidget {
 
   /// ログアウトダイアログを表示
   void _showLogoutDialog(BuildContext context) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('ログアウト'),
-            content: const Text('ログアウトしますか？'),
-            actions: <Widget>[
-              FlatButton(
-                  child: const Text('いいえ'),
-                  onPressed:  () => Navigator.of(context).pop()
-              ),
-              FlatButton(
-                child: const Text('はい'),
-                onPressed: () async {
-                  await _logout();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (BuildContext context) => SignInPage()),
-                      (_) => false
-                  );
-                },
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      tittle: 'ログアウト',
+      dialogType: DialogType.INFO,
+      desc: 'ログアウトしますか？',
+      btnOkText: 'OK',
+      btnCancelText: 'キャンセル',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () async {
+        await _logout();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => SignInPage()),
+            (_) => false
+        );
+      }
+    ).show();
   }
 
   /// ログアウトする
