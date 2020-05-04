@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,7 @@ class _SignUpWithEmailWidget extends StatelessWidget {
                     const SizedBox(height: 24.0),
                     Center(
                       child: RaisedButton(
-                        child: const Text('SingUp'),
+                        child: const Text('登録'),
                         onPressed: () async => await _handleSignUp(context),
                       ),
                     ),
@@ -92,21 +93,16 @@ class _SignUpWithEmailWidget extends StatelessWidget {
 
   /// エラーダイアログを表示する
   void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('エラー'),
-            content: const Text('ログインできませんでした。\nメールアドレスとパスワードをもう一度お確かめください'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      tittle: 'エラー',
+      dialogType: DialogType.ERROR,
+      desc: '登録できませんでした。\時間を置いてもう一度お確かめください',
+      btnOkText: 'OK',
+      btnOkOnPress: () {}
+    ).show();
   }
 }
 

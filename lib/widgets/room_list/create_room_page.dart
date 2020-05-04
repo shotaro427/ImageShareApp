@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -87,21 +88,16 @@ class _InputRoomPage extends StatelessWidget {
   }
 
   void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('エラー'),
-            content: const Text('グループを作成できませんでした。\n通信状況などを確認してから、もう一度お試しください'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: 'エラー',
+      desc: 'グループを作成できませんでした。\n通信状況などを確認してから、もう一度お試しください',
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () {},
+    ).show();
   }
 }
 

@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
@@ -78,42 +79,29 @@ class _AddMemberLayout extends StatelessWidget {
 
   void _showSuccessDialog(BuildContext context, TextEditingController controller) {
     controller.text = '';
-    showDialog(
+    AwesomeDialog(
       context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('招待しました'),
-          content: const Text('招待が完了しました'),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      }
-    );
+      headerAnimationLoop: false,
+      tittle: '招待しました',
+      desc: '招待が完了しました。',
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () => Navigator.of(context).pop(),
+    ).show();
   }
  
   void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('エラー'),
-            content: const Text('招待できませんでした。\nもう一度お確かめください'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: 'エラー',
+      desc: '招待できませんでした。\nもう一度お確かめください',
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () {},
+    ).show();
   }
 }
 

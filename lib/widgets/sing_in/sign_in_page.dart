@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/sign_in_model/sign_in_page_model.dart';
 import 'package:image_share_app/repositories/sign_in_repositories/sign_in_page_repository.dart';
@@ -37,52 +39,77 @@ class _SignInView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    RaisedButton(
-                      child: const Text('Googleアカウントでログイン'),
-                      onPressed: () async {
-                        await context.read<SignInStateNotifier>().handleSignIn();
-
-                        // ルーム一覧に遷移
-                        context.read<SignInState>().maybeWhen(
-                          null,
-                          success: (isCompleted) => (isCompleted) ? context.read<SignInStateNotifier>().transitionNextPage(context) : null,
-                          error: (_) => _showErrorDialog(context),
-                          orElse: () => log('SignInState is not success or error')
-                        );
-                      },
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))
+                    SizedBox(
+                      height: 45,
+                      child: AppleSignInButton(
+                        style: AppleButtonStyle.white,
+                        text: 'Appleでログイン',
+                        textStyle: const TextStyle(fontSize: 19),
+                        borderRadius: 10,
+                        onPressed: () {},
                       ),
-                      highlightElevation: 16.0,
-                      highlightColor: Colors.blue,
-                      onHighlightChanged: (value) {},
                     ),
-                    RaisedButton(
-                      child: const Text('メールアドレスでログイン'),
-                      onPressed: () => _transitionSignInPage(context),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))
+                    const SizedBox(height: 9,),
+                    SizedBox(
+                      height: 45,
+                      child: GoogleSignInButton(
+                        text: 'Googleでログイン',
+                        borderRadius: 10,
+                        onPressed: () async {
+                          await context.read<SignInStateNotifier>().handleSignIn();
+                          // ルーム一覧に遷移
+                          context.read<SignInState>().maybeWhen(
+                            null,
+                            success: (isCompleted) => (isCompleted) ? context.read<SignInStateNotifier>().transitionNextPage(context) : null,
+                            error: (_) => _showErrorDialog(context),
+                            orElse: () => log('SignInState is not success or error')
+                          );
+                        },
                       ),
-                      highlightElevation: 16.0,
-                      highlightColor: Colors.blue,
-                      onHighlightChanged: (value) {},
                     ),
-                    const Center(child: const Text('or', style: TextStyle(fontSize: 20),)),
-                    RaisedButton(
-                      child: const Text('メールアドレスで登録'),
-                      onPressed: () => _transitionSignUpPage(context),
-                      color: Colors.white,
-                      shape: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    const SizedBox(height: 9,),
+                    SizedBox(
+                      height: 45,
+                      child: RaisedButton(
+                        child: const Text('メールアドレスでログイン'),
+                        onPressed: () => _transitionSignInPage(context),
+                        color: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10))
+                        ),
+                        highlightElevation: 16.0,
+                        highlightColor: Colors.blue,
+                        onHighlightChanged: (value) {},
                       ),
-                      highlightElevation: 16.0,
-                      highlightColor: Colors.blue,
-                      onHighlightChanged: (value) {},
+                    ),
+                    const SizedBox(
+                      height: 35,
+                      child: const Center(
+                        child: const Text(
+                          'or', 
+                          style: TextStyle(fontSize: 20),
+                        )
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      child: RaisedButton(
+                        child: const Text('メールアドレスで登録'),
+                        onPressed: () => _transitionSignUpPage(context),
+                        color: Colors.white,
+                        shape: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        highlightElevation: 16.0,
+                        highlightColor: Colors.blue,
+                        onHighlightChanged: (value) {},
+                      ),
                     ),
                   ]
               ),
             ),
           ),
+          backgroundColor: Theme.of(context).backgroundColor,
         ),
         _LoadingWidget()
       ],
@@ -91,21 +118,16 @@ class _SignInView extends StatelessWidget {
 
   /// エラーダイアログを表示する
   void _showErrorDialog(BuildContext context) {
-    showDialog(
+    AwesomeDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('エラー'),
-          content: const Text('ログインできませんでした。\nもう一度お確かめください'),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        );
-      }
-    );
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      tittle: 'エラー',
+      dialogType: DialogType.ERROR,
+      desc: 'ログインできませんでした。\nもう一度お確かめください',
+      btnOkText: 'OK',
+      btnOkOnPress: () {}
+    ).show();
   }
 
   /// 「メールアドレスでログイン」を押下したときの遷移処理

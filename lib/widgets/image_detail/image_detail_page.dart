@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -47,45 +48,36 @@ class ImageDetailPage extends StatelessWidget {
 
   void _showDeleteConfirmDialog(BuildContext context) {
     final ImageDetailStateNotifier _notifier = context.read<ImageDetailStateNotifier>();
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: const Text('削除しますか'),
-        content: const Text('本当に削除しますか？\n※復元できません。'),
-        actions: <Widget>[
-          FlatButton(
-            child: const Text('OK', style: TextStyle(color: Colors.red),),
-            onPressed: () async {
-              await _notifier.deleteImage();
-
-              _showDeletedDialog(context);
-            },
-          ),
-          FlatButton(
-            child: const Text('キャンセル'),
-            onPressed: () => Navigator.of(context).pop(),
-          )
-        ],
-      );
-    });
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '削除しますか',
+      desc: '本当に削除しますか？\n※復元できません。',
+      dialogType: DialogType.WARNING,
+      animType: AnimType.SCALE,
+      btnOkText: 'キャンセル',
+      btnCancelText: 'OK',
+      btnOkColor: Colors.red,
+      btnCancelColor: const Color(0xFF00CA71),
+      btnOkOnPress: () {},
+      btnCancelOnPress: () async {
+        await _notifier.deleteImage();
+        _showDeletedDialog(context);
+      },
+    ).show();
   }
 
   void _showDeletedDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: const Text('削除しました'),
-        content: const Text('削除が完了しました。'),
-        actions: <Widget>[
-          FlatButton(
-            child: const Text('Ok'),
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    });
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '削除しました',
+      desc: '削除が完了しました。',
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () => Navigator.of(context).pop(),
+    ).show();
   }
 }
 

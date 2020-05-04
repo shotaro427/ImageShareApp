@@ -1,4 +1,5 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -68,14 +69,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                             rooms[index].name,
                             style: const TextStyle(fontSize: 20),
                           ),
-                          onTap: () async {
-                            final _result = await _showConfirmJoinRoomDialog(context, rooms[index], context.read<WaitingRoomListStateNotifier>());
-
-                            if(_result != null && _result) {
-                              await context.read<WaitingRoomListStateNotifier>().joinRoom(rooms[index].roomId);
-                              Navigator.of(parentContext).push(MaterialPageRoute(builder: (context) => TopImagesPage(rooms[index])));
-                            }
-                          }
+                          onTap: () =>_showConfirmJoinRoomDialog(context, parentContext, rooms[index], context.read<WaitingRoomListStateNotifier>()),
                         );
                       }
                     ),
@@ -92,30 +86,26 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   }
 
   /// グループに参加するかどうかを表示する処理
-  Future<bool> _showConfirmJoinRoomDialog(BuildContext parentContext, RoomInfoEntity room, WaitingRoomListStateNotifier notifier) {
-
-    return showDialog<bool>(
-      context: parentContext,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('招待されています'),
-          content: const Text(
-            'この部屋に参加しますか?',
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text(('キャンセル')),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            FlatButton(
-              child: const Text('OK'),
-              onPressed: () async {
-                Navigator.of(context).pop(true);
-              }
-            ),
-          ],
-        );
-      }
-    );
+  void _showConfirmJoinRoomDialog(
+    BuildContext context,
+    BuildContext parentContext,
+    RoomInfoEntity room,
+    WaitingRoomListStateNotifier notifier
+  ) {
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '招待されています',
+      desc: 'このグループに参加しますか？',
+      dialogType: DialogType.INFO,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnCancelText: 'キャンセル',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () async {
+        await context.read<WaitingRoomListStateNotifier>().joinRoom(room.roomId);
+        Navigator.of(parentContext).push(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+      },
+    ).show();
   }
 }

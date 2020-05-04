@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -94,21 +95,16 @@ class _SignInWithEmailWidget extends StatelessWidget {
   }
 
   void _showErrorDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('エラー'),
-            content: const Text('ログインできませんでした。\nメールアドレスとパスワードを確認してください。'),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          );
-        }
-    );
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      tittle: 'エラー',
+      dialogType: DialogType.ERROR,
+      desc: 'ログインできませんでした。\nもう一度お確かめください',
+      btnOkText: 'OK',
+      btnOkOnPress: () {}
+    ).show();
   }
 }
 
