@@ -40,6 +40,8 @@ dependencies:
   flutter_native_image: ^0.0.5+2
   firebase_admob: ^0.9.3+1
   awesome_dialog: ^0.1.4
+  apple_sign_in: ^0.1.0
+  flutter_auth_buttons: ^0.8.0
 
 dev_dependencies:
   flutter_test:
