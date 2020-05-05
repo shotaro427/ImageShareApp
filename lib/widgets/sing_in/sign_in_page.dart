@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -41,13 +43,7 @@ class _SignInView extends StatelessWidget {
                   children: <Widget>[
                     SizedBox(
                       height: 45,
-                      child: AppleSignInButton(
-                        style: AppleButtonStyle.white,
-                        text: 'Appleでログイン',
-                        textStyle: const TextStyle(fontSize: 19),
-                        borderRadius: 10,
-                        onPressed: () {},
-                      ),
+                      child: ExtensionAppleSignInButtun(),
                     ),
                     const SizedBox(height: 9,),
                     SizedBox(
@@ -165,5 +161,75 @@ class _LoadingWidget extends StatelessWidget {
                       ),
       orElse: () => const SizedBox.shrink(),
     );
+  }
+}
+
+class ExtensionAppleSignInButtun extends StatefulWidget {
+  @override
+  _ExtensionAppleSignInButtunState createState() => _ExtensionAppleSignInButtunState();
+}
+
+class _ExtensionAppleSignInButtunState extends State<ExtensionAppleSignInButtun> {
+
+  _ExtensionAppleSignInButtunState() {
+    _canSignInWithApple();
+  }
+
+  bool isVisibleAppleSingInButton = true;
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: isVisibleAppleSingInButton,
+      child: AppleSignInButton(
+        style: AppleButtonStyle.white,
+        text: 'Appleでログイン',
+        textStyle: const TextStyle(fontSize: 19),
+        borderRadius: 10,
+        onPressed: () async {
+          await context.read<SignInStateNotifier>().handleAppleSignIn();
+          // ルーム一覧に遷移
+          context.read<SignInState>().maybeWhen(
+            null,
+            success: (isCompleted) => (isCompleted) ? context.read<SignInStateNotifier>().transitionNextPage(context) : null,
+            error: (_) => _showErrorDialog(context),
+            orElse: () => log('SignInState is not success or error')
+          );
+        },
+      ),
+    );
+  }
+
+  /// エラーダイアログを表示する
+  void _showErrorDialog(BuildContext context) {
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      animType: AnimType.SCALE,
+      tittle: 'エラー',
+      dialogType: DialogType.ERROR,
+      desc: 'ログインできませんでした。\nもう一度お確かめください',
+      btnOkText: 'OK',
+      btnOkOnPress: () {}
+    ).show();
+  }
+
+  Future<void> _canSignInWithApple() async {
+    bool _isVisibleAppleSingInButton = true;
+    if (!Platform.isIOS) _isVisibleAppleSingInButton = false; // Android ではこの機能を提供しない方針の場合。
+    final iosInfo = await DeviceInfoPlugin().iosInfo;
+    final version = iosInfo.systemVersion;
+    // 13 以上なら〜
+    List<double> versionDouble;
+    try {
+      versionDouble = version.split('.').map((f) => double.parse(f)).toList();
+    } catch (exception) {
+      versionDouble = [0, 0];
+    }
+
+    _isVisibleAppleSingInButton = versionDouble.first >= 13;
+
+    setState(() {
+      isVisibleAppleSingInButton = _isVisibleAppleSingInButton;
+    });
   }
 }

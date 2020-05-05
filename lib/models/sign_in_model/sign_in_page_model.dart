@@ -43,12 +43,41 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
     try {
       final UserEntity _user = (await _repository.loginWithGoogle());
 
-      // User情報を保存
-      await _repository.saveUserInfo(_user);
-      user = _user;
+      if(_user != null) {
+        // User情報を保存
+        await _repository.saveUserInfo(_user);
+        user = _user;
 
+        // 状態を更新
+        state = const SignInState.success(isCompleted: true);
+      } else {
+        state = const SignInState.success(isCompleted: false);
+      }
+    } catch (e) {
+      log(e.toString());
       // 状態を更新
-      state = const SignInState.success(isCompleted: true);
+      state = SignInState.error(message: e.toString());
+    }
+  }
+
+  /// Appleアカウントでログインするときのハンドル処理
+  Future<void> handleAppleSignIn() async {
+
+    state = const SignInState.loading();
+
+    try {
+      final UserEntity _user = await _repository.loginWithApple();
+
+      if(_user != null && _user.uid != null) {
+        // User情報を保存
+        await _repository.saveUserInfo(_user);
+        user = _user;
+
+        // 状態を更新
+        state = const SignInState.success(isCompleted: true);
+      } else {
+        state = const SignInState.success(isCompleted: false);
+      }
     } catch (e) {
       log(e.toString());
       // 状態を更新
