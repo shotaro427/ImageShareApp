@@ -50,6 +50,10 @@ class _SignInView extends StatelessWidget {
                       height: 45,
                       child: GoogleSignInButton(
                         text: 'Googleでログイン',
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 19
+                        ),
                         borderRadius: 10,
                         onPressed: () async {
                           await context.read<SignInStateNotifier>().handleSignIn();
@@ -67,7 +71,13 @@ class _SignInView extends StatelessWidget {
                     SizedBox(
                       height: 45,
                       child: RaisedButton(
-                        child: const Text('メールアドレスでログイン'),
+                        child: const Text(
+                          'メールアドレスでログイン',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15
+                          ),
+                        ),
                         onPressed: () => _transitionSignInPage(context),
                         color: Colors.white,
                         shape: const RoundedRectangleBorder(
@@ -90,10 +100,16 @@ class _SignInView extends StatelessWidget {
                     SizedBox(
                       height: 45,
                       child: RaisedButton(
-                        child: const Text('メールアドレスで登録'),
+                        child: const Text(
+                          'メールアドレスで登録',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15
+                          ),
+                        ),
                         onPressed: () => _transitionSignUpPage(context),
-                        color: Colors.white,
-                        shape: const OutlineInputBorder(
+                        color: Theme.of(context).buttonColor,
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         highlightElevation: 16.0,
