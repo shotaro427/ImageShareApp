@@ -11,10 +11,13 @@ class RoomSettingsRepository {
   RoomSettingsRepository(this._roomInfoEntity);
 
   /// 所属しているメンバーを取得する
-  Future<List<UserEntity>> fetchRoomMembers() async {
+  Future<Map<String, List<UserEntity>>> fetchRoomMembers() async {
 
     final List<DocumentReference> _refs = [];
-    final List<UserEntity> _participants = [];
+    final Map<String, List<UserEntity>> _participants = {
+      'you': [],
+      'members': [],
+    };
 
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String _uid = _prefs.getString('uid') ?? "";
@@ -38,12 +41,12 @@ class RoomSettingsRepository {
       final _profile = UserEntity.fromJson(documentSnapshot.data);
 
       // リストに追加
-      if (_profile.uid == _uid && _participants.length > 0) {
+      if (_profile.uid == _uid && _participants['you'].length == 0) {
         // 自分のプロフィールを追加
-        _participants.insert(0, _profile);
-      } else {
+        _participants['you'].add(_profile);
+      } else if (_profile.uid != _uid) {
         // その他メンバーのプロフィールを追加
-        _participants.add(_profile);
+        _participants['members'].add(_profile);
       }
     }
 

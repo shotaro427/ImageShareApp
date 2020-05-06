@@ -25,8 +25,7 @@ class RoomSettingsPage extends StatelessWidget {
               title: Text(_roomInfo.name),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.add, color: Colors.white,),
-                  // TODO: AddMemberPageを実装する
+                  icon: const Icon(Icons.group_add, color: Colors.white,),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage(_roomInfo))),
                 )
               ],
@@ -45,36 +44,31 @@ class _RoomSettingsBodyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Colors.black38)
-              )
-          ),
-          child: Center(
-            child: Text(
-              'あなた',
-              style: Theme.of(context).textTheme.headline,
-            ),
-          ),
-        ),
+        // Container(
+        //   padding: const EdgeInsets.all(15),
+        //   decoration: const BoxDecoration(
+        //       border: Border(
+        //           bottom: BorderSide(color: Colors.black38)
+        //       )
+        //   ),
+        //   child: Center(
+        //     child: Text(
+        //       'あなた',
+        //       style: Theme.of(context).textTheme.headline5,
+        //     ),
+        //   ),
+        // ),
         // 自分の名前
         _MyProfileInfoWidget(),
         // メンバー一覧のヘッダー
-        Container(
+        Padding(
           padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Colors.black38)
-              )
-          ),
-          child: Center(
-            child: Text(
-              '参加している人',
-              style: Theme.of(context).textTheme.headline,
-            ),
+          child: Text(
+            '参加している人',
+            style: Theme.of(context).textTheme.headline6,
+            textAlign: TextAlign.start,
           ),
         ),
         // メンバー一覧
@@ -94,21 +88,31 @@ class _MyProfileInfoWidget extends StatelessWidget {
       builder: (context, state, _) {
         return state.maybeWhen(
                 () => createPlaceholderWidget(context),
-            success: (myProfile, _) => Container(
-              margin:  const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black38)
-                  )
-              ),
-              child: ListTile(
-                  title: Text(
-                    (myProfile.name != null) ? myProfile.name : '名無し',
-                    style: const TextStyle(fontSize: 20),
+          success: (myProfile, _) { 
+            return GestureDetector(
+                child: Card(
+                  color: Theme.of(context).bannerTheme.backgroundColor,
+                  elevation: 10,
+                  margin: const EdgeInsets.all(5),
+                  child: SizedBox(
+                    height: 65,
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 10),
+                          child: const Icon(Icons.account_circle),
+                        ),
+                        Text(
+                          (myProfile.name != null) ? '${myProfile.name} (あなた)' : '未設定 (あなた)',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage((myProfile.name != null) ? myProfile.name : '名無し')))
-              ),
-            ),
+                ),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage((myProfile.name != null) ? myProfile.name : '未設定'))),
+              );
+            },
             orElse: () => createPlaceholderWidget(context),
         );
       },
@@ -117,19 +121,24 @@ class _MyProfileInfoWidget extends StatelessWidget {
 
   /// デフォルトのwidget
   Widget createPlaceholderWidget(BuildContext context) {
-    return Container(
-      margin:  const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Colors.black38)
-          )
-      ),
-      child: ListTile(
-          title: const Text(
-            '名無し',
-            style: const TextStyle(fontSize: 20),
-          ),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage('名無し')))
+    return Card(
+      color: Theme.of(context).bannerTheme.backgroundColor,
+      elevation: 10,
+      margin: const EdgeInsets.all(5),
+      child: SizedBox(
+        height: 65,
+        child: Row(
+          children: const [
+            const Padding(
+              padding: const EdgeInsets.only(left: 15, right: 10),
+              child: const Icon(Icons.account_circle),
+            ),
+            const Text(
+              '未設定',
+              style: const TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -149,20 +158,28 @@ class _RoomMembersPage extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return state.maybeWhen(
                     () => Container(),
-                success: (_, members) => Container(
-                  margin:  const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(color: Colors.black38)
-                      )
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      (members[index].name != null) ? members[index].name : 'GUEST${index + 1}',
-                      style: const TextStyle(fontSize: 20),
+                success: (_, members) {
+                  return Card(
+                    color: Theme.of(context).bannerTheme.backgroundColor,
+                    elevation: 10,
+                    margin: const EdgeInsets.all(5),
+                    child: SizedBox(
+                      height: 65,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 10),
+                            child: const Icon(Icons.account_circle),
+                          ),
+                          Text(
+                            (members[index].name != null) ? members[index].name : '未設定',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 orElse: () => Container()
             );
           },

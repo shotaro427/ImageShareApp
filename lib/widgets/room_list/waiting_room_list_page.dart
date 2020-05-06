@@ -54,26 +54,29 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
             success: (rooms) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      border: const Border(
-                        bottom: const BorderSide(color: Colors.black38),
-                      ),
-                    ),
-                    child: Builder(
-                      builder: (context) {
-                        return ListTile(
-                          leading: const Icon(Icons.home),
-                          title: Text(
-                            rooms[index].name,
-                            style: const TextStyle(fontSize: 20),
+                  return GestureDetector(
+                      child: Card(
+                        color: Theme.of(context).bannerTheme.backgroundColor,
+                        elevation: 10,
+                        margin: const EdgeInsets.all(5),
+                        child: SizedBox(
+                          height: 65,
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                child: const Icon(Icons.group),
+                              ),
+                              Text(
+                                rooms[index].name,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
                           ),
-                          onTap: () =>_showConfirmJoinRoomDialog(context, parentContext, rooms[index], context.read<WaitingRoomListStateNotifier>()),
-                        );
-                      }
-                    ),
-                  );
+                        ),
+                      ),
+                      onTap: () =>_showConfirmJoinRoomDialog(context, parentContext, rooms[index], context.read<WaitingRoomListStateNotifier>()),
+                    );
                 },
                 itemCount: rooms.length,
               );
