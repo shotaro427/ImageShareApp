@@ -93,21 +93,31 @@ class _MyProfileInfoWidget extends StatelessWidget {
       builder: (context, state, _) {
         return state.maybeWhen(
                 () => createPlaceholderWidget(context),
-            success: (myProfile, _) => Container(
-              margin:  const EdgeInsets.all(5),
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black38)
-                  )
-              ),
-              child: ListTile(
-                  title: Text(
-                    (myProfile.name != null) ? myProfile.name : '名無し',
-                    style: const TextStyle(fontSize: 20),
+          success: (myProfile, _) { 
+            return GestureDetector(
+                child: Card(
+                  color: Theme.of(context).bannerTheme.backgroundColor,
+                  elevation: 10,
+                  margin: const EdgeInsets.all(5),
+                  child: SizedBox(
+                    height: 65,
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 10),
+                          child: const Icon(Icons.account_circle),
+                        ),
+                        Text(
+                          (myProfile.name != null) ? myProfile.name : '未設定',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage((myProfile.name != null) ? myProfile.name : '名無し')))
-              ),
-            ),
+                ),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage((myProfile.name != null) ? myProfile.name : '未設定'))),
+              );
+            },
             orElse: () => createPlaceholderWidget(context),
         );
       },
@@ -116,19 +126,24 @@ class _MyProfileInfoWidget extends StatelessWidget {
 
   /// デフォルトのwidget
   Widget createPlaceholderWidget(BuildContext context) {
-    return Container(
-      margin:  const EdgeInsets.all(5),
-      decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Colors.black38)
-          )
-      ),
-      child: ListTile(
-          title: const Text(
-            '名無し',
-            style: const TextStyle(fontSize: 20),
-          ),
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditingProfilePage('名無し')))
+    return Card(
+      color: Theme.of(context).bannerTheme.backgroundColor,
+      elevation: 10,
+      margin: const EdgeInsets.all(5),
+      child: SizedBox(
+        height: 65,
+        child: Row(
+          children: const [
+            const Padding(
+              padding: const EdgeInsets.only(left: 15, right: 10),
+              child: const Icon(Icons.account_circle),
+            ),
+            const Text(
+              '未設定',
+              style: const TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -148,20 +163,28 @@ class _RoomMembersPage extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return state.maybeWhen(
                     () => Container(),
-                success: (_, members) => Container(
-                  margin:  const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(color: Colors.black38)
-                      )
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      (members[index].name != null) ? members[index].name : 'GUEST${index + 1}',
-                      style: const TextStyle(fontSize: 20),
+                success: (_, members) {
+                  return Card(
+                    color: Theme.of(context).bannerTheme.backgroundColor,
+                    elevation: 10,
+                    margin: const EdgeInsets.all(5),
+                    child: SizedBox(
+                      height: 65,
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 10),
+                            child: const Icon(Icons.account_circle),
+                          ),
+                          Text(
+                            (members[index].name != null) ? members[index].name : '未設定',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 orElse: () => Container()
             );
           },
