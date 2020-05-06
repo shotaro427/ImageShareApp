@@ -17,7 +17,6 @@ class _RoomListWidgetState extends State<RoomListWidget> with AutomaticKeepAlive
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms();
   }
@@ -53,21 +52,28 @@ class RoomListContainerWidget extends StatelessWidget {
               success: (rooms) {
                 return ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                          border: const Border(
-                              bottom: const BorderSide(color: Colors.black)
-                          )
-                      ),
-                      child: ListTile(
-                        leading: const Icon(Icons.home),
-                        title: Text(
-                          rooms[index].name,
-                          style: const TextStyle(fontSize: 20),
+                    return GestureDetector(
+                      child: Card(
+                        color: Theme.of(context).bannerTheme.backgroundColor,
+                        elevation: 10,
+                        margin: const EdgeInsets.all(5),
+                        child: SizedBox(
+                          height: 65,
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                child: const Icon(Icons.group),
+                              ),
+                              Text(
+                                rooms[index].name,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
                         ),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
                       ),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
                     );
                   },
                   itemCount: rooms.length,
