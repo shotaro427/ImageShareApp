@@ -44,36 +44,31 @@ class _RoomSettingsBodyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(15),
-          decoration: const BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Colors.black38)
-              )
-          ),
-          child: Center(
-            child: Text(
-              'あなた',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-          ),
-        ),
+        // Container(
+        //   padding: const EdgeInsets.all(15),
+        //   decoration: const BoxDecoration(
+        //       border: Border(
+        //           bottom: BorderSide(color: Colors.black38)
+        //       )
+        //   ),
+        //   child: Center(
+        //     child: Text(
+        //       'あなた',
+        //       style: Theme.of(context).textTheme.headline5,
+        //     ),
+        //   ),
+        // ),
         // 自分の名前
         _MyProfileInfoWidget(),
         // メンバー一覧のヘッダー
-        Container(
+        Padding(
           padding: const EdgeInsets.all(15),
-          decoration: const BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Colors.black38)
-              )
-          ),
-          child: Center(
-            child: Text(
-              '参加している人',
-              style: Theme.of(context).textTheme.headline5,
-            ),
+          child: Text(
+            '参加している人',
+            style: Theme.of(context).textTheme.headline6,
+            textAlign: TextAlign.start,
           ),
         ),
         // メンバー一覧
@@ -108,7 +103,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
                           child: const Icon(Icons.account_circle),
                         ),
                         Text(
-                          (myProfile.name != null) ? myProfile.name : '未設定',
+                          (myProfile.name != null) ? '${myProfile.name} (あなた)' : '未設定 (あなた)',
                           style: const TextStyle(fontSize: 20),
                         ),
                       ],
