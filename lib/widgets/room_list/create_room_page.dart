@@ -80,7 +80,7 @@ class _InputRoomPage extends StatelessWidget {
 
       context.read<CreateRoomState>().maybeWhen(
         null,
-        success: (entity) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
+        success: (entity) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
         error: (_) => _showErrorDialog(context),
         orElse: () => null,
       );
