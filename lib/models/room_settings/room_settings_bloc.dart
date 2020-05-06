@@ -33,9 +33,9 @@ class RoomSettingsStateNotifier extends StateNotifier<RoomSettingsState> {
     state = const RoomSettingsState.loading();
 
     try {
-      final _members = await _repository.fetchRoomMembers();
-      final UserEntity _myProfile = _members.removeAt(0);
-      state = RoomSettingsState.success(myProfile: _myProfile, roomMembers: _members);
+      final Map<String, List<UserEntity>> _members = await _repository.fetchRoomMembers();
+      final UserEntity _myProfile = _members['you'].first;
+      state = RoomSettingsState.success(myProfile: _myProfile, roomMembers: _members['members']);
     } catch(e) {
       log(e.toString());
       state = RoomSettingsState.error(message: e.toString());
