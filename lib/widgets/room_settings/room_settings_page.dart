@@ -25,8 +25,7 @@ class RoomSettingsPage extends StatelessWidget {
               title: Text(_roomInfo.name),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.add, color: Colors.white,),
-                  // TODO: AddMemberPageを実装する
+                  icon: const Icon(Icons.group_add, color: Colors.white,),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddMemberPage(_roomInfo))),
                 )
               ],
@@ -48,7 +47,7 @@ class _RoomSettingsBodyPage extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: Colors.black38)
               )
@@ -56,7 +55,7 @@ class _RoomSettingsBodyPage extends StatelessWidget {
           child: Center(
             child: Text(
               'あなた',
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
         ),
@@ -65,7 +64,7 @@ class _RoomSettingsBodyPage extends StatelessWidget {
         // メンバー一覧のヘッダー
         Container(
           padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: Colors.black38)
               )
@@ -73,7 +72,7 @@ class _RoomSettingsBodyPage extends StatelessWidget {
           child: Center(
             child: Text(
               '参加している人',
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
             ),
           ),
         ),
@@ -96,7 +95,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
                 () => createPlaceholderWidget(context),
             success: (myProfile, _) => Container(
               margin:  const EdgeInsets.all(5),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border(
                       bottom: BorderSide(color: Colors.black38)
                   )
@@ -119,7 +118,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
   Widget createPlaceholderWidget(BuildContext context) {
     return Container(
       margin:  const EdgeInsets.all(5),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           border: Border(
               bottom: BorderSide(color: Colors.black38)
           )
@@ -151,7 +150,7 @@ class _RoomMembersPage extends StatelessWidget {
                     () => Container(),
                 success: (_, members) => Container(
                   margin:  const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       border: Border(
                           bottom: BorderSide(color: Colors.black38)
                       )
