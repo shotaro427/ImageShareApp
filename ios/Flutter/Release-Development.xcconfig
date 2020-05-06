@@ -1,0 +1,12 @@
+//
+//  Release-Development.xcconfig
+//  Runner
+//
+//  Created by 田内　翔太郎 on 2020/05/06.
+//  Copyright © 2020 The Chromium Authors. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include "Release.xcconfig"
+#include "Development.xcconfig"

@@ -46,20 +46,6 @@ class _RoomSettingsBodyPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // Container(
-        //   padding: const EdgeInsets.all(15),
-        //   decoration: const BoxDecoration(
-        //       border: Border(
-        //           bottom: BorderSide(color: Colors.black38)
-        //       )
-        //   ),
-        //   child: Center(
-        //     child: Text(
-        //       'あなた',
-        //       style: Theme.of(context).textTheme.headline5,
-        //     ),
-        //   ),
-        // ),
         // 自分の名前
         _MyProfileInfoWidget(),
         // メンバー一覧のヘッダー
