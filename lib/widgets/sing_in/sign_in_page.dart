@@ -50,7 +50,7 @@ class _SignInView extends StatelessWidget {
                       height: 45,
                       child: GoogleSignInButton(
                         text: 'Googleでログイン',
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 19
                         ),
