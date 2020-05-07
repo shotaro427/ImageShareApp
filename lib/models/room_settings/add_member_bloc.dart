@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -15,23 +13,22 @@ abstract class AddMemberState with _$AddMemberState {
   const factory AddMemberState() = _AddMemberState;
   const factory AddMemberState.loading() = Loading;
   const factory AddMemberState.success() = Success;
-  const factory AddMemberState.error({@Default('') String message}) = ErrorDetails;
+  const factory AddMemberState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class AddMemberStateNotifier extends StateNotifier<AddMemberState> {
-
   final AddMemberRepository _repository;
-  AddMemberStateNotifier(this._repository): super(const AddMemberState());
+  AddMemberStateNotifier(this._repository) : super(const AddMemberState());
 
   /// メンバーをemailで検索して新たに招待する処理
   Future<void> inviteUser(String email, RoomInfoEntity roomInfoEntity) async {
-
     state = const AddMemberState.loading();
 
     try {
       await _repository.inviteUser(email, roomInfoEntity);
       state = const AddMemberState.success();
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = AddMemberState.error(message: e.toString());
     }

@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:image_share_app/widgets/top_image_list/top_image_list.dart';
 import 'package:provider/provider.dart';
 
 class CreateRoomPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StateNotifierProvider<CreateRoomStateNotifier, CreateRoomState>(
@@ -19,9 +17,10 @@ class CreateRoomPage extends StatelessWidget {
           GestureDetector(
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: Scaffold(
-              appBar: AppBar(title: const Text("ルーム作成"),),
-              body: _InputRoomPage()
-            ),
+                appBar: AppBar(
+                  title: const Text("ルーム作成"),
+                ),
+                body: _InputRoomPage()),
           ),
           _LoadingWidget(),
         ],
@@ -47,9 +46,7 @@ class _InputRoomPage extends StatelessWidget {
               child: TextFormField(
                 controller: _roomNameController,
                 decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: "ルーム名"
-                ),
+                    border: const UnderlineInputBorder(), labelText: "ルーム名"),
                 validator: (text) {
                   if (text.isEmpty) {
                     return 'グループ名を入力してください';
@@ -65,7 +62,8 @@ class _InputRoomPage extends StatelessWidget {
               child: const Text("部屋を作成"),
               color: Theme.of(context).primaryColor,
               textColor: Colors.white,
-              onPressed: () async => await _createRoom(context, _roomNameController.text),
+              onPressed: () async =>
+                  await _createRoom(context, _roomNameController.text),
             )
           ],
         ),
@@ -79,11 +77,12 @@ class _InputRoomPage extends StatelessWidget {
       await context.read<CreateRoomStateNotifier>().createRoom(roomName);
 
       context.read<CreateRoomState>().maybeWhen(
-        null,
-        success: (entity) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
-        error: (_) => _showErrorDialog(context),
-        orElse: () => null,
-      );
+            null,
+            success: (entity) => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
+            error: (_) => _showErrorDialog(context),
+            orElse: () => null,
+          );
     }
   }
 
@@ -104,16 +103,15 @@ class _InputRoomPage extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<CreateRoomState>().maybeWhen(
-      null,
-      loading: () => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: () => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

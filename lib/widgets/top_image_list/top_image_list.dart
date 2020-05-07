@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -14,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class TopImagesPage extends StatelessWidget {
-
   final RoomInfoEntity _roomInfoEntity;
 
   TopImagesPage(this._roomInfoEntity);
@@ -23,9 +21,14 @@ class TopImagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(create: (_) => TopImageListStateNotifier(TopImageRepository(_roomInfoEntity.roomId)),),
+        StateNotifierProvider<TopImageListStateNotifier, TopImageListState>(
+          create: (_) => TopImageListStateNotifier(
+              TopImageRepository(_roomInfoEntity.roomId)),
+        ),
         Provider<RoomInfoEntity>.value(value: _roomInfoEntity),
-        StateNotifierProvider<SearchBarStateNotifier, SearchBarState>(create: (_) => SearchBarStateNotifier(),)
+        StateNotifierProvider<SearchBarStateNotifier, SearchBarState>(
+          create: (_) => SearchBarStateNotifier(),
+        )
       ],
       child: Stack(
         children: <Widget>[
@@ -33,58 +36,80 @@ class TopImagesPage extends StatelessWidget {
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: Scaffold(
               appBar: AppBar(
-                title: Builder(
-                    builder: (context) {
-                      return context.watch<SearchBarState>().isSearchMode
-                          ? TextField(
-                              style: const TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                fillColor: Colors.lightBlueAccent,
-                                filled: true,
-                                prefixIcon: const Icon(Icons.search, color: Colors.white,),
-                                suffixIcon: IconButton(
-                                  icon: const Icon(Icons.clear, color: Colors.white,),
-                                  onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
-                                ),
-                                hintText: 'キーワードを入力',
-                                hintStyle: const TextStyle(color: Colors.white),
-                                border: InputBorder.none,
+                title: Builder(builder: (context) {
+                  return context.watch<SearchBarState>().isSearchMode
+                      ? TextField(
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            fillColor: Colors.lightBlueAccent,
+                            filled: true,
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: const Icon(
+                                Icons.clear,
+                                color: Colors.white,
                               ),
-                              onSubmitted: (searchText) => context.read<TopImageListStateNotifier>().searchImages(keyWord: searchText),
-                            )
-                          : Text(_roomInfoEntity.name);
-                    }
-                ),
+                              onPressed: () => context
+                                  .read<SearchBarStateNotifier>()
+                                  .switchSearchingMode(),
+                            ),
+                            hintText: 'キーワードを入力',
+                            hintStyle: const TextStyle(color: Colors.white),
+                            border: InputBorder.none,
+                          ),
+                          onSubmitted: (searchText) => context
+                              .read<TopImageListStateNotifier>()
+                              .searchImages(keyWord: searchText),
+                        )
+                      : Text(_roomInfoEntity.name);
+                }),
                 actions: <Widget>[
                   Builder(
                     builder: (context) {
                       return Visibility(
                         visible: !context.watch<SearchBarState>().isSearchMode,
                         child: IconButton(
-                          icon: const Icon(Icons.search, color: Colors.white,),
-                          onPressed: () => context.read<SearchBarStateNotifier>().switchSearchingMode(),
+                          icon: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => context
+                              .read<SearchBarStateNotifier>()
+                              .switchSearchingMode(),
                         ),
                       );
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.settings, color: Colors.white,),
-                    // TODO: 設定画面のコンストラクタの作成
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RoomSettingsPage(_roomInfoEntity))),
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                RoomSettingsPage(_roomInfoEntity))),
                   ),
                 ],
               ),
               body: _ImagesWidget(),
               floatingActionButton: FloatingActionButton(
                 child: const Icon(Icons.add),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageUploadPage(_roomInfoEntity.roomId))),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ImageUploadPage(_roomInfoEntity.roomId))),
               ),
             ),
           ),
           _LoadingWidget()
         ],
       ),
-
     );
   }
 }
@@ -92,7 +117,8 @@ class TopImagesPage extends StatelessWidget {
 class _ImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TopImageListStateNotifier notifier = context.read<TopImageListStateNotifier>();
+    TopImageListStateNotifier notifier =
+        context.read<TopImageListStateNotifier>();
     return RefreshIndicator(
       onRefresh: notifier.refresh,
       child: Container(
@@ -125,17 +151,18 @@ class _ImagesWidget extends StatelessWidget {
 
 /// 一覧の画像のセル
 class _ImageTile extends StatelessWidget {
-
   final ImageEntity _entity;
 
   _ImageTile(this._entity);
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     final _roomInfoEntity = context.read<RoomInfoEntity>();
     return GestureDetector(
-      // TODO: 画像詳細画面のコンストラクタの設定
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDetailPage(_entity, _roomInfoEntity))),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ImageDetailPage(_entity, _roomInfoEntity))),
       child: Card(
         elevation: 10,
         child: Column(
@@ -170,16 +197,15 @@ class _ImageTile extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<TopImageListState>().maybeWhen(
-      null,
-      loading: () => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: () => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

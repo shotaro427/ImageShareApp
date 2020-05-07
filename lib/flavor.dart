@@ -13,10 +13,10 @@ class FlavorProvider extends InheritedWidget {
   })  : assert(child != null),
         super(key: key, child: child);
 
-  static Flavor of(BuildContext context) => (context
-          .getElementForInheritedWidgetOfExactType<FlavorProvider>()
-          .widget as FlavorProvider)
-      .flavor;
+  static Flavor of(BuildContext context) =>
+      (context.getElementForInheritedWidgetOfExactType<FlavorProvider>().widget
+              as FlavorProvider)
+          .flavor;
 
   @override
   bool updateShouldNotify(FlavorProvider oldWidget) => false;

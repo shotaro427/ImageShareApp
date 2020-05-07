@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageDetailViewPage extends StatelessWidget {
-
   String _imageUrlString;
   String _title = "名無し";
 
@@ -14,7 +11,7 @@ class ImageDetailViewPage extends StatelessWidget {
     }
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key(_imageUrlString),
@@ -23,7 +20,7 @@ class ImageDetailViewPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_title),
-          backgroundColor: Colors.black,  
+          backgroundColor: Colors.black,
         ),
         body: Container(
           child: PhotoView(

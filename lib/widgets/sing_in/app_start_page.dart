@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +16,11 @@ class AppStartPage extends StatelessWidget {
     return FutureBuilder(
       future: _isCheckSignIn(),
       builder: (BuildContext context, AsyncSnapshot<bool> isSignIn) {
-
-        if (isSignIn.hasData && isSignIn.data) { // ログイン済の場合
+        if (isSignIn.hasData && isSignIn.data) {
+          // ログイン済の場合
           return RoomListPage();
-        } else if (isSignIn.hasData && !isSignIn.data) { // ログインしていない場合
+        } else if (isSignIn.hasData && !isSignIn.data) {
+          // ログインしていない場合
           return SignInPage();
         } else {
           return const Scaffold(
@@ -43,7 +42,7 @@ class AppStartPage extends StatelessWidget {
       } else {
         isSignIn = false;
       }
-    }).catchError((e)  {
+    }).catchError((e) {
       debugPrint(e.toString());
       isSignIn = false;
     });

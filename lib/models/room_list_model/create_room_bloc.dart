@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -13,16 +12,17 @@ part 'create_room_bloc.freezed.dart';
 abstract class CreateRoomState with _$CreateRoomState {
   const factory CreateRoomState() = _CreateRoomState;
   const factory CreateRoomState.loading() = Loading;
-  const factory CreateRoomState.success({@required RoomInfoEntity roomInfoEntity}) = Success;
-  const factory CreateRoomState.error({@Default('') String message}) = ErrorDetails;
+  const factory CreateRoomState.success(
+      {@required RoomInfoEntity roomInfoEntity}) = Success;
+  const factory CreateRoomState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 /// グループ作成のstateを伝えるクラス
 class CreateRoomStateNotifier extends StateNotifier<CreateRoomState> {
-
   final CreateRoomRepository _repository;
 
-  CreateRoomStateNotifier(this._repository): super(const CreateRoomState());
+  CreateRoomStateNotifier(this._repository) : super(const CreateRoomState());
 
   void createRoom(String roomName) async {
     state = const CreateRoomState.loading();
@@ -30,7 +30,7 @@ class CreateRoomStateNotifier extends StateNotifier<CreateRoomState> {
     try {
       final _roomInfo = await _repository.createRoom(roomName);
       state = CreateRoomState.success(roomInfoEntity: _roomInfo);
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = CreateRoomState.error(message: e.toString());
     }

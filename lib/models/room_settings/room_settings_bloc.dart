@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -17,26 +16,28 @@ abstract class RoomSettingsState with _$RoomSettingsState {
     @required UserEntity myProfile,
     @required List<UserEntity> roomMembers,
   }) = Success;
-  const factory RoomSettingsState.error({@Default('') String message}) = ErrorDetails;
+  const factory RoomSettingsState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class RoomSettingsStateNotifier extends StateNotifier<RoomSettingsState> {
-
   final RoomSettingsRepository _repository;
-  RoomSettingsStateNotifier(this._repository): super(const RoomSettingsState()) {
+  RoomSettingsStateNotifier(this._repository)
+      : super(const RoomSettingsState()) {
     fetchRoomMembers();
   }
 
   /// グループのメンバーを取得する
   void fetchRoomMembers() async {
-
     state = const RoomSettingsState.loading();
 
     try {
-      final Map<String, List<UserEntity>> _members = await _repository.fetchRoomMembers();
+      final Map<String, List<UserEntity>> _members =
+          await _repository.fetchRoomMembers();
       final UserEntity _myProfile = _members['you'].first;
-      state = RoomSettingsState.success(myProfile: _myProfile, roomMembers: _members['members']);
-    } catch(e) {
+      state = RoomSettingsState.success(
+          myProfile: _myProfile, roomMembers: _members['members']);
+    } catch (e) {
       log(e.toString());
       state = RoomSettingsState.error(message: e.toString());
     }

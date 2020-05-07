@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -14,42 +13,49 @@ abstract class ImageUploadState with _$ImageUploadState {
   const factory ImageUploadState() = _ImageUploadState;
   const factory ImageUploadState.loading({@required File file}) = Loading;
   const factory ImageUploadState.success({@required File file}) = Success;
-  const factory ImageUploadState.successUpload({@required File file}) = SuccessUpload;
-  const factory ImageUploadState.error({@Default('') String message, @required File file}) = ErrorDetails;
+  const factory ImageUploadState.successUpload({@required File file}) =
+      SuccessUpload;
+  const factory ImageUploadState.error(
+      {@Default('') String message, @required File file}) = ErrorDetails;
 }
 
 /**
  * 画像を投稿するときの状態を通知するstate_notifier
  */
 class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
-
   final ImageUploadRepository _repository;
-  ImageUploadStateNotifier(this._repository): super(const ImageUploadState());
+  ImageUploadStateNotifier(this._repository) : super(const ImageUploadState());
 
   /// ギャラリーを表示して画像を選択
   Future<void> pickUpImage() async {
     try {
       final _imageFile = await _repository.getImageInGallery();
       state = ImageUploadState.success(file: _imageFile);
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
-      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
+      state = ImageUploadState.error(
+          message: e.toString(),
+          file: File('images/image_placeholder_500_300.png'));
     }
   }
 
   /// CloudStorageとFireStoreに保存
-  Future<void> uploadImage(File imageFile, String roomId, {String title, String memo}) async {
+  Future<void> uploadImage(File imageFile, String roomId,
+      {String title, String memo}) async {
     final String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     state = ImageUploadState.loading(file: imageFile);
 
     try {
-      await _repository.postImageWithTitle(roomId, _timestamp, title: title, memoText: memo);
+      await _repository.postImageWithTitle(roomId, _timestamp,
+          title: title, memoText: memo);
       await _repository.uploadImageToFireStorage(imageFile, roomId, _timestamp);
       state = ImageUploadState.successUpload(file: imageFile);
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
-      state = ImageUploadState.error(message: e.toString(), file: File('images/image_placeholder_500_300.png'));
+      state = ImageUploadState.error(
+          message: e.toString(),
+          file: File('images/image_placeholder_500_300.png'));
     }
   }
 }

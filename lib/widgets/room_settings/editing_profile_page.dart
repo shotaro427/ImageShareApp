@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,23 +7,24 @@ import 'package:image_share_app/repositories/room_settings_repositories/editing_
 import 'package:provider/provider.dart';
 
 class EditingProfilePage extends StatelessWidget {
-
   final String name;
 
   EditingProfilePage(this.name);
 
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<EditingProfileStateNotifier, EditingProfileState>(
+    return StateNotifierProvider<EditingProfileStateNotifier,
+        EditingProfileState>(
       create: (_) => EditingProfileStateNotifier(EditingProfileRepository()),
       child: Stack(
         children: <Widget>[
           GestureDetector(
             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
             child: Scaffold(
-                appBar: AppBar(title: const Text('編集'),),
-                body: _EditingProfileWidget(name)
-            ),
+                appBar: AppBar(
+                  title: const Text('編集'),
+                ),
+                body: _EditingProfileWidget(name)),
           ),
           _LoadingWidget(),
         ],
@@ -34,7 +34,6 @@ class EditingProfilePage extends StatelessWidget {
 }
 
 class _EditingProfileWidget extends StatelessWidget {
-
   final String name;
   final TextEditingController _nickNameController = TextEditingController();
 
@@ -59,17 +58,20 @@ class _EditingProfileWidget extends StatelessWidget {
                   labelText: 'ニックネーム',
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               FlatButton(
                 child: const Text('編集'),
                 onPressed: () async {
                   final String _name = _nickNameController.text;
                   if (_name != null && _name.isNotEmpty) {
-                    await context.read<EditingProfileStateNotifier>().editingName(_name);
+                    await context
+                        .read<EditingProfileStateNotifier>()
+                        .editingName(_name);
                   }
 
                   showResultDialog(context, state);
-
                 },
                 color: Colors.white,
                 shape: const OutlineInputBorder(
@@ -86,8 +88,7 @@ class _EditingProfileWidget extends StatelessWidget {
 
   /// 編集ボタンを押した後の挙動の処理
   void showResultDialog(BuildContext context, EditingProfileState state) {
-    state.maybeWhen(
-            () => null,
+    state.maybeWhen(() => null,
         success: () => Navigator.of(context).pop(),
         error: (_) {
           AwesomeDialog(
@@ -101,24 +102,22 @@ class _EditingProfileWidget extends StatelessWidget {
             btnOkOnPress: () {},
           ).show();
         },
-        orElse: () => null
-    );
+        orElse: () => null);
   }
 }
 
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<EditingProfileState>().maybeWhen(
-      null,
-      loading: () => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: () => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

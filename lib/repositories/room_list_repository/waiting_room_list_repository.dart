@@ -1,15 +1,12 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 
 class WaitingRoomListRepository {
-
   final db = Firestore.instance;
 
   /// 招待を受けているルーム一覧を表示する
   Future<List<RoomInfoEntity>> fetchWaitingRooms() async {
-
     DocumentReference _userRef = await _fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<RoomInfoEntity> _rooms = [];
@@ -28,12 +25,13 @@ class WaitingRoomListRepository {
 
   /// 招待を受けているグループに参加する
   Future<void> joinRoom(String roomId) async {
-
     final DocumentReference _userRef = await _fetchUserRef();
-    final DocumentReference _roomRef = (await _fetchRoomByRoomId(roomId)).reference;
+    final DocumentReference _roomRef =
+        (await _fetchRoomByRoomId(roomId)).reference;
 
     // waitingRoomsコレクションから該当する部屋を削除
-    final _snapshots = await _userRef.collection('waitingRooms')
+    final _snapshots = await _userRef
+        .collection('waitingRooms')
         .where('room', isEqualTo: _roomRef)
         .getDocuments();
 
@@ -43,26 +41,25 @@ class WaitingRoomListRepository {
     }
 
     // roomsコレクションに該当する部屋を追加
-    await _userRef.collection('rooms').add({
-      'room': _roomRef
-    });
+    await _userRef.collection('rooms').add({'room': _roomRef});
 
     // roomsのparticipantsコレクションにユーザーを追加
-    await db.document(_roomRef.path).collection("participants").add({
-      "user": _userRef
-    });
+    await db
+        .document(_roomRef.path)
+        .collection("participants")
+        .add({"user": _userRef});
   }
 
   /// roomIdからdocumentを取得する
   Future<DocumentSnapshot> _fetchRoomByRoomId(String roomId) async {
-
-    final _snapshots = await db.collection('rooms')
+    final _snapshots = await db
+        .collection('rooms')
         .where('roomId', isEqualTo: roomId)
         .getDocuments();
 
     if (_snapshots.documents.length > 0) {
       return _snapshots.documents.first;
-    } else{
+    } else {
       return null;
     }
   }
@@ -74,7 +71,8 @@ class WaitingRoomListRepository {
 
     DocumentReference _userRef;
 
-    final _snapshots = await db.collection('users')
+    final _snapshots = await db
+        .collection('users')
         .where('uid', isEqualTo: _authToken)
         .getDocuments();
 

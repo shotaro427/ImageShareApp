@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:firebase_admob/firebase_admob.dart';
@@ -16,18 +15,18 @@ part 'sign_in_page_model.freezed.dart';
 abstract class SignInState with _$SignInState {
   const factory SignInState() = _SignInState;
   const factory SignInState.loading() = Loading;
-  const factory SignInState.success({@Default(false) bool isCompleted}) = Success;
+  const factory SignInState.success({@Default(false) bool isCompleted}) =
+      Success;
   const factory SignInState.error({@Default('') String message}) = ErrorDetails;
 }
 
 class SignInStateNotifier extends StateNotifier<SignInState> {
-
   final SignInPageRepository _repository;
   UserEntity user;
 
-  SignInStateNotifier(this._repository): super(const SignInState()) {
-
-    FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
+  SignInStateNotifier(this._repository) : super(const SignInState()) {
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
 
     // myBanner..load()..show(
     //   anchorOffset: 0.0,
@@ -37,13 +36,12 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
   /// Googleアカウントでログインするときのハンドル処理
   Future<void> handleSignIn() async {
-
     state = const SignInState.loading();
 
     try {
       final UserEntity _user = (await _repository.loginWithGoogle());
 
-      if(_user != null) {
+      if (_user != null) {
         // User情報を保存
         await _repository.saveUserInfo(_user);
         user = _user;
@@ -62,13 +60,12 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
   /// Appleアカウントでログインするときのハンドル処理
   Future<void> handleAppleSignIn() async {
-
     state = const SignInState.loading();
 
     try {
       final UserEntity _user = await _repository.loginWithApple();
 
-      if(_user != null && _user.uid != null) {
+      if (_user != null && _user.uid != null) {
         // User情報を保存
         await _repository.saveUserInfo(_user);
         user = _user;
@@ -90,9 +87,8 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
     if (user == null) return;
 
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
-      (_) => false
-    );
+        MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+        (_) => false);
   }
 
   /// 広告ターゲット
@@ -111,8 +107,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
       targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
         log('BannerAd event is $event');
-      }
-  );
+      });
 
   @override
   void dispose() {

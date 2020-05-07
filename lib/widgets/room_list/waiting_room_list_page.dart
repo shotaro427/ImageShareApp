@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +9,12 @@ import 'package:provider/provider.dart';
 
 /// 招待されているルーム一覧
 class WaitingRoomListWidget extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _WaitingRoomListWidgetState();
 }
 
-class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget> with AutomaticKeepAliveClientMixin {
-
+class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
@@ -37,52 +35,58 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext parentContext) {
     return RefreshIndicator(
-      onRefresh: parentContext.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
+      onRefresh:
+          parentContext.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
       child: StateNotifierBuilder<WaitingRoomListState>(
         stateNotifier: parentContext.read<WaitingRoomListStateNotifier>(),
         builder: (context, state, _) {
           return context.read<WaitingRoomListState>().maybeWhen(
-            () => const SizedBox.shrink(),
-            loading: () {
-              return const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0x44000000),
-                ),
-                child: Center(child: const CircularProgressIndicator()),
-              );
-            },
-            success: (rooms) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      child: Card(
-                        color: Theme.of(context).bannerTheme.backgroundColor,
-                        elevation: 10,
-                        margin: const EdgeInsets.all(5),
-                        child: SizedBox(
-                          height: 65,
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 10),
-                                child: const Icon(Icons.group),
-                              ),
-                              Text(
-                                rooms[index].name,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ],
+                () => const SizedBox.shrink(),
+                loading: () {
+                  return const DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Color(0x44000000),
+                    ),
+                    child: Center(child: const CircularProgressIndicator()),
+                  );
+                },
+                success: (rooms) {
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        child: Card(
+                          color: Theme.of(context).bannerTheme.backgroundColor,
+                          elevation: 10,
+                          margin: const EdgeInsets.all(5),
+                          child: SizedBox(
+                            height: 65,
+                            child: Row(
+                              children: [
+                                const Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 10),
+                                  child: const Icon(Icons.group),
+                                ),
+                                Text(
+                                  rooms[index].name,
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      onTap: () =>_showConfirmJoinRoomDialog(context, parentContext, rooms[index], context.read<WaitingRoomListStateNotifier>()),
-                    );
+                        onTap: () => _showConfirmJoinRoomDialog(
+                            context,
+                            parentContext,
+                            rooms[index],
+                            context.read<WaitingRoomListStateNotifier>()),
+                      );
+                    },
+                    itemCount: rooms.length,
+                  );
                 },
-                itemCount: rooms.length,
+                orElse: () => const SizedBox.shrink(),
               );
-            },
-            orElse: () => const SizedBox.shrink(),
-          );
         },
       ),
     );
@@ -90,11 +94,10 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
 
   /// グループに参加するかどうかを表示する処理
   void _showConfirmJoinRoomDialog(
-    BuildContext context,
-    BuildContext parentContext,
-    RoomInfoEntity room,
-    WaitingRoomListStateNotifier notifier
-  ) {
+      BuildContext context,
+      BuildContext parentContext,
+      RoomInfoEntity room,
+      WaitingRoomListStateNotifier notifier) {
     AwesomeDialog(
       context: context,
       headerAnimationLoop: false,
@@ -106,8 +109,11 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
       btnCancelText: 'キャンセル',
       btnCancelOnPress: () {},
       btnOkOnPress: () async {
-        await context.read<WaitingRoomListStateNotifier>().joinRoom(room.roomId);
-        Navigator.of(parentContext).push(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
+        await context
+            .read<WaitingRoomListStateNotifier>()
+            .joinRoom(room.roomId);
+        Navigator.of(parentContext)
+            .push(MaterialPageRoute(builder: (context) => TopImagesPage(room)));
       },
     ).show();
   }

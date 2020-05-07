@@ -1,18 +1,15 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoomSettingsRepository {
-
   final RoomInfoEntity _roomInfoEntity;
 
   RoomSettingsRepository(this._roomInfoEntity);
 
   /// 所属しているメンバーを取得する
   Future<Map<String, List<UserEntity>>> fetchRoomMembers() async {
-
     final List<DocumentReference> _refs = [];
     final Map<String, List<UserEntity>> _participants = {
       'you': [],
@@ -34,7 +31,6 @@ class RoomSettingsRepository {
 
     // プロフィールを取得
     for (final ref in _refs) {
-
       DocumentSnapshot documentSnapshot = await ref.get();
 
       // プロフィール
