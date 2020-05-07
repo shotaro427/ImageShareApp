@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_share_app/models/room_list_model/waiting_room_list_model.dart';
 import 'package:image_share_app/repositories/room_list_repository/waiting_room_list_repository.dart';
 import 'package:image_share_app/widgets/room_list/waiting_room_list_page.dart';
@@ -91,5 +92,6 @@ class _RoomListsWidget extends StatelessWidget {
   void _logout() async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     await _firebaseAuth.signOut();
+    await GoogleSignIn().signOut();
   }
 }
