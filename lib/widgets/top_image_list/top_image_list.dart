@@ -48,14 +48,19 @@ class TopImagesPage extends StatelessWidget {
                               color: Colors.white,
                             ),
                             suffixIcon: IconButton(
-                              icon: const Icon(
-                                Icons.clear,
-                                color: Colors.white,
-                              ),
-                              onPressed: () => context
-                                  .read<SearchBarStateNotifier>()
-                                  .switchSearchingMode(),
-                            ),
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  context
+                                      .read<SearchBarStateNotifier>()
+                                      .switchSearchingMode();
+
+                                  context
+                                      .read<TopImageListStateNotifier>()
+                                      .refresh();
+                                }),
                             hintText: 'キーワードを入力',
                             hintStyle: const TextStyle(color: Colors.white),
                             border: InputBorder.none,
