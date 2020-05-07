@@ -500,6 +500,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -636,6 +637,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -667,6 +669,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -752,6 +755,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.651909216869-oj03206m3969pups6i1ldmug5otonbud";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -834,6 +838,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.651909216869-oj03206m3969pups6i1ldmug5otonbud";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -915,6 +920,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.43040204567-mhtn0n0en21srv2rmq1ov3vn23t3tinp";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -997,6 +1003,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1082,6 +1089,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.imageShareApp20200418;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REVERSED_CLIENT_ID = "com.googleusercontent.apps.43040204567-mhtn0n0en21srv2rmq1ov3vn23t3tinp";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
