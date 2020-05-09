@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -13,29 +12,30 @@ import 'package:provider/provider.dart';
 class SignInWithEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<SignInWithEmailStateNotifier, SignInWithEmailState>(
-      create: (_) => SignInWithEmailStateNotifier(SignInWithEmailRepository()),
-      child: _SignInWithEmailWidget()
-    );
+    return StateNotifierProvider<SignInWithEmailStateNotifier,
+            SignInWithEmailState>(
+        create: (_) =>
+            SignInWithEmailStateNotifier(SignInWithEmailRepository()),
+        child: _SignInWithEmailWidget());
   }
 }
 
 class _SignInWithEmailWidget extends StatelessWidget {
-
   // メールアドレスとパスワードを入力する箇所のController
   final emailInputController = new TextEditingController();
   final passwordInputController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     // emailInputController.text = "teat1@test.com";
     // passwordInputController.text = "password";
 
     return Stack(
       children: <Widget>[
         Scaffold(
-          appBar: AppBar(title: const Text("ログイン"),),
+          appBar: AppBar(
+            title: const Text("ログイン"),
+          ),
           body: Center(
             child: Form(
               child: SingleChildScrollView(
@@ -79,48 +79,50 @@ class _SignInWithEmailWidget extends StatelessWidget {
   }
 
   Future<void> _handleSignIn(BuildContext context) async {
-
     final email = emailInputController.text;
     final password = passwordInputController.text;
 
-    await context.read<SignInWithEmailStateNotifier>().logInWithEmail(email, password);
+    await context
+        .read<SignInWithEmailStateNotifier>()
+        .logInWithEmail(email, password);
 
     // ルーム一覧に遷移
-    context.read<SignInWithEmailState>().maybeWhen(
-        null,
-        success: (user) => (user != null) ? context.read<SignInWithEmailStateNotifier>().transitionRoomListPage(user, context) : null,
+    context.read<SignInWithEmailState>().maybeWhen(null,
+        success: (user) => (user != null)
+            ? context
+                .read<SignInWithEmailStateNotifier>()
+                .transitionRoomListPage(user, context)
+            : null,
         error: (_) => _showErrorDialog(context),
-        orElse: () => log('SignInWithEmailState is not success or error')
-    );
+        orElse: () => log('SignInWithEmailState is not success or error'));
   }
 
   void _showErrorDialog(BuildContext context) {
     AwesomeDialog(
-      context: context,
-      headerAnimationLoop: false,
-      animType: AnimType.SCALE,
-      tittle: 'エラー',
-      dialogType: DialogType.ERROR,
-      desc: 'ログインできませんでした。\nもう一度お確かめください',
-      btnOkText: 'OK',
-      btnOkOnPress: () {}
-    ).show();
+            context: context,
+            headerAnimationLoop: false,
+            animType: AnimType.SCALE,
+            tittle: 'エラー',
+            dialogType: DialogType.ERROR,
+            desc: 'ログインできませんでした。\nもう一度お確かめください',
+            btnOkText: 'OK',
+            btnOkOnPress: () {})
+        .show();
   }
 }
 
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<SignInWithEmailState>().maybeWhen(
-      null,
-      loading: () => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: () => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

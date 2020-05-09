@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -13,7 +12,8 @@ import 'package:image_share_app/repositories/sign_in_repositories/sign_up_with_e
 class SignUpWithEmail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<SignUpWithEmailStateNotifier, SignUpWithEmailState>(
+    return StateNotifierProvider<SignUpWithEmailStateNotifier,
+        SignUpWithEmailState>(
       create: (_) => SignUpWithEmailStateNotifier(SignUpWithEmailRepository()),
       child: _SignUpWithEmailWidget(),
     );
@@ -30,7 +30,9 @@ class _SignUpWithEmailWidget extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Scaffold(
-          appBar: AppBar(title: const Text("登録"),),
+          appBar: AppBar(
+            title: const Text("登録"),
+          ),
           body: Center(
             child: Form(
               child: SingleChildScrollView(
@@ -81,12 +83,14 @@ class _SignUpWithEmailWidget extends StatelessWidget {
     await context.read<SignUpWithEmailStateNotifier>().signUp(email, password);
 
     // ルーム一覧に遷移
-    context.read<SignUpWithEmailState>().maybeWhen(
-        null,
-        success: (user) => (user != null) ? context.read<SignUpWithEmailStateNotifier>().transitionRoomListPage(user, context) : null,
+    context.read<SignUpWithEmailState>().maybeWhen(null,
+        success: (user) => (user != null)
+            ? context
+                .read<SignUpWithEmailStateNotifier>()
+                .transitionRoomListPage(user, context)
+            : null,
         error: (_) => _showErrorDialog(context),
-        orElse: () => log('SignUpWithEmailState is not success or error')
-    );
+        orElse: () => log('SignUpWithEmailState is not success or error'));
 
     log(context.read<SignUpWithEmailState>().toString());
   }
@@ -94,31 +98,30 @@ class _SignUpWithEmailWidget extends StatelessWidget {
   /// エラーダイアログを表示する
   void _showErrorDialog(BuildContext context) {
     AwesomeDialog(
-      context: context,
-      headerAnimationLoop: false,
-      animType: AnimType.SCALE,
-      tittle: 'エラー',
-      dialogType: DialogType.ERROR,
-      desc: '登録できませんでした。\時間を置いてもう一度お確かめください',
-      btnOkText: 'OK',
-      btnOkOnPress: () {}
-    ).show();
+            context: context,
+            headerAnimationLoop: false,
+            animType: AnimType.SCALE,
+            tittle: 'エラー',
+            dialogType: DialogType.ERROR,
+            desc: '登録できませんでした。\時間を置いてもう一度お確かめください',
+            btnOkText: 'OK',
+            btnOkOnPress: () {})
+        .show();
   }
 }
 
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<SignUpWithEmailState>().maybeWhen(
-      null,
-      loading: () => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: () => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

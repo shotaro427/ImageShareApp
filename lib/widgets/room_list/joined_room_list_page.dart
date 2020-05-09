@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
@@ -8,13 +7,12 @@ import 'package:provider/provider.dart';
 
 /// すでに参加しているルーム一覧
 class RoomListWidget extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _RoomListWidgetState();
 }
 
-class _RoomListWidgetState extends State<RoomListWidget> with AutomaticKeepAliveClientMixin {
-
+class _RoomListWidgetState extends State<RoomListWidget>
+    with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
@@ -39,8 +37,7 @@ class RoomListContainerWidget extends StatelessWidget {
       child: StateNotifierBuilder<JoinedRoomListState>(
         stateNotifier: context.read<JoinedRoomListStateNotifier>(),
         builder: (context, state, _) {
-          return state.maybeWhen(
-              () => const SizedBox.shrink(),
+          return state.maybeWhen(() => const SizedBox.shrink(),
               loading: () {
                 return const DecoratedBox(
                   decoration: BoxDecoration(
@@ -62,7 +59,8 @@ class RoomListContainerWidget extends StatelessWidget {
                           child: Row(
                             children: [
                               const Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 10),
                                 child: const Icon(Icons.group),
                               ),
                               Text(
@@ -73,14 +71,16 @@ class RoomListContainerWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TopImagesPage(rooms[index]))),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => TopImagesPage(rooms[index]))),
                     );
                   },
                   itemCount: rooms.length,
                 );
               },
-              orElse: () => const SizedBox.shrink()
-          );
+              orElse: () => const SizedBox.shrink());
         },
       ),
     );

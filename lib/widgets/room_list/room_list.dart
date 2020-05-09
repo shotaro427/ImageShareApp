@@ -1,4 +1,3 @@
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,16 +15,15 @@ import 'package:image_share_app/repositories/room_list_repository/joined_room_li
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 
 class RoomListPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StateNotifierProvider<JoinedRoomListStateNotifier, JoinedRoomListState>(create: (_) => JoinedRoomListStateNotifier(RoomListRepository())),
-        StateNotifierProvider<WaitingRoomListStateNotifier, WaitingRoomListState>(create: (_) => WaitingRoomListStateNotifier(WaitingRoomListRepository())),
-      ],
-      child: _RoomListsWidget()
-    );
+    return MultiProvider(providers: [
+      StateNotifierProvider<JoinedRoomListStateNotifier, JoinedRoomListState>(
+          create: (_) => JoinedRoomListStateNotifier(RoomListRepository())),
+      StateNotifierProvider<WaitingRoomListStateNotifier, WaitingRoomListState>(
+          create: (_) =>
+              WaitingRoomListStateNotifier(WaitingRoomListRepository())),
+    ], child: _RoomListsWidget());
   }
 }
 
@@ -46,21 +44,23 @@ class _RoomListsWidget extends StatelessWidget {
           ],
           bottom: const TabBar(
             tabs: <Widget>[
-              Tab(text: '参加グループ',),
-              Tab(text: '招待グループ',)
+              Tab(
+                text: '参加グループ',
+              ),
+              Tab(
+                text: '招待グループ',
+              )
             ],
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            RoomListWidget(),
-            WaitingRoomListWidget()
-          ],
+          children: <Widget>[RoomListWidget(), WaitingRoomListWidget()],
         ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           tooltip: "ルームを追加",
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CreateRoomPage())),
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => CreateRoomPage())),
         ),
       ),
     );
@@ -69,23 +69,22 @@ class _RoomListsWidget extends StatelessWidget {
   /// ログアウトダイアログを表示
   void _showLogoutDialog(BuildContext context) async {
     AwesomeDialog(
-      context: context,
-      headerAnimationLoop: false,
-      animType: AnimType.SCALE,
-      tittle: 'ログアウト',
-      dialogType: DialogType.INFO,
-      desc: 'ログアウトしますか？',
-      btnOkText: 'OK',
-      btnCancelText: 'キャンセル',
-      btnCancelOnPress: () {},
-      btnOkOnPress: () async {
-        await _logout();
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => SignInPage()),
-            (_) => false
-        );
-      }
-    ).show();
+        context: context,
+        headerAnimationLoop: false,
+        animType: AnimType.SCALE,
+        tittle: 'ログアウト',
+        dialogType: DialogType.INFO,
+        desc: 'ログアウトしますか？',
+        btnOkText: 'OK',
+        btnCancelText: 'キャンセル',
+        btnCancelOnPress: () {},
+        btnOkOnPress: () async {
+          await _logout();
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => SignInPage()),
+              (_) => false);
+        }).show();
   }
 
   /// ログアウトする

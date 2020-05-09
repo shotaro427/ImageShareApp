@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -10,9 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
 import 'package:provider/provider.dart';
 
-
 class ImageUploadPage extends StatelessWidget {
-
   final String roomId;
 
   ImageUploadPage(this.roomId);
@@ -21,30 +18,29 @@ class ImageUploadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StateNotifierProvider<ImageUploadStateNotifier, ImageUploadState>(
       create: (_) => ImageUploadStateNotifier(ImageUploadRepository()),
-      child: Stack(
-          children: <Widget>[
-            Scaffold(
-              appBar: AppBar(
-                title: const Text("投稿"),
-                elevation: 0,
-              ),
-              body: _LayoutUploadImagePage(roomId),
-            ),
-            _LoadingWidget(),
-          ]
-      ),
+      child: Stack(children: <Widget>[
+        Scaffold(
+          appBar: AppBar(
+            title: const Text("投稿"),
+            elevation: 0,
+          ),
+          body: _LayoutUploadImagePage(roomId),
+        ),
+        _LoadingWidget(),
+      ]),
     );
   }
 }
 
 /// 全体のPage
 class _LayoutUploadImagePage extends StatelessWidget {
-
   final String roomId;
 
   _LayoutUploadImagePage(this.roomId) {
     // 広告をロード
-    RewardedVideoAd.instance.load(adUnitId: "ca-app-pub-9097303817244208/3182791560", targetingInfo: targetingInfo);
+    RewardedVideoAd.instance.load(
+        adUnitId: "ca-app-pub-9097303817244208/3182791560",
+        targetingInfo: targetingInfo);
   }
 
   /// 広告ターゲット
@@ -74,9 +70,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    color: Theme
-                        .of(context)
-                        .primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   child: Row(
                     children: <Widget>[
@@ -86,11 +80,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
                           style: const TextStyle(color: Colors.white),
                           controller: titleController,
                           autofocus: true,
-                          cursorColor: Theme
-                              .of(context)
-                              .primaryTextTheme
-                              .title
-                              .color,
+                          cursorColor:
+                              Theme.of(context).primaryTextTheme.title.color,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'タイトル',
@@ -100,29 +91,27 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       ),
                       // 投稿ボタン
                       IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: state.maybeWhen(
-                                () => Colors.grey,
-                                success: (_) => Colors.white,
-                                orElse: () => Colors.grey
-                            ),
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            await state.maybeWhen(
-                              () => null,
-                              success: (imageFile) => _uploadImage(context, imageFile),
-                              orElse: () => null
-                            );
-                          },
+                        icon: Icon(
+                          Icons.send,
+                          color: state.maybeWhen(() => Colors.grey,
+                              success: (_) => Colors.white,
+                              orElse: () => Colors.grey),
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          await state.maybeWhen(() => null,
+                              success: (imageFile) =>
+                                  _uploadImage(context, imageFile),
+                              orElse: () => null);
+                        },
                       ),
                     ],
                   ),
                 ),
                 // アップロードする画像を表示するWidget
                 GestureDetector(
-                  onTap: () => context.read<ImageUploadStateNotifier>().pickUpImage(),
+                  onTap: () =>
+                      context.read<ImageUploadStateNotifier>().pickUpImage(),
                   child: Container(
                     height: 250,
                     padding: const EdgeInsets.all(5),
@@ -154,7 +143,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 15, top: 13),
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 15, top: 13),
                       child: Icon(
                         Icons.note,
                         color: Colors.grey,
@@ -167,10 +157,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'メモ',
-                          hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14
-                          ),
+                          hintStyle:
+                              TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
@@ -190,7 +178,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
   Widget setImage(ImageUploadState state) {
     return state.maybeWhen(
       // デフォルト時
-          () => const Image(
+      () => const Image(
         image: const AssetImage("images/image_placeholder_500_300.png"),
         fit: BoxFit.cover,
       ),
@@ -220,16 +208,17 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   /// 画像を投稿
   Future<void> _uploadImage(BuildContext context, File imageFile) async {
-
     // 処理を実行
-    await context.read<ImageUploadStateNotifier>().uploadImage(imageFile, roomId, title: titleController.text, memo: memoController.text);
+    await context.read<ImageUploadStateNotifier>().uploadImage(
+        imageFile, roomId,
+        title: titleController.text, memo: memoController.text);
 
     context.read<ImageUploadState>().maybeWhen(
-      () => null,
-      successUpload: (_) => _showSuccessDialog(context),
-      error: (message, _) => _showErrorDialog(context),
-      orElse: () => null,
-    );
+          () => null,
+          successUpload: (_) => _showSuccessDialog(context),
+          error: (message, _) => _showErrorDialog(context),
+          orElse: () => null,
+        );
   }
 
   /// エラーダイアログを表示する
@@ -248,13 +237,12 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   /// 投稿完了後に広告を表示する
   void _showSuccessDialog(BuildContext context) async {
-
     // RewardedVideoAd.instance.show();
 
     // RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
     //   if (event == RewardedVideoAdEvent.rewarded) {
 
-      // }
+    // }
     // };
 
     AwesomeDialog(
@@ -269,19 +257,19 @@ class _LayoutUploadImagePage extends StatelessWidget {
     ).show();
   }
 }
+
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return context.watch<ImageUploadState>().maybeWhen(
-      null,
-      loading: (_) => const DecoratedBox(
-        decoration: BoxDecoration(
-          color: Color(0x44000000),
-        ),
-        child: Center(child: const CircularProgressIndicator()),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+          null,
+          loading: (_) => const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0x44000000),
+            ),
+            child: Center(child: const CircularProgressIndicator()),
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
   }
 }

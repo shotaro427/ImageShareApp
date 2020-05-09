@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
@@ -15,25 +13,28 @@ part 'sign_in_with_email_model.freezed.dart';
 abstract class SignInWithEmailState with _$SignInWithEmailState {
   const factory SignInWithEmailState() = _SignInWithEmailState;
   const factory SignInWithEmailState.loading() = Loading;
-  const factory SignInWithEmailState.success({@Default(UserEntity(email: '', uid: '')) UserEntity user}) = Success;
-  const factory SignInWithEmailState.error({@Default('') String message}) = ErrorDetails;
+  const factory SignInWithEmailState.success(
+      {@Default(UserEntity(email: '', uid: '')) UserEntity user}) = Success;
+  const factory SignInWithEmailState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class SignInWithEmailStateNotifier extends StateNotifier<SignInWithEmailState> {
-
   final SignInWithEmailRepository _repository;
 
-  SignInWithEmailStateNotifier(this._repository): super(const SignInWithEmailState());
+  SignInWithEmailStateNotifier(this._repository)
+      : super(const SignInWithEmailState());
 
   /// メールアドレスとパスワードを使ってサインインする
   Future<void> logInWithEmail(String email, String password) async {
     state = const SignInWithEmailState.loading();
 
     try {
-      UserEntity _user = await _repository.loginWithEmailAndPassword(email, password);
+      UserEntity _user =
+          await _repository.loginWithEmailAndPassword(email, password);
       state = SignInWithEmailState.success(user: _user);
       return;
-    } catch(e) {
+    } catch (e) {
       state = SignInWithEmailState.error(message: e.toString());
       log(e.toString());
       return;
@@ -46,7 +47,6 @@ class SignInWithEmailStateNotifier extends StateNotifier<SignInWithEmailState> {
 
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
-        (_) => false
-    );
+        (_) => false);
   }
 }

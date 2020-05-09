@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:developer';
 
@@ -16,21 +14,26 @@ part 'image_detail_bloc.freezed.dart';
 abstract class ImageDetailState with _$ImageDetailState {
   const factory ImageDetailState() = _ImageDetailState;
   const factory ImageDetailState.loading() = Loading;
-  const factory ImageDetailState.viewing({@required ImageEntity imageEntity}) = Success;
-  const factory ImageDetailState.editing({@required ImageEntity imageEntity}) = Editing;
+  const factory ImageDetailState.viewing({@required ImageEntity imageEntity}) =
+      Success;
+  const factory ImageDetailState.editing({@required ImageEntity imageEntity}) =
+      Editing;
   const factory ImageDetailState.delete() = Deleted;
-  const factory ImageDetailState.error({@Default('') String message}) = ErrorDetails;
+  const factory ImageDetailState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
-
   final ImageDetailRepository _repository;
 
   final RoomInfoEntity _roomInfoEntity;
   final ImageEntity _imageEntity;
 
-  ImageDetailStateNotifier(this._imageEntity, this._roomInfoEntity, this._repository): super(const ImageDetailState()) {
-    titleController.text =  (_imageEntity.title != null) ? _imageEntity.title : "名無し";
+  ImageDetailStateNotifier(
+      this._imageEntity, this._roomInfoEntity, this._repository)
+      : super(const ImageDetailState()) {
+    titleController.text =
+        (_imageEntity.title != null) ? _imageEntity.title : "名無し";
     memoController.text = (_imageEntity.memo != null) ? _imageEntity.memo : "";
   }
 
@@ -51,7 +54,7 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
         final ImageEntity _newImage = await _updateImageInfo();
         // viewingモードに変更
         state = ImageDetailState.viewing(imageEntity: _newImage);
-      } catch(e) {
+      } catch (e) {
         // エラー時の処理
         log(e.toString());
         state = ImageDetailState.error(message: e.toString());
@@ -60,36 +63,42 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
       // viewingモードに変更
       state = ImageDetailState.viewing(imageEntity: _imageEntity);
       // テキストを初期化
-      titleController.text =  (_imageEntity.title != null) ? _imageEntity.title : "名無し";
-      memoController.text = (_imageEntity.memo != null) ? _imageEntity.memo : "";
+      titleController.text =
+          (_imageEntity.title != null) ? _imageEntity.title : "名無し";
+      memoController.text =
+          (_imageEntity.memo != null) ? _imageEntity.memo : "";
     }
   }
 
   /// 編集した情報に投稿を更新する処理
   Future<ImageEntity> _updateImageInfo() async {
-
-    final String _title = (titleController.text.isEmpty || titleController.text == null) ? '名無し' : titleController.text.toString();
-    final String _memo = (memoController.text.isEmpty || memoController.text == null) ? '' : memoController.text.toString();
+    final String _title =
+        (titleController.text.isEmpty || titleController.text == null)
+            ? '名無し'
+            : titleController.text.toString();
+    final String _memo =
+        (memoController.text.isEmpty || memoController.text == null)
+            ? ''
+            : memoController.text.toString();
 
     // repositoryからfirestoreに保存する関数を呼び出す
-    final _newImage = await _repository.updateFirestore(_imageEntity, _roomInfoEntity, _title, _memo);
+    final _newImage = await _repository.updateFirestore(
+        _imageEntity, _roomInfoEntity, _title, _memo);
 
     return _imageEntity.copyWith(
         title: _newImage.title,
         memo: _newImage.memo,
-        updated_at: _newImage.updated_at
-    );
+        updated_at: _newImage.updated_at);
   }
 
   /// 投稿を削除する処理
   Future<void> deleteImage() async {
-
     state = const ImageDetailState.loading();
 
     try {
       await _repository.deleteImage(_imageEntity, _roomInfoEntity);
       state = const ImageDetailState.delete();
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = ImageDetailState.error(message: e.toString());
     }

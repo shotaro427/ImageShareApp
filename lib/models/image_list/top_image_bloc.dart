@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:developer';
 
@@ -16,15 +14,18 @@ part 'top_image_bloc.freezed.dart';
 abstract class TopImageListState with _$TopImageListState {
   const factory TopImageListState() = _TopImageListState;
   const factory TopImageListState.loading() = Loading;
-  const factory TopImageListState.success({@required List<ImageEntity> images}) = Success;
-  const factory TopImageListState.error({@Default('') String message}) = ErrorDetails;
+  const factory TopImageListState.success(
+      {@required List<ImageEntity> images}) = Success;
+  const factory TopImageListState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 /// 投稿一覧のModelクラス
 class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
   final TopImageRepository _repository;
 
-  TopImageListStateNotifier(this._repository): super(const TopImageListState()) {
+  TopImageListStateNotifier(this._repository)
+      : super(const TopImageListState()) {
     fetchImages();
   }
 
@@ -45,8 +46,11 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
 
         // 投稿を整列
         if (_snapshot.documents.length > 0) {
-          final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
-          _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
+          final List<ImageEntity> _newImages = _snapshot.documents
+              .map((doc) => ImageEntity.fromJson(doc.data))
+              .toList();
+          _newImages.removeWhere(
+              (item) => item.url == null || item.originalUrl == null);
           _images.addAll(_newImages);
           state = TopImageListState.success(images: _images);
         } else {
@@ -54,7 +58,7 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
           state = const TopImageListState.success(images: []);
         }
       }
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = TopImageListState.error(message: e.toString());
     }
@@ -68,23 +72,24 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
     state = const TopImageListState.loading();
 
     try {
-      final QuerySnapshot _snapshot = await _repository.fetchImages(_images, keyWord: keyWord);
+      final QuerySnapshot _snapshot =
+          await _repository.fetchImages(_images, keyWord: keyWord);
 
       // 投稿を整列
       if (_snapshot.documents.length > 0) {
-
-        final List<ImageEntity> _newImages = _snapshot.documents.map((doc) => ImageEntity.fromJson(doc.data)).toList();
-        _newImages.removeWhere((item) => item.url == null || item.originalUrl == null);
+        final List<ImageEntity> _newImages = _snapshot.documents
+            .map((doc) => ImageEntity.fromJson(doc.data))
+            .toList();
+        _newImages.removeWhere(
+            (item) => item.url == null || item.originalUrl == null);
         _images.addAll(_newImages);
         state = TopImageListState.success(images: _images);
-
       } else {
-
+        // TODO: ここにメモを検索するクエリを書く
         log('search result is empty');
         state = const TopImageListState.success(images: []);
       }
-
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = TopImageListState.error(message: e.toString());
     }
@@ -103,6 +108,7 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
 /// AppBarの状態
 class SearchBarState {
   SearchBarState(this.isSearchMode);
+
   /// 検索状態かどうか
   /// text_fieldが出ている時はtrue
   final bool isSearchMode;
@@ -110,7 +116,7 @@ class SearchBarState {
 
 /// AppBarの状態通知
 class SearchBarStateNotifier extends StateNotifier<SearchBarState> {
-  SearchBarStateNotifier(): super(SearchBarState(false));
+  SearchBarStateNotifier() : super(SearchBarState(false));
 
   void switchSearchingMode() {
     state = SearchBarState(!state.isSearchMode);

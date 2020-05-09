@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,24 +11,27 @@ part 'sign_up_with_email_model.freezed.dart';
 abstract class SignUpWithEmailState with _$SignUpWithEmailState {
   const factory SignUpWithEmailState() = _SignUpWithEmailState;
   const factory SignUpWithEmailState.loading() = Loading;
-  const factory SignUpWithEmailState.success({@Default(UserEntity(email: '', uid: '')) UserEntity user}) = Success;
-  const factory SignUpWithEmailState.error({@Default('') String message}) = ErrorDetails;
+  const factory SignUpWithEmailState.success(
+      {@Default(UserEntity(email: '', uid: '')) UserEntity user}) = Success;
+  const factory SignUpWithEmailState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class SignUpWithEmailStateNotifier extends StateNotifier<SignUpWithEmailState> {
-
   final SignUpWithEmailRepository _repository;
 
-  SignUpWithEmailStateNotifier(this._repository): super(const SignUpWithEmailState());
+  SignUpWithEmailStateNotifier(this._repository)
+      : super(const SignUpWithEmailState());
 
   Future<void> signUp(String email, String password) async {
     state = const SignUpWithEmailState.loading();
 
     try {
-      final UserEntity _user = await _repository.signUpWithEmail(email, password);
+      final UserEntity _user =
+          await _repository.signUpWithEmail(email, password);
       state = SignUpWithEmailState.success(user: _user);
       return;
-    } catch(e) {
+    } catch (e) {
       state = SignUpWithEmailState.error(message: e.toString());
       return;
     }
@@ -39,8 +41,8 @@ class SignUpWithEmailStateNotifier extends StateNotifier<SignUpWithEmailState> {
     if (user == null) return;
 
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
-        (_) => false,
+      MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+      (_) => false,
     );
   }
 }

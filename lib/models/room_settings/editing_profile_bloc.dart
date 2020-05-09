@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -13,13 +12,15 @@ abstract class EditingProfileState with _$EditingProfileState {
   const factory EditingProfileState() = _EditingProfileState;
   const factory EditingProfileState.loading() = Loading;
   const factory EditingProfileState.success() = Success;
-  const factory EditingProfileState.error({@Default('') String message}) = ErrorDetails;
+  const factory EditingProfileState.error({@Default('') String message}) =
+      ErrorDetails;
 }
 
 class EditingProfileStateNotifier extends StateNotifier<EditingProfileState> {
   final EditingProfileRepository _repository;
 
-  EditingProfileStateNotifier(this._repository): super(const EditingProfileState());
+  EditingProfileStateNotifier(this._repository)
+      : super(const EditingProfileState());
 
   void editingName(String name) async {
     // loading
@@ -29,7 +30,7 @@ class EditingProfileStateNotifier extends StateNotifier<EditingProfileState> {
       await _repository.setNickNameIntoFireStore(name);
       await _repository.setNickNameIntoFireStore(name);
       state = const EditingProfileState.success();
-    } catch(e) {
+    } catch (e) {
       log(e.toString());
       state = EditingProfileState.error(message: e.toString());
     }
