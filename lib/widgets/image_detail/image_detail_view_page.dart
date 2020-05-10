@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageDetailViewPage extends StatelessWidget {
-  String _imageUrlString;
-  String _title = "名無し";
+  final String _imageUrlString;
+  final String _title;
 
-  ImageDetailViewPage(this._imageUrlString, String title) {
-    if (title != null) {
-      this._title = title;
-    }
-  }
+  ImageDetailViewPage(this._imageUrlString, this._title);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +15,7 @@ class ImageDetailViewPage extends StatelessWidget {
       onDismissed: (direction) => Navigator.pop(context),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_title),
+          title: (_title != null) ? Text(_title) : const Text('無名'),
           backgroundColor: Colors.black,
         ),
         body: Container(
