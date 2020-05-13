@@ -117,7 +117,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
   Widget createPlaceholderWidget(BuildContext context) {
     return Card(
       color: Theme.of(context).bannerTheme.backgroundColor,
-      elevation: 10,
+      elevation: 0,
       margin: const EdgeInsets.all(5),
       child: SizedBox(
         height: 65,
