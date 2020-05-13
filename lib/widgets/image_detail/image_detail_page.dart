@@ -38,6 +38,7 @@ class ImageDetailPage extends StatelessWidget {
               ],
             ),
             body: _LayoutDetailImage(_imageEntity),
+            backgroundColor: Colors.grey.shade300,
           ),
           _LoadingWidget(),
         ],
@@ -97,6 +98,7 @@ class _LayoutDetailImage extends StatelessWidget {
             Flexible(
               flex: 1,
               child: Container(
+                color: Colors.grey.shade300,
                 height: 300,
                 child: GestureDetector(
                   onTap: () => Navigator.push(
@@ -122,17 +124,17 @@ class _LayoutDetailImage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    boxShadow: const [
-                      const BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 20,
-                        spreadRadius: 5,
-                        offset: const Offset(
-                          0,
-                          10,
-                        ),
-                      ),
-                    ],
+                    // boxShadow: const [
+                    //   const BoxShadow(
+                    //     color: Colors.black,
+                    //     blurRadius: 20,
+                    //     spreadRadius: 5,
+                    //     offset: const Offset(
+                    //       0,
+                    //       10,
+                    //     ),
+                    //   ),
+                    // ],
                     color: Colors.white),
                 child: StateNotifierBuilder<ImageDetailState>(
                     stateNotifier: context.read<ImageDetailStateNotifier>(),
