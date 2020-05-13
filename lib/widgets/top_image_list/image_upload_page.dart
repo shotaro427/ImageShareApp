@@ -119,19 +119,19 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                 ),
                 // タグ追加欄
-                // Row(
-                //   children: <Widget>[
-                //     Padding(
-                //       padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
-                //       child: Icon(
-                //         Icons.local_offer,
-                //         color: Colors.grey,
-                //         size: 22,
-                //       ),
-                //     ),
-                //     const Text('タグ', style: TextStyle(color: Colors.grey),)
-                //   ],
-                // ),
+                Row(
+                  children: const <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
+                      child: Icon(
+                        Icons.local_offer,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
+                    ),
+                    const Text('タグ', style: TextStyle(color: Colors.grey),)
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Divider(
@@ -142,7 +142,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
+                    const Padding(
                       padding:
                           const EdgeInsets.only(left: 20, right: 15, top: 13),
                       child: Icon(

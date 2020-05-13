@@ -110,6 +110,7 @@ class TopImagesPage extends StatelessWidget {
                         builder: (context) =>
                             ImageUploadPage(_roomInfoEntity.roomId))),
               ),
+              backgroundColor: Colors.grey.shade200,
             ),
           ),
           _LoadingWidget()
@@ -169,7 +170,7 @@ class _ImageTile extends StatelessWidget {
           MaterialPageRoute(
               builder: (context) => ImageDetailPage(_entity, _roomInfoEntity))),
       child: Card(
-        elevation: 10,
+        elevation: 0,
         child: Column(
           children: <Widget>[
             ClipRRect(
