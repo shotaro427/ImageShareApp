@@ -36,6 +36,7 @@ class RoomSettingsPage extends StatelessWidget {
               ],
             ),
             body: _RoomSettingsBodyPage(),
+            backgroundColor: Colors.grey.shade200,
           ),
           _LoadingWidget(),
         ],
@@ -81,7 +82,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
             return GestureDetector(
               child: Card(
                 color: Theme.of(context).bannerTheme.backgroundColor,
-                elevation: 10,
+                elevation: 0,
                 margin: const EdgeInsets.all(5),
                 child: SizedBox(
                   height: 65,

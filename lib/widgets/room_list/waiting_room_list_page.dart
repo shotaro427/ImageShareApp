@@ -56,7 +56,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                       return GestureDetector(
                         child: Card(
                           color: Theme.of(context).bannerTheme.backgroundColor,
-                          elevation: 10,
+                          elevation: 0,
                           margin: const EdgeInsets.all(5),
                           child: SizedBox(
                             height: 65,

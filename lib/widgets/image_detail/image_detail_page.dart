@@ -30,7 +30,7 @@ class ImageDetailPage extends StatelessWidget {
                 Builder(
                   builder: (BuildContext context) {
                     return IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () => _showDeleteConfirmDialog(context),
                     );
                   },
@@ -219,18 +219,18 @@ class _LayoutDetailImage extends StatelessWidget {
                           const SizedBox(
                             height: 25,
                           ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: <Widget>[
-                          //     Column(
-                          //       children: <Widget>[
-                          //         Icon(Icons.local_offer, color: Colors.grey,),
-                          //         const Text(
-                          //           'タグ', style: TextStyle(color: Colors.grey),)
-                          //       ],
-                          //     )
-                          //   ],
-                          // ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                children: const <Widget>[
+                                  Icon(Icons.local_offer, color: Colors.grey,),
+                                  const Text(
+                                    'タグ', style: TextStyle(color: Colors.grey),)
+                                ],
+                              )
+                            ],
+                          ),
                           const SizedBox(
                             height: 15,
                           ),
@@ -238,7 +238,7 @@ class _LayoutDetailImage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Column(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(
                                     Icons.note,
                                     color: Colors.grey,

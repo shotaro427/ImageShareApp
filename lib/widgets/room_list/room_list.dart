@@ -62,6 +62,7 @@ class _RoomListsWidget extends StatelessWidget {
           onPressed: () => Navigator.push(
               context, MaterialPageRoute(builder: (_) => CreateRoomPage())),
         ),
+        backgroundColor: Colors.grey.shade200,
       ),
     );
   }
