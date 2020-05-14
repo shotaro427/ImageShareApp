@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,20 +85,42 @@ class SignInPageRepository {
     await _prefs.setString('uid', user.uid);
     await _prefs.setString('email', user.email);
 
+    // IDを追加
+    final UserEntity _user = user.copyWith(id: _randomString());
+
     // FireStoreに保存
     try {
       final _documents = (await _usersCollectionRef
-              .where('uid', isEqualTo: user.uid)
+              .where('uid', isEqualTo: _user.uid)
               .getDocuments())
           .documents;
 
       if (_documents.length == 0) {
         await _usersCollectionRef
-            .document('${user.uid}')
-            .setData(user.toJson());
+            .document('${_user.uid}')
+            .setData(_user.toJson());
+      } else if (_documents.first['id'] == null) {
+        await _usersCollectionRef
+            .document('${_user.uid}')
+            .updateData({'id': _user.id});
       }
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  String _randomString() {
+    const _randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const _charsLength = _randomChars.length;
+
+    final rand = new math.Random.secure();
+    final codeUnits = new List.generate(
+      12,
+      (index) {
+        final n = rand.nextInt(_charsLength);
+        return _randomChars.codeUnitAt(n);
+      },
+    );
+    return new String.fromCharCodes(codeUnits);
   }
 }

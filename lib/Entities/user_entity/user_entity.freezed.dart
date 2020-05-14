@@ -14,9 +14,10 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
 mixin _$UserEntity {
   String get email;
   String get uid;
+  String get id;
   String get name;
 
-  UserEntity copyWith({String email, String uid, String name});
+  UserEntity copyWith({String email, String uid, String id, String name});
 
   Map<String, dynamic> toJson();
 }
@@ -25,10 +26,14 @@ class _$UserEntityTearOff {
   const _$UserEntityTearOff();
 
   _UserEntity call(
-      {@required String email, @required String uid, String name}) {
+      {@required String email,
+      @required String uid,
+      String id = '',
+      String name}) {
     return _UserEntity(
       email: email,
       uid: uid,
+      id: id,
       name: name,
     );
   }
@@ -38,7 +43,8 @@ const $UserEntity = _$UserEntityTearOff();
 
 @JsonSerializable()
 class _$_UserEntity with DiagnosticableTreeMixin implements _UserEntity {
-  const _$_UserEntity({@required this.email, @required this.uid, this.name})
+  const _$_UserEntity(
+      {@required this.email, @required this.uid, this.id = '', this.name})
       : assert(email != null),
         assert(uid != null);
 
@@ -49,12 +55,15 @@ class _$_UserEntity with DiagnosticableTreeMixin implements _UserEntity {
   final String email;
   @override
   final String uid;
+  @JsonKey(defaultValue: '')
+  @override
+  final String id;
   @override
   final String name;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserEntity(email: $email, uid: $uid, name: $name)';
+    return 'UserEntity(email: $email, uid: $uid, id: $id, name: $name)';
   }
 
   @override
@@ -64,6 +73,7 @@ class _$_UserEntity with DiagnosticableTreeMixin implements _UserEntity {
       ..add(DiagnosticsProperty('type', 'UserEntity'))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('uid', uid))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name));
   }
 
@@ -75,6 +85,8 @@ class _$_UserEntity with DiagnosticableTreeMixin implements _UserEntity {
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.uid, uid) ||
                 const DeepCollectionEquality().equals(other.uid, uid)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)));
   }
@@ -84,17 +96,20 @@ class _$_UserEntity with DiagnosticableTreeMixin implements _UserEntity {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(email) ^
       const DeepCollectionEquality().hash(uid) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name);
 
   @override
   _$_UserEntity copyWith({
     Object email = freezed,
     Object uid = freezed,
+    Object id = freezed,
     Object name = freezed,
   }) {
     return _$_UserEntity(
       email: email == freezed ? this.email : email as String,
       uid: uid == freezed ? this.uid : uid as String,
+      id: id == freezed ? this.id : id as String,
       name: name == freezed ? this.name : name as String,
     );
   }
@@ -109,6 +124,7 @@ abstract class _UserEntity implements UserEntity {
   const factory _UserEntity(
       {@required String email,
       @required String uid,
+      String id,
       String name}) = _$_UserEntity;
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
@@ -119,8 +135,10 @@ abstract class _UserEntity implements UserEntity {
   @override
   String get uid;
   @override
+  String get id;
+  @override
   String get name;
 
   @override
-  _UserEntity copyWith({String email, String uid, String name});
+  _UserEntity copyWith({String email, String uid, String id, String name});
 }

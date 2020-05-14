@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
@@ -24,10 +25,28 @@ class SignUpWithEmailRepository {
     await _prefs.setString('uid', user.uid);
     await _prefs.setString('email', user.email);
 
+    // IDを追加
+    final UserEntity _user = user.copyWith(id: _randomString());
+
     // FireStoreに保存
     await Firestore.instance
         .collection('users')
-        .document('${user.uid}')
-        .setData(user.toJson());
+        .document('${_user.uid}')
+        .setData(_user.toJson());
+  }
+
+  String _randomString() {
+    const _randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const _charsLength = _randomChars.length;
+
+    final rand = new Random.secure();
+    final codeUnits = new List.generate(
+      12,
+      (index) {
+        final n = rand.nextInt(_charsLength);
+        return _randomChars.codeUnitAt(n);
+      },
+    );
+    return new String.fromCharCodes(codeUnits);
   }
 }
