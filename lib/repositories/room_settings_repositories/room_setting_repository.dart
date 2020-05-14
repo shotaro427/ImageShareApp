@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/Entities/user_entity/user_entity.dart';
@@ -38,6 +40,11 @@ class RoomSettingsRepository {
 
       // リストに追加
       if (_profile.uid == _uid && _participants['you'].length == 0) {
+        print(_profile.toJson().toString());
+        // 更新
+        if (_profile.id == null || _profile.id.isEmpty) {
+          await _saveUserInfo(_profile);
+        }
         // 自分のプロフィールを追加
         _participants['you'].add(_profile);
       } else if (_profile.uid != _uid) {
@@ -47,5 +54,28 @@ class RoomSettingsRepository {
     }
 
     return _participants;
+  }
+
+  Future<void> _saveUserInfo(UserEntity user) async {
+    // FireStoreに保存
+    await Firestore.instance
+        .collection('users')
+        .document('${user.uid}')
+        .updateData({'id': _randomString()});
+  }
+
+  String _randomString() {
+    const _randomChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const _charsLength = _randomChars.length;
+
+    final rand = new Random.secure();
+    final codeUnits = new List.generate(
+      12,
+      (index) {
+        final n = rand.nextInt(_charsLength);
+        return _randomChars.codeUnitAt(n);
+      },
+    );
+    return new String.fromCharCodes(codeUnits);
   }
 }

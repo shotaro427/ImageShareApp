@@ -101,8 +101,8 @@ class _MyProfileInfoWidget extends StatelessWidget {
                               : '未設定 (あなた)',
                           style: const TextStyle(fontSize: 20),
                         ),
-                        const Text(
-                          'ID: 〇〇〇〇〇〇〇〇',
+                        Text(
+                          'ID: ${myProfile.id}',
                         ),
                       ],
                     ),
