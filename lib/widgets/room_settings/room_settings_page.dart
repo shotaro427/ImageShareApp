@@ -79,32 +79,43 @@ class _MyProfileInfoWidget extends StatelessWidget {
         return state.maybeWhen(
           () => createPlaceholderWidget(context),
           success: (myProfile, _) {
-            return GestureDetector(
-              child: Card(
-                color: Theme.of(context).bannerTheme.backgroundColor,
-                elevation: 0,
-                margin: const EdgeInsets.all(5),
-                child: SizedBox(
-                  height: 65,
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 10),
-                        child: const Icon(Icons.account_circle),
-                      ),
-                      Text(
-                        (myProfile.name != null)
-                            ? '${myProfile.name} (あなた)'
-                            : '未設定 (あなた)',
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
+            return Card(
+              color: Theme.of(context).bannerTheme.backgroundColor,
+              elevation: 0,
+              margin: const EdgeInsets.all(5),
+              child: SizedBox(
+                height: 75,
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: const Icon(Icons.account_circle),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          (myProfile.name != null)
+                              ? '${myProfile.name} (あなた)'
+                              : '未設定 (あなた)',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        const Text(
+                          'ID: 〇〇〇〇〇〇〇〇',
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EditingProfilePage(
+                                (myProfile.name != null) ? myProfile.name : '未設定'))),
+                    )
+                  ],
                 ),
               ),
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => EditingProfilePage(
-                      (myProfile.name != null) ? myProfile.name : '未設定'))),
             );
           },
           orElse: () => createPlaceholderWidget(context),
@@ -120,16 +131,25 @@ class _MyProfileInfoWidget extends StatelessWidget {
       elevation: 0,
       margin: const EdgeInsets.all(5),
       child: SizedBox(
-        height: 65,
+        height: 75,
         child: Row(
-          children: const [
+          children: [
             const Padding(
-              padding: const EdgeInsets.only(left: 15, right: 10),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: const Icon(Icons.account_circle),
             ),
-            const Text(
-              '未設定',
-              style: const TextStyle(fontSize: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  '未設定',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                Text(
+                  'ID: ',
+                ),
+              ],
             ),
           ],
         ),
@@ -153,10 +173,10 @@ class _RoomMembersPage extends StatelessWidget {
                 success: (_, members) {
                   return Card(
                     color: Theme.of(context).bannerTheme.backgroundColor,
-                    elevation: 10,
+                    elevation: 0,
                     margin: const EdgeInsets.all(5),
                     child: SizedBox(
-                      height: 65,
+                      height: 75,
                       child: Row(
                         children: [
                           const Padding(
