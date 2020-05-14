@@ -1,4 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_settings/room_settings_bloc.dart';
@@ -71,6 +73,27 @@ class _RoomSettingsBodyPage extends StatelessWidget {
 
 // 自分の名前を表示するWidget
 class _MyProfileInfoWidget extends StatelessWidget {
+
+  // IDをクリップボードにコピーする
+  void _copyClipboard(BuildContext context, String strId) async {
+    // コピーするとき
+    final data = ClipboardData(text: strId);
+    await Clipboard.setData(data);
+
+    print(strId);
+
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '',
+      desc: 'クリップボードにコピーしました。',
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () {},
+    ).show();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<RoomSettingsState>(
@@ -84,7 +107,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
               elevation: 0,
               margin: const EdgeInsets.all(5),
               child: SizedBox(
-                height: 75,
+                height: 80,
                 child: Row(
                   children: [
                     const Padding(
@@ -101,8 +124,22 @@ class _MyProfileInfoWidget extends StatelessWidget {
                               : '未設定 (あなた)',
                           style: const TextStyle(fontSize: 20),
                         ),
-                        Text(
-                          'ID: ${myProfile.id}',
+                        GestureDetector(
+                          onTap: () => _copyClipboard(context, myProfile.id),
+                          child: Row(
+                            children: [
+                              Text(
+                                'ID: ${myProfile.id}',
+                              ),
+                              const Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: const Icon(
+                                  Icons.content_copy,
+                                  size: 20,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

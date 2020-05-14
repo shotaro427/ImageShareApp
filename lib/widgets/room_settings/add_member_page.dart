@@ -51,7 +51,7 @@ class _AddMemberLayout extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(hintText: "招待したい人のメールアドレス"),
+                  decoration: const InputDecoration(hintText: "招待したい人IDを入力してください"),
                 ),
                 RaisedButton(
                   child: const Text("招待"),
