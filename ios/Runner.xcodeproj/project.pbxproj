@@ -354,7 +354,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		DB4F5E6363C04F464A220C5F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -390,7 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\necho \"★★★\"\necho \"-----${CONFIGURATION}-----\"\necho \"-----${SRCROOT}-----\"\necho \"-----${BUILT_PRODUCTS_DIR}-----\"\necho \"-----${PRODUCT_NAME}-----\"\n\nif [ \"${CONFIGURATION}\" = \"Debug-Development\" ]  ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Debug-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Development\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\nif [ \"${CONFIGURATION}\" = \"Debug-Development\" ]  ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Debug-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Development\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
