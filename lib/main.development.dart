@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_share_app/flavor.dart';
 import 'package:image_share_app/widgets/sing_in/app_start_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(DevMyApp());
 
-class MyApp extends StatelessWidget {
+class DevMyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

@@ -34,7 +34,7 @@ class AddMemberPage extends StatelessWidget {
 }
 
 class _AddMemberLayout extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController();
   final RoomInfoEntity _roomInfoEntity;
 
   _AddMemberLayout(this._roomInfoEntity);
@@ -50,7 +50,7 @@ class _AddMemberLayout extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextFormField(
-                  controller: _emailController,
+                  controller: _userIdController,
                   decoration: const InputDecoration(hintText: "招待したい人IDを入力してください"),
                 ),
                 RaisedButton(
@@ -58,11 +58,11 @@ class _AddMemberLayout extends StatelessWidget {
                   onPressed: () async {
                     await context
                         .read<AddMemberStateNotifier>()
-                        .inviteUser(_emailController.text, _roomInfoEntity);
+                        .inviteUser(_userIdController.text, _roomInfoEntity);
 
                     context.read<AddMemberState>().maybeWhen(() => null,
                         success: () =>
-                            _showSuccessDialog(context, _emailController),
+                            _showSuccessDialog(context, _userIdController),
                         error: (_) => _showErrorDialog(context),
                         orElse: () => null);
                   },
