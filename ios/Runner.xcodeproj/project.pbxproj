@@ -344,7 +344,7 @@
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -390,7 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\nif [ \"${CONFIGURATION}\" = \"Debug-Development\" ]  ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Debug-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Development\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"${CONFIGURATION}\"\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n\nif [ \"${CONFIGURATION}\" = \"Debug-Development\" ]  ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Debug-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Development\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Development GoogleService-Info copied.\"\nelif [ \"${CONFIGURATION}\" = \"Release-Production\" ] ; then\n  cp \"$SRCROOT/Runner/GoogleService-Info-production.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\n  echo \"Production GoogleService-Info copied.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -678,6 +678,7 @@
 		};
 		E2D072D924627AD5004090F6 /* Debug-Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2D072ED24628EC9004090F6 /* Debug-Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -765,6 +766,7 @@
 		};
 		E2D072DB24627AE3004090F6 /* Release-Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2D072EC24628EC8004090F6 /* Release-Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -847,6 +849,7 @@
 		};
 		E2D072DD24627AEF004090F6 /* Release-Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2D072EA24628EC8004090F6 /* Release-Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1012,6 +1015,7 @@
 		};
 		E2D072E824628C41004090F6 /* Debug-Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2D072EE24628EC9004090F6 /* Debug-Production.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
