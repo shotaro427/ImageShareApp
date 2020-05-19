@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_settings/room_settings_bloc.dart';
@@ -102,57 +103,80 @@ class _MyProfileInfoWidget extends StatelessWidget {
         return state.maybeWhen(
           () => createPlaceholderWidget(context),
           success: (myProfile, _) {
-            return Card(
-              color: Theme.of(context).bannerTheme.backgroundColor,
-              elevation: 0,
-              margin: const EdgeInsets.all(5),
-              child: SizedBox(
-                height: 80,
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: const Icon(Icons.account_circle),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          (myProfile.name != null)
-                              ? '${myProfile.name} (あなた)'
-                              : '未設定 (あなた)',
-                          style: const TextStyle(fontSize: 20),
-                        ),
-                        GestureDetector(
-                          onTap: () => _copyClipboard(context, myProfile.id),
-                          child: Row(
-                            children: [
-                              Text(
-                                'ID: ${myProfile.id}',
-                              ),
-                              const Padding(
-                                padding: const EdgeInsets.only(left: 5),
-                                child: const Icon(
-                                  Icons.content_copy,
-                                  size: 20,
-                                ),
-                              )
-                            ],
+            return Slidable(
+              actionPane: const SlidableDrawerActionPane(),
+              actionExtentRatio: 0.25,
+              child: Card(
+                color: Theme.of(context).bannerTheme.backgroundColor,
+                elevation: 0,
+                margin: const EdgeInsets.all(5),
+                child: SizedBox(
+                  height: 80,
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: const Icon(Icons.account_circle),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 7),
+                            child: Text(
+                              (myProfile.name != null)
+                                  ? '${myProfile.name} (あなた)'
+                                  : '未設定 (あなた)',
+                              style: const TextStyle(fontSize: 20),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => EditingProfilePage(
-                                (myProfile.name != null) ? myProfile.name : '未設定'))),
-                    )
-                  ],
+                          GestureDetector(
+                            onTap: () => _copyClipboard(context, myProfile.id),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'ID: ${myProfile.id}',
+                                ),
+                                const Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: const Icon(
+                                    Icons.content_copy,
+                                    size: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
+              secondaryActions: [
+                SizedBox(
+                  height: 75,
+                  child: IconSlideAction(
+                    caption: '退会する',
+                    color: Colors.red,
+                    icon: Icons.exit_to_app,
+                    onTap: () {},
+                  ),
+                ),
+                SizedBox(
+                  height: 75,
+                  child: IconSlideAction(
+                    caption: '編集する',
+                    color: Colors.blue,
+                    icon: Icons.edit,
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditingProfilePage(
+                              (myProfile.name != null) ? myProfile.name : '未設定'))),
+                  ),
+                ),
+              ],
             );
           },
           orElse: () => createPlaceholderWidget(context),
@@ -208,27 +232,42 @@ class _RoomMembersPage extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return state.maybeWhen(() => Container(),
                 success: (_, members) {
-                  return Card(
-                    color: Theme.of(context).bannerTheme.backgroundColor,
-                    elevation: 0,
-                    margin: const EdgeInsets.all(5),
-                    child: SizedBox(
-                      height: 75,
-                      child: Row(
-                        children: [
-                          const Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 10),
-                            child: const Icon(Icons.account_circle),
-                          ),
-                          Text(
-                            (members[index].name != null)
-                                ? members[index].name
-                                : '未設定',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ],
+                  return Slidable(
+                    actionPane: const SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    child: Card(
+                      color: Theme.of(context).bannerTheme.backgroundColor,
+                      elevation: 0,
+                      margin: const EdgeInsets.all(5),
+                      child: SizedBox(
+                        height: 75,
+                        child: Row(
+                          children: [
+                            const Padding(
+                              padding: const EdgeInsets.only(left: 15, right: 10),
+                              child: const Icon(Icons.account_circle),
+                            ),
+                            Text(
+                              (members[index].name != null)
+                                  ? members[index].name
+                                  : '未設定',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    secondaryActions: [
+                      SizedBox(
+                        height: 75,
+                        child: IconSlideAction(
+                          caption: '退会させる',
+                          color: Colors.red,
+                          icon: Icons.exit_to_app,
+                          onTap: () {},
+                        ),
+                      )
+                    ],
                   );
                 },
                 orElse: () => Container());
