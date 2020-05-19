@@ -39,5 +39,5 @@ lib/generated_plugin_registrant.dart
 android/app/google-services.json
 ios/Flutter/.last_build_id
 ios/Runner/GoogleService-Info-develop.plist
-ios/Runner/GoogleService-Info-production
+ios/Runner/GoogleService-Info-production.plist
 
