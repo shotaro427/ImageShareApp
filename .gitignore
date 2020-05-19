@@ -37,4 +37,7 @@ lib/generated_plugin_registrant.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 android/app/google-services.json
-ios/Flutter/.last_build_id b/ios/Flutter/.last_build_id
+ios/Flutter/.last_build_id
+ios/Runner/GoogleService-Info-develop.plist
+ios/Runner/GoogleService-Info-production
+
