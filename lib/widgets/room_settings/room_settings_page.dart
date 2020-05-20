@@ -163,21 +163,7 @@ class _MyProfileInfoWidget extends StatelessWidget {
                     caption: '退会する',
                     color: Colors.red,
                     icon: Icons.exit_to_app,
-                    onTap: () async {
-
-                      await context.read<RoomSettingsStateNotifier>().withdrawSelf();
-
-                      state.maybeWhen(
-                        () => null,
-                        success: (_, __) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
-                            (_) => false,
-                          );
-                        },
-                        orElse: () => null
-                      );
-                    }
+                    onTap: () => showWithdrawConfirmDialog(context, state),
                   ),
                 ),
                 SizedBox(
@@ -232,6 +218,37 @@ class _MyProfileInfoWidget extends StatelessWidget {
       ),
     );
   }
+
+  //　「退会する」の確認ダイアログ
+  void showWithdrawConfirmDialog(BuildContext context, RoomSettingsState state) {
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '退会しますか？',
+      desc: '本当にこのグループから退会しますか？',
+      dialogType: DialogType.WARNING,
+      animType: AnimType.SCALE,
+      btnOkText: 'キャンセル',
+      btnCancelText: 'OK',
+      btnOkColor: Colors.red,
+      btnCancelColor: const Color(0xFF00CA71),
+      btnOkOnPress: () {},
+      btnCancelOnPress: () async {
+        await context.read<RoomSettingsStateNotifier>().withdrawSelf();
+
+        state.maybeWhen(
+          () => null,
+          success: (_, __) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+              (_) => false,
+            );
+          },
+          orElse: () => null
+        );
+      },
+    ).show();
+  }
 }
 
 // 部屋に参加しているメンバーの名前を表示するWidget
@@ -279,7 +296,7 @@ class _RoomMembersPage extends StatelessWidget {
                           caption: '退会させる',
                           color: Colors.red,
                           icon: Icons.exit_to_app,
-                          onTap: () => context.read<RoomSettingsStateNotifier>().forceWithdrawal(members[index].uid),
+                          onTap: () => showForceWithdrawConfirmDialog(context, members[index].uid),
                         ),
                       )
                     ],
@@ -292,6 +309,24 @@ class _RoomMembersPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  // 「退会させる」の確認ダイアログ
+  void showForceWithdrawConfirmDialog(BuildContext context, String targetUid) {
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '退会させますか？',
+      desc: '本当にこのユーザーを退会させますか？',
+      dialogType: DialogType.WARNING,
+      animType: AnimType.SCALE,
+      btnOkText: 'キャンセル',
+      btnCancelText: 'OK',
+      btnOkColor: Colors.red,
+      btnCancelColor: const Color(0xFF00CA71),
+      btnOkOnPress: () {},
+      btnCancelOnPress: () => context.read<RoomSettingsStateNotifier>().forceWithdrawal(targetUid),
+    ).show();
   }
 }
 
