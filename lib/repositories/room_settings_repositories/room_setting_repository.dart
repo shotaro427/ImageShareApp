@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RoomSettingsRepository {
   final RoomInfoEntity _roomInfoEntity;
 
+  final db = Firestore.instance;
+
   RoomSettingsRepository(this._roomInfoEntity);
 
   /// 所属しているメンバーを取得する
@@ -54,6 +56,38 @@ class RoomSettingsRepository {
     }
 
     return _participants;
+  }
+
+  Future<void> forceWithdrawal(String uid) async {
+
+    // グループからparticipantsを取得
+    final _participants = await db.collection('rooms/${_roomInfoEntity.roomId}/participants').getDocuments();
+
+    // 取得したリファレンスからユーザー情報を取得
+    // _participants.documents.forEach((participant) async {
+    for (final participant in _participants.documents) {
+      final _userRefStr = participant.data['user'].path;
+      final _user = UserEntity.fromJson((await db.document(_userRefStr).get()).data);
+
+      // グループのparticipantsから該当ユーザーを削除
+      if (_user.uid == uid) {
+        await participant.reference.delete();
+      }
+    }
+
+    // ユーザーのroomsからこのグループを削除
+    final _rooms = await db.collection('users/${uid}/rooms').getDocuments();
+
+    // 取得したリファレンスからグループ情報を取得
+    // _rooms.documents.forEach((room) async {
+    for (final room in _rooms.documents) {
+      final _roomRefStr = room.data['room'].path;
+      final _room = RoomInfoEntity.fromJson((await db.document(_roomRefStr).get()).data);
+
+      if (_room.roomId == _roomInfoEntity.roomId) {
+        await room.reference.delete();
+      }
+    };
   }
 
   Future<void> _saveUserInfo(UserEntity user) async {
