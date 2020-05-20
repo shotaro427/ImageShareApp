@@ -6,6 +6,7 @@ import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/room_settings/room_settings_bloc.dart';
 import 'package:image_share_app/repositories/room_settings_repositories/room_setting_repository.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 import 'package:image_share_app/widgets/room_settings/add_member_page.dart';
 import 'package:image_share_app/widgets/room_settings/editing_profile_page.dart';
 import 'package:provider/provider.dart';
@@ -162,7 +163,21 @@ class _MyProfileInfoWidget extends StatelessWidget {
                     caption: '退会する',
                     color: Colors.red,
                     icon: Icons.exit_to_app,
-                    onTap: () {},
+                    onTap: () async {
+
+                      await context.read<RoomSettingsStateNotifier>().withdrawSelf();
+
+                      state.maybeWhen(
+                        () => null,
+                        success: (_, __) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+                            (_) => false,
+                          );
+                        },
+                        orElse: () => null
+                      );
+                    }
                   ),
                 ),
                 SizedBox(
@@ -264,7 +279,7 @@ class _RoomMembersPage extends StatelessWidget {
                           caption: '退会させる',
                           color: Colors.red,
                           icon: Icons.exit_to_app,
-                          onTap: () {},
+                          onTap: () => context.read<RoomSettingsStateNotifier>().forceWithdrawal(members[index].uid),
                         ),
                       )
                     ],
