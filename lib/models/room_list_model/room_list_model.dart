@@ -21,6 +21,9 @@ abstract class JoinedRoomListState with _$JoinedRoomListState {
 
 class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
   final RoomListRepository _repository;
+  final List<RoomInfoEntity> _rooms = [];
+
+  bool isFinished = false;
 
   JoinedRoomListStateNotifier(this._repository)
       : super(const JoinedRoomListState());
@@ -29,8 +32,41 @@ class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
     state = const JoinedRoomListState.loading();
 
     try {
-      final _rooms = await _repository.fetchJoinedRooms();
-      state = JoinedRoomListState.success(rooms: _rooms);
+      // 全て取得したかの確認
+      if (!isFinished) {
+
+        List<RoomInfoEntity> _addRooms = [];
+        // 空だったら一番最初から取得する
+        if (_rooms.isEmpty) {
+          _addRooms.addAll((await _repository.fetchJoinedRooms()));
+        } else {
+          _addRooms.addAll((await _repository.fetchJoinedRooms(lastRoom: _rooms.last)));
+        }
+
+        if (_addRooms.isEmpty) {
+          isFinished = true;
+        }
+        print(_addRooms.length);
+        print(_rooms.length);
+        _rooms.addAll(_addRooms);
+
+        state = JoinedRoomListState.success(rooms: _rooms);
+      }
+    } catch (e) {
+      log(e.toString());
+      state = JoinedRoomListState.error(message: e.toString());
+    }
+  }
+
+  Future<void> refresh() async {
+    // 初期化
+    isFinished = false;
+    _rooms.clear();
+    state = const JoinedRoomListState.loading();
+
+    try {
+      final _clearRooms = await _repository.fetchJoinedRooms();
+      state = JoinedRoomListState.success(rooms: _clearRooms);
     } catch (e) {
       log(e.toString());
       state = JoinedRoomListState.error(message: e.toString());
