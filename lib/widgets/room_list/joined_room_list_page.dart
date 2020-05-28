@@ -33,7 +33,7 @@ class RoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms,
+      onRefresh: context.read<JoinedRoomListStateNotifier>().refresh,
       child: StateNotifierBuilder<JoinedRoomListState>(
         stateNotifier: context.read<JoinedRoomListStateNotifier>(),
         builder: (context, state, _) {
@@ -47,37 +47,47 @@ class RoomListContainerWidget extends StatelessWidget {
                 );
               },
               success: (rooms) {
-                return ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      child: Card(
-                        color: Theme.of(context).bannerTheme.backgroundColor,
-                        elevation: 0,
-                        margin: const EdgeInsets.all(5),
-                        child: SizedBox(
-                          height: 65,
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 10),
-                                child: const Icon(Icons.group),
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            child: Card(
+                              color: Theme.of(context).bannerTheme.backgroundColor,
+                              elevation: 0,
+                              margin: const EdgeInsets.all(5),
+                              child: SizedBox(
+                                height: 65,
+                                child: Row(
+                                  children: [
+                                    const Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 15, right: 10),
+                                      child: const Icon(Icons.group),
+                                    ),
+                                    Text(
+                                      rooms[index].name,
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                rooms[index].name,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                        ),
+                            ),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => TopImagesPage(rooms[index]))),
+                          );
+                        },
+                        itemCount: rooms.length,
                       ),
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => TopImagesPage(rooms[index]))),
-                    );
-                  },
-                  itemCount: rooms.length,
+                    ),
+                    FlatButton(
+                      child: const Text('さらに読み込む'),
+                      onPressed: () => context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms(),
+                    )
+                  ],
                 );
               },
               orElse: () => const SizedBox.shrink());

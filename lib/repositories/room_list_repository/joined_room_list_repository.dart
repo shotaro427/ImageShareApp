@@ -7,15 +7,19 @@ class RoomListRepository {
   final db = Firestore.instance;
 
   /// FireStoreからユーザーが所属しているルーム一覧を取得する
-  Future<List<RoomInfoEntity>> fetchJoinedRooms() async {
+  Future<List<RoomInfoEntity>> fetchJoinedRooms({RoomInfoEntity lastRoom}) async {
     DocumentReference userRef = await _fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<RoomInfoEntity> _rooms = [];
 
     /// ユーザーの参加しているルームの参照を取得
-    final _snapshots =
-        await db.document(userRef.path).collection('rooms').getDocuments();
-    _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
+    if (lastRoom == null) {
+      final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(1).getDocuments();
+      _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
+    } else {
+      final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(1).startAfter([]).getDocuments();
+      _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
+    }
 
     /// ルームの参照のリストから、ルームのSnapShotを追加
     for (final ref in _roomRefs) {
