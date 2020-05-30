@@ -54,6 +54,8 @@ class _AddMemberLayout extends StatelessWidget {
                   decoration: const InputDecoration(hintText: "招待したい人IDを入力してください"),
                 ),
                 RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
                   child: const Text("招待"),
                   onPressed: () async {
                     await context
