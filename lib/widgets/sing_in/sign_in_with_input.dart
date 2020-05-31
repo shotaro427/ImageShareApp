@@ -63,7 +63,9 @@ class _SignInWithEmailWidget extends StatelessWidget {
                     const SizedBox(height: 24.0),
                     Center(
                       child: RaisedButton(
-                        child: const Text('Login'),
+                         color: Theme.of(context).primaryColor,
+                         textColor: Colors.white,
+                        child: const Text('ログイン'),
                         onPressed: () async => await _handleSignIn(context),
                       ),
                     ),
