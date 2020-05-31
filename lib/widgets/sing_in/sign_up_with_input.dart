@@ -60,6 +60,8 @@ class _SignUpWithEmailWidget extends StatelessWidget {
                     const SizedBox(height: 24.0),
                     Center(
                       child: RaisedButton(
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
                         child: const Text('登録'),
                         onPressed: () async => await _handleSignUp(context),
                       ),
