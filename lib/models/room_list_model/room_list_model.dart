@@ -33,25 +33,26 @@ class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
 
     try {
       // 全て取得したかの確認
-      if (!isFinished) {
-
-        List<RoomInfoEntity> _addRooms = [];
-        // 空だったら一番最初から取得する
-        if (_rooms.isEmpty) {
-          _addRooms.addAll((await _repository.fetchJoinedRooms()));
-        } else {
-          _addRooms.addAll((await _repository.fetchJoinedRooms(lastRoom: _rooms.last)));
-        }
-
-        if (_addRooms.isEmpty) {
-          isFinished = true;
-        }
-        print(_addRooms.length);
-        print(_rooms.length);
-        _rooms.addAll(_addRooms);
-
+      if (isFinished) {
         state = JoinedRoomListState.success(rooms: _rooms);
+        return;
       }
+
+      List<RoomInfoEntity> _addRooms = [];
+      // 空だったら一番最初から取得する
+      if (_rooms.isEmpty) {
+        _addRooms.addAll((await _repository.fetchJoinedRooms()));
+      } else {
+        _addRooms.addAll((await _repository.fetchJoinedRooms(lastRoom: _rooms.last)));
+      }
+
+      if (_addRooms.isEmpty) {
+        isFinished = true;
+      }
+
+      _rooms.addAll(_addRooms);
+
+      state = JoinedRoomListState.success(rooms: _rooms);
     } catch (e) {
       log(e.toString());
       state = JoinedRoomListState.error(message: e.toString());
