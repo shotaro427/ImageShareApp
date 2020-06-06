@@ -36,7 +36,7 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   Widget build(BuildContext parentContext) {
     return RefreshIndicator(
       onRefresh:
-          parentContext.read<WaitingRoomListStateNotifier>().fetchWaitingRooms,
+          parentContext.read<WaitingRoomListStateNotifier>().refresh,
       child: StateNotifierBuilder<WaitingRoomListState>(
         stateNotifier: parentContext.read<WaitingRoomListStateNotifier>(),
         builder: (context, state, _) {
@@ -51,38 +51,48 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                   );
                 },
                 success: (rooms) {
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        child: Card(
-                          color: Theme.of(context).bannerTheme.backgroundColor,
-                          elevation: 0,
-                          margin: const EdgeInsets.all(5),
-                          child: SizedBox(
-                            height: 65,
-                            child: Row(
-                              children: [
-                                const Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 10),
-                                  child: const Icon(Icons.group),
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              child: Card(
+                                color: Theme.of(context).bannerTheme.backgroundColor,
+                                elevation: 0,
+                                margin: const EdgeInsets.all(5),
+                                child: SizedBox(
+                                  height: 65,
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 10),
+                                        child: const Icon(Icons.group),
+                                      ),
+                                      Text(
+                                        rooms[index].name,
+                                        style: const TextStyle(fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  rooms[index].name,
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                              onTap: () => _showConfirmJoinRoomDialog(
+                                  context,
+                                  parentContext,
+                                  rooms[index],
+                                  context.read<WaitingRoomListStateNotifier>()),
+                            );
+                          },
+                          itemCount: rooms.length,
                         ),
-                        onTap: () => _showConfirmJoinRoomDialog(
-                            context,
-                            parentContext,
-                            rooms[index],
-                            context.read<WaitingRoomListStateNotifier>()),
-                      );
-                    },
-                    itemCount: rooms.length,
+                      ),
+                      FlatButton(
+                        child: const Text('さらに読み込む'),
+                        onPressed: () => context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms(),
+                      )
+                    ],
                   );
                 },
                 orElse: () => const SizedBox.shrink(),
