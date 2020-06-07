@@ -14,11 +14,11 @@ class RoomListRepository {
 
     /// ユーザーの参加しているルームの参照を取得
     if (lastRoom == null) {
-      final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(20).getDocuments();
+      final _snapshots = await userRef.collection('rooms').orderBy('room').limit(20).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     } else {
       final _lastRoomRef = db.document('rooms/${lastRoom.roomId}');
-      final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(20).startAfter([_lastRoomRef]).getDocuments();
+      final _snapshots = await userRef.collection('rooms').orderBy('room').limit(20).startAfter([_lastRoomRef]).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     }
 

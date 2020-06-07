@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
@@ -13,11 +15,11 @@ class WaitingRoomListRepository {
 
     /// ユーザーが招待されているルームの参照を取得
     if (lastRoom == null) {
-      final _snapshots = await _userRef.collection('waitingRooms').orderBy('waitingRooms').limit(20).getDocuments();
+      final _snapshots = await _userRef.collection('waitingRooms').orderBy('room').limit(20).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     } else {
-      final _lastRoomRef = db.document('waitingRooms/${lastRoom.roomId}');
-      final _snapshots = await db.document(_userRef.path).collection('waitingRooms').orderBy('waitingRooms').limit(20).startAfter([_lastRoomRef]).getDocuments();
+      final _lastRoomRef = db.document('rooms/${lastRoom.roomId}');
+      final _snapshots = await _userRef.collection('waitingRooms').orderBy('room').limit(20).startAfter([_lastRoomRef]).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     }
 
