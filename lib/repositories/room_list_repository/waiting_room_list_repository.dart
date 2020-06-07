@@ -18,6 +18,7 @@ class WaitingRoomListRepository {
     } else {
       final _lastRoomRef = db.document('waitingRooms/${lastRoom.roomId}');
       final _snapshots = await db.document(_userRef.path).collection('waitingRooms').orderBy('waitingRooms').limit(20).startAfter([_lastRoomRef]).getDocuments();
+      _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     }
 
     /// ルームの参照のリストから、ルームのSnapShotを追加

@@ -17,7 +17,7 @@ class RoomListRepository {
       final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(20).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     } else {
-      final _lastRoomRef = Firestore.instance.document('rooms/${lastRoom.roomId}');
+      final _lastRoomRef = db.document('rooms/${lastRoom.roomId}');
       final _snapshots = await db.document(userRef.path).collection('rooms').orderBy('room').limit(20).startAfter([_lastRoomRef]).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     }
