@@ -19,13 +19,12 @@ abstract class WaitingRoomListState with _$WaitingRoomListState {
 class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
   final WaitingRoomListRepository _repository;
+  // グループの配列　
+  List<RoomInfoEntity> _rooms = [];
 
   bool isFinished = false;
 
   WaitingRoomListStateNotifier(this._repository): super(const WaitingRoomListState());
-
-  // グループの配列　
-  List<RoomInfoEntity> _rooms = [];
 
   Future<void> fetchWaitingRooms() async {
     state = const WaitingRoomListState.loading();
@@ -80,6 +79,7 @@ class WaitingRoomListStateNotifier extends StateNotifier<WaitingRoomListState> {
 
     try {
       final _clearRooms = await _repository.fetchWaitingRooms();
+      _rooms.addAll(_clearRooms);
       state = WaitingRoomListState.success(rooms: _clearRooms);
     } catch(e) {
       log(e.toString());

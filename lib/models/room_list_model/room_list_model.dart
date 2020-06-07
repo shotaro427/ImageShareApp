@@ -67,6 +67,7 @@ class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
 
     try {
       final _clearRooms = await _repository.fetchJoinedRooms();
+      _rooms.addAll(_clearRooms);
       state = JoinedRoomListState.success(rooms: _clearRooms);
     } catch (e) {
       log(e.toString());
