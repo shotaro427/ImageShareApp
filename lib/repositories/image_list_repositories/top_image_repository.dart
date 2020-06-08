@@ -43,7 +43,8 @@ class TopImageRepository {
         return Firestore.instance
             .collection('rooms/$_roomId/images')
             .orderBy("created_at", descending: true)
-            .startAfter([images.last.created_at]).limit(100);
+            .startAfter([images.last.created_at])
+            .limit(100);
 
         // 最初のクエリ
       } else {
