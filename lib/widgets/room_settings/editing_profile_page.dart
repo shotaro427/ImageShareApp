@@ -71,7 +71,7 @@ class _EditingProfileWidget extends StatelessWidget {
                         .editingName(_name);
                   }
 
-                  showResultDialog(context, state);
+                  showResultDialog(context);
                 },
                 color: Colors.white,
                 shape: const OutlineInputBorder(
@@ -87,9 +87,10 @@ class _EditingProfileWidget extends StatelessWidget {
   }
 
   /// 編集ボタンを押した後の挙動の処理
-  void showResultDialog(BuildContext context, EditingProfileState state) {
-    state.maybeWhen(() => null,
-        success: () => Navigator.of(context).pop(),
+  void showResultDialog(BuildContext context) {
+    context.read<EditingProfileState>().maybeWhen(
+        () => null,
+        success: () => showSuccessDialog(context),
         error: (_) {
           AwesomeDialog(
             context: context,
@@ -102,7 +103,23 @@ class _EditingProfileWidget extends StatelessWidget {
             btnOkOnPress: () {},
           ).show();
         },
-        orElse: () => null);
+        orElse: () => null
+      );
+  }
+
+  void showSuccessDialog(BuildContext context) {
+    AwesomeDialog(
+      context: context,
+      headerAnimationLoop: false,
+      tittle: '編集しました',
+      desc: '名前を編集しました。',
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.SCALE,
+      btnOkText: 'OK',
+      btnOkOnPress: () {
+        Navigator.of(context).pop();
+      },
+    ).show();
   }
 }
 
