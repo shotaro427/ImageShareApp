@@ -18,24 +18,31 @@ class TopImageRepository {
     if (keyWord != null && keyWord.isNotEmpty) {
       // 1ページ以降のクエリ
       if (images.length > 0) {
-        return Firestore.instance
+          Query query = Firestore.instance
             .collection('rooms/$_roomId/images')
-            .orderBy('title')
-            .startAt([keyWord])
-            .endAt([keyWord + '\uf8ff'])
-            .orderBy("created_at", descending: true)
             .startAfter([images.last.created_at])
             .limit(100);
 
+          final searchBigram = _createBigramFromString(keyWord);
+
+          searchBigram.forEach((element) {
+            query = query.where('tokenMap.${element}', isEqualTo: true);
+          });
+
+          return query;
+
         // 最初のクエリ
       } else {
-        return Firestore.instance
-            .collection('rooms/$_roomId/images')
-            .orderBy('title')
-            .startAt([keyWord])
-            .endAt([keyWord + '\uf8ff'])
-            .orderBy("created_at", descending: true)
-            .limit(100);
+        Query query = Firestore.instance
+          .collection('rooms/$_roomId/images').limit(100);
+
+        final searchBigram = _createBigramFromString(keyWord);
+
+        searchBigram.forEach((element) {
+          query = query.where('tokenMap.${element}', isEqualTo: true);
+        });
+
+        return query;
       }
     } else {
       // 1ページ以降のクエリ
@@ -54,5 +61,14 @@ class TopImageRepository {
             .limit(100);
       }
     }
+  }
+  
+  List<String> _createBigramFromString(String text) {
+
+     List<String> _bigramList = [];
+     for (int i = 0; i < text.length - 1; i++) {
+       _bigramList.add(text.substring(i, i+2));
+     }
+     return _bigramList;
   }
 }

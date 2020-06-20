@@ -61,18 +61,11 @@ class ImageUploadRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
-    final _titleBigram = _createBigramFromString(_title);
-    final _memoBigram = _createBigramFromString(_memoText);
+    final _bigram = _createBigramFromString(_title + _memoText);
 
-    final _titleTokenMap = Map<String, bool>();
-    final _memoTokenMap = Map<String, bool>();
-
-    _titleBigram.forEach((element) {
-      _titleTokenMap['$element'] = true;
-    });
-
-    _memoBigram.forEach((element) {
-      _memoTokenMap['$element'] = true;
+    final _tokenMap = Map<String, bool>();
+    _bigram.forEach((element) {
+      _tokenMap['$element'] = true;
     });
 
     final _ref =
@@ -82,10 +75,7 @@ class ImageUploadRepository {
       'created_at': timestamp.toString(),
       'updated_at': timestamp.toString(),
       'created_user_uid': _uid,
-      'tokenMap': {
-        'title': _titleTokenMap,
-        'memo': _memoTokenMap
-      }
+      'tokenMap': _tokenMap
     });
 
     await _ref.updateData({'image_id': _ref.documentID});
