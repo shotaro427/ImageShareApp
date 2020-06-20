@@ -61,15 +61,42 @@ class ImageUploadRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final _uid = _prefs.getString('uid');
 
+    final _titleBigram = _createBigramFromString(_title);
+    final _memoBigram = _createBigramFromString(_memoText);
+
+    final _titleTokenMap = Map<String, bool>();
+    final _memoTokenMap = Map<String, bool>();
+
+    _titleBigram.forEach((element) {
+      _titleTokenMap['$element'] = true;
+    });
+
+    _memoBigram.forEach((element) {
+      _memoTokenMap['$element'] = true;
+    });
+
     final _ref =
         await Firestore.instance.collection('rooms/${roomId}/images').add({
       'title': _title,
       'memo': _memoText,
       'created_at': timestamp.toString(),
       'updated_at': timestamp.toString(),
-      'created_user_uid': _uid
+      'created_user_uid': _uid,
+      'tokenMap': {
+        'title': _titleTokenMap,
+        'memo': _memoTokenMap
+      }
     });
 
     await _ref.updateData({'image_id': _ref.documentID});
+  }
+  
+  List<String> _createBigramFromString(String text) {
+
+     List<String> _bigramList = [];
+     for (int i = 0; i < text.length - 1; i++) {
+       _bigramList.add(text.substring(i, i+2));
+     }
+     return _bigramList;
   }
 }
