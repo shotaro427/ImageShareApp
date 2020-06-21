@@ -85,7 +85,6 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
         _images.addAll(_newImages);
         state = TopImageListState.success(images: _images);
       } else {
-        // TODO: ここにメモを検索するクエリを書く
         log('search result is empty');
         state = const TopImageListState.success(images: []);
       }
