@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -119,19 +120,25 @@ class _LayoutUploadImagePage extends StatelessWidget {
                   ),
                 ),
                 // タグ追加欄
-                // Row(
-                //   children: const <Widget>[
-                //     Padding(
-                //       padding: const EdgeInsets.only(left: 20, right: 15, top: 10, bottom: 10),
-                //       child: Icon(
-                //         Icons.local_offer,
-                //         color: Colors.grey,
-                //         size: 22,
-                //       ),
-                //     ),
-                //     const Text('タグ+', style: TextStyle(color: Colors.grey),)
-                //   ],
-                // ),
+                Row(
+                  children: <Widget>[
+                    const Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 15, top: 10, bottom: 10),
+                      child: Icon(
+                        Icons.local_offer,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
+                    ),
+                    GestureDetector(
+                        child: const Text(
+                          'タグ＋',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        onTap: () => _showModalTagPicker(context))
+                  ],
+                ),
                 // メモ入力画面
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +256,40 @@ class _LayoutUploadImagePage extends StatelessWidget {
       btnOkText: 'OK',
       btnOkOnPress: () => Navigator.of(context).pop(),
     ).show();
+  }
+
+  void _showModalTagPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: MediaQuery.of(context).size.height / 3,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: CupertinoPicker(
+                itemExtent: 40,
+                children: _items.map((e) => _pickerItem(e)).toList(),
+                onSelectedItemChanged: null,
+              ),
+            ),
+          );
+        });
+  }
+
+  final List<String> _items = [
+    'item1',
+    'item2',
+    'item3',
+    'item4',
+    'item5',
+    'item6',
+  ];
+
+  Widget _pickerItem(String str) {
+    return Text(
+      str,
+      style: const TextStyle(fontSize: 32),
+    );
   }
 }
 

@@ -210,18 +210,23 @@ class _LayoutDetailImage extends StatelessWidget {
                           const SizedBox(
                             height: 25,
                           ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: <Widget>[
-                          //     Column(
-                          //       children: const <Widget>[
-                          //         Icon(Icons.local_offer, color: Colors.grey,),
-                          //         const Text(
-                          //           'タグ', style: TextStyle(color: Colors.grey),)
-                          //       ],
-                          //     )
-                          //   ],
-                          // ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                children: const <Widget>[
+                                  Icon(
+                                    Icons.local_offer,
+                                    color: Colors.grey,
+                                  ),
+                                  const Text(
+                                    'タグ',
+                                    style: TextStyle(color: Colors.grey),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                           const SizedBox(
                             height: 15,
                           ),
