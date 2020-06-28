@@ -215,11 +215,16 @@ class _LayoutDetailImage extends StatelessWidget {
                             children: <Widget>[
                               Column(
                                 children: const <Widget>[
-                                  Icon(Icons.local_offer, color: Colors.grey,),
+                                  Icon(
+                                    Icons.local_offer,
+                                    color: Colors.grey,
+                                  ),
                                   const Text(
-                                    'タグ', style: TextStyle(color: Colors.grey),)
+                                    'タグ',
+                                    style: TextStyle(color: Colors.grey),
+                                  )
                                 ],
-                              )
+                              ),
                             ],
                           ),
                           const SizedBox(
