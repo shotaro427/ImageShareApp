@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_admob/firebase_admob.dart';
@@ -8,6 +7,7 @@ import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
+import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:provider/provider.dart';
 
 class ImageUploadPage extends StatelessWidget {
@@ -132,11 +132,17 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                        child: const Text(
-                          'タグ＋',
-                          style: TextStyle(color: Colors.grey),
+                      child: const Text(
+                        'タグ＋',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SelectTagPage(),
                         ),
-                        onTap: () => _showModalTagPicker(context))
+                      ),
+                    ),
                   ],
                 ),
                 // メモ入力画面
@@ -256,40 +262,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
       btnOkText: 'OK',
       btnOkOnPress: () => Navigator.of(context).pop(),
     ).show();
-  }
-
-  void _showModalTagPicker(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: MediaQuery.of(context).size.height / 3,
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: CupertinoPicker(
-                itemExtent: 40,
-                children: _items.map((e) => _pickerItem(e)).toList(),
-                onSelectedItemChanged: null,
-              ),
-            ),
-          );
-        });
-  }
-
-  final List<String> _items = [
-    'item1',
-    'item2',
-    'item3',
-    'item4',
-    'item5',
-    'item6',
-  ];
-
-  Widget _pickerItem(String str) {
-    return Text(
-      str,
-      style: const TextStyle(fontSize: 32),
-    );
   }
 }
 
