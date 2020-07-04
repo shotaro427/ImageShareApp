@@ -132,15 +132,17 @@ class _LayoutUploadImagePage extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                        child: const Text(
-                          'タグ＋',
-                          style: TextStyle(color: Colors.grey),
+                      child: const Text(
+                        'タグ＋',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SelectTagPage(),
                         ),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => SelectTagPage(),
-                            )))
+                      ),
+                    ),
                   ],
                 ),
                 // メモ入力画面
