@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/widgets/top_image_list/add_tag_page.dart';
 
 class SelectTagPage extends StatelessWidget {
   @override
@@ -8,19 +9,33 @@ class SelectTagPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("タグ"),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTagPage(),
+              ),
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.fromLTRB(2, 5, 2, 0),
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              items[index],
+          return GestureDetector(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(2, 5, 2, 0),
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                items[index],
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: hexToColor(_tagBgColors[index]),
+              ),
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: hexToColor(_tagBgColors[index]),
-            ),
+            onTap: () {},
           );
         },
         itemCount: items.length,
