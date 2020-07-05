@@ -11,10 +11,10 @@ part 'select_tag_page.freezed.dart';
 
 @freezed
 abstract class TagState with _$TagState {
-  const factory TagState({
-    @Default('') String tagName,
-    @Default(false) bool isSelected,
-  }) = _TagState;
+  const factory TagState(
+      {@Default('') String tagName,
+      @Default(false) bool isSelected,
+      @Default('#ffffff') String hexColor}) = _TagState;
 }
 
 @freezed
@@ -24,19 +24,32 @@ abstract class SelectTagState with _$SelectTagState {
   }) = _SelectTagState;
 }
 
+// '#ff7f7f',
+// '#ff7fbf',
+// '#ff7fff',
+// '#bf7fff',
+// '#7f7fff',
+// '#7fbfff',
+// '#7fffff',
+// '#7fffbf',
+// '#7fff7f',
+// '#bfff7f',
+// '#ffff7f',
+// '#ffbf7f'
+
 class SelectTagStateController extends StateNotifier<SelectTagState> {
   SelectTagStateController()
       : super(const SelectTagState(
           tags: [
-            const TagState(tagName: 'タグ1'),
-            const TagState(tagName: 'タグ2'),
-            const TagState(tagName: 'タグ3'),
-            const TagState(tagName: 'タグ4'),
-            const TagState(tagName: 'タグ5'),
-            const TagState(tagName: 'タグ6'),
-            const TagState(tagName: 'タグ7'),
-            const TagState(tagName: 'タグ8'),
-            const TagState(tagName: 'タグ9'),
+            TagState(tagName: 'タグ1', hexColor: '#ff7f7f'),
+            TagState(tagName: 'タグ2', hexColor: '#ff7fbf'),
+            TagState(tagName: 'タグ3', hexColor: '#ff7fff'),
+            TagState(tagName: 'タグ4', hexColor: '#bf7fff'),
+            TagState(tagName: 'タグ5', hexColor: '#7f7fff'),
+            TagState(tagName: 'タグ6', hexColor: '#7fbfff'),
+            TagState(tagName: 'タグ7', hexColor: '#7fffff'),
+            TagState(tagName: 'タグ8', hexColor: '#7fffbf'),
+            TagState(tagName: 'タグ9', hexColor: '#bfff7f'),
           ],
         ));
 
@@ -88,7 +101,6 @@ class _TagItem extends StatelessWidget {
     return StateNotifierBuilder<SelectTagState>(
       stateNotifier: context.read<SelectTagStateController>(),
       builder: (context, state, _) {
-        print('リビルド ${state.tags[index].tagName}');
         return GestureDetector(
           child: Container(
             height: 40,
@@ -111,7 +123,7 @@ class _TagItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: hexToColor(_tagBgColors[index % 11])
+              color: _hexToColor(state.tags[index].hexColor)
                   .withOpacity(state.tags[index].isSelected ? 1 : 0.5),
             ),
           ),
@@ -122,22 +134,7 @@ class _TagItem extends StatelessWidget {
     );
   }
 
-  final _tagBgColors = [
-    '#ff7f7f',
-    '#ff7fbf',
-    '#ff7fff',
-    '#bf7fff',
-    '#7f7fff',
-    '#7fbfff',
-    '#7fffff',
-    '#7fffbf',
-    '#7fff7f',
-    '#bfff7f',
-    '#ffff7f',
-    '#ffbf7f'
-  ];
-
-  Color hexToColor(String code) {
+  Color _hexToColor(String code) {
     return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
