@@ -24,28 +24,21 @@ abstract class SelectTagState with _$SelectTagState {
   }) = _SelectTagState;
 }
 
-class TagStateController extends StateNotifier<TagState> {
-  TagStateController() : super(const TagState());
-
-  void switchIsSelected() {
-    final bool isSelected = !state.isSelected;
-    state = state.copyWith(isSelected: isSelected);
-  }
-}
-
 class SelectTagStateController extends StateNotifier<SelectTagState> {
   SelectTagStateController()
-      : super(const SelectTagState(tags: [
-          const TagState(tagName: 'タグ1'),
-          const TagState(tagName: 'タグ2'),
-          const TagState(tagName: 'タグ3'),
-          const TagState(tagName: 'タグ4'),
-          const TagState(tagName: 'タグ5'),
-          const TagState(tagName: 'タグ6'),
-          const TagState(tagName: 'タグ7'),
-          const TagState(tagName: 'タグ8'),
-          const TagState(tagName: 'タグ9'),
-        ]));
+      : super(const SelectTagState(
+          tags: [
+            const TagState(tagName: 'タグ1'),
+            const TagState(tagName: 'タグ2'),
+            const TagState(tagName: 'タグ3'),
+            const TagState(tagName: 'タグ4'),
+            const TagState(tagName: 'タグ5'),
+            const TagState(tagName: 'タグ6'),
+            const TagState(tagName: 'タグ7'),
+            const TagState(tagName: 'タグ8'),
+            const TagState(tagName: 'タグ9'),
+          ],
+        ));
 
   void switchIsSelected(int index) {
     List<TagState> tags = List.from(state.tags);
@@ -59,31 +52,28 @@ class SelectTagStateController extends StateNotifier<SelectTagState> {
 class SelectTagPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<SelectTagStateController, SelectTagState>(
-      create: (_) => SelectTagStateController(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("タグ"),
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddTagPage(),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("タグ"),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTagPage(),
               ),
             ),
-          ],
-        ),
-        body: Builder(builder: (context) {
-          return ListView.builder(
-            itemBuilder: (context, index) => _TagItem(index),
-            itemCount: context.watch<SelectTagState>().tags.length,
-          );
-        }),
+          ),
+        ],
       ),
+      body: Builder(builder: (context) {
+        return ListView.builder(
+          itemBuilder: (context, index) => _TagItem(index),
+          itemCount: context.watch<SelectTagState>().tags.length,
+        );
+      }),
     );
   }
 }
