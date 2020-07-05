@@ -11,10 +11,10 @@ part 'select_tag_page.freezed.dart';
 
 @freezed
 abstract class TagState with _$TagState {
-  const factory TagState({
-    @Default('') String tagName,
-    @Default(false) bool isSelected,
-  }) = _TagState;
+  const factory TagState(
+      {@Default('') String tagName,
+      @Default(false) bool isSelected,
+      @Default('#ffffff') String hexColor}) = _TagState;
 }
 
 @freezed
@@ -24,28 +24,34 @@ abstract class SelectTagState with _$SelectTagState {
   }) = _SelectTagState;
 }
 
-class TagStateController extends StateNotifier<TagState> {
-  TagStateController() : super(const TagState());
-
-  void switchIsSelected() {
-    final bool isSelected = !state.isSelected;
-    state = state.copyWith(isSelected: isSelected);
-  }
-}
+// '#ff7f7f',
+// '#ff7fbf',
+// '#ff7fff',
+// '#bf7fff',
+// '#7f7fff',
+// '#7fbfff',
+// '#7fffff',
+// '#7fffbf',
+// '#7fff7f',
+// '#bfff7f',
+// '#ffff7f',
+// '#ffbf7f'
 
 class SelectTagStateController extends StateNotifier<SelectTagState> {
   SelectTagStateController()
-      : super(const SelectTagState(tags: [
-          const TagState(tagName: 'タグ1'),
-          const TagState(tagName: 'タグ2'),
-          const TagState(tagName: 'タグ3'),
-          const TagState(tagName: 'タグ4'),
-          const TagState(tagName: 'タグ5'),
-          const TagState(tagName: 'タグ6'),
-          const TagState(tagName: 'タグ7'),
-          const TagState(tagName: 'タグ8'),
-          const TagState(tagName: 'タグ9'),
-        ]));
+      : super(const SelectTagState(
+          tags: [
+            TagState(tagName: 'タグ1', hexColor: '#ff7f7f'),
+            TagState(tagName: 'タグ2', hexColor: '#ff7fbf'),
+            TagState(tagName: 'タグ3', hexColor: '#ff7fff'),
+            TagState(tagName: 'タグ4', hexColor: '#bf7fff'),
+            TagState(tagName: 'タグ5', hexColor: '#7f7fff'),
+            TagState(tagName: 'タグ6', hexColor: '#7fbfff'),
+            TagState(tagName: 'タグ7', hexColor: '#7fffff'),
+            TagState(tagName: 'タグ8', hexColor: '#7fffbf'),
+            TagState(tagName: 'タグ9', hexColor: '#bfff7f'),
+          ],
+        ));
 
   void switchIsSelected(int index) {
     List<TagState> tags = List.from(state.tags);
@@ -59,31 +65,28 @@ class SelectTagStateController extends StateNotifier<SelectTagState> {
 class SelectTagPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StateNotifierProvider<SelectTagStateController, SelectTagState>(
-      create: (_) => SelectTagStateController(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("タグ"),
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddTagPage(),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("タグ"),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddTagPage(),
               ),
             ),
-          ],
-        ),
-        body: Builder(builder: (context) {
-          return ListView.builder(
-            itemBuilder: (context, index) => _TagItem(index),
-            itemCount: context.watch<SelectTagState>().tags.length,
-          );
-        }),
+          ),
+        ],
       ),
+      body: Builder(builder: (context) {
+        return ListView.builder(
+          itemBuilder: (context, index) => _TagItem(index),
+          itemCount: context.watch<SelectTagState>().tags.length,
+        );
+      }),
     );
   }
 }
@@ -98,7 +101,6 @@ class _TagItem extends StatelessWidget {
     return StateNotifierBuilder<SelectTagState>(
       stateNotifier: context.read<SelectTagStateController>(),
       builder: (context, state, _) {
-        print('リビルド ${state.tags[index].tagName}');
         return GestureDetector(
           child: Container(
             height: 40,
@@ -121,7 +123,7 @@ class _TagItem extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: hexToColor(_tagBgColors[index % 11])
+              color: _hexToColor(state.tags[index].hexColor)
                   .withOpacity(state.tags[index].isSelected ? 1 : 0.5),
             ),
           ),
@@ -132,22 +134,7 @@ class _TagItem extends StatelessWidget {
     );
   }
 
-  final _tagBgColors = [
-    '#ff7f7f',
-    '#ff7fbf',
-    '#ff7fff',
-    '#bf7fff',
-    '#7f7fff',
-    '#7fbfff',
-    '#7fffff',
-    '#7fffbf',
-    '#7fff7f',
-    '#bfff7f',
-    '#ffff7f',
-    '#ffbf7f'
-  ];
-
-  Color hexToColor(String code) {
+  Color _hexToColor(String code) {
     return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }

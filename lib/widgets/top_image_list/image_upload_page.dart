@@ -131,15 +131,14 @@ class _LayoutUploadImagePage extends StatelessWidget {
                         size: 22,
                       ),
                     ),
-                    GestureDetector(
-                      child: const Text(
-                        'タグ＋',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => SelectTagPage(),
+                    Expanded(
+                      child: GestureDetector(
+                        child: SelectedTags(),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SelectTagPage(),
+                          ),
                         ),
                       ),
                     ),
@@ -217,8 +216,16 @@ class _LayoutUploadImagePage extends StatelessWidget {
   Future<void> _uploadImage(BuildContext context, File imageFile) async {
     // 処理を実行
     await context.read<ImageUploadStateNotifier>().uploadImage(
-        imageFile, roomId,
-        title: titleController.text, memo: memoController.text);
+          imageFile,
+          roomId,
+          title: titleController.text,
+          memo: memoController.text,
+          tags: context
+              .read<SelectTagState>()
+              .tags
+              .where((element) => element.isSelected)
+              .toList(),
+        );
 
     context.read<ImageUploadState>().maybeWhen(
           () => null,
@@ -262,6 +269,52 @@ class _LayoutUploadImagePage extends StatelessWidget {
       btnOkText: 'OK',
       btnOkOnPress: () => Navigator.of(context).pop(),
     ).show();
+  }
+}
+
+class SelectedTags extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    List<TagState> selectedTags = List.from(context
+        .watch<SelectTagState>()
+        .tags
+        .where((element) => element.isSelected));
+
+    return selectedTags.isEmpty
+        ? const Text(
+            'タグ+',
+            style: const TextStyle(color: Colors.grey),
+          )
+        : SizedBox(
+            height: 30,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) =>
+                  createTagWidget(selectedTags[index]),
+              itemCount: selectedTags.length,
+            ),
+          );
+  }
+
+  Widget createTagWidget(TagState tag) {
+    return Container(
+      margin: const EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          '${tag.tagName}',
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: _hexToColor(tag.hexColor),
+      ),
+    );
+  }
+
+  Color _hexToColor(String code) {
+    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
 

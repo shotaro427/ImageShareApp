@@ -10,17 +10,22 @@ part of 'select_tag_page.dart';
 mixin _$TagState {
   String get tagName;
   bool get isSelected;
+  String get hexColor;
 
-  TagState copyWith({String tagName, bool isSelected});
+  TagState copyWith({String tagName, bool isSelected, String hexColor});
 }
 
 class _$TagStateTearOff {
   const _$TagStateTearOff();
 
-  _TagState call({String tagName = '', bool isSelected = false}) {
+  _TagState call(
+      {String tagName = '',
+      bool isSelected = false,
+      String hexColor = '#ffffff'}) {
     return _TagState(
       tagName: tagName,
       isSelected: isSelected,
+      hexColor: hexColor,
     );
   }
 }
@@ -28,7 +33,8 @@ class _$TagStateTearOff {
 const $TagState = _$TagStateTearOff();
 
 class _$_TagState with DiagnosticableTreeMixin implements _TagState {
-  const _$_TagState({this.tagName = '', this.isSelected = false});
+  const _$_TagState(
+      {this.tagName = '', this.isSelected = false, this.hexColor = '#ffffff'});
 
   @JsonKey(defaultValue: '')
   @override
@@ -36,10 +42,13 @@ class _$_TagState with DiagnosticableTreeMixin implements _TagState {
   @JsonKey(defaultValue: false)
   @override
   final bool isSelected;
+  @JsonKey(defaultValue: '#ffffff')
+  @override
+  final String hexColor;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TagState(tagName: $tagName, isSelected: $isSelected)';
+    return 'TagState(tagName: $tagName, isSelected: $isSelected, hexColor: $hexColor)';
   }
 
   @override
@@ -48,7 +57,8 @@ class _$_TagState with DiagnosticableTreeMixin implements _TagState {
     properties
       ..add(DiagnosticsProperty('type', 'TagState'))
       ..add(DiagnosticsProperty('tagName', tagName))
-      ..add(DiagnosticsProperty('isSelected', isSelected));
+      ..add(DiagnosticsProperty('isSelected', isSelected))
+      ..add(DiagnosticsProperty('hexColor', hexColor));
   }
 
   @override
@@ -60,37 +70,46 @@ class _$_TagState with DiagnosticableTreeMixin implements _TagState {
                     .equals(other.tagName, tagName)) &&
             (identical(other.isSelected, isSelected) ||
                 const DeepCollectionEquality()
-                    .equals(other.isSelected, isSelected)));
+                    .equals(other.isSelected, isSelected)) &&
+            (identical(other.hexColor, hexColor) ||
+                const DeepCollectionEquality()
+                    .equals(other.hexColor, hexColor)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(tagName) ^
-      const DeepCollectionEquality().hash(isSelected);
+      const DeepCollectionEquality().hash(isSelected) ^
+      const DeepCollectionEquality().hash(hexColor);
 
   @override
   _$_TagState copyWith({
     Object tagName = freezed,
     Object isSelected = freezed,
+    Object hexColor = freezed,
   }) {
     return _$_TagState(
       tagName: tagName == freezed ? this.tagName : tagName as String,
       isSelected: isSelected == freezed ? this.isSelected : isSelected as bool,
+      hexColor: hexColor == freezed ? this.hexColor : hexColor as String,
     );
   }
 }
 
 abstract class _TagState implements TagState {
-  const factory _TagState({String tagName, bool isSelected}) = _$_TagState;
+  const factory _TagState({String tagName, bool isSelected, String hexColor}) =
+      _$_TagState;
 
   @override
   String get tagName;
   @override
   bool get isSelected;
+  @override
+  String get hexColor;
 
   @override
-  _TagState copyWith({String tagName, bool isSelected});
+  _TagState copyWith({String tagName, bool isSelected, String hexColor});
 }
 
 mixin _$SelectTagState {

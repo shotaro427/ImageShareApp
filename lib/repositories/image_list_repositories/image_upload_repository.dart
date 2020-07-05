@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ImageUploadRepository {
@@ -46,8 +47,13 @@ class ImageUploadRepository {
   }
 
   /// firestoreに投稿情報を保存する
-  Future postImageWithTitle(String roomId, String timestamp,
-      {String title, String memoText}) async {
+  Future postImageWithTitle(
+    String roomId,
+    String timestamp, {
+    String title,
+    String memoText,
+    List<TagState> tags,
+  }) async {
     String _title = "名無し";
     String _memoText = "";
 
@@ -68,6 +74,13 @@ class ImageUploadRepository {
       _tokenMap['$element'] = true;
     });
 
+    final _tagMap = Map<String, String>();
+    if (tags != null && tags.isNotEmpty) {
+      tags.forEach((element) {
+        _tagMap['${element.tagName}'] = element.hexColor;
+      });
+    }
+
     final _ref =
         await Firestore.instance.collection('rooms/${roomId}/images').add({
       'title': _title,
@@ -75,18 +88,18 @@ class ImageUploadRepository {
       'created_at': timestamp.toString(),
       'updated_at': timestamp.toString(),
       'created_user_uid': _uid,
-      'tokenMap': _tokenMap
+      'tokenMap': _tokenMap,
+      'tags': _tagMap
     });
 
     await _ref.updateData({'image_id': _ref.documentID});
   }
-  
-  List<String> _createBigramFromString(String text) {
 
-     List<String> _bigramList = [];
-     for (int i = 0; i < text.length - 1; i++) {
-       _bigramList.add(text.substring(i, i+2));
-     }
-     return _bigramList;
+  List<String> _createBigramFromString(String text) {
+    List<String> _bigramList = [];
+    for (int i = 0; i < text.length - 1; i++) {
+      _bigramList.add(text.substring(i, i + 2));
+    }
+    return _bigramList;
   }
 }
