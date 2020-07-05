@@ -58,12 +58,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<TagState> _selectedTags = context
-        .watch<SelectTagState>()
-        .tags
-        .where((element) => element.isSelected)
-        .toList();
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: SingleChildScrollView(
@@ -222,8 +216,16 @@ class _LayoutUploadImagePage extends StatelessWidget {
   Future<void> _uploadImage(BuildContext context, File imageFile) async {
     // 処理を実行
     await context.read<ImageUploadStateNotifier>().uploadImage(
-        imageFile, roomId,
-        title: titleController.text, memo: memoController.text);
+          imageFile,
+          roomId,
+          title: titleController.text,
+          memo: memoController.text,
+          tags: context
+              .read<SelectTagState>()
+              .tags
+              .where((element) => element.isSelected)
+              .toList(),
+        );
 
     context.read<ImageUploadState>().maybeWhen(
           () => null,

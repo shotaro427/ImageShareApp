@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:image_share_app/repositories/image_list_repositories/image_upload_repository.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'image_upload_bloc.freezed.dart';
@@ -40,15 +41,25 @@ class ImageUploadStateNotifier extends StateNotifier<ImageUploadState> {
   }
 
   /// CloudStorageとFireStoreに保存
-  Future<void> uploadImage(File imageFile, String roomId,
-      {String title, String memo}) async {
+  Future<void> uploadImage(
+    File imageFile,
+    String roomId, {
+    String title,
+    String memo,
+    List<TagState> tags,
+  }) async {
     final String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
     state = ImageUploadState.loading(file: imageFile);
 
     try {
-      await _repository.postImageWithTitle(roomId, _timestamp,
-          title: title, memoText: memo);
+      await _repository.postImageWithTitle(
+        roomId,
+        _timestamp,
+        title: title,
+        memoText: memo,
+        tags: tags,
+      );
       await _repository.uploadImageToFireStorage(imageFile, roomId, _timestamp);
       state = ImageUploadState.successUpload(file: imageFile);
     } catch (e) {
