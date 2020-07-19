@@ -24,19 +24,6 @@ abstract class SelectTagState with _$SelectTagState {
   }) = _SelectTagState;
 }
 
-// '#ff7f7f',
-// '#ff7fbf',
-// '#ff7fff',
-// '#bf7fff',
-// '#7f7fff',
-// '#7fbfff',
-// '#7fffff',
-// '#7fffbf',
-// '#7fff7f',
-// '#bfff7f',
-// '#ffff7f',
-// '#ffbf7f'
-
 class SelectTagStateController extends StateNotifier<SelectTagState> {
   SelectTagStateController()
       : super(const SelectTagState(
