@@ -7,6 +7,7 @@ import 'package:image_share_app/Entities/room_entity/room_info_entity.dart';
 import 'package:image_share_app/models/image_detail/image_detail_bloc.dart';
 import 'package:image_share_app/repositories/image_detail/image_detail_repository.dart';
 import 'package:image_share_app/widgets/image_detail/image_detail_view_page.dart';
+import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -86,6 +87,13 @@ class _LayoutDetailImage extends StatelessWidget {
   final ImageEntity _entity;
 
   _LayoutDetailImage(this._entity);
+
+  final selectedTags = [
+    const TagState(tagName: 'タグ1', hexColor: '#ff7f7f'),
+    const TagState(tagName: 'タグ2', hexColor: '#ff7fbf'),
+    const TagState(tagName: 'タグ3', hexColor: '#ff7fff'),
+    const TagState(tagName: 'タグ4', hexColor: '#bf7fff'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -213,17 +221,31 @@ class _LayoutDetailImage extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Column(
-                                children: const <Widget>[
-                                  Icon(
-                                    Icons.local_offer,
-                                    color: Colors.grey,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Column(
+                                  children: const <Widget>[
+                                    Icon(
+                                      Icons.local_offer,
+                                      color: Colors.grey,
+                                    ),
+                                    const Text(
+                                      'タグ',
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: SizedBox(
+                                  height: 30,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) =>
+                                        _createTagWidget(selectedTags[index]),
+                                    itemCount: selectedTags.length,
                                   ),
-                                  const Text(
-                                    'タグ',
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                ],
+                                ),
                               ),
                             ],
                           ),
@@ -282,6 +304,27 @@ class _LayoutDetailImage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _createTagWidget(TagState tag) {
+    return Container(
+      margin: const EdgeInsets.only(right: 4),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          '${tag.tagName}',
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: _hexToColor(tag.hexColor),
+      ),
+    );
+  }
+
+  Color _hexToColor(String code) {
+    return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 }
 
