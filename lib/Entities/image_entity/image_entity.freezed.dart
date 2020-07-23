@@ -19,6 +19,7 @@ mixin _$ImageEntity {
   String get updated_at;
   String get originalUrl;
   String get url;
+  List<TagState> get tags;
 
   ImageEntity copyWith(
       {String title,
@@ -27,7 +28,8 @@ mixin _$ImageEntity {
       String created_at,
       String updated_at,
       String originalUrl,
-      String url});
+      String url,
+      List<TagState> tags});
 
   Map<String, dynamic> toJson();
 }
@@ -42,7 +44,8 @@ class _$ImageEntityTearOff {
       String created_at,
       String updated_at,
       String originalUrl,
-      String url}) {
+      String url,
+      List<TagState> tags}) {
     return _ImageEntity(
       title: title,
       image_id: image_id,
@@ -51,6 +54,7 @@ class _$ImageEntityTearOff {
       updated_at: updated_at,
       originalUrl: originalUrl,
       url: url,
+      tags: tags,
     );
   }
 }
@@ -66,7 +70,8 @@ class _$_ImageEntity implements _ImageEntity {
       this.created_at,
       this.updated_at,
       this.originalUrl,
-      this.url});
+      this.url,
+      this.tags});
 
   factory _$_ImageEntity.fromJson(Map<String, dynamic> json) =>
       _$_$_ImageEntityFromJson(json);
@@ -85,10 +90,12 @@ class _$_ImageEntity implements _ImageEntity {
   final String originalUrl;
   @override
   final String url;
+  @override
+  final List<TagState> tags;
 
   @override
   String toString() {
-    return 'ImageEntity(title: $title, image_id: $image_id, memo: $memo, created_at: $created_at, updated_at: $updated_at, originalUrl: $originalUrl, url: $url)';
+    return 'ImageEntity(title: $title, image_id: $image_id, memo: $memo, created_at: $created_at, updated_at: $updated_at, originalUrl: $originalUrl, url: $url, tags: $tags)';
   }
 
   @override
@@ -112,7 +119,9 @@ class _$_ImageEntity implements _ImageEntity {
                 const DeepCollectionEquality()
                     .equals(other.originalUrl, originalUrl)) &&
             (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+                const DeepCollectionEquality().equals(other.url, url)) &&
+            (identical(other.tags, tags) ||
+                const DeepCollectionEquality().equals(other.tags, tags)));
   }
 
   @override
@@ -124,7 +133,8 @@ class _$_ImageEntity implements _ImageEntity {
       const DeepCollectionEquality().hash(created_at) ^
       const DeepCollectionEquality().hash(updated_at) ^
       const DeepCollectionEquality().hash(originalUrl) ^
-      const DeepCollectionEquality().hash(url);
+      const DeepCollectionEquality().hash(url) ^
+      const DeepCollectionEquality().hash(tags);
 
   @override
   _$_ImageEntity copyWith({
@@ -135,6 +145,7 @@ class _$_ImageEntity implements _ImageEntity {
     Object updated_at = freezed,
     Object originalUrl = freezed,
     Object url = freezed,
+    Object tags = freezed,
   }) {
     return _$_ImageEntity(
       title: title == freezed ? this.title : title as String,
@@ -147,6 +158,7 @@ class _$_ImageEntity implements _ImageEntity {
       originalUrl:
           originalUrl == freezed ? this.originalUrl : originalUrl as String,
       url: url == freezed ? this.url : url as String,
+      tags: tags == freezed ? this.tags : tags as List<TagState>,
     );
   }
 
@@ -164,7 +176,8 @@ abstract class _ImageEntity implements ImageEntity {
       String created_at,
       String updated_at,
       String originalUrl,
-      String url}) = _$_ImageEntity;
+      String url,
+      List<TagState> tags}) = _$_ImageEntity;
 
   factory _ImageEntity.fromJson(Map<String, dynamic> json) =
       _$_ImageEntity.fromJson;
@@ -183,6 +196,8 @@ abstract class _ImageEntity implements ImageEntity {
   String get originalUrl;
   @override
   String get url;
+  @override
+  List<TagState> get tags;
 
   @override
   _ImageEntity copyWith(
@@ -192,5 +207,6 @@ abstract class _ImageEntity implements ImageEntity {
       String created_at,
       String updated_at,
       String originalUrl,
-      String url});
+      String url,
+      List<TagState> tags});
 }

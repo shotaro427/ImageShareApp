@@ -242,8 +242,8 @@ class _LayoutDetailImage extends StatelessWidget {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) =>
-                                        _createTagWidget(selectedTags[index]),
-                                    itemCount: selectedTags.length,
+                                        _createTagWidget(_entity.tags[index]),
+                                    itemCount: _entity.tags.length,
                                   ),
                                 ),
                               ),

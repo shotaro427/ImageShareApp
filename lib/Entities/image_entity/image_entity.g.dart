@@ -15,6 +15,10 @@ _$_ImageEntity _$_$_ImageEntityFromJson(Map<String, dynamic> json) {
     updated_at: json['updated_at'] as String,
     originalUrl: json['originalUrl'] as String,
     url: json['url'] as String,
+    tags: (json['tags'] as List)
+        ?.map((e) =>
+            e == null ? null : TagState.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -27,4 +31,5 @@ Map<String, dynamic> _$_$_ImageEntityToJson(_$_ImageEntity instance) =>
       'updated_at': instance.updated_at,
       'originalUrl': instance.originalUrl,
       'url': instance.url,
+      'tags': instance.tags,
     };

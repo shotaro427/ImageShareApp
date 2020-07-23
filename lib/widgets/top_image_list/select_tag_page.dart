@@ -8,6 +8,7 @@ import 'package:image_share_app/widgets/top_image_list/add_tag_page.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'select_tag_page.freezed.dart';
+part 'select_tag_page.g.dart';
 
 @freezed
 abstract class TagState with _$TagState {
@@ -15,6 +16,9 @@ abstract class TagState with _$TagState {
       {@Default('') String tagName,
       @Default(false) bool isSelected,
       @Default('#ffffff') String hexColor}) = _TagState;
+
+  factory TagState.fromJson(Map<String, dynamic> json) =>
+      _$TagStateFromJson(json);
 }
 
 @freezed
