@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_share_app/Entities/image_entity/image_entity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_share_app/repositories/image_list_repositories/top_image_repository.dart';
+import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'top_image_bloc.freezed.dart';
@@ -46,9 +47,25 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
 
         // 投稿を整列
         if (_snapshot.documents.length > 0) {
-          final List<ImageEntity> _newImages = _snapshot.documents
-              .map((doc) => ImageEntity.fromJson(doc.data))
-              .toList();
+          final List<ImageEntity> _newImages = _snapshot.documents.map((doc) {
+            List<TagState> _tags = [];
+            if (doc.data['tags'] != null) {
+              (doc.data['tags'] as Map).forEach((key, value) {
+                _tags.add(
+                    TagState(tagName: key, hexColor: value, isSelected: true));
+              });
+            }
+            return ImageEntity(
+              title: doc.data['title'],
+              image_id: doc.data['image_id'],
+              memo: doc.data['memo'],
+              created_at: doc.data['created_at'],
+              updated_at: doc.data['updated_at'],
+              originalUrl: doc.data['originalUrl'],
+              url: doc.data['url'],
+              tags: _tags,
+            );
+          }).toList();
           _newImages.removeWhere(
               (item) => item.url == null || item.originalUrl == null);
           _images.addAll(_newImages);
@@ -77,9 +94,25 @@ class TopImageListStateNotifier extends StateNotifier<TopImageListState> {
 
       // 投稿を整列
       if (_snapshot.documents.length > 0) {
-        final List<ImageEntity> _newImages = _snapshot.documents
-            .map((doc) => ImageEntity.fromJson(doc.data))
-            .toList();
+        final List<ImageEntity> _newImages = _snapshot.documents.map((doc) {
+          List<TagState> _tags = [];
+          if (doc.data['tags'] != null) {
+            (doc.data['tags'] as Map).forEach((key, value) {
+              _tags.add(
+                  TagState(tagName: key, hexColor: value, isSelected: true));
+            });
+          }
+          return ImageEntity(
+            title: doc.data['title'],
+            image_id: doc.data['image_id'],
+            memo: doc.data['memo'],
+            created_at: doc.data['created_at'],
+            updated_at: doc.data['updated_at'],
+            originalUrl: doc.data['originalUrl'],
+            url: doc.data['url'],
+            tags: _tags,
+          );
+        }).toList();
         _newImages.removeWhere(
             (item) => item.url == null || item.originalUrl == null);
         _images.addAll(_newImages);

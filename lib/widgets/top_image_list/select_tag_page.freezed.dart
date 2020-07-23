@@ -7,12 +7,18 @@ part of 'select_tag_page.dart';
 // FreezedGenerator
 // **************************************************************************
 
+TagState _$TagStateFromJson(Map<String, dynamic> json) {
+  return _TagState.fromJson(json);
+}
+
 mixin _$TagState {
   String get tagName;
   bool get isSelected;
   String get hexColor;
 
   TagState copyWith({String tagName, bool isSelected, String hexColor});
+
+  Map<String, dynamic> toJson();
 }
 
 class _$TagStateTearOff {
@@ -32,9 +38,13 @@ class _$TagStateTearOff {
 
 const $TagState = _$TagStateTearOff();
 
+@JsonSerializable()
 class _$_TagState with DiagnosticableTreeMixin implements _TagState {
   const _$_TagState(
       {this.tagName = '', this.isSelected = false, this.hexColor = '#ffffff'});
+
+  factory _$_TagState.fromJson(Map<String, dynamic> json) =>
+      _$_$_TagStateFromJson(json);
 
   @JsonKey(defaultValue: '')
   @override
@@ -95,11 +105,18 @@ class _$_TagState with DiagnosticableTreeMixin implements _TagState {
       hexColor: hexColor == freezed ? this.hexColor : hexColor as String,
     );
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_TagStateToJson(this);
+  }
 }
 
 abstract class _TagState implements TagState {
   const factory _TagState({String tagName, bool isSelected, String hexColor}) =
       _$_TagState;
+
+  factory _TagState.fromJson(Map<String, dynamic> json) = _$_TagState.fromJson;
 
   @override
   String get tagName;

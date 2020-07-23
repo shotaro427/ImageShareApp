@@ -18,23 +18,22 @@ class TopImageRepository {
     if (keyWord != null && keyWord.isNotEmpty) {
       // 1ページ以降のクエリ
       if (images.length > 0) {
-          Query query = Firestore.instance
+        Query query = Firestore.instance
             .collection('rooms/$_roomId/images')
-            .startAfter([images.last.created_at])
-            .limit(100);
+            .startAfter([images.last.created_at]).limit(100);
 
-          final searchBigram = _createBigramFromString(keyWord);
+        final searchBigram = _createBigramFromString(keyWord);
 
-          searchBigram.forEach((element) {
-            query = query.where('tokenMap.${element}', isEqualTo: true);
-          });
+        searchBigram.forEach((element) {
+          query = query.where('tokenMap.${element}', isEqualTo: true);
+        });
 
-          return query;
+        return query;
 
         // 最初のクエリ
       } else {
-        Query query = Firestore.instance
-          .collection('rooms/$_roomId/images').limit(100);
+        Query query =
+            Firestore.instance.collection('rooms/$_roomId/images').limit(100);
 
         final searchBigram = _createBigramFromString(keyWord);
 
@@ -50,8 +49,7 @@ class TopImageRepository {
         return Firestore.instance
             .collection('rooms/$_roomId/images')
             .orderBy("created_at", descending: true)
-            .startAfter([images.last.created_at])
-            .limit(100);
+            .startAfter([images.last.created_at]).limit(100);
 
         // 最初のクエリ
       } else {
@@ -62,13 +60,12 @@ class TopImageRepository {
       }
     }
   }
-  
-  List<String> _createBigramFromString(String text) {
 
-     List<String> _bigramList = [];
-     for (int i = 0; i < text.length - 1; i++) {
-       _bigramList.add(text.substring(i, i+2));
-     }
-     return _bigramList;
+  List<String> _createBigramFromString(String text) {
+    List<String> _bigramList = [];
+    for (int i = 0; i < text.length - 1; i++) {
+      _bigramList.add(text.substring(i, i + 2));
+    }
+    return _bigramList;
   }
 }
