@@ -82,10 +82,11 @@ class _SignUpWithEmailWidget extends StatelessWidget {
     final email = emailInputController.text;
     final password = passwordInputController.text;
     // 登録
-    await context.read<SignUpWithEmailStateNotifier>().signUp(email, password);
+    await Provider.of<SignUpWithEmailStateNotifier>(context, listen: false)
+        .signUp(email, password);
 
     // ルーム一覧に遷移
-    context.read<SignUpWithEmailState>().maybeWhen(null,
+    Provider.of<SignUpWithEmailState>(context, listen: false).maybeWhen(null,
         success: (user) => (user != null)
             ? context
                 .read<SignUpWithEmailStateNotifier>()
@@ -93,8 +94,6 @@ class _SignUpWithEmailWidget extends StatelessWidget {
             : null,
         error: (_) => _showErrorDialog(context),
         orElse: () => log('SignUpWithEmailState is not success or error'));
-
-    log(context.read<SignUpWithEmailState>().toString());
   }
 
   /// エラーダイアログを表示する
@@ -115,15 +114,15 @@ class _SignUpWithEmailWidget extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<SignUpWithEmailState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<SignUpWithEmailState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

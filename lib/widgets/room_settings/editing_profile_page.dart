@@ -44,7 +44,8 @@ class _EditingProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<EditingProfileState>(
-      stateNotifier: context.read<EditingProfileStateNotifier>(),
+      stateNotifier:
+          Provider.of<EditingProfileStateNotifier>(context, listen: false),
       builder: (context, state, _) {
         return Padding(
           padding: const EdgeInsets.all(20),
@@ -88,23 +89,22 @@ class _EditingProfileWidget extends StatelessWidget {
 
   /// 編集ボタンを押した後の挙動の処理
   void showResultDialog(BuildContext context) {
-    context.read<EditingProfileState>().maybeWhen(
-        () => null,
-        success: () => showSuccessDialog(context),
-        error: (_) {
-          AwesomeDialog(
-            context: context,
-            headerAnimationLoop: false,
-            tittle: 'エラー',
-            desc: '名前を変更できませんでした。\nもう一度お確かめください',
-            dialogType: DialogType.ERROR,
-            animType: AnimType.SCALE,
-            btnOkText: 'OK',
-            btnOkOnPress: () {},
-          ).show();
-        },
-        orElse: () => null
-      );
+    Provider.of<EditingProfileState>(context, listen: false)
+        .maybeWhen(() => null,
+            success: () => showSuccessDialog(context),
+            error: (_) {
+              AwesomeDialog(
+                context: context,
+                headerAnimationLoop: false,
+                tittle: 'エラー',
+                desc: '名前を変更できませんでした。\nもう一度お確かめください',
+                dialogType: DialogType.ERROR,
+                animType: AnimType.SCALE,
+                btnOkText: 'OK',
+                btnOkOnPress: () {},
+              ).show();
+            },
+            orElse: () => null);
   }
 
   void showSuccessDialog(BuildContext context) {
@@ -126,15 +126,15 @@ class _EditingProfileWidget extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<EditingProfileState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<EditingProfileState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

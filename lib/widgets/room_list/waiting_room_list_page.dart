@@ -18,7 +18,8 @@ class _WaitingRoomListWidgetState extends State<WaitingRoomListWidget>
   @override
   void initState() {
     super.initState();
-    context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms();
+    Provider.of<WaitingRoomListStateNotifier>(context, listen: false)
+        .fetchWaitingRooms();
   }
 
   @override
@@ -35,68 +36,75 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext parentContext) {
     return RefreshIndicator(
-      onRefresh:
-          parentContext.read<WaitingRoomListStateNotifier>().refresh,
+      onRefresh: Provider.of<WaitingRoomListStateNotifier>(parentContext,
+              listen: false)
+          .refresh,
       child: StateNotifierBuilder<WaitingRoomListState>(
-        stateNotifier: parentContext.read<WaitingRoomListStateNotifier>(),
+        stateNotifier: Provider.of<WaitingRoomListStateNotifier>(parentContext,
+            listen: false),
         builder: (context, state, _) {
-          return context.read<WaitingRoomListState>().maybeWhen(
-                () => const SizedBox.shrink(),
-                loading: () {
-                  return const DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Color(0x44000000),
-                    ),
-                    child: Center(child: const CircularProgressIndicator()),
-                  );
-                },
-                success: (rooms) {
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              child: Card(
-                                color: Theme.of(context).bannerTheme.backgroundColor,
-                                elevation: 0,
-                                margin: const EdgeInsets.all(5),
-                                child: SizedBox(
-                                  height: 65,
-                                  child: Row(
-                                    children: [
-                                      const Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15, right: 10),
-                                        child: const Icon(Icons.group),
-                                      ),
-                                      Text(
-                                        rooms[index].name,
-                                        style: const TextStyle(fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              onTap: () => _showConfirmJoinRoomDialog(
-                                  context,
-                                  parentContext,
-                                  rooms[index],
-                                  context.read<WaitingRoomListStateNotifier>()),
-                            );
-                          },
-                          itemCount: rooms.length,
-                        ),
-                      ),
-                      FlatButton(
-                        child: const Text('さらに読み込む'),
-                        onPressed: () => context.read<WaitingRoomListStateNotifier>().fetchWaitingRooms(),
-                      )
-                    ],
-                  );
-                },
-                orElse: () => const SizedBox.shrink(),
+          return Provider.of<WaitingRoomListState>(context, listen: false)
+              .maybeWhen(
+            () => const SizedBox.shrink(),
+            loading: () {
+              return const DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color(0x44000000),
+                ),
+                child: Center(child: const CircularProgressIndicator()),
               );
+            },
+            success: (rooms) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          child: Card(
+                            color:
+                                Theme.of(context).bannerTheme.backgroundColor,
+                            elevation: 0,
+                            margin: const EdgeInsets.all(5),
+                            child: SizedBox(
+                              height: 65,
+                              child: Row(
+                                children: [
+                                  const Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 10),
+                                    child: const Icon(Icons.group),
+                                  ),
+                                  Text(
+                                    rooms[index].name,
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          onTap: () => _showConfirmJoinRoomDialog(
+                              context,
+                              parentContext,
+                              rooms[index],
+                              Provider.of<WaitingRoomListStateNotifier>(context,
+                                  listen: false)),
+                        );
+                      },
+                      itemCount: rooms.length,
+                    ),
+                  ),
+                  FlatButton(
+                    child: const Text('さらに読み込む'),
+                    onPressed: () => context
+                        .read<WaitingRoomListStateNotifier>()
+                        .fetchWaitingRooms(),
+                  )
+                ],
+              );
+            },
+            orElse: () => const SizedBox.shrink(),
+          );
         },
       ),
     );

@@ -37,7 +37,7 @@ class TopImagesPage extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 title: Builder(builder: (context) {
-                  return context.watch<SearchBarState>().isSearchMode
+                  return Provider.of<SearchBarState>(context).isSearchMode
                       ? TextField(
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -75,7 +75,8 @@ class TopImagesPage extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       return Visibility(
-                        visible: !context.watch<SearchBarState>().isSearchMode,
+                        visible:
+                            !Provider.of<SearchBarState>(context).isSearchMode,
                         child: IconButton(
                           icon: const Icon(
                             Icons.search,
@@ -124,7 +125,7 @@ class _ImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TopImageListStateNotifier notifier =
-        context.read<TopImageListStateNotifier>();
+        Provider.of<TopImageListStateNotifier>(context, listen: false);
     return RefreshIndicator(
       onRefresh: notifier.refresh,
       child: Container(
@@ -163,7 +164,7 @@ class _ImageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _roomInfoEntity = context.read<RoomInfoEntity>();
+    final _roomInfoEntity = Provider.of<RoomInfoEntity>(context, listen: false);
     return GestureDetector(
       onTap: () => Navigator.push(
           context,
@@ -203,15 +204,15 @@ class _ImageTile extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<TopImageListState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<TopImageListState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

@@ -63,8 +63,8 @@ class _SignInWithEmailWidget extends StatelessWidget {
                     const SizedBox(height: 24.0),
                     Center(
                       child: RaisedButton(
-                         color: Theme.of(context).primaryColor,
-                         textColor: Colors.white,
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
                         child: const Text('ログイン'),
                         onPressed: () async => await _handleSignIn(context),
                       ),
@@ -89,7 +89,7 @@ class _SignInWithEmailWidget extends StatelessWidget {
         .logInWithEmail(email, password);
 
     // ルーム一覧に遷移
-    context.read<SignInWithEmailState>().maybeWhen(null,
+    Provider.of<SignInWithEmailState>(context, listen: false).maybeWhen(null,
         success: (user) => (user != null)
             ? context
                 .read<SignInWithEmailStateNotifier>()
@@ -116,15 +116,15 @@ class _SignInWithEmailWidget extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<SignInWithEmailState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<SignInWithEmailState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

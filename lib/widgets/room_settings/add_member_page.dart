@@ -42,7 +42,8 @@ class _AddMemberLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<AddMemberState>(
-        stateNotifier: context.read<AddMemberStateNotifier>(),
+        stateNotifier:
+            Provider.of<AddMemberStateNotifier>(context, listen: false),
         builder: (context, state, _) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -51,7 +52,8 @@ class _AddMemberLayout extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   controller: _userIdController,
-                  decoration: const InputDecoration(hintText: "招待したい人IDを入力してください"),
+                  decoration:
+                      const InputDecoration(hintText: "招待したい人IDを入力してください"),
                 ),
                 RaisedButton(
                   color: Theme.of(context).primaryColor,
@@ -62,11 +64,12 @@ class _AddMemberLayout extends StatelessWidget {
                         .read<AddMemberStateNotifier>()
                         .inviteUser(_userIdController.text, _roomInfoEntity);
 
-                    context.read<AddMemberState>().maybeWhen(() => null,
-                        success: () =>
-                            _showSuccessDialog(context, _userIdController),
-                        error: (_) => _showErrorDialog(context),
-                        orElse: () => null);
+                    Provider.of<AddMemberState>(context, listen: false)
+                        .maybeWhen(() => null,
+                            success: () =>
+                                _showSuccessDialog(context, _userIdController),
+                            error: (_) => _showErrorDialog(context),
+                            orElse: () => null);
                   },
                 )
               ],
@@ -107,15 +110,15 @@ class _AddMemberLayout extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<AddMemberState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<AddMemberState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

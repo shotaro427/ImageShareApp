@@ -62,7 +62,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: SingleChildScrollView(
         child: StateNotifierBuilder<ImageUploadState>(
-          stateNotifier: context.read<ImageUploadStateNotifier>(),
+          stateNotifier:
+              Provider.of<ImageUploadStateNotifier>(context, listen: false),
           builder: (context, state, _) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -111,8 +112,9 @@ class _LayoutUploadImagePage extends StatelessWidget {
                 ),
                 // アップロードする画像を表示するWidget
                 GestureDetector(
-                  onTap: () =>
-                      context.read<ImageUploadStateNotifier>().pickUpImage(),
+                  onTap: () => Provider.of<ImageUploadStateNotifier>(context,
+                          listen: false)
+                      .pickUpImage(),
                   child: Container(
                     height: 250,
                     padding: const EdgeInsets.all(5),
@@ -215,24 +217,25 @@ class _LayoutUploadImagePage extends StatelessWidget {
   /// 画像を投稿
   Future<void> _uploadImage(BuildContext context, File imageFile) async {
     // 処理を実行
-    await context.read<ImageUploadStateNotifier>().uploadImage(
-          imageFile,
-          roomId,
-          title: titleController.text,
-          memo: memoController.text,
-          tags: context
-              .read<SelectTagState>()
-              .tags
-              .where((element) => element.isSelected)
-              .toList(),
-        );
+    await Provider.of<ImageUploadStateNotifier>(context, listen: false)
+        .uploadImage(
+      imageFile,
+      roomId,
+      title: titleController.text,
+      memo: memoController.text,
+      tags: context
+          .read<SelectTagState>()
+          .tags
+          .where((element) => element.isSelected)
+          .toList(),
+    );
 
-    context.read<ImageUploadState>().maybeWhen(
-          () => null,
-          successUpload: (_) => _showSuccessDialog(context),
-          error: (message, _) => _showErrorDialog(context),
-          orElse: () => null,
-        );
+    Provider.of<ImageUploadState>(context, listen: false).maybeWhen(
+      () => null,
+      successUpload: (_) => _showSuccessDialog(context),
+      error: (message, _) => _showErrorDialog(context),
+      orElse: () => null,
+    );
   }
 
   /// エラーダイアログを表示する
@@ -321,15 +324,15 @@ class SelectedTags extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<ImageUploadState>().maybeWhen(
-          null,
-          loading: (_) => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<ImageUploadState>(context).maybeWhen(
+      null,
+      loading: (_) => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

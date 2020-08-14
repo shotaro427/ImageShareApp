@@ -98,7 +98,8 @@ class _MyProfileInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<RoomSettingsState>(
-      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      stateNotifier:
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false),
       builder: (context, state, _) {
         return state.maybeWhen(
           () => createPlaceholderWidget(context),
@@ -236,7 +237,8 @@ class _MyProfileInfoWidget extends StatelessWidget {
       btnCancelColor: const Color(0xFF00CA71),
       btnOkOnPress: () {},
       btnCancelOnPress: () async {
-        await context.read<RoomSettingsStateNotifier>().withdrawSelf();
+        await Provider.of<RoomSettingsStateNotifier>(context, listen: false)
+            .withdrawSelf();
 
         state.maybeWhen(() => null,
             success: (_, __) {
@@ -257,7 +259,8 @@ class _RoomMembersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<RoomSettingsState>(
-      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      stateNotifier:
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false),
       builder: (context, state, _) {
         return ListView.builder(
           shrinkWrap: true,
@@ -329,7 +332,8 @@ class _RoomMembersPage extends StatelessWidget {
       btnCancelColor: const Color(0xFF00CA71),
       btnOkOnPress: () {},
       btnCancelOnPress: () =>
-          context.read<RoomSettingsStateNotifier>().forceWithdrawal(targetUid),
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false)
+              .forceWithdrawal(targetUid),
     ).show();
   }
 }
@@ -337,15 +341,15 @@ class _RoomMembersPage extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<RoomSettingsState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<RoomSettingsState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }
