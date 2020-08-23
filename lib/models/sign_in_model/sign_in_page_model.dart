@@ -28,10 +28,12 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
     FirebaseAdMob.instance
         .initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
 
-    // myBanner..load()..show(
-    //   anchorOffset: 0.0,
-    //   anchorType: AnchorType.bottom,
-    // );
+    myBanner
+      ..load()
+      ..show(
+        anchorOffset: AppBar().preferredSize.height,
+        anchorType: AnchorType.top,
+      );
   }
 
   /// Googleアカウントでログインするときのハンドル処理
@@ -111,7 +113,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
 
   @override
   void dispose() {
-    // myBanner.dispose();
+    myBanner.dispose();
     super.dispose();
   }
 }
