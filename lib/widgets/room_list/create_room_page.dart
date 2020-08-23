@@ -74,15 +74,16 @@ class _InputRoomPage extends StatelessWidget {
   void _createRoom(BuildContext context, String roomName) async {
     if (_formKey.currentState.validate()) {
       String roomName = _roomNameController.text;
-      await context.read<CreateRoomStateNotifier>().createRoom(roomName);
+      Provider.of<CreateRoomStateNotifier>(context, listen: false)
+          .createRoom(roomName);
 
-      context.read<CreateRoomState>().maybeWhen(
-            null,
-            success: (entity) => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
-            error: (_) => _showErrorDialog(context),
-            orElse: () => null,
-          );
+      Provider.of<CreateRoomState>(context, listen: false).maybeWhen(
+        null,
+        success: (entity) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => TopImagesPage(entity))),
+        error: (_) => _showErrorDialog(context),
+        orElse: () => null,
+      );
     }
   }
 
@@ -103,15 +104,15 @@ class _InputRoomPage extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<CreateRoomState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<CreateRoomState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

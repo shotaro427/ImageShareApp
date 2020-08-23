@@ -58,15 +58,16 @@ class _SignInView extends StatelessWidget {
                               .read<SignInStateNotifier>()
                               .handleSignIn();
                           // ルーム一覧に遷移
-                          context.read<SignInState>().maybeWhen(null,
-                              success: (isCompleted) => (isCompleted)
-                                  ? context
-                                      .read<SignInStateNotifier>()
-                                      .transitionNextPage(context)
-                                  : null,
-                              error: (_) => _showErrorDialog(context),
-                              orElse: () =>
-                                  log('SignInState is not success or error'));
+                          Provider.of<SignInState>(context, listen: false)
+                              .maybeWhen(null,
+                                  success: (isCompleted) => (isCompleted)
+                                      ? context
+                                          .read<SignInStateNotifier>()
+                                          .transitionNextPage(context)
+                                      : null,
+                                  error: (_) => _showErrorDialog(context),
+                                  orElse: () => log(
+                                      'SignInState is not success or error'));
                         },
                       ),
                     ),
@@ -157,16 +158,16 @@ class _SignInView extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<SignInState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<SignInState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }
 
@@ -193,9 +194,10 @@ class _ExtensionAppleSignInButtunState
         textStyle: const TextStyle(fontSize: 19),
         borderRadius: 10,
         onPressed: () async {
-          await context.read<SignInStateNotifier>().handleAppleSignIn();
+          await Provider.of<SignInStateNotifier>(context, listen: false)
+              .handleAppleSignIn();
           // ルーム一覧に遷移
-          context.read<SignInState>().maybeWhen(null,
+          Provider.of<SignInState>(context, listen: false).maybeWhen(null,
               success: (isCompleted) => (isCompleted)
                   ? context
                       .read<SignInStateNotifier>()

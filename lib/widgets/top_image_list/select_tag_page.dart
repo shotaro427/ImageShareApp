@@ -75,7 +75,7 @@ class SelectTagPage extends StatelessWidget {
       body: Builder(builder: (context) {
         return ListView.builder(
           itemBuilder: (context, index) => _TagItem(index),
-          itemCount: context.watch<SelectTagState>().tags.length,
+          itemCount: Provider.of<SelectTagState>(context).tags.length,
         );
       }),
     );
@@ -90,7 +90,8 @@ class _TagItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<SelectTagState>(
-      stateNotifier: context.read<SelectTagStateController>(),
+      stateNotifier:
+          Provider.of<SelectTagStateController>(context, listen: false),
       builder: (context, state, _) {
         return GestureDetector(
           child: Container(
@@ -119,7 +120,8 @@ class _TagItem extends StatelessWidget {
             ),
           ),
           onTap: () =>
-              context.read<SelectTagStateController>().switchIsSelected(index),
+              Provider.of<SelectTagStateController>(context, listen: false)
+                  .switchIsSelected(index),
         );
       },
     );

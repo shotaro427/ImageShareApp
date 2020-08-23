@@ -16,7 +16,8 @@ class _RoomListWidgetState extends State<RoomListWidget>
   @override
   void initState() {
     super.initState();
-    context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms();
+    Provider.of<JoinedRoomListStateNotifier>(context, listen: false)
+        .fetchJoinedRooms();
   }
 
   @override
@@ -33,9 +34,12 @@ class RoomListContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: context.read<JoinedRoomListStateNotifier>().refresh,
+      onRefresh:
+          Provider.of<JoinedRoomListStateNotifier>(context, listen: false)
+              .refresh,
       child: StateNotifierBuilder<JoinedRoomListState>(
-        stateNotifier: context.read<JoinedRoomListStateNotifier>(),
+        stateNotifier:
+            Provider.of<JoinedRoomListStateNotifier>(context, listen: false),
         builder: (context, state, _) {
           return state.maybeWhen(() => const SizedBox.shrink(),
               loading: () {
@@ -54,7 +58,8 @@ class RoomListContainerWidget extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
                             child: Card(
-                              color: Theme.of(context).bannerTheme.backgroundColor,
+                              color:
+                                  Theme.of(context).bannerTheme.backgroundColor,
                               elevation: 0,
                               margin: const EdgeInsets.all(5),
                               child: SizedBox(
@@ -62,8 +67,8 @@ class RoomListContainerWidget extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     const Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15, right: 10),
+                                      padding: const EdgeInsets.only(
+                                          left: 15, right: 10),
                                       child: const Icon(Icons.group),
                                     ),
                                     Text(
@@ -77,7 +82,8 @@ class RoomListContainerWidget extends StatelessWidget {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => TopImagesPage(rooms[index]))),
+                                    builder: (_) =>
+                                        TopImagesPage(rooms[index]))),
                           );
                         },
                         itemCount: rooms.length,
@@ -85,7 +91,9 @@ class RoomListContainerWidget extends StatelessWidget {
                     ),
                     FlatButton(
                       child: const Text('さらに読み込む'),
-                      onPressed: () => context.read<JoinedRoomListStateNotifier>().fetchJoinedRooms(),
+                      onPressed: () => context
+                          .read<JoinedRoomListStateNotifier>()
+                          .fetchJoinedRooms(),
                     )
                   ],
                 );

@@ -62,7 +62,7 @@ class _RoomSettingsBodyPage extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Text(
             '参加している人',
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.headline,
             textAlign: TextAlign.start,
           ),
         ),
@@ -75,7 +75,6 @@ class _RoomSettingsBodyPage extends StatelessWidget {
 
 // 自分の名前を表示するWidget
 class _MyProfileInfoWidget extends StatelessWidget {
-
   // IDをクリップボードにコピーする
   void _copyClipboard(BuildContext context, String strId) async {
     // コピーするとき
@@ -99,7 +98,8 @@ class _MyProfileInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<RoomSettingsState>(
-      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      stateNotifier:
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false),
       builder: (context, state, _) {
         return state.maybeWhen(
           () => createPlaceholderWidget(context),
@@ -173,8 +173,10 @@ class _MyProfileInfoWidget extends StatelessWidget {
                     color: Colors.blue,
                     icon: Icons.edit,
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditingProfilePage(
-                              (myProfile.name != null) ? myProfile.name : '未設定'))),
+                        builder: (context) => EditingProfilePage(
+                            (myProfile.name != null)
+                                ? myProfile.name
+                                : '未設定'))),
                   ),
                 ),
               ],
@@ -220,7 +222,8 @@ class _MyProfileInfoWidget extends StatelessWidget {
   }
 
   //　「退会する」の確認ダイアログ
-  void showWithdrawConfirmDialog(BuildContext context, RoomSettingsState state) {
+  void showWithdrawConfirmDialog(
+      BuildContext context, RoomSettingsState state) {
     AwesomeDialog(
       context: context,
       headerAnimationLoop: false,
@@ -234,18 +237,18 @@ class _MyProfileInfoWidget extends StatelessWidget {
       btnCancelColor: const Color(0xFF00CA71),
       btnOkOnPress: () {},
       btnCancelOnPress: () async {
-        await context.read<RoomSettingsStateNotifier>().withdrawSelf();
+        await Provider.of<RoomSettingsStateNotifier>(context, listen: false)
+            .withdrawSelf();
 
-        state.maybeWhen(
-          () => null,
-          success: (_, __) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
-              (_) => false,
-            );
-          },
-          orElse: () => null
-        );
+        state.maybeWhen(() => null,
+            success: (_, __) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => RoomListPage()),
+                (_) => false,
+              );
+            },
+            orElse: () => null);
       },
     ).show();
   }
@@ -256,7 +259,8 @@ class _RoomMembersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder<RoomSettingsState>(
-      stateNotifier: context.read<RoomSettingsStateNotifier>(),
+      stateNotifier:
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false),
       builder: (context, state, _) {
         return ListView.builder(
           shrinkWrap: true,
@@ -276,7 +280,8 @@ class _RoomMembersPage extends StatelessWidget {
                         child: Row(
                           children: [
                             const Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 10),
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 10),
                               child: const Icon(Icons.account_circle),
                             ),
                             Text(
@@ -296,7 +301,8 @@ class _RoomMembersPage extends StatelessWidget {
                           caption: '退会させる',
                           color: Colors.red,
                           icon: Icons.exit_to_app,
-                          onTap: () => showForceWithdrawConfirmDialog(context, members[index].uid),
+                          onTap: () => showForceWithdrawConfirmDialog(
+                              context, members[index].uid),
                         ),
                       )
                     ],
@@ -325,7 +331,9 @@ class _RoomMembersPage extends StatelessWidget {
       btnOkColor: Colors.red,
       btnCancelColor: const Color(0xFF00CA71),
       btnOkOnPress: () {},
-      btnCancelOnPress: () => context.read<RoomSettingsStateNotifier>().forceWithdrawal(targetUid),
+      btnCancelOnPress: () =>
+          Provider.of<RoomSettingsStateNotifier>(context, listen: false)
+              .forceWithdrawal(targetUid),
     ).show();
   }
 }
@@ -333,15 +341,15 @@ class _RoomMembersPage extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<RoomSettingsState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<RoomSettingsState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }

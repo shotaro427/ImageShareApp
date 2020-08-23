@@ -43,7 +43,8 @@ class JoinedRoomListStateNotifier extends StateNotifier<JoinedRoomListState> {
       if (_rooms.isEmpty) {
         _addRooms.addAll((await _repository.fetchJoinedRooms()));
       } else {
-        _addRooms.addAll((await _repository.fetchJoinedRooms(lastRoom: _rooms.last)));
+        _addRooms.addAll(
+            (await _repository.fetchJoinedRooms(lastRoom: _rooms.last)));
       }
 
       if (_addRooms.isEmpty) {

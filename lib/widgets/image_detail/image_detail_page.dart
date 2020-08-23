@@ -49,7 +49,7 @@ class ImageDetailPage extends StatelessWidget {
 
   void _showDeleteConfirmDialog(BuildContext context) {
     final ImageDetailStateNotifier _notifier =
-        context.read<ImageDetailStateNotifier>();
+        Provider.of<ImageDetailStateNotifier>(context, listen: false);
     AwesomeDialog(
       context: context,
       headerAnimationLoop: false,
@@ -134,7 +134,9 @@ class _LayoutDetailImage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.white),
                 child: StateNotifierBuilder<ImageDetailState>(
-                    stateNotifier: context.read<ImageDetailStateNotifier>(),
+                    stateNotifier: Provider.of<ImageDetailStateNotifier>(
+                        context,
+                        listen: false),
                     builder: (context, state, _) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,15 +333,15 @@ class _LayoutDetailImage extends StatelessWidget {
 class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.watch<ImageDetailState>().maybeWhen(
-          null,
-          loading: () => const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0x44000000),
-            ),
-            child: Center(child: const CircularProgressIndicator()),
-          ),
-          orElse: () => const SizedBox.shrink(),
-        );
+    return Provider.of<ImageDetailState>(context).maybeWhen(
+      null,
+      loading: () => const DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0x44000000),
+        ),
+        child: Center(child: const CircularProgressIndicator()),
+      ),
+      orElse: () => const SizedBox.shrink(),
+    );
   }
 }
