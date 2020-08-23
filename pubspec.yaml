@@ -44,6 +44,7 @@ dependencies:
   flutter_auth_buttons: ^0.8.0
   device_info: ^0.4.2+2
   flutter_slidable: ^0.5.4
+  firebase_analytics: ^5.0.0
 
 dev_dependencies:
   flutter_test:

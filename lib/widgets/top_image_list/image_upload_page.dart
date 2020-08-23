@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/models/room_list_model/image_upload_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -230,6 +231,8 @@ class _LayoutUploadImagePage extends StatelessWidget {
           .toList(),
     );
 
+    FirebaseAnalytics().logEvent(name: 'POST_IMAGE');
+
     Provider.of<ImageUploadState>(context, listen: false).maybeWhen(
       () => null,
       successUpload: (_) => _showSuccessDialog(context),
@@ -254,14 +257,6 @@ class _LayoutUploadImagePage extends StatelessWidget {
 
   /// 投稿完了後に広告を表示する
   void _showSuccessDialog(BuildContext context) async {
-    // RewardedVideoAd.instance.show();
-
-    // RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event, {String rewardType, int rewardAmount}) {
-    //   if (event == RewardedVideoAdEvent.rewarded) {
-
-    // }
-    // };
-
     AwesomeDialog(
       context: context,
       headerAnimationLoop: false,
