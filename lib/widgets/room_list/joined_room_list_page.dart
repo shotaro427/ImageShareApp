@@ -89,12 +89,12 @@ class RoomListContainerWidget extends StatelessWidget {
                         itemCount: rooms.length,
                       ),
                     ),
-                    FlatButton(
-                      child: const Text('さらに読み込む'),
-                      onPressed: () => context
-                          .read<JoinedRoomListStateNotifier>()
-                          .fetchJoinedRooms(),
-                    )
+                    // FlatButton(
+                    //   child: const Text('さらに読み込む'),
+                    //   onPressed: () => context
+                    //       .read<JoinedRoomListStateNotifier>()
+                    //       .fetchJoinedRooms(),
+                    // )
                   ],
                 );
               },
