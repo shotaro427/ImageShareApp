@@ -182,6 +182,8 @@ PODS:
   - Firebase/AdMob (6.14.0):
     - Firebase/CoreOnly
     - Google-Mobile-Ads-SDK (~> 7.50)
+  - Firebase/Analytics (6.14.0):
+    - Firebase/Core
   - Firebase/Auth (6.14.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.4.1)
@@ -199,6 +201,12 @@ PODS:
   - firebase_admob (0.0.1):
     - Firebase/AdMob
     - Firebase/Core
+    - Flutter
+  - firebase_analytics (0.0.1):
+    - Firebase/Analytics (~> 6.0)
+    - Firebase/Core
+    - Flutter
+  - firebase_analytics_web (0.1.0):
     - Flutter
   - firebase_auth (0.0.1):
     - Firebase/Auth (~> 6.3)
@@ -356,6 +364,8 @@ DEPENDENCIES:
   - cloud_firestore_web (from `.symlinks/plugins/cloud_firestore_web/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_admob (from `.symlinks/plugins/firebase_admob/ios`)
+  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
+  - firebase_analytics_web (from `.symlinks/plugins/firebase_analytics_web/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_auth_web (from `.symlinks/plugins/firebase_auth_web/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -412,6 +422,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info/ios"
   firebase_admob:
     :path: ".symlinks/plugins/firebase_admob/ios"
+  firebase_analytics:
+    :path: ".symlinks/plugins/firebase_analytics/ios"
+  firebase_analytics_web:
+    :path: ".symlinks/plugins/firebase_analytics_web/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_auth_web:
@@ -455,6 +469,8 @@ SPEC CHECKSUMS:
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: 0219bb4782eb1406f1b9b0628a2e625484ce910d
   firebase_admob: d8c2bc95b5e0069406280ce6adb816cdee6aa595
+  firebase_analytics: 9118044ffb98bee71d84733fc594f5134fe4bc1b
+  firebase_analytics_web: 7d539061ea4af07563a0e21044af89cab70efec0
   firebase_auth: 4ee3a54d3f09434c508c284a62f895a741a30637
   firebase_auth_web: 0955c07bcc06e84af76b9d4e32e6f31518f2d7de
   firebase_core: 335c02abd48672b7c83c683df833d0488a72e73e

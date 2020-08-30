@@ -6,18 +6,27 @@ class WaitingRoomListRepository {
   final db = Firestore.instance;
 
   /// 招待を受けているルーム一覧を表示する
-  Future<List<RoomInfoEntity>> fetchWaitingRooms({RoomInfoEntity lastRoom}) async {
+  Future<List<RoomInfoEntity>> fetchWaitingRooms(
+      {RoomInfoEntity lastRoom}) async {
     DocumentReference _userRef = await _fetchUserRef();
     List<DocumentReference> _roomRefs = [];
     List<RoomInfoEntity> _rooms = [];
 
     /// ユーザーが招待されているルームの参照を取得
     if (lastRoom == null) {
-      final _snapshots = await _userRef.collection('waitingRooms').orderBy('room').limit(20).getDocuments();
+      final _snapshots = await _userRef
+          .collection('waitingRooms')
+          .orderBy('room')
+          .limit(50)
+          .getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     } else {
       final _lastRoomRef = db.document('rooms/${lastRoom.roomId}');
-      final _snapshots = await _userRef.collection('waitingRooms').orderBy('room').limit(20).startAfter([_lastRoomRef]).getDocuments();
+      final _snapshots = await _userRef
+          .collection('waitingRooms')
+          .orderBy('room')
+          .limit(50)
+          .startAfter([_lastRoomRef]).getDocuments();
       _roomRefs.addAll(_snapshots.documents.map((doc) => doc.data['room']));
     }
 

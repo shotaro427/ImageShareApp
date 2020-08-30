@@ -231,7 +231,7 @@ class _LayoutUploadImagePage extends StatelessWidget {
           .toList(),
     );
 
-    FirebaseAnalytics().logEvent(name: 'POST_IMAGE');
+    await FirebaseAnalytics().logEvent(name: 'POST_IMAGE');
 
     Provider.of<ImageUploadState>(context, listen: false).maybeWhen(
       () => null,
