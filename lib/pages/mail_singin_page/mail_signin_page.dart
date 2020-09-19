@@ -47,6 +47,8 @@ class _SigninForm extends StatelessWidget {
                 child: RoundRaisedButton(
                   'ログイン',
                   () => {}, // TODO　ログイン後の処理を追加
+                  background: Colors.blue,
+                  textColor: Colors.white,
                 ),
               ),
             ],

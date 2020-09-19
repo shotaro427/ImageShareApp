@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/flavor.dart';
@@ -13,12 +14,7 @@ class DevMyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StateNotifierProvider<SelectTagStateController, SelectTagState>(
-          create: (_) => SelectTagStateController(),
-        ),
-      ],
+    return ProviderScope(
       child: FlavorProvider(
         flavor: Flavor.development,
         child: MaterialApp(

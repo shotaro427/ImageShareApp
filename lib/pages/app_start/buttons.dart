@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:image_share_app/model/controllers/app_start_controller/app_start_controller.dart';
 import 'package:image_share_app/widget/atoms/index.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppStartButtons extends StatelessWidget {
   @override
@@ -28,17 +30,7 @@ class AppStartButtons extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             // 新規登録ボタン
-            InkWell(
-              child: const Text(
-                'メールアドレスで登録',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.blueAccent,
-                    fontSize: 18,
-                    decoration: TextDecoration.underline),
-              ),
-              onTap: () => {}, // TODO: 新規登録の処理を追加
-            ),
+            _CreateNewAccountButton(),
           ],
         ),
       ),
@@ -71,15 +63,35 @@ class _GoogleSignInButton extends StatelessWidget {
   }
 }
 
-class _MailSignInButton extends StatelessWidget {
+class _MailSignInButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final AppStartController state = watch(appStartController);
+    final Function onPress = () => state.navigateToMailSignin(context);
     return SizedBox(
       height: 45,
       child: RoundRaisedButton(
         'メールアドレスでログイン',
-        () => Navigator.of(context).pushNamed('mailSignin'),
+        onPress,
+        background: Colors.white,
       ),
+    );
+  }
+}
+
+class _CreateNewAccountButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: const Text(
+        'メールアドレスで登録',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 18,
+            decoration: TextDecoration.underline),
+      ),
+      onTap: () => {}, // TODO: 新規登録の処理を追加
     );
   }
 }
