@@ -1,11 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'sign_in_with_email_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
 // **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+class _$SignInWithEmailStateTearOff {
+  const _$SignInWithEmailStateTearOff();
+
+// ignore: unused_element
+  _SignInWithEmailState call() {
+    return const _SignInWithEmailState();
+  }
+
+// ignore: unused_element
+  Loading loading() {
+    return const Loading();
+  }
+
+// ignore: unused_element
+  Success success({UserEntity user = const UserEntity(email: '', uid: '')}) {
+    return Success(
+      user: user,
+    );
+  }
+
+// ignore: unused_element
+  ErrorDetails error({String message = ''}) {
+    return ErrorDetails(
+      message: message,
+    );
+  }
+}
+
+// ignore: unused_element
+const $SignInWithEmailState = _$SignInWithEmailStateTearOff();
 
 mixin _$SignInWithEmailState {
   @optionalTypeArgs
@@ -15,7 +48,6 @@ mixin _$SignInWithEmailState {
     @required Result success(UserEntity user),
     @required Result error(String message),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
@@ -24,7 +56,6 @@ mixin _$SignInWithEmailState {
     Result error(String message),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(_SignInWithEmailState value), {
@@ -32,7 +63,6 @@ mixin _$SignInWithEmailState {
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(_SignInWithEmailState value), {
@@ -43,31 +73,37 @@ mixin _$SignInWithEmailState {
   });
 }
 
-class _$SignInWithEmailStateTearOff {
-  const _$SignInWithEmailStateTearOff();
-
-  _SignInWithEmailState call() {
-    return const _SignInWithEmailState();
-  }
-
-  Loading loading() {
-    return const Loading();
-  }
-
-  Success success({UserEntity user = const UserEntity(email: '', uid: '')}) {
-    return Success(
-      user: user,
-    );
-  }
-
-  ErrorDetails error({String message = ''}) {
-    return ErrorDetails(
-      message: message,
-    );
-  }
+abstract class $SignInWithEmailStateCopyWith<$Res> {
+  factory $SignInWithEmailStateCopyWith(SignInWithEmailState value,
+          $Res Function(SignInWithEmailState) then) =
+      _$SignInWithEmailStateCopyWithImpl<$Res>;
 }
 
-const $SignInWithEmailState = _$SignInWithEmailStateTearOff();
+class _$SignInWithEmailStateCopyWithImpl<$Res>
+    implements $SignInWithEmailStateCopyWith<$Res> {
+  _$SignInWithEmailStateCopyWithImpl(this._value, this._then);
+
+  final SignInWithEmailState _value;
+  // ignore: unused_field
+  final $Res Function(SignInWithEmailState) _then;
+}
+
+abstract class _$SignInWithEmailStateCopyWith<$Res> {
+  factory _$SignInWithEmailStateCopyWith(_SignInWithEmailState value,
+          $Res Function(_SignInWithEmailState) then) =
+      __$SignInWithEmailStateCopyWithImpl<$Res>;
+}
+
+class __$SignInWithEmailStateCopyWithImpl<$Res>
+    extends _$SignInWithEmailStateCopyWithImpl<$Res>
+    implements _$SignInWithEmailStateCopyWith<$Res> {
+  __$SignInWithEmailStateCopyWithImpl(
+      _SignInWithEmailState _value, $Res Function(_SignInWithEmailState) _then)
+      : super(_value, (v) => _then(v as _SignInWithEmailState));
+
+  @override
+  _SignInWithEmailState get _value => super._value as _SignInWithEmailState;
+}
 
 class _$_SignInWithEmailState
     with DiagnosticableTreeMixin
@@ -160,6 +196,21 @@ abstract class _SignInWithEmailState implements SignInWithEmailState {
   const factory _SignInWithEmailState() = _$_SignInWithEmailState;
 }
 
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+}
+
+class _$LoadingCopyWithImpl<$Res>
+    extends _$SignInWithEmailStateCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
+}
+
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -250,8 +301,46 @@ abstract class Loading implements SignInWithEmailState {
   const factory Loading() = _$Loading;
 }
 
+abstract class $SuccessCopyWith<$Res> {
+  factory $SuccessCopyWith(Success value, $Res Function(Success) then) =
+      _$SuccessCopyWithImpl<$Res>;
+  $Res call({UserEntity user});
+
+  $UserEntityCopyWith<$Res> get user;
+}
+
+class _$SuccessCopyWithImpl<$Res>
+    extends _$SignInWithEmailStateCopyWithImpl<$Res>
+    implements $SuccessCopyWith<$Res> {
+  _$SuccessCopyWithImpl(Success _value, $Res Function(Success) _then)
+      : super(_value, (v) => _then(v as Success));
+
+  @override
+  Success get _value => super._value as Success;
+
+  @override
+  $Res call({
+    Object user = freezed,
+  }) {
+    return _then(Success(
+      user: user == freezed ? _value.user : user as UserEntity,
+    ));
+  }
+
+  @override
+  $UserEntityCopyWith<$Res> get user {
+    if (_value.user == null) {
+      return null;
+    }
+    return $UserEntityCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
+}
+
 class _$Success with DiagnosticableTreeMixin implements Success {
-  const _$Success({this.user = const UserEntity(email: '', uid: '')});
+  const _$Success({this.user = const UserEntity(email: '', uid: '')})
+      : assert(user != null);
 
   @JsonKey(defaultValue: const UserEntity(email: '', uid: ''))
   @override
@@ -283,13 +372,8 @@ class _$Success with DiagnosticableTreeMixin implements Success {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(user);
 
   @override
-  _$Success copyWith({
-    Object user = freezed,
-  }) {
-    return _$Success(
-      user: user == freezed ? this.user : user as UserEntity,
-    );
-  }
+  $SuccessCopyWith<Success> get copyWith =>
+      _$SuccessCopyWithImpl<Success>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -358,12 +442,38 @@ abstract class Success implements SignInWithEmailState {
   const factory Success({UserEntity user}) = _$Success;
 
   UserEntity get user;
+  $SuccessCopyWith<Success> get copyWith;
+}
 
-  Success copyWith({UserEntity user});
+abstract class $ErrorDetailsCopyWith<$Res> {
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
+  $Res call({String message});
+}
+
+class _$ErrorDetailsCopyWithImpl<$Res>
+    extends _$SignInWithEmailStateCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
+
+  @override
+  ErrorDetails get _value => super._value as ErrorDetails;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(ErrorDetails(
+      message: message == freezed ? _value.message : message as String,
+    ));
+  }
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
-  const _$ErrorDetails({this.message = ''});
+  const _$ErrorDetails({this.message = ''}) : assert(message != null);
 
   @JsonKey(defaultValue: '')
   @override
@@ -395,13 +505,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
-  _$ErrorDetails copyWith({
-    Object message = freezed,
-  }) {
-    return _$ErrorDetails(
-      message: message == freezed ? this.message : message as String,
-    );
-  }
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -470,6 +575,5 @@ abstract class ErrorDetails implements SignInWithEmailState {
   const factory ErrorDetails({String message}) = _$ErrorDetails;
 
   String get message;
-
-  ErrorDetails copyWith({String message});
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }

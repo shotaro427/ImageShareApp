@@ -1,11 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'editing_profile_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
 // **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+class _$EditingProfileStateTearOff {
+  const _$EditingProfileStateTearOff();
+
+// ignore: unused_element
+  _EditingProfileState call() {
+    return const _EditingProfileState();
+  }
+
+// ignore: unused_element
+  Loading loading() {
+    return const Loading();
+  }
+
+// ignore: unused_element
+  Success success() {
+    return const Success();
+  }
+
+// ignore: unused_element
+  ErrorDetails error({String message = ''}) {
+    return ErrorDetails(
+      message: message,
+    );
+  }
+}
+
+// ignore: unused_element
+const $EditingProfileState = _$EditingProfileStateTearOff();
 
 mixin _$EditingProfileState {
   @optionalTypeArgs
@@ -15,7 +46,6 @@ mixin _$EditingProfileState {
     @required Result success(),
     @required Result error(String message),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
@@ -24,7 +54,6 @@ mixin _$EditingProfileState {
     Result error(String message),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(_EditingProfileState value), {
@@ -32,7 +61,6 @@ mixin _$EditingProfileState {
     @required Result success(Success value),
     @required Result error(ErrorDetails value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(_EditingProfileState value), {
@@ -43,29 +71,37 @@ mixin _$EditingProfileState {
   });
 }
 
-class _$EditingProfileStateTearOff {
-  const _$EditingProfileStateTearOff();
-
-  _EditingProfileState call() {
-    return const _EditingProfileState();
-  }
-
-  Loading loading() {
-    return const Loading();
-  }
-
-  Success success() {
-    return const Success();
-  }
-
-  ErrorDetails error({String message = ''}) {
-    return ErrorDetails(
-      message: message,
-    );
-  }
+abstract class $EditingProfileStateCopyWith<$Res> {
+  factory $EditingProfileStateCopyWith(
+          EditingProfileState value, $Res Function(EditingProfileState) then) =
+      _$EditingProfileStateCopyWithImpl<$Res>;
 }
 
-const $EditingProfileState = _$EditingProfileStateTearOff();
+class _$EditingProfileStateCopyWithImpl<$Res>
+    implements $EditingProfileStateCopyWith<$Res> {
+  _$EditingProfileStateCopyWithImpl(this._value, this._then);
+
+  final EditingProfileState _value;
+  // ignore: unused_field
+  final $Res Function(EditingProfileState) _then;
+}
+
+abstract class _$EditingProfileStateCopyWith<$Res> {
+  factory _$EditingProfileStateCopyWith(_EditingProfileState value,
+          $Res Function(_EditingProfileState) then) =
+      __$EditingProfileStateCopyWithImpl<$Res>;
+}
+
+class __$EditingProfileStateCopyWithImpl<$Res>
+    extends _$EditingProfileStateCopyWithImpl<$Res>
+    implements _$EditingProfileStateCopyWith<$Res> {
+  __$EditingProfileStateCopyWithImpl(
+      _EditingProfileState _value, $Res Function(_EditingProfileState) _then)
+      : super(_value, (v) => _then(v as _EditingProfileState));
+
+  @override
+  _EditingProfileState get _value => super._value as _EditingProfileState;
+}
 
 class _$_EditingProfileState
     with DiagnosticableTreeMixin
@@ -158,6 +194,21 @@ abstract class _EditingProfileState implements EditingProfileState {
   const factory _EditingProfileState() = _$_EditingProfileState;
 }
 
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+}
+
+class _$LoadingCopyWithImpl<$Res>
+    extends _$EditingProfileStateCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
+}
+
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -245,6 +296,21 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
 
 abstract class Loading implements EditingProfileState {
   const factory Loading() = _$Loading;
+}
+
+abstract class $SuccessCopyWith<$Res> {
+  factory $SuccessCopyWith(Success value, $Res Function(Success) then) =
+      _$SuccessCopyWithImpl<$Res>;
+}
+
+class _$SuccessCopyWithImpl<$Res>
+    extends _$EditingProfileStateCopyWithImpl<$Res>
+    implements $SuccessCopyWith<$Res> {
+  _$SuccessCopyWithImpl(Success _value, $Res Function(Success) _then)
+      : super(_value, (v) => _then(v as Success));
+
+  @override
+  Success get _value => super._value as Success;
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
@@ -336,8 +402,35 @@ abstract class Success implements EditingProfileState {
   const factory Success() = _$Success;
 }
 
+abstract class $ErrorDetailsCopyWith<$Res> {
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
+  $Res call({String message});
+}
+
+class _$ErrorDetailsCopyWithImpl<$Res>
+    extends _$EditingProfileStateCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
+
+  @override
+  ErrorDetails get _value => super._value as ErrorDetails;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(ErrorDetails(
+      message: message == freezed ? _value.message : message as String,
+    ));
+  }
+}
+
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
-  const _$ErrorDetails({this.message = ''});
+  const _$ErrorDetails({this.message = ''}) : assert(message != null);
 
   @JsonKey(defaultValue: '')
   @override
@@ -369,13 +462,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
-  _$ErrorDetails copyWith({
-    Object message = freezed,
-  }) {
-    return _$ErrorDetails(
-      message: message == freezed ? this.message : message as String,
-    );
-  }
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -444,6 +532,5 @@ abstract class ErrorDetails implements EditingProfileState {
   const factory ErrorDetails({String message}) = _$ErrorDetails;
 
   String get message;
-
-  ErrorDetails copyWith({String message});
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }
