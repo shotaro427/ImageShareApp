@@ -13,9 +13,10 @@ class _$AppStartStateTearOff {
   const _$AppStartStateTearOff();
 
 // ignore: unused_element
-  _AppStartState call({bool isLoading = false}) {
+  _AppStartState call({bool isLoading = false, String error}) {
     return _AppStartState(
       isLoading: isLoading,
+      error: error,
     );
   }
 }
@@ -25,6 +26,7 @@ const $AppStartState = _$AppStartStateTearOff();
 
 mixin _$AppStartState {
   bool get isLoading;
+  String get error;
 
   $AppStartStateCopyWith<AppStartState> get copyWith;
 }
@@ -33,7 +35,7 @@ abstract class $AppStartStateCopyWith<$Res> {
   factory $AppStartStateCopyWith(
           AppStartState value, $Res Function(AppStartState) then) =
       _$AppStartStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String error});
 }
 
 class _$AppStartStateCopyWithImpl<$Res>
@@ -47,9 +49,11 @@ class _$AppStartStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isLoading = freezed,
+    Object error = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      error: error == freezed ? _value.error : error as String,
     ));
   }
 }
@@ -60,7 +64,7 @@ abstract class _$AppStartStateCopyWith<$Res>
           _AppStartState value, $Res Function(_AppStartState) then) =
       __$AppStartStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String error});
 }
 
 class __$AppStartStateCopyWithImpl<$Res>
@@ -76,23 +80,28 @@ class __$AppStartStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isLoading = freezed,
+    Object error = freezed,
   }) {
     return _then(_AppStartState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      error: error == freezed ? _value.error : error as String,
     ));
   }
 }
 
 class _$_AppStartState implements _AppStartState {
-  const _$_AppStartState({this.isLoading = false}) : assert(isLoading != null);
+  const _$_AppStartState({this.isLoading = false, this.error})
+      : assert(isLoading != null);
 
   @JsonKey(defaultValue: false)
   @override
   final bool isLoading;
+  @override
+  final String error;
 
   @override
   String toString() {
-    return 'AppStartState(isLoading: $isLoading)';
+    return 'AppStartState(isLoading: $isLoading, error: $error)';
   }
 
   @override
@@ -101,12 +110,16 @@ class _$_AppStartState implements _AppStartState {
         (other is _AppStartState &&
             (identical(other.isLoading, isLoading) ||
                 const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)));
+                    .equals(other.isLoading, isLoading)) &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(isLoading);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(isLoading) ^
+      const DeepCollectionEquality().hash(error);
 
   @override
   _$AppStartStateCopyWith<_AppStartState> get copyWith =>
@@ -114,10 +127,13 @@ class _$_AppStartState implements _AppStartState {
 }
 
 abstract class _AppStartState implements AppStartState {
-  const factory _AppStartState({bool isLoading}) = _$_AppStartState;
+  const factory _AppStartState({bool isLoading, String error}) =
+      _$_AppStartState;
 
   @override
   bool get isLoading;
+  @override
+  String get error;
   @override
   _$AppStartStateCopyWith<_AppStartState> get copyWith;
 }

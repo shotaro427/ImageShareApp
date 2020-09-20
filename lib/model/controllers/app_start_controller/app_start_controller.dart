@@ -1,13 +1,52 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/model/entities/user.entity.dart';
+import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_state.dart';
 
-final appStartController = StateNotifierProvider((ref) => AppStartController());
+final appStartController = StateNotifierProvider(
+  (ref) => AppStartController(
+    AppStartService(),
+    FirestoreService(),
+    SharedPreferencesServiece(),
+  ),
+);
 
 class AppStartController extends StateNotifier<AppStartState> {
-  AppStartController() : super(const AppStartState());
+  AppStartController(
+    this.loginService,
+    this.firestoreService,
+    this.sharedService,
+  ) : super(const AppStartState());
 
+  final AppStartService loginService;
+  final FirestoreService firestoreService;
+  final SharedPreferencesServiece sharedService;
+
+  // ログイン画面への遷移
   void navigateToMailSignin(BuildContext context) =>
       Navigator.of(context).pushNamed('mailSignin');
+
+  // Googleでログイン
+  Future<void> loginWithGoogle() async {
+    // ローディング
+    state = state.copyWith(isLoading: true);
+
+    try {
+      // ログイン
+      final UserState _user = (await loginService.loginWithGoogle());
+
+      // ユーザー情報を保存
+      await firestoreService.createNewUser(_user);
+      state = state.copyWith(isLoading: false);
+    } catch (e) {
+      log(e.toString());
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
+  }
+
+  // Appleでログイン
 }

@@ -51,14 +51,14 @@ class _AppleSignInButton extends StatelessWidget {
   }
 }
 
-class _GoogleSignInButton extends StatelessWidget {
+class _GoogleSignInButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return GoogleSignInButton(
       text: 'Googleでログイン',
       textStyle: const TextStyle(color: Colors.black, fontSize: 19),
       borderRadius: 10,
-      onPressed: () => {}, // TODO: Googleログインの処理を追加
+      onPressed: watch(appStartController).loginWithGoogle,
     );
   }
 }
@@ -66,8 +66,8 @@ class _GoogleSignInButton extends StatelessWidget {
 class _MailSignInButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final AppStartController state = watch(appStartController);
-    final Function onPress = () => state.navigateToMailSignin(context);
+    final Function onPress =
+        () => watch(appStartController).navigateToMailSignin(context);
     return SizedBox(
       height: 45,
       child: RoundRaisedButton(

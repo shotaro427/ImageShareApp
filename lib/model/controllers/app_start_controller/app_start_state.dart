@@ -5,5 +5,6 @@ part 'app_start_state.freezed.dart';
 abstract class AppStartState with _$AppStartState {
   const factory AppStartState({
     @Default(false) bool isLoading,
+    String error,
   }) = _AppStartState;
 }
