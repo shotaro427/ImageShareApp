@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
+import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_state.dart';
@@ -30,10 +31,14 @@ class AppStartController extends StateNotifier<AppStartState> {
   void navigateToMailSignin(BuildContext context) =>
       Navigator.of(context).pushNamed('mailSignin');
 
+  // 登録画面への遷移
+  void navigateToMailSignup(BuildContext context) =>
+      Navigator.of(context).pushNamed('mailSignup');
+
   // Googleでログイン
-  Future<void> loginWithGoogle() async {
+  Future<void> loginWithGoogle(GlobalKey<ScaffoldState> scaffoldKey) async {
     // ローディング
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(error: null, isLoading: true);
 
     try {
       // ログイン
@@ -41,7 +46,14 @@ class AppStartController extends StateNotifier<AppStartState> {
 
       // ユーザー情報を保存
       await firestoreService.createNewUser(_user);
-      state = state.copyWith(isLoading: false);
+      state = state.copyWith(error: null, isLoading: false);
+
+      if (state.error == null) {
+        Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+          (_) => false,
+        );
+      }
     } catch (e) {
       log(e.toString());
       state = state.copyWith(error: e.toString(), isLoading: false);
@@ -49,4 +61,27 @@ class AppStartController extends StateNotifier<AppStartState> {
   }
 
   // Appleでログイン
+  Future<void> loginWithApple(GlobalKey<ScaffoldState> scaffoldKey) async {
+    // ローディング
+    state = state.copyWith(error: null, isLoading: true);
+
+    try {
+      // ログイン
+      final UserState _user = (await loginService.loginWithApple());
+
+      // ユーザー情報を保存
+      await firestoreService.createNewUser(_user);
+      state = state.copyWith(error: null, isLoading: false);
+
+      if (state.error == null) {
+        Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
+          (_) => false,
+        );
+      }
+    } catch (e) {
+      log(e.toString());
+      state = state.copyWith(error: e.toString(), isLoading: false);
+    }
+  }
 }

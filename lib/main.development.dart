@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/flavor.dart';
 import 'package:image_share_app/pages/app_start/app_start_page.dart';
-import 'package:image_share_app/pages/mail_singin_page/mail_signin_page.dart';
-import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
-import 'package:provider/provider.dart';
+import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
+import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
+import 'package:image_share_app/widgets/room_list/room_list.dart';
 
 void main() => runApp(DevMyApp());
 
@@ -27,6 +26,8 @@ class DevMyApp extends StatelessWidget {
           routes: {
             'appStart': (BuildContext context) => AppStartPage(),
             'mailSignin': (BuildContext context) => MailSigninPage(),
+            'mailSignup': (BuildContext context) => MailSignupPage(),
+            'roomList': (BuildContext context) => RoomListPage(),
           },
         ),
       ),

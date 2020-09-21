@@ -33,7 +33,7 @@ class AppStartService {
     return UserState(
       email: _user.email,
       uid: _user.uid,
-      name: _user.displayName,
+      name: _user.displayName ?? '',
     );
   }
 
@@ -61,7 +61,7 @@ class AppStartService {
     return UserState(
       email: _user.email,
       uid: _user.uid,
-      name: _user.displayName,
+      name: _user.displayName ?? '',
     );
   }
 

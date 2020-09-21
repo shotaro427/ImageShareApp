@@ -4,70 +4,86 @@ import 'package:image_share_app/model/controllers/app_start_controller/app_start
 import 'package:image_share_app/widget/atoms/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AppStartButtons extends StatelessWidget {
+class AppStartButtons extends ConsumerWidget {
+  AppStartButtons(this._key);
+
+  final GlobalKey<ScaffoldState> _key;
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 250,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Appleでログイン
-            _AppleSignInButton(),
-            const SizedBox(height: 10),
-            // Googleでログイン
-            _GoogleSignInButton(),
-            const SizedBox(height: 10),
-            // メアドでログイン
-            _MailSignInButton(),
-            const SizedBox(height: 10),
-            const Text(
-              'or',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 18),
+  Widget build(BuildContext context, ScopedReader watch) {
+    final isLoading = watch(appStartController.state).isLoading;
+    return isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Center(
+            child: SizedBox(
+              width: 250,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Appleでログイン
+                  _AppleSignInButton(_key),
+                  const SizedBox(height: 10),
+                  // Googleでログイン
+                  _GoogleSignInButton(_key),
+                  const SizedBox(height: 10),
+                  // メアドでログイン
+                  _MailSignInButton(),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'or',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 10),
+                  // 新規登録ボタン
+                  _CreateNewAccountButton(),
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
-            // 新規登録ボタン
-            _CreateNewAccountButton(),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
 
-class _AppleSignInButton extends StatelessWidget {
+class _AppleSignInButton extends ConsumerWidget {
+  _AppleSignInButton(this._key);
+  final GlobalKey<ScaffoldState> _key;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final Function onPress =
+        () => context.read(appStartController).loginWithApple(_key);
+
     return AppleSignInButton(
       style: AppleButtonStyle.white,
       text: 'Appleでログイン',
       textStyle: const TextStyle(fontSize: 19),
       borderRadius: 10,
-      onPressed: () => {}, // TODO: Appleログインの処理を追加
+      onPressed: onPress,
     );
   }
 }
 
 class _GoogleSignInButton extends ConsumerWidget {
+  _GoogleSignInButton(this._key);
+  final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    final Function onPress =
+        () => context.read(appStartController).loginWithGoogle(_key);
+
     return GoogleSignInButton(
       text: 'Googleでログイン',
       textStyle: const TextStyle(color: Colors.black, fontSize: 19),
       borderRadius: 10,
-      onPressed: watch(appStartController).loginWithGoogle,
+      onPressed: onPress,
     );
   }
 }
 
-class _MailSignInButton extends ConsumerWidget {
+class _MailSignInButton extends StatelessWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
     final Function onPress =
-        () => watch(appStartController).navigateToMailSignin(context);
+        () => context.read(appStartController).navigateToMailSignin(context);
     return SizedBox(
       height: 45,
       child: RoundRaisedButton(
@@ -82,6 +98,8 @@ class _MailSignInButton extends ConsumerWidget {
 class _CreateNewAccountButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Function onPress =
+        () => context.read(appStartController).navigateToMailSignup(context);
     return InkWell(
       child: const Text(
         'メールアドレスで登録',
@@ -91,7 +109,7 @@ class _CreateNewAccountButton extends StatelessWidget {
             fontSize: 18,
             decoration: TextDecoration.underline),
       ),
-      onTap: () => {}, // TODO: 新規登録の処理を追加
+      onTap: onPress,
     );
   }
 }
