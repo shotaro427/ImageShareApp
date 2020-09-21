@@ -65,6 +65,32 @@ class AppStartService {
     );
   }
 
+  // メールアドレスでログインする
+  Future<UserState> loginWithMailAdress(String email, String password) async {
+    // ログイン
+    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    ))
+        .user;
+
+    final UserState _user = UserState(email: user.email, uid: user.uid);
+
+    return _user;
+  }
+
+  // メールアドレスで登録する
+  Future<UserState> signupWithMailAdress(String email, String password) async {
+    // 新しくfirebaseAuthに登録
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    final FirebaseUser _firebaseUser = result.user;
+    final UserState _user =
+        UserState(email: _firebaseUser.email, uid: _firebaseUser.uid);
+
+    return _user;
+  }
+
   void _validateStatus(AuthorizationResult result) {
     if (result.status == AuthorizationStatus.error) {
       throw PlatformException(

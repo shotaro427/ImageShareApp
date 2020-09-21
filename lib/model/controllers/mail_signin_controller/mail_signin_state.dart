@@ -5,7 +5,7 @@ part 'mail_signin_state.g.dart';
 @freezed
 abstract class MailSigninState with _$MailSigninState {
   const factory MailSigninState({
-    @Default(false) bool isLoadin,
+    @Default(false) bool isLoading,
     String error,
   }) = _MailSigninState;
 

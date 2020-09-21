@@ -12,7 +12,6 @@ final appStartController = StateNotifierProvider(
   (ref) => AppStartController(
     AppStartService(),
     FirestoreService(),
-    SharedPreferencesServiece(),
   ),
 );
 
@@ -20,12 +19,10 @@ class AppStartController extends StateNotifier<AppStartState> {
   AppStartController(
     this.loginService,
     this.firestoreService,
-    this.sharedService,
   ) : super(const AppStartState());
 
   final AppStartService loginService;
   final FirestoreService firestoreService;
-  final SharedPreferencesServiece sharedService;
 
   // ログイン画面への遷移
   void navigateToMailSignin(BuildContext context) =>

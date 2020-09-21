@@ -16,9 +16,9 @@ class _$MailSigninStateTearOff {
   const _$MailSigninStateTearOff();
 
 // ignore: unused_element
-  _MailSigninState call({bool isLoadin = false, String error}) {
+  _MailSigninState call({bool isLoading = false, String error}) {
     return _MailSigninState(
-      isLoadin: isLoadin,
+      isLoading: isLoading,
       error: error,
     );
   }
@@ -28,7 +28,7 @@ class _$MailSigninStateTearOff {
 const $MailSigninState = _$MailSigninStateTearOff();
 
 mixin _$MailSigninState {
-  bool get isLoadin;
+  bool get isLoading;
   String get error;
 
   Map<String, dynamic> toJson();
@@ -39,7 +39,7 @@ abstract class $MailSigninStateCopyWith<$Res> {
   factory $MailSigninStateCopyWith(
           MailSigninState value, $Res Function(MailSigninState) then) =
       _$MailSigninStateCopyWithImpl<$Res>;
-  $Res call({bool isLoadin, String error});
+  $Res call({bool isLoading, String error});
 }
 
 class _$MailSigninStateCopyWithImpl<$Res>
@@ -52,11 +52,11 @@ class _$MailSigninStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object isLoadin = freezed,
+    Object isLoading = freezed,
     Object error = freezed,
   }) {
     return _then(_value.copyWith(
-      isLoadin: isLoadin == freezed ? _value.isLoadin : isLoadin as bool,
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
     ));
   }
@@ -68,7 +68,7 @@ abstract class _$MailSigninStateCopyWith<$Res>
           _MailSigninState value, $Res Function(_MailSigninState) then) =
       __$MailSigninStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoadin, String error});
+  $Res call({bool isLoading, String error});
 }
 
 class __$MailSigninStateCopyWithImpl<$Res>
@@ -83,11 +83,11 @@ class __$MailSigninStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object isLoadin = freezed,
+    Object isLoading = freezed,
     Object error = freezed,
   }) {
     return _then(_MailSigninState(
-      isLoadin: isLoadin == freezed ? _value.isLoadin : isLoadin as bool,
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
     ));
   }
@@ -95,30 +95,30 @@ class __$MailSigninStateCopyWithImpl<$Res>
 
 @JsonSerializable()
 class _$_MailSigninState implements _MailSigninState {
-  const _$_MailSigninState({this.isLoadin = false, this.error})
-      : assert(isLoadin != null);
+  const _$_MailSigninState({this.isLoading = false, this.error})
+      : assert(isLoading != null);
 
   factory _$_MailSigninState.fromJson(Map<String, dynamic> json) =>
       _$_$_MailSigninStateFromJson(json);
 
   @JsonKey(defaultValue: false)
   @override
-  final bool isLoadin;
+  final bool isLoading;
   @override
   final String error;
 
   @override
   String toString() {
-    return 'MailSigninState(isLoadin: $isLoadin, error: $error)';
+    return 'MailSigninState(isLoading: $isLoading, error: $error)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MailSigninState &&
-            (identical(other.isLoadin, isLoadin) ||
+            (identical(other.isLoading, isLoading) ||
                 const DeepCollectionEquality()
-                    .equals(other.isLoadin, isLoadin)) &&
+                    .equals(other.isLoading, isLoading)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)));
   }
@@ -126,7 +126,7 @@ class _$_MailSigninState implements _MailSigninState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(isLoadin) ^
+      const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(error);
 
   @override
@@ -140,14 +140,14 @@ class _$_MailSigninState implements _MailSigninState {
 }
 
 abstract class _MailSigninState implements MailSigninState {
-  const factory _MailSigninState({bool isLoadin, String error}) =
+  const factory _MailSigninState({bool isLoading, String error}) =
       _$_MailSigninState;
 
   factory _MailSigninState.fromJson(Map<String, dynamic> json) =
       _$_MailSigninState.fromJson;
 
   @override
-  bool get isLoadin;
+  bool get isLoading;
   @override
   String get error;
   @override
