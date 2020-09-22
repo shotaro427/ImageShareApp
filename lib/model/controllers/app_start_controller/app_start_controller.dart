@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/services/index.dart';
+import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_state.dart';
 
@@ -23,7 +25,16 @@ class AppStartController extends StateNotifier<AppStartState> {
     this.loginService,
     this.firestoreService,
     this.userStore,
-  ) : super(const AppStartState());
+  ) : super(const AppStartState()) {
+    FirebaseAdMob.instance
+        .initialize(appId: 'ca-app-pub-9097303817244208~1620664005');
+
+    myBanner
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+      );
+  }
 
   final AppStartService loginService;
   final FirestoreService firestoreService;
@@ -51,6 +62,7 @@ class AppStartController extends StateNotifier<AppStartState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
+        myBanner.dispose();
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,
@@ -76,6 +88,7 @@ class AppStartController extends StateNotifier<AppStartState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
+        myBanner.dispose();
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,
@@ -85,5 +98,11 @@ class AppStartController extends StateNotifier<AppStartState> {
       log(e.toString());
       state = state.copyWith(error: e.toString(), isLoading: false);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myBanner.dispose();
   }
 }

@@ -8,6 +8,7 @@ import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/services/firestore_service.dart';
 import 'package:image_share_app/services/signin_service.dart';
+import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final mailSignupController = StateNotifierProvider((ref) {
@@ -53,6 +54,7 @@ class MailSignupController extends StateNotifier<MailSignupState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
+        myBanner.dispose();
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,

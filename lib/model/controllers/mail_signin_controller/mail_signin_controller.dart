@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/mail_signin_controller/mail_signin_state.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/services/index.dart';
+import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final mailSigninController = StateNotifierProvider(
@@ -40,6 +41,7 @@ class MailSigninController extends StateNotifier<MailSigninState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
+        myBanner.dispose();
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,
