@@ -1,10 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 part 'user.entity.freezed.dart';
 part 'user.entity.g.dart';
 
-final userStore = StateNotifierProvider((ref) => UserController());
+final userStore =
+    StateNotifierProvider((ref) => UserController(FirestoreService()));
 
 @freezed
 abstract class UserState with _$UserState {
@@ -25,9 +27,13 @@ abstract class UserState with _$UserState {
 }
 
 class UserController extends StateNotifier<UserState> {
-  UserController({UserState user}) : super(const UserState());
+  UserController(this.firestoreService) : super(const UserState());
 
-  void update(UserState user) {
+  final FirestoreService firestoreService;
+
+  Future<void> updateUser(UserState user) async {
+    // ユーザー情報を更新
+    await firestoreService.saveUserInfo(user);
     state = user;
   }
 }

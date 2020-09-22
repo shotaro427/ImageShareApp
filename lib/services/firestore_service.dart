@@ -4,27 +4,35 @@ import 'dart:math' as math;
 
 class FirestoreService {
   /// ユーザー情報をFireStoreに保存する処理
-  Future<UserState> createNewUser(UserState user) async {
+  Future<UserState> saveUserInfo(UserState user) async {
     CollectionReference _publicRef =
         Firestore.instance.collection('public/users/users');
 
-    // IDを追加
-    final UserState _user = _addRamdonId(user);
-
     // 同じユーザーが存在するか確認
     final _documents =
-        (await _publicRef.where('uid', isEqualTo: _user.uid).getDocuments())
+        (await _publicRef.where('uid', isEqualTo: user.uid).getDocuments())
             .documents;
 
     // Firestorに保存
     if (_documents.length == 0) {
-      await Future.wait([_setUserPublic(_user), _setUserPrivate(_user)]);
+      // IDを追加
+      final UserState _user = _addRamdonId(user);
+      await Future.wait([_createUserPublic(_user), _createUserPrivate(_user)]);
+
+      return _user;
     } else if (_documents.first['id'] == null) {
+      // IDを追加
+      final UserState _user = _addRamdonId(user);
       // もしIDを持っていなかったらupdate
       await _publicRef.document('${_user.uid}').updateData({'id': _user.id});
+
+      return _user;
+    } else {
+      // ユーザー情報を更新
+      await Future.wait([_updateUserPublic(user), _updateUserPrivate(user)]);
     }
 
-    return _user;
+    return user;
   }
 
   // ランダムなIDを追加
@@ -46,7 +54,7 @@ class FirestoreService {
     return user.copyWith(id: id);
   }
 
-  Future _setUserPublic(UserState user) async {
+  Future _createUserPublic(UserState user) async {
     CollectionReference _publicRef =
         Firestore.instance.collection('public/users/users');
 
@@ -63,7 +71,7 @@ class FirestoreService {
     });
   }
 
-  Future _setUserPrivate(UserState user) async {
+  Future _createUserPrivate(UserState user) async {
     CollectionReference _privateRef =
         Firestore.instance.collection('private/users/users');
 
@@ -72,6 +80,36 @@ class FirestoreService {
 
     await _privateRef.document('${user.uid}').setData({
       'createdAt': createdAt,
+      'updateAt': time,
+      'uid': user.uid,
+      'email': user.email,
+      'joinedRooms': user.joinedRooms,
+      'invitedRooms': user.invitedRooms,
+    });
+  }
+
+  Future _updateUserPublic(UserState user) async {
+    CollectionReference _publicRef =
+        Firestore.instance.collection('public/users/users');
+
+    final time = DateTime.now().millisecondsSinceEpoch;
+
+    await _publicRef.document('${user.uid}').updateData({
+      'updateAt': time,
+      'id': user.id,
+      'iconUrl': user.iconUrl,
+      'name': user.name,
+      'uid': user.uid
+    });
+  }
+
+  Future _updateUserPrivate(UserState user) async {
+    CollectionReference _privateRef =
+        Firestore.instance.collection('private/users/users');
+
+    final time = DateTime.now().millisecondsSinceEpoch;
+
+    await _privateRef.document('${user.uid}').updateData({
       'updateAt': time,
       'uid': user.uid,
       'email': user.email,

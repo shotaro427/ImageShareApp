@@ -10,18 +10,26 @@ import 'package:image_share_app/services/firestore_service.dart';
 import 'package:image_share_app/services/signin_service.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-final mailSignupController =
-    StateNotifierProvider((ref) => MailSignupController(
-          AppStartService(),
-          FirestoreService(),
-        ));
+final mailSignupController = StateNotifierProvider((ref) {
+  final userProvider = ref.watch(userStore);
+
+  return MailSignupController(
+    AppStartService(),
+    FirestoreService(),
+    userProvider,
+  );
+});
 
 class MailSignupController extends StateNotifier<MailSignupState> {
-  MailSignupController(this.loginService, this.firestoreService)
-      : super(const MailSignupState());
+  MailSignupController(
+    this.loginService,
+    this.firestoreService,
+    this.userStore,
+  ) : super(const MailSignupState());
 
   final AppStartService loginService;
   final FirestoreService firestoreService;
+  final UserController userStore;
 
   // メールアドレスとパスワードを入力する箇所のController
   final emailInputController = TextEditingController();
@@ -41,7 +49,7 @@ class MailSignupController extends StateNotifier<MailSignupState> {
       );
 
       // ユーザー情報を保存
-      await firestoreService.createNewUser(_user);
+      await userStore.updateUser(_user);
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {

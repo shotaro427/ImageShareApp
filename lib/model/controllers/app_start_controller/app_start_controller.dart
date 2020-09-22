@@ -8,21 +8,26 @@ import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_state.dart';
 
-final appStartController = StateNotifierProvider(
-  (ref) => AppStartController(
+final appStartController = StateNotifierProvider((ref) {
+  final userProvider = ref.watch(userStore);
+
+  return AppStartController(
     AppStartService(),
     FirestoreService(),
-  ),
-);
+    userProvider,
+  );
+});
 
 class AppStartController extends StateNotifier<AppStartState> {
   AppStartController(
     this.loginService,
     this.firestoreService,
+    this.userStore,
   ) : super(const AppStartState());
 
   final AppStartService loginService;
   final FirestoreService firestoreService;
+  final UserController userStore;
 
   // ログイン画面への遷移
   void navigateToMailSignin(BuildContext context) =>
@@ -42,7 +47,7 @@ class AppStartController extends StateNotifier<AppStartState> {
       final UserState _user = (await loginService.loginWithGoogle());
 
       // ユーザー情報を保存
-      await firestoreService.createNewUser(_user);
+      await userStore.updateUser(_user);
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
@@ -67,7 +72,7 @@ class AppStartController extends StateNotifier<AppStartState> {
       final UserState _user = (await loginService.loginWithApple());
 
       // ユーザー情報を保存
-      await firestoreService.createNewUser(_user);
+      await userStore.updateUser(_user);
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
