@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/pages/room_list/floating_buttons.dart';
+import 'package:image_share_app/pages/room_list/room_list.dart';
 
 class RoomListPage extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class RoomListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('グループ'),
       ),
-      body: const Placeholder(),
+      body: RoomList(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingButtons(),
       backgroundColor: backgroundColor,
