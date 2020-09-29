@@ -102,7 +102,7 @@ class AppStartController extends StateNotifier<AppStartState> {
 
   @override
   void dispose() {
-    super.dispose();
     myBanner.dispose();
+    super.dispose();
   }
 }

@@ -55,8 +55,8 @@ class MailSigninController extends StateNotifier<MailSigninState> {
 
   @override
   void dispose() {
-    super.dispose();
     emailInputController.dispose();
     passwordInputController.dispose();
+    super.dispose();
   }
 }

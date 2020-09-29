@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/flavor.dart';
 import 'package:image_share_app/pages/app_start/app_start_page.dart';
+import 'package:image_share_app/pages/create_room/create_room_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
 import 'package:image_share_app/widgets/room_list/room_list.dart';
@@ -28,6 +29,7 @@ class DevMyApp extends StatelessWidget {
             'mailSignin': (BuildContext context) => MailSigninPage(),
             'mailSignup': (BuildContext context) => MailSignupPage(),
             'roomList': (BuildContext context) => RoomListPage(),
+            'createRoom': (BuildContext context) => CreateRoomPage(),
           },
         ),
       ),
