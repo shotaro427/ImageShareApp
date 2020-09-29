@@ -5,7 +5,7 @@ class RoomItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: 72,
         child: Card(
