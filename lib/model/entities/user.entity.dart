@@ -36,4 +36,8 @@ class UserController extends StateNotifier<UserState> {
     await firestoreService.saveUserInfo(user);
     state = user;
   }
+
+  void updateState(UserState user) {
+    state = user;
+  }
 }
