@@ -54,6 +54,9 @@ class FirestoreService {
     }
   }
 
+  // グループ一覧を取得する
+  Future<List<RoomState>> getRooms() {}
+
   // User
 
   Future<UserState> _createUser(UserState user) async {

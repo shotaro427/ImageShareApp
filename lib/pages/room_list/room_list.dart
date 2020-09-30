@@ -8,9 +8,7 @@ class RoomList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return RoomItem();
-        },
+        itemBuilder: (BuildContext context, int index) => RoomItem(),
         itemCount: 10,
       ),
     );
