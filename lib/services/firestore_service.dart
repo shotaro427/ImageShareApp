@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'dart:math' as math;
 
+import 'package:uuid/uuid.dart';
+
 class FirestoreService {
-  /// ユーザー情報をFireStoreに保存する処理
+  // ユーザー情報をFireStoreに保存する処理
   Future<UserState> saveUserInfo(UserState user) async {
     CollectionReference _publicRef =
         Firestore.instance.collection('public/users/users');
@@ -35,6 +38,25 @@ class FirestoreService {
     return user;
   }
 
+  Future<RoomState> saveRoomInfo(RoomState room, String uid) async {
+    CollectionReference _publicRef =
+        Firestore.instance.collection('public/rooms/rooms');
+
+    // 同じグループがあるかどうか確認
+    final _documents =
+        (await _publicRef.where('uid', isEqualTo: room.id).getDocuments())
+            .documents;
+
+    // Firestoreに保存
+    if (_documents.length == 0) {
+      // 新規保存
+      return (await _createRoom(room, uid));
+    } else {
+      // 更新
+      return (await _updateRoom(room));
+    }
+  }
+
   // ランダムなIDを追加
   UserState _addRamdonId(UserState user) {
     const _randomChars =
@@ -53,6 +75,8 @@ class FirestoreService {
 
     return user.copyWith(id: id);
   }
+
+  // User
 
   Future _createUserPublic(UserState user) async {
     CollectionReference _publicRef =
@@ -115,6 +139,85 @@ class FirestoreService {
       'email': user.email,
       'joinedRooms': user.joinedRooms,
       'invitedRooms': user.invitedRooms,
+    });
+  }
+
+  // Room
+
+  Future<RoomState> _createRoom(RoomState room, String userId) async {
+    // uuidからIDを追加
+    final id = Uuid().v4().replaceAll('-', '');
+    final time = DateTime.now().millisecondsSinceEpoch;
+    final newRoom = room
+        .copyWith(id: id, updateAt: time, createdAt: time, member: [userId]);
+
+    await Future.wait([
+      _createRoomMemberOnly(newRoom),
+      _createRoomPublic(newRoom),
+    ]);
+
+    return newRoom;
+  }
+
+  Future<RoomState> _updateRoom(RoomState room) async {
+    final time = DateTime.now().millisecondsSinceEpoch;
+    final newRoom = room.copyWith(updateAt: time);
+
+    await Future.wait([
+      _updateRoomMemberOnly(newRoom),
+      _updateRoomPublic(newRoom),
+    ]);
+
+    return newRoom;
+  }
+
+  Future _createRoomMemberOnly(RoomState room) async {
+    CollectionReference _memberOnlyRef =
+        Firestore.instance.collection('memberOnly/rooms/rooms');
+
+    await _memberOnlyRef.document(room.id).setData({
+      'createdAt': room.createdAt,
+      'updatedAt': room.updateAt,
+      'tags': room.tags,
+      'invited': room.invited,
+      'members': room.member,
+      'id': room.id,
+    });
+  }
+
+  Future _createRoomPublic(RoomState room) async {
+    CollectionReference _publicRef =
+        Firestore.instance.collection('public/rooms/rooms');
+
+    await _publicRef.document(room.id).setData({
+      'createdAt': room.createdAt,
+      'updatedAt': room.updateAt,
+      'id': room.id,
+      'name': room.name,
+    });
+  }
+
+  Future _updateRoomMemberOnly(RoomState room) async {
+    CollectionReference _memberOnlyRef =
+        Firestore.instance.collection('memberOnly/rooms/rooms');
+
+    await _memberOnlyRef.document(room.id).updateData({
+      'updatedAt': room.updateAt,
+      'tags': room.tags,
+      'invited': room.invited,
+      'members': room.member,
+      'id': room.id,
+    });
+  }
+
+  Future _updateRoomPublic(RoomState room) async {
+    CollectionReference _publicRef =
+        Firestore.instance.collection('public/rooms/rooms');
+
+    await _publicRef.document(room.id).updateData({
+      'updatedAt': room.updateAt,
+      'id': room.id,
+      'name': room.name,
     });
   }
 }

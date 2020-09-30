@@ -47,6 +47,7 @@ dependencies:
   firebase_analytics: ^5.0.0
   flutter_riverpod:  ^0.9.1
   floating_action_bubble: ^1.0.9
+  uuid: ^2.2.2
 
 dev_dependencies:
   flutter_test:

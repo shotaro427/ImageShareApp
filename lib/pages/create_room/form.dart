@@ -30,7 +30,7 @@ class CreateRoomForm extends ConsumerWidget {
                           .nameInputController,
                       decoration: const InputDecoration(
                         border: const UnderlineInputBorder(),
-                        labelText: 'メールアドレス',
+                        labelText: 'グループ名',
                         labelStyle: TextStyle(color: Colors.blueGrey),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: const BorderSide(color: Colors.blueGrey),
