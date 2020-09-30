@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'image_detail_bloc.dart';
 
@@ -7,28 +7,71 @@ part of 'image_detail_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
+
+class _$ImageDetailStateTearOff {
+  const _$ImageDetailStateTearOff();
+
+// ignore: unused_element
+  _ImageDetailState call() {
+    return const _ImageDetailState();
+  }
+
+// ignore: unused_element
+  Loading loading() {
+    return const Loading();
+  }
+
+// ignore: unused_element
+  Success viewing({@required ImageEntity imageEntity}) {
+    return Success(
+      imageEntity: imageEntity,
+    );
+  }
+
+// ignore: unused_element
+  Editing editing({@required ImageEntity imageEntity}) {
+    return Editing(
+      imageEntity: imageEntity,
+    );
+  }
+
+// ignore: unused_element
+  Deleted delete() {
+    return const Deleted();
+  }
+
+// ignore: unused_element
+  ErrorDetails error({String message = ''}) {
+    return ErrorDetails(
+      message: message,
+    );
+  }
+}
+
+// ignore: unused_element
+const $ImageDetailState = _$ImageDetailStateTearOff();
+
 mixin _$ImageDetailState {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(_ImageDetailState value), {
@@ -38,7 +81,6 @@ mixin _$ImageDetailState {
     @required Result delete(Deleted value),
     @required Result error(ErrorDetails value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(_ImageDetailState value), {
@@ -51,41 +93,37 @@ mixin _$ImageDetailState {
   });
 }
 
-class _$ImageDetailStateTearOff {
-  const _$ImageDetailStateTearOff();
-
-  _ImageDetailState call() {
-    return const _ImageDetailState();
-  }
-
-  Loading loading() {
-    return const Loading();
-  }
-
-  Success viewing({@required ImageEntity imageEntity}) {
-    return Success(
-      imageEntity: imageEntity,
-    );
-  }
-
-  Editing editing({@required ImageEntity imageEntity}) {
-    return Editing(
-      imageEntity: imageEntity,
-    );
-  }
-
-  Deleted delete() {
-    return const Deleted();
-  }
-
-  ErrorDetails error({String message = ''}) {
-    return ErrorDetails(
-      message: message,
-    );
-  }
+abstract class $ImageDetailStateCopyWith<$Res> {
+  factory $ImageDetailStateCopyWith(
+          ImageDetailState value, $Res Function(ImageDetailState) then) =
+      _$ImageDetailStateCopyWithImpl<$Res>;
 }
 
-const $ImageDetailState = _$ImageDetailStateTearOff();
+class _$ImageDetailStateCopyWithImpl<$Res>
+    implements $ImageDetailStateCopyWith<$Res> {
+  _$ImageDetailStateCopyWithImpl(this._value, this._then);
+
+  final ImageDetailState _value;
+  // ignore: unused_field
+  final $Res Function(ImageDetailState) _then;
+}
+
+abstract class _$ImageDetailStateCopyWith<$Res> {
+  factory _$ImageDetailStateCopyWith(
+          _ImageDetailState value, $Res Function(_ImageDetailState) then) =
+      __$ImageDetailStateCopyWithImpl<$Res>;
+}
+
+class __$ImageDetailStateCopyWithImpl<$Res>
+    extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements _$ImageDetailStateCopyWith<$Res> {
+  __$ImageDetailStateCopyWithImpl(
+      _ImageDetailState _value, $Res Function(_ImageDetailState) _then)
+      : super(_value, (v) => _then(v as _ImageDetailState));
+
+  @override
+  _ImageDetailState get _value => super._value as _ImageDetailState;
+}
 
 class _$_ImageDetailState
     with DiagnosticableTreeMixin
@@ -116,8 +154,8 @@ class _$_ImageDetailState
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -135,8 +173,8 @@ class _$_ImageDetailState
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -190,6 +228,20 @@ abstract class _ImageDetailState implements ImageDetailState {
   const factory _ImageDetailState() = _$_ImageDetailState;
 }
 
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+}
+
+class _$LoadingCopyWithImpl<$Res> extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
+}
+
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading();
 
@@ -217,8 +269,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -236,8 +288,8 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -291,6 +343,44 @@ abstract class Loading implements ImageDetailState {
   const factory Loading() = _$Loading;
 }
 
+abstract class $SuccessCopyWith<$Res> {
+  factory $SuccessCopyWith(Success value, $Res Function(Success) then) =
+      _$SuccessCopyWithImpl<$Res>;
+  $Res call({ImageEntity imageEntity});
+
+  $ImageEntityCopyWith<$Res> get imageEntity;
+}
+
+class _$SuccessCopyWithImpl<$Res> extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements $SuccessCopyWith<$Res> {
+  _$SuccessCopyWithImpl(Success _value, $Res Function(Success) _then)
+      : super(_value, (v) => _then(v as Success));
+
+  @override
+  Success get _value => super._value as Success;
+
+  @override
+  $Res call({
+    Object imageEntity = freezed,
+  }) {
+    return _then(Success(
+      imageEntity: imageEntity == freezed
+          ? _value.imageEntity
+          : imageEntity as ImageEntity,
+    ));
+  }
+
+  @override
+  $ImageEntityCopyWith<$Res> get imageEntity {
+    if (_value.imageEntity == null) {
+      return null;
+    }
+    return $ImageEntityCopyWith<$Res>(_value.imageEntity, (value) {
+      return _then(_value.copyWith(imageEntity: value));
+    });
+  }
+}
+
 class _$Success with DiagnosticableTreeMixin implements Success {
   const _$Success({@required this.imageEntity}) : assert(imageEntity != null);
 
@@ -324,23 +414,16 @@ class _$Success with DiagnosticableTreeMixin implements Success {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(imageEntity);
 
   @override
-  _$Success copyWith({
-    Object imageEntity = freezed,
-  }) {
-    return _$Success(
-      imageEntity: imageEntity == freezed
-          ? this.imageEntity
-          : imageEntity as ImageEntity,
-    );
-  }
+  $SuccessCopyWith<Success> get copyWith =>
+      _$SuccessCopyWithImpl<Success>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -358,8 +441,8 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -413,8 +496,45 @@ abstract class Success implements ImageDetailState {
   const factory Success({@required ImageEntity imageEntity}) = _$Success;
 
   ImageEntity get imageEntity;
+  $SuccessCopyWith<Success> get copyWith;
+}
 
-  Success copyWith({ImageEntity imageEntity});
+abstract class $EditingCopyWith<$Res> {
+  factory $EditingCopyWith(Editing value, $Res Function(Editing) then) =
+      _$EditingCopyWithImpl<$Res>;
+  $Res call({ImageEntity imageEntity});
+
+  $ImageEntityCopyWith<$Res> get imageEntity;
+}
+
+class _$EditingCopyWithImpl<$Res> extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements $EditingCopyWith<$Res> {
+  _$EditingCopyWithImpl(Editing _value, $Res Function(Editing) _then)
+      : super(_value, (v) => _then(v as Editing));
+
+  @override
+  Editing get _value => super._value as Editing;
+
+  @override
+  $Res call({
+    Object imageEntity = freezed,
+  }) {
+    return _then(Editing(
+      imageEntity: imageEntity == freezed
+          ? _value.imageEntity
+          : imageEntity as ImageEntity,
+    ));
+  }
+
+  @override
+  $ImageEntityCopyWith<$Res> get imageEntity {
+    if (_value.imageEntity == null) {
+      return null;
+    }
+    return $ImageEntityCopyWith<$Res>(_value.imageEntity, (value) {
+      return _then(_value.copyWith(imageEntity: value));
+    });
+  }
 }
 
 class _$Editing with DiagnosticableTreeMixin implements Editing {
@@ -450,23 +570,16 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(imageEntity);
 
   @override
-  _$Editing copyWith({
-    Object imageEntity = freezed,
-  }) {
-    return _$Editing(
-      imageEntity: imageEntity == freezed
-          ? this.imageEntity
-          : imageEntity as ImageEntity,
-    );
-  }
+  $EditingCopyWith<Editing> get copyWith =>
+      _$EditingCopyWithImpl<Editing>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -484,8 +597,8 @@ class _$Editing with DiagnosticableTreeMixin implements Editing {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -539,8 +652,21 @@ abstract class Editing implements ImageDetailState {
   const factory Editing({@required ImageEntity imageEntity}) = _$Editing;
 
   ImageEntity get imageEntity;
+  $EditingCopyWith<Editing> get copyWith;
+}
 
-  Editing copyWith({ImageEntity imageEntity});
+abstract class $DeletedCopyWith<$Res> {
+  factory $DeletedCopyWith(Deleted value, $Res Function(Deleted) then) =
+      _$DeletedCopyWithImpl<$Res>;
+}
+
+class _$DeletedCopyWithImpl<$Res> extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements $DeletedCopyWith<$Res> {
+  _$DeletedCopyWithImpl(Deleted _value, $Res Function(Deleted) _then)
+      : super(_value, (v) => _then(v as Deleted));
+
+  @override
+  Deleted get _value => super._value as Deleted;
 }
 
 class _$Deleted with DiagnosticableTreeMixin implements Deleted {
@@ -570,8 +696,8 @@ class _$Deleted with DiagnosticableTreeMixin implements Deleted {
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -589,8 +715,8 @@ class _$Deleted with DiagnosticableTreeMixin implements Deleted {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -644,8 +770,35 @@ abstract class Deleted implements ImageDetailState {
   const factory Deleted() = _$Deleted;
 }
 
+abstract class $ErrorDetailsCopyWith<$Res> {
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
+  $Res call({String message});
+}
+
+class _$ErrorDetailsCopyWithImpl<$Res>
+    extends _$ImageDetailStateCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
+
+  @override
+  ErrorDetails get _value => super._value as ErrorDetails;
+
+  @override
+  $Res call({
+    Object message = freezed,
+  }) {
+    return _then(ErrorDetails(
+      message: message == freezed ? _value.message : message as String,
+    ));
+  }
+}
+
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
-  const _$ErrorDetails({this.message = ''});
+  const _$ErrorDetails({this.message = ''}) : assert(message != null);
 
   @JsonKey(defaultValue: '')
   @override
@@ -677,21 +830,16 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(message);
 
   @override
-  _$ErrorDetails copyWith({
-    Object message = freezed,
-  }) {
-    return _$ErrorDetails(
-      message: message == freezed ? this.message : message as String,
-    );
-  }
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
     @required Result loading(),
-    @required Result viewing(@required ImageEntity imageEntity),
-    @required Result editing(@required ImageEntity imageEntity),
+    @required Result viewing(ImageEntity imageEntity),
+    @required Result editing(ImageEntity imageEntity),
     @required Result delete(),
     @required Result error(String message),
   }) {
@@ -709,8 +857,8 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   Result maybeWhen<Result extends Object>(
     Result $default(), {
     Result loading(),
-    Result viewing(@required ImageEntity imageEntity),
-    Result editing(@required ImageEntity imageEntity),
+    Result viewing(ImageEntity imageEntity),
+    Result editing(ImageEntity imageEntity),
     Result delete(),
     Result error(String message),
     @required Result orElse(),
@@ -764,6 +912,5 @@ abstract class ErrorDetails implements ImageDetailState {
   const factory ErrorDetails({String message}) = _$ErrorDetails;
 
   String get message;
-
-  ErrorDetails copyWith({String message});
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }

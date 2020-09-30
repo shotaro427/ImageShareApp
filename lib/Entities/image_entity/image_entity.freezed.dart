@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'image_entity.dart';
 
@@ -7,36 +7,15 @@ part of 'image_entity.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
 ImageEntity _$ImageEntityFromJson(Map<String, dynamic> json) {
   return _ImageEntity.fromJson(json);
-}
-
-mixin _$ImageEntity {
-  String get title;
-  String get image_id;
-  String get memo;
-  String get created_at;
-  String get updated_at;
-  String get originalUrl;
-  String get url;
-  List<TagState> get tags;
-
-  ImageEntity copyWith(
-      {String title,
-      String image_id,
-      String memo,
-      String created_at,
-      String updated_at,
-      String originalUrl,
-      String url,
-      List<TagState> tags});
-
-  Map<String, dynamic> toJson();
 }
 
 class _$ImageEntityTearOff {
   const _$ImageEntityTearOff();
 
+// ignore: unused_element
   _ImageEntity call(
       {String title,
       String image_id,
@@ -59,7 +38,124 @@ class _$ImageEntityTearOff {
   }
 }
 
+// ignore: unused_element
 const $ImageEntity = _$ImageEntityTearOff();
+
+mixin _$ImageEntity {
+  String get title;
+  String get image_id;
+  String get memo;
+  String get created_at;
+  String get updated_at;
+  String get originalUrl;
+  String get url;
+  List<TagState> get tags;
+
+  Map<String, dynamic> toJson();
+  $ImageEntityCopyWith<ImageEntity> get copyWith;
+}
+
+abstract class $ImageEntityCopyWith<$Res> {
+  factory $ImageEntityCopyWith(
+          ImageEntity value, $Res Function(ImageEntity) then) =
+      _$ImageEntityCopyWithImpl<$Res>;
+  $Res call(
+      {String title,
+      String image_id,
+      String memo,
+      String created_at,
+      String updated_at,
+      String originalUrl,
+      String url,
+      List<TagState> tags});
+}
+
+class _$ImageEntityCopyWithImpl<$Res> implements $ImageEntityCopyWith<$Res> {
+  _$ImageEntityCopyWithImpl(this._value, this._then);
+
+  final ImageEntity _value;
+  // ignore: unused_field
+  final $Res Function(ImageEntity) _then;
+
+  @override
+  $Res call({
+    Object title = freezed,
+    Object image_id = freezed,
+    Object memo = freezed,
+    Object created_at = freezed,
+    Object updated_at = freezed,
+    Object originalUrl = freezed,
+    Object url = freezed,
+    Object tags = freezed,
+  }) {
+    return _then(_value.copyWith(
+      title: title == freezed ? _value.title : title as String,
+      image_id: image_id == freezed ? _value.image_id : image_id as String,
+      memo: memo == freezed ? _value.memo : memo as String,
+      created_at:
+          created_at == freezed ? _value.created_at : created_at as String,
+      updated_at:
+          updated_at == freezed ? _value.updated_at : updated_at as String,
+      originalUrl:
+          originalUrl == freezed ? _value.originalUrl : originalUrl as String,
+      url: url == freezed ? _value.url : url as String,
+      tags: tags == freezed ? _value.tags : tags as List<TagState>,
+    ));
+  }
+}
+
+abstract class _$ImageEntityCopyWith<$Res>
+    implements $ImageEntityCopyWith<$Res> {
+  factory _$ImageEntityCopyWith(
+          _ImageEntity value, $Res Function(_ImageEntity) then) =
+      __$ImageEntityCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {String title,
+      String image_id,
+      String memo,
+      String created_at,
+      String updated_at,
+      String originalUrl,
+      String url,
+      List<TagState> tags});
+}
+
+class __$ImageEntityCopyWithImpl<$Res> extends _$ImageEntityCopyWithImpl<$Res>
+    implements _$ImageEntityCopyWith<$Res> {
+  __$ImageEntityCopyWithImpl(
+      _ImageEntity _value, $Res Function(_ImageEntity) _then)
+      : super(_value, (v) => _then(v as _ImageEntity));
+
+  @override
+  _ImageEntity get _value => super._value as _ImageEntity;
+
+  @override
+  $Res call({
+    Object title = freezed,
+    Object image_id = freezed,
+    Object memo = freezed,
+    Object created_at = freezed,
+    Object updated_at = freezed,
+    Object originalUrl = freezed,
+    Object url = freezed,
+    Object tags = freezed,
+  }) {
+    return _then(_ImageEntity(
+      title: title == freezed ? _value.title : title as String,
+      image_id: image_id == freezed ? _value.image_id : image_id as String,
+      memo: memo == freezed ? _value.memo : memo as String,
+      created_at:
+          created_at == freezed ? _value.created_at : created_at as String,
+      updated_at:
+          updated_at == freezed ? _value.updated_at : updated_at as String,
+      originalUrl:
+          originalUrl == freezed ? _value.originalUrl : originalUrl as String,
+      url: url == freezed ? _value.url : url as String,
+      tags: tags == freezed ? _value.tags : tags as List<TagState>,
+    ));
+  }
+}
 
 @JsonSerializable()
 class _$_ImageEntity implements _ImageEntity {
@@ -137,30 +233,8 @@ class _$_ImageEntity implements _ImageEntity {
       const DeepCollectionEquality().hash(tags);
 
   @override
-  _$_ImageEntity copyWith({
-    Object title = freezed,
-    Object image_id = freezed,
-    Object memo = freezed,
-    Object created_at = freezed,
-    Object updated_at = freezed,
-    Object originalUrl = freezed,
-    Object url = freezed,
-    Object tags = freezed,
-  }) {
-    return _$_ImageEntity(
-      title: title == freezed ? this.title : title as String,
-      image_id: image_id == freezed ? this.image_id : image_id as String,
-      memo: memo == freezed ? this.memo : memo as String,
-      created_at:
-          created_at == freezed ? this.created_at : created_at as String,
-      updated_at:
-          updated_at == freezed ? this.updated_at : updated_at as String,
-      originalUrl:
-          originalUrl == freezed ? this.originalUrl : originalUrl as String,
-      url: url == freezed ? this.url : url as String,
-      tags: tags == freezed ? this.tags : tags as List<TagState>,
-    );
-  }
+  _$ImageEntityCopyWith<_ImageEntity> get copyWith =>
+      __$ImageEntityCopyWithImpl<_ImageEntity>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -198,15 +272,6 @@ abstract class _ImageEntity implements ImageEntity {
   String get url;
   @override
   List<TagState> get tags;
-
   @override
-  _ImageEntity copyWith(
-      {String title,
-      String image_id,
-      String memo,
-      String created_at,
-      String updated_at,
-      String originalUrl,
-      String url,
-      List<TagState> tags});
+  _$ImageEntityCopyWith<_ImageEntity> get copyWith;
 }

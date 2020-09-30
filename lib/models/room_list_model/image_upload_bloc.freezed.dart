@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
 part of 'image_upload_bloc.dart';
 
@@ -7,26 +7,67 @@ part of 'image_upload_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
+
+class _$ImageUploadStateTearOff {
+  const _$ImageUploadStateTearOff();
+
+// ignore: unused_element
+  _ImageUploadState call() {
+    return const _ImageUploadState();
+  }
+
+// ignore: unused_element
+  Loading loading({@required File file}) {
+    return Loading(
+      file: file,
+    );
+  }
+
+// ignore: unused_element
+  Success success({@required File file}) {
+    return Success(
+      file: file,
+    );
+  }
+
+// ignore: unused_element
+  SuccessUpload successUpload({@required File file}) {
+    return SuccessUpload(
+      file: file,
+    );
+  }
+
+// ignore: unused_element
+  ErrorDetails error({String message = '', @required File file}) {
+    return ErrorDetails(
+      message: message,
+      file: file,
+    );
+  }
+}
+
+// ignore: unused_element
+const $ImageUploadState = _$ImageUploadStateTearOff();
+
 mixin _$ImageUploadState {
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   });
-
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   });
-
   @optionalTypeArgs
   Result map<Result extends Object>(
     Result $default(_ImageUploadState value), {
@@ -35,7 +76,6 @@ mixin _$ImageUploadState {
     @required Result successUpload(SuccessUpload value),
     @required Result error(ErrorDetails value),
   });
-
   @optionalTypeArgs
   Result maybeMap<Result extends Object>(
     Result $default(_ImageUploadState value), {
@@ -47,40 +87,37 @@ mixin _$ImageUploadState {
   });
 }
 
-class _$ImageUploadStateTearOff {
-  const _$ImageUploadStateTearOff();
-
-  _ImageUploadState call() {
-    return const _ImageUploadState();
-  }
-
-  Loading loading({@required File file}) {
-    return Loading(
-      file: file,
-    );
-  }
-
-  Success success({@required File file}) {
-    return Success(
-      file: file,
-    );
-  }
-
-  SuccessUpload successUpload({@required File file}) {
-    return SuccessUpload(
-      file: file,
-    );
-  }
-
-  ErrorDetails error({String message = '', @required File file}) {
-    return ErrorDetails(
-      message: message,
-      file: file,
-    );
-  }
+abstract class $ImageUploadStateCopyWith<$Res> {
+  factory $ImageUploadStateCopyWith(
+          ImageUploadState value, $Res Function(ImageUploadState) then) =
+      _$ImageUploadStateCopyWithImpl<$Res>;
 }
 
-const $ImageUploadState = _$ImageUploadStateTearOff();
+class _$ImageUploadStateCopyWithImpl<$Res>
+    implements $ImageUploadStateCopyWith<$Res> {
+  _$ImageUploadStateCopyWithImpl(this._value, this._then);
+
+  final ImageUploadState _value;
+  // ignore: unused_field
+  final $Res Function(ImageUploadState) _then;
+}
+
+abstract class _$ImageUploadStateCopyWith<$Res> {
+  factory _$ImageUploadStateCopyWith(
+          _ImageUploadState value, $Res Function(_ImageUploadState) then) =
+      __$ImageUploadStateCopyWithImpl<$Res>;
+}
+
+class __$ImageUploadStateCopyWithImpl<$Res>
+    extends _$ImageUploadStateCopyWithImpl<$Res>
+    implements _$ImageUploadStateCopyWith<$Res> {
+  __$ImageUploadStateCopyWithImpl(
+      _ImageUploadState _value, $Res Function(_ImageUploadState) _then)
+      : super(_value, (v) => _then(v as _ImageUploadState));
+
+  @override
+  _ImageUploadState get _value => super._value as _ImageUploadState;
+}
 
 class _$_ImageUploadState
     with DiagnosticableTreeMixin
@@ -110,10 +147,10 @@ class _$_ImageUploadState
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -127,10 +164,10 @@ class _$_ImageUploadState
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -179,6 +216,30 @@ abstract class _ImageUploadState implements ImageUploadState {
   const factory _ImageUploadState() = _$_ImageUploadState;
 }
 
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+  $Res call({File file});
+}
+
+class _$LoadingCopyWithImpl<$Res> extends _$ImageUploadStateCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
+
+  @override
+  $Res call({
+    Object file = freezed,
+  }) {
+    return _then(Loading(
+      file: file == freezed ? _value.file : file as File,
+    ));
+  }
+}
+
 class _$Loading with DiagnosticableTreeMixin implements Loading {
   const _$Loading({@required this.file}) : assert(file != null);
 
@@ -211,22 +272,17 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
 
   @override
-  _$Loading copyWith({
-    Object file = freezed,
-  }) {
-    return _$Loading(
-      file: file == freezed ? this.file : file as File,
-    );
-  }
+  $LoadingCopyWith<Loading> get copyWith =>
+      _$LoadingCopyWithImpl<Loading>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -240,10 +296,10 @@ class _$Loading with DiagnosticableTreeMixin implements Loading {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -292,8 +348,31 @@ abstract class Loading implements ImageUploadState {
   const factory Loading({@required File file}) = _$Loading;
 
   File get file;
+  $LoadingCopyWith<Loading> get copyWith;
+}
 
-  Loading copyWith({File file});
+abstract class $SuccessCopyWith<$Res> {
+  factory $SuccessCopyWith(Success value, $Res Function(Success) then) =
+      _$SuccessCopyWithImpl<$Res>;
+  $Res call({File file});
+}
+
+class _$SuccessCopyWithImpl<$Res> extends _$ImageUploadStateCopyWithImpl<$Res>
+    implements $SuccessCopyWith<$Res> {
+  _$SuccessCopyWithImpl(Success _value, $Res Function(Success) _then)
+      : super(_value, (v) => _then(v as Success));
+
+  @override
+  Success get _value => super._value as Success;
+
+  @override
+  $Res call({
+    Object file = freezed,
+  }) {
+    return _then(Success(
+      file: file == freezed ? _value.file : file as File,
+    ));
+  }
 }
 
 class _$Success with DiagnosticableTreeMixin implements Success {
@@ -328,22 +407,17 @@ class _$Success with DiagnosticableTreeMixin implements Success {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
 
   @override
-  _$Success copyWith({
-    Object file = freezed,
-  }) {
-    return _$Success(
-      file: file == freezed ? this.file : file as File,
-    );
-  }
+  $SuccessCopyWith<Success> get copyWith =>
+      _$SuccessCopyWithImpl<Success>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -357,10 +431,10 @@ class _$Success with DiagnosticableTreeMixin implements Success {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -409,8 +483,34 @@ abstract class Success implements ImageUploadState {
   const factory Success({@required File file}) = _$Success;
 
   File get file;
+  $SuccessCopyWith<Success> get copyWith;
+}
 
-  Success copyWith({File file});
+abstract class $SuccessUploadCopyWith<$Res> {
+  factory $SuccessUploadCopyWith(
+          SuccessUpload value, $Res Function(SuccessUpload) then) =
+      _$SuccessUploadCopyWithImpl<$Res>;
+  $Res call({File file});
+}
+
+class _$SuccessUploadCopyWithImpl<$Res>
+    extends _$ImageUploadStateCopyWithImpl<$Res>
+    implements $SuccessUploadCopyWith<$Res> {
+  _$SuccessUploadCopyWithImpl(
+      SuccessUpload _value, $Res Function(SuccessUpload) _then)
+      : super(_value, (v) => _then(v as SuccessUpload));
+
+  @override
+  SuccessUpload get _value => super._value as SuccessUpload;
+
+  @override
+  $Res call({
+    Object file = freezed,
+  }) {
+    return _then(SuccessUpload(
+      file: file == freezed ? _value.file : file as File,
+    ));
+  }
 }
 
 class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
@@ -445,22 +545,17 @@ class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(file);
 
   @override
-  _$SuccessUpload copyWith({
-    Object file = freezed,
-  }) {
-    return _$SuccessUpload(
-      file: file == freezed ? this.file : file as File,
-    );
-  }
+  $SuccessUploadCopyWith<SuccessUpload> get copyWith =>
+      _$SuccessUploadCopyWithImpl<SuccessUpload>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -474,10 +569,10 @@ class _$SuccessUpload with DiagnosticableTreeMixin implements SuccessUpload {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -526,13 +621,42 @@ abstract class SuccessUpload implements ImageUploadState {
   const factory SuccessUpload({@required File file}) = _$SuccessUpload;
 
   File get file;
+  $SuccessUploadCopyWith<SuccessUpload> get copyWith;
+}
 
-  SuccessUpload copyWith({File file});
+abstract class $ErrorDetailsCopyWith<$Res> {
+  factory $ErrorDetailsCopyWith(
+          ErrorDetails value, $Res Function(ErrorDetails) then) =
+      _$ErrorDetailsCopyWithImpl<$Res>;
+  $Res call({String message, File file});
+}
+
+class _$ErrorDetailsCopyWithImpl<$Res>
+    extends _$ImageUploadStateCopyWithImpl<$Res>
+    implements $ErrorDetailsCopyWith<$Res> {
+  _$ErrorDetailsCopyWithImpl(
+      ErrorDetails _value, $Res Function(ErrorDetails) _then)
+      : super(_value, (v) => _then(v as ErrorDetails));
+
+  @override
+  ErrorDetails get _value => super._value as ErrorDetails;
+
+  @override
+  $Res call({
+    Object message = freezed,
+    Object file = freezed,
+  }) {
+    return _then(ErrorDetails(
+      message: message == freezed ? _value.message : message as String,
+      file: file == freezed ? _value.file : file as File,
+    ));
+  }
 }
 
 class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   const _$ErrorDetails({this.message = '', @required this.file})
-      : assert(file != null);
+      : assert(message != null),
+        assert(file != null);
 
   @JsonKey(defaultValue: '')
   @override
@@ -572,24 +696,17 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
       const DeepCollectionEquality().hash(file);
 
   @override
-  _$ErrorDetails copyWith({
-    Object message = freezed,
-    Object file = freezed,
-  }) {
-    return _$ErrorDetails(
-      message: message == freezed ? this.message : message as String,
-      file: file == freezed ? this.file : file as File,
-    );
-  }
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith =>
+      _$ErrorDetailsCopyWithImpl<ErrorDetails>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>(
     Result $default(), {
-    @required Result loading(@required File file),
-    @required Result success(@required File file),
-    @required Result successUpload(@required File file),
-    @required Result error(String message, @required File file),
+    @required Result loading(File file),
+    @required Result success(File file),
+    @required Result successUpload(File file),
+    @required Result error(String message, File file),
   }) {
     assert($default != null);
     assert(loading != null);
@@ -603,10 +720,10 @@ class _$ErrorDetails with DiagnosticableTreeMixin implements ErrorDetails {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>(
     Result $default(), {
-    Result loading(@required File file),
-    Result success(@required File file),
-    Result successUpload(@required File file),
-    Result error(String message, @required File file),
+    Result loading(File file),
+    Result success(File file),
+    Result successUpload(File file),
+    Result error(String message, File file),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -657,6 +774,5 @@ abstract class ErrorDetails implements ImageUploadState {
 
   String get message;
   File get file;
-
-  ErrorDetails copyWith({String message, File file});
+  $ErrorDetailsCopyWith<ErrorDetails> get copyWith;
 }

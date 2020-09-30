@@ -94,12 +94,12 @@ class WaitingRoomListContainerWidget extends StatelessWidget {
                       itemCount: rooms.length,
                     ),
                   ),
-                  FlatButton(
-                    child: const Text('さらに読み込む'),
-                    onPressed: () => context
-                        .read<WaitingRoomListStateNotifier>()
-                        .fetchWaitingRooms(),
-                  )
+                  // FlatButton(
+                  //   child: const Text('さらに読み込む'),
+                  //   onPressed: () => context
+                  //       .read<WaitingRoomListStateNotifier>()
+                  //       .fetchWaitingRooms(),
+                  // )
                 ],
               );
             },

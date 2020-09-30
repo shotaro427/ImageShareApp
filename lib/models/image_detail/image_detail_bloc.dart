@@ -106,8 +106,8 @@ class ImageDetailStateNotifier extends StateNotifier<ImageDetailState> {
 
   @override
   void dispose() {
-    super.dispose();
     titleController.dispose();
     memoController.dispose();
+    super.dispose();
   }
 }
