@@ -12,11 +12,11 @@ import 'package:state_notifier/state_notifier.dart';
 
 final createRoomController = StateNotifierProvider((ref) {
   final _userStore = ref.watch(userStore);
-  final user = ref.watch(userStore.state);
+  final _user = ref.watch(userStore.state);
   return CreateRoomController(
     FirestoreService(),
     _userStore,
-    user,
+    _user,
   );
 });
 
@@ -47,6 +47,7 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
       newJoinedRooms.add(newRoom.id);
       final newUser = _user.copyWith(joinedRooms: newJoinedRooms);
 
+      // userを保存
       await _userStore.updateUser(newUser);
 
       state = state.copyWith(error: null, isLoading: false);
