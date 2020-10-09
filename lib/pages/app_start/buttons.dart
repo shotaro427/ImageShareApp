@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_controller.dart';
-import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/widget/atoms/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

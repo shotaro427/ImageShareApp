@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_share_app/model/entities/room.entity.dart';
 
 class RoomItem extends StatelessWidget {
+  final RoomState group;
+
+  RoomItem(this.group);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,7 +23,9 @@ class RoomItem extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage('images/icon.jpeg'),
+                  backgroundImage: (group.iconUrl != '')
+                      ? NetworkImage(group.iconUrl)
+                      : const AssetImage('images/group_icon.jpeg'),
                   radius: 25,
                 ),
                 Padding(
@@ -28,24 +35,17 @@ class RoomItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'タイトル',
-                        style: TextStyle(
+                        group.name,
+                        style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 16),
-                            child: Text(
-                              '投稿数: 5',
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          ),
                           Text(
-                            '参加者: 5',
-                            style: TextStyle(fontSize: 10),
+                            '参加者: ${group.member.length}',
+                            style: const TextStyle(fontSize: 10),
                           ),
                         ],
                       )

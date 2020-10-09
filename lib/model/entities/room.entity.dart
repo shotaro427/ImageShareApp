@@ -16,6 +16,7 @@ abstract class RoomState with _$RoomState {
     @Default([]) List<String> tags,
     @Default([]) List<String> member,
     @Default([]) List<String> invited,
+    @Default('') String iconUrl,
   }) = _RoomState;
 
   factory RoomState.fromJson(Map<String, dynamic> json) =>
