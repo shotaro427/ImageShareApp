@@ -11,19 +11,25 @@ import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final createRoomController = StateNotifierProvider((ref) {
-  final uid = ref.watch(userStore.state).uid;
+  final _userStore = ref.watch(userStore);
+  final _user = ref.watch(userStore.state);
   return CreateRoomController(
     FirestoreService(),
-    uid,
+    _userStore,
+    _user,
   );
 });
 
 class CreateRoomController extends StateNotifier<CreateRoomState> {
-  CreateRoomController(this.firestoreService, this.uid)
-      : super(const CreateRoomState());
+  CreateRoomController(
+    this.firestoreService,
+    this._userStore,
+    this._user,
+  ) : super(const CreateRoomState());
 
   final FirestoreService firestoreService;
-  final String uid;
+  final UserState _user;
+  final UserController _userStore;
 
   final nameInputController = TextEditingController();
 
@@ -31,9 +37,18 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
     state = state.copyWith(isLoading: true);
 
     try {
+      // グループを作成
       final room = RoomState(name: nameInputController.text);
-      // Firestoreに保存
-      await firestoreService.saveRoomInfo(room, uid);
+      // firestoreに保存
+      final newRoom = (await firestoreService.saveRoomInfo(room, _user.uid));
+
+      // 新規作成したグループのIDを追加
+      final List<String> newJoinedRooms = List.from(_user.joinedRooms);
+      newJoinedRooms.add(newRoom.id);
+      final newUser = _user.copyWith(joinedRooms: newJoinedRooms);
+
+      // userを保存
+      await _userStore.updateUser(newUser);
 
       state = state.copyWith(error: null, isLoading: false);
       if (state.error == null) {
