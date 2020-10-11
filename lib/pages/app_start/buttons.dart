@@ -10,8 +10,8 @@ class AppStartButtons extends ConsumerWidget {
   final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isLoading = watch(appStartController.state).isLoading;
-    return isLoading
+    final state = watch(appStartController.state);
+    return state.isLoading
         ? const Center(child: CircularProgressIndicator())
         : Center(
             child: SizedBox(

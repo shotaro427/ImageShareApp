@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:image_share_app/flavor.dart';
-import 'package:image_share_app/widgets/sing_in/app_start_page.dart';
+import 'package:image_share_app/pages/app_start/app_start_page.dart';
 import 'package:image_share_app/widgets/sing_in/sign_in_page.dart';
 import 'package:image_share_app/widgets/top_image_list/select_tag_page.dart';
 import 'package:provider/provider.dart';

@@ -9,7 +9,10 @@ part of 'invited_room_list_state.dart';
 _$_InvitedRoomState _$_$_InvitedRoomStateFromJson(Map<String, dynamic> json) {
   return _$_InvitedRoomState(
     isLoading: json['isLoading'] as bool ?? false,
-    rooms: json['rooms'] as List,
+    rooms: (json['rooms'] as List)
+        ?.map((e) =>
+            e == null ? null : RoomState.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     error: json['error'] as String,
   );
 }
