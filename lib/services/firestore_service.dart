@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'dart:math' as math;
 
 import 'package:uuid/uuid.dart';
+
+enum RoomType {
+  joinedRooms,
+  invitedRooms,
+}
 
 class FirestoreService {
   // ユーザー情報をFireStoreに保存する処理
@@ -55,7 +61,20 @@ class FirestoreService {
   }
 
   // グループ一覧を取得する
-  Future<List<RoomState>> getRooms() {}
+  Future<List<RoomState>> getRooms(String uid,
+      {int page = 1, RoomType type = RoomType.joinedRooms}) async {
+    // ユーザーの参加グループのIDを取得
+    final userData =
+        (await Firestore.instance.document('private/users/users/${uid}').get())
+            .data;
+    final List<String> roomIds = userData[describeEnum(type)].cast<String>();
+    final lastCount = roomIds.length < (((page - 1) * 10) + 11)
+        ? roomIds.length
+        : (((page - 1) * 10) + 11);
+    final slicedIds = roomIds.sublist((page - 1) * 10, lastCount);
+
+    return (await _getRoomsByIdList(slicedIds));
+  }
 
   // User
 
@@ -235,5 +254,47 @@ class FirestoreService {
       'id': room.id,
       'name': room.name,
     });
+  }
+
+  Future<List<RoomState>> _getRoomsByIdList(List<String> ids) async {
+    // グループリスト
+    List<RoomState> groupList = [];
+
+    for (final id in ids) {
+      final List<DocumentSnapshot> docs = (await Future.wait([
+        Firestore.instance.document('public/rooms/rooms/${id}').get(),
+        Firestore.instance.document('memberOnly/rooms/rooms/${id}').get(),
+      ]));
+
+      final firstData = docs.first.data;
+      final lastData = docs.last.data;
+
+      // グループリストに取得したグループ情報を格納
+      if (firstData.keys.contains('name')) {
+        // public document
+        RoomState group = RoomState.fromJson(firstData);
+        group = group.copyWith(
+          invited: lastData['invited'].cast<String>(),
+          member: lastData['members'].cast<String>(),
+          tags: lastData['tags'].cast<String>(),
+        );
+
+        groupList.add(group);
+      } else if (firstData.keys.contains('invited') &&
+          firstData.keys.contains('member') &&
+          firstData.keys.contains('tags')) {
+        // memberOnly document
+        RoomState group = RoomState.fromJson(lastData);
+        group = group.copyWith(
+          invited: firstData['invited'].cast<String>(),
+          member: firstData['member'].cast<String>(),
+          tags: firstData['tags'].cast<String>(),
+        );
+
+        groupList.add(group);
+      }
+    }
+
+    return groupList;
   }
 }

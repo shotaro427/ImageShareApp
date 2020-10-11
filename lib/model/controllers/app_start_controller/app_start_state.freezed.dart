@@ -13,10 +13,12 @@ class _$AppStartStateTearOff {
   const _$AppStartStateTearOff();
 
 // ignore: unused_element
-  _AppStartState call({bool isLoading = false, String error}) {
+  _AppStartState call(
+      {bool isLoading = false, String error, dynamic isAlreadySignIn = false}) {
     return _AppStartState(
       isLoading: isLoading,
       error: error,
+      isAlreadySignIn: isAlreadySignIn,
     );
   }
 }
@@ -27,6 +29,7 @@ const $AppStartState = _$AppStartStateTearOff();
 mixin _$AppStartState {
   bool get isLoading;
   String get error;
+  dynamic get isAlreadySignIn;
 
   $AppStartStateCopyWith<AppStartState> get copyWith;
 }
@@ -35,7 +38,7 @@ abstract class $AppStartStateCopyWith<$Res> {
   factory $AppStartStateCopyWith(
           AppStartState value, $Res Function(AppStartState) then) =
       _$AppStartStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading, String error});
+  $Res call({bool isLoading, String error, dynamic isAlreadySignIn});
 }
 
 class _$AppStartStateCopyWithImpl<$Res>
@@ -50,10 +53,14 @@ class _$AppStartStateCopyWithImpl<$Res>
   $Res call({
     Object isLoading = freezed,
     Object error = freezed,
+    Object isAlreadySignIn = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
+      isAlreadySignIn: isAlreadySignIn == freezed
+          ? _value.isAlreadySignIn
+          : isAlreadySignIn as dynamic,
     ));
   }
 }
@@ -64,7 +71,7 @@ abstract class _$AppStartStateCopyWith<$Res>
           _AppStartState value, $Res Function(_AppStartState) then) =
       __$AppStartStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, String error});
+  $Res call({bool isLoading, String error, dynamic isAlreadySignIn});
 }
 
 class __$AppStartStateCopyWithImpl<$Res>
@@ -81,27 +88,35 @@ class __$AppStartStateCopyWithImpl<$Res>
   $Res call({
     Object isLoading = freezed,
     Object error = freezed,
+    Object isAlreadySignIn = freezed,
   }) {
     return _then(_AppStartState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
+      isAlreadySignIn:
+          isAlreadySignIn == freezed ? _value.isAlreadySignIn : isAlreadySignIn,
     ));
   }
 }
 
 class _$_AppStartState implements _AppStartState {
-  const _$_AppStartState({this.isLoading = false, this.error})
-      : assert(isLoading != null);
+  const _$_AppStartState(
+      {this.isLoading = false, this.error, this.isAlreadySignIn = false})
+      : assert(isLoading != null),
+        assert(isAlreadySignIn != null);
 
   @JsonKey(defaultValue: false)
   @override
   final bool isLoading;
   @override
   final String error;
+  @JsonKey(defaultValue: false)
+  @override
+  final dynamic isAlreadySignIn;
 
   @override
   String toString() {
-    return 'AppStartState(isLoading: $isLoading, error: $error)';
+    return 'AppStartState(isLoading: $isLoading, error: $error, isAlreadySignIn: $isAlreadySignIn)';
   }
 
   @override
@@ -112,14 +127,18 @@ class _$_AppStartState implements _AppStartState {
                 const DeepCollectionEquality()
                     .equals(other.isLoading, isLoading)) &&
             (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)));
+                const DeepCollectionEquality().equals(other.error, error)) &&
+            (identical(other.isAlreadySignIn, isAlreadySignIn) ||
+                const DeepCollectionEquality()
+                    .equals(other.isAlreadySignIn, isAlreadySignIn)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isLoading) ^
-      const DeepCollectionEquality().hash(error);
+      const DeepCollectionEquality().hash(error) ^
+      const DeepCollectionEquality().hash(isAlreadySignIn);
 
   @override
   _$AppStartStateCopyWith<_AppStartState> get copyWith =>
@@ -127,13 +146,17 @@ class _$_AppStartState implements _AppStartState {
 }
 
 abstract class _AppStartState implements AppStartState {
-  const factory _AppStartState({bool isLoading, String error}) =
-      _$_AppStartState;
+  const factory _AppStartState(
+      {bool isLoading,
+      String error,
+      dynamic isAlreadySignIn}) = _$_AppStartState;
 
   @override
   bool get isLoading;
   @override
   String get error;
+  @override
+  dynamic get isAlreadySignIn;
   @override
   _$AppStartStateCopyWith<_AppStartState> get copyWith;
 }

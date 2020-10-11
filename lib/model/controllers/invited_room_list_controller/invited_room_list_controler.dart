@@ -1,24 +1,22 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_share_app/model/controllers/room_list_controller/room_list_state.dart';
+import 'package:image_share_app/model/controllers/invited_room_list_controller/invited_room_list_state.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-final roomListController = StateNotifierProvider(
-  (ref) {
-    final user = ref.watch(userStore.state);
-    return RoomListController(
-      FirestoreService(),
-      user,
-    );
-  },
-);
+final invitedRoomListController = StateNotifierProvider((ref) {
+  final user = ref.watch(userStore.state);
+  return InvitedRoomListController(
+    FirestoreService(),
+    user,
+  );
+});
 
-class RoomListController extends StateNotifier<RoomListState> {
-  RoomListController(this.firestoreService, this.user)
-      : super(const RoomListState()) {
+class InvitedRoomListController extends StateNotifier<InvitedRoomState> {
+  InvitedRoomListController(this.firestoreService, this.user)
+      : super(const InvitedRoomState()) {
     getRooms();
   }
 
@@ -29,8 +27,10 @@ class RoomListController extends StateNotifier<RoomListState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      log('user ${user.uid}');
-      final groups = (await firestoreService.getRooms(user.uid));
+      final groups = (await firestoreService.getRooms(
+        user.uid,
+        type: RoomType.invitedRooms,
+      ));
       state = state.copyWith(isLoading: false, error: null, rooms: groups);
     } catch (e) {
       log(e.toString());

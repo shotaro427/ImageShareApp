@@ -29,6 +29,11 @@ class _FloatingButtonsState extends State<FloatingButtons>
     Navigator.of(context).pushNamed('createRoom');
   }
 
+  void _navigateInvitedRoomPage(BuildContext context) {
+    _animationController.reverse();
+    Navigator.of(context).pushNamed('invitedRoomList');
+  }
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionBubble(
@@ -42,7 +47,7 @@ class _FloatingButtonsState extends State<FloatingButtons>
           bubbleColor: Colors.blue,
           icon: Icons.mail,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-          onPress: _animationController.reverse,
+          onPress: () => _navigateInvitedRoomPage(context),
         ),
         // Floating action menu item
         Bubble(

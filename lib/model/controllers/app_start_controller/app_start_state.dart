@@ -6,5 +6,6 @@ abstract class AppStartState with _$AppStartState {
   const factory AppStartState({
     @Default(false) bool isLoading,
     String error,
+    @Default(false) isAlreadySignIn,
   }) = _AppStartState;
 }

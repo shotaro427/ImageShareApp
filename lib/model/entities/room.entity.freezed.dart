@@ -23,7 +23,8 @@ class _$RoomStateTearOff {
       String name = '',
       List<String> tags = const [],
       List<String> member = const [],
-      List<String> invited = const []}) {
+      List<String> invited = const [],
+      String iconUrl = ''}) {
     return _RoomState(
       createdAt: createdAt,
       updateAt: updateAt,
@@ -32,6 +33,7 @@ class _$RoomStateTearOff {
       tags: tags,
       member: member,
       invited: invited,
+      iconUrl: iconUrl,
     );
   }
 }
@@ -47,6 +49,7 @@ mixin _$RoomState {
   List<String> get tags;
   List<String> get member;
   List<String> get invited;
+  String get iconUrl;
 
   Map<String, dynamic> toJson();
   $RoomStateCopyWith<RoomState> get copyWith;
@@ -62,7 +65,8 @@ abstract class $RoomStateCopyWith<$Res> {
       String name,
       List<String> tags,
       List<String> member,
-      List<String> invited});
+      List<String> invited,
+      String iconUrl});
 }
 
 class _$RoomStateCopyWithImpl<$Res> implements $RoomStateCopyWith<$Res> {
@@ -81,6 +85,7 @@ class _$RoomStateCopyWithImpl<$Res> implements $RoomStateCopyWith<$Res> {
     Object tags = freezed,
     Object member = freezed,
     Object invited = freezed,
+    Object iconUrl = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: createdAt == freezed ? _value.createdAt : createdAt as int,
@@ -90,6 +95,7 @@ class _$RoomStateCopyWithImpl<$Res> implements $RoomStateCopyWith<$Res> {
       tags: tags == freezed ? _value.tags : tags as List<String>,
       member: member == freezed ? _value.member : member as List<String>,
       invited: invited == freezed ? _value.invited : invited as List<String>,
+      iconUrl: iconUrl == freezed ? _value.iconUrl : iconUrl as String,
     ));
   }
 }
@@ -106,7 +112,8 @@ abstract class _$RoomStateCopyWith<$Res> implements $RoomStateCopyWith<$Res> {
       String name,
       List<String> tags,
       List<String> member,
-      List<String> invited});
+      List<String> invited,
+      String iconUrl});
 }
 
 class __$RoomStateCopyWithImpl<$Res> extends _$RoomStateCopyWithImpl<$Res>
@@ -126,6 +133,7 @@ class __$RoomStateCopyWithImpl<$Res> extends _$RoomStateCopyWithImpl<$Res>
     Object tags = freezed,
     Object member = freezed,
     Object invited = freezed,
+    Object iconUrl = freezed,
   }) {
     return _then(_RoomState(
       createdAt: createdAt == freezed ? _value.createdAt : createdAt as int,
@@ -135,6 +143,7 @@ class __$RoomStateCopyWithImpl<$Res> extends _$RoomStateCopyWithImpl<$Res>
       tags: tags == freezed ? _value.tags : tags as List<String>,
       member: member == freezed ? _value.member : member as List<String>,
       invited: invited == freezed ? _value.invited : invited as List<String>,
+      iconUrl: iconUrl == freezed ? _value.iconUrl : iconUrl as String,
     ));
   }
 }
@@ -148,12 +157,14 @@ class _$_RoomState implements _RoomState {
       this.name = '',
       this.tags = const [],
       this.member = const [],
-      this.invited = const []})
+      this.invited = const [],
+      this.iconUrl = ''})
       : assert(id != null),
         assert(name != null),
         assert(tags != null),
         assert(member != null),
-        assert(invited != null);
+        assert(invited != null),
+        assert(iconUrl != null);
 
   factory _$_RoomState.fromJson(Map<String, dynamic> json) =>
       _$_$_RoomStateFromJson(json);
@@ -177,10 +188,13 @@ class _$_RoomState implements _RoomState {
   @JsonKey(defaultValue: const [])
   @override
   final List<String> invited;
+  @JsonKey(defaultValue: '')
+  @override
+  final String iconUrl;
 
   @override
   String toString() {
-    return 'RoomState(createdAt: $createdAt, updateAt: $updateAt, id: $id, name: $name, tags: $tags, member: $member, invited: $invited)';
+    return 'RoomState(createdAt: $createdAt, updateAt: $updateAt, id: $id, name: $name, tags: $tags, member: $member, invited: $invited, iconUrl: $iconUrl)';
   }
 
   @override
@@ -202,7 +216,10 @@ class _$_RoomState implements _RoomState {
             (identical(other.member, member) ||
                 const DeepCollectionEquality().equals(other.member, member)) &&
             (identical(other.invited, invited) ||
-                const DeepCollectionEquality().equals(other.invited, invited)));
+                const DeepCollectionEquality()
+                    .equals(other.invited, invited)) &&
+            (identical(other.iconUrl, iconUrl) ||
+                const DeepCollectionEquality().equals(other.iconUrl, iconUrl)));
   }
 
   @override
@@ -214,7 +231,8 @@ class _$_RoomState implements _RoomState {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(tags) ^
       const DeepCollectionEquality().hash(member) ^
-      const DeepCollectionEquality().hash(invited);
+      const DeepCollectionEquality().hash(invited) ^
+      const DeepCollectionEquality().hash(iconUrl);
 
   @override
   _$RoomStateCopyWith<_RoomState> get copyWith =>
@@ -234,7 +252,8 @@ abstract class _RoomState implements RoomState {
       String name,
       List<String> tags,
       List<String> member,
-      List<String> invited}) = _$_RoomState;
+      List<String> invited,
+      String iconUrl}) = _$_RoomState;
 
   factory _RoomState.fromJson(Map<String, dynamic> json) =
       _$_RoomState.fromJson;
@@ -253,6 +272,8 @@ abstract class _RoomState implements RoomState {
   List<String> get member;
   @override
   List<String> get invited;
+  @override
+  String get iconUrl;
   @override
   _$RoomStateCopyWith<_RoomState> get copyWith;
 }

@@ -15,6 +15,7 @@ _$_RoomState _$_$_RoomStateFromJson(Map<String, dynamic> json) {
     tags: (json['tags'] as List)?.map((e) => e as String)?.toList() ?? [],
     member: (json['member'] as List)?.map((e) => e as String)?.toList() ?? [],
     invited: (json['invited'] as List)?.map((e) => e as String)?.toList() ?? [],
+    iconUrl: json['iconUrl'] as String ?? '',
   );
 }
 
@@ -27,4 +28,5 @@ Map<String, dynamic> _$_$_RoomStateToJson(_$_RoomState instance) =>
       'tags': instance.tags,
       'member': instance.member,
       'invited': instance.invited,
+      'iconUrl': instance.iconUrl,
     };

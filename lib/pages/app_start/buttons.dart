@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_controller.dart';
-import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/widget/atoms/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,8 +10,8 @@ class AppStartButtons extends ConsumerWidget {
   final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isLoading = watch(appStartController.state).isLoading;
-    return isLoading
+    final state = watch(appStartController.state);
+    return state.isLoading
         ? const Center(child: CircularProgressIndicator())
         : Center(
             child: SizedBox(
