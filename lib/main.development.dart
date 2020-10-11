@@ -11,6 +11,7 @@ import 'package:image_share_app/pages/create_room/create_room_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
+import 'package:image_share_app/pages/post_top/post_top_page.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 
 bool _isAuthorized = false;
@@ -46,6 +47,7 @@ class DevMyApp extends StatelessWidget {
                 'createRoom': (BuildContext context) => CreateRoomPage(),
                 'invitedRoomList': (BuildContext context) =>
                     InvitedRoomListPage(),
+                'postTop': (BuildContext context) => PostTopPage(),
               },
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {
