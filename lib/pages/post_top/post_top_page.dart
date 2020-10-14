@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_share_app/pages/post_top/post_list.dart';
 import 'package:image_share_app/pages/post_top/search_bar.dart';
 
 class PostTopPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class PostTopPage extends StatelessWidget {
         appBar: AppBar(
           title: SarchBar(),
         ),
-        body: const Placeholder(),
+        body: PostList(),
       ),
     );
   }

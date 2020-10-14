@@ -5,8 +5,8 @@ class SarchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        fillColor: Colors.grey[200],
+      decoration: const InputDecoration(
+        fillColor: Colors.white,
         filled: true,
         hintText: 'キーワードを入力',
         hintStyle: const TextStyle(color: Colors.black),
