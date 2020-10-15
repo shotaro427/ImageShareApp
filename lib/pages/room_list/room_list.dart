@@ -11,6 +11,8 @@ class RoomList extends ConsumerWidget {
     final groups = state.rooms;
     final isEmpty = groups != null && groups.length < 1;
 
+    final onPressItem = () => Navigator.of(context).pushNamed('postTop');
+
     return state.isLoading
         ? const Center(child: CircularProgressIndicator())
         : isEmpty
@@ -22,6 +24,7 @@ class RoomList extends ConsumerWidget {
                 child: ListView.builder(
                   itemBuilder: (BuildContext context, int index) => RoomItem(
                     groups[index],
+                    onPressItem,
                   ),
                   itemCount: (groups != null) ? groups.length : 0,
                 ),
