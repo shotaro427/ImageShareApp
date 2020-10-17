@@ -11,18 +11,6 @@ class PostList extends StatelessWidget {
         right: 20,
         top: 10,
       ),
-      // child: GridView.builder(
-      //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      //     crossAxisCount: 2,
-      //     mainAxisSpacing: 8,
-      //     crossAxisSpacing: 5,
-      //     childAspectRatio: 0.7,
-      //   ),
-      //   itemBuilder: (BuildContext context, int index) {
-      //     return PostItem();
-      //   },
-      //   itemCount: 10,
-      // ),
       child: StaggeredGridView.countBuilder(
         crossAxisCount: 2,
         mainAxisSpacing: 4.0,
