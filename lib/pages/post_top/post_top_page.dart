@@ -15,7 +15,7 @@ class PostTopPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingButtons(),
         body: PostList(),
-        backgroundColor: backgroundColor,
+        backgroundColor: Colors.white,
       ),
     );
   }
