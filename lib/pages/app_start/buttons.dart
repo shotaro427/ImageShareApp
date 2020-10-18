@@ -4,43 +4,40 @@ import 'package:image_share_app/model/controllers/app_start_controller/app_start
 import 'package:image_share_app/widget/atoms/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AppStartButtons extends ConsumerWidget {
+class AppStartButtons extends StatelessWidget {
   AppStartButtons(this._key);
 
   final GlobalKey<ScaffoldState> _key;
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final state = watch(appStartController.state);
-    return state.isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Center(
-            child: SizedBox(
-              width: 250,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Appleでログイン
-                  _AppleSignInButton(_key),
-                  const SizedBox(height: 10),
-                  // Googleでログイン
-                  _GoogleSignInButton(_key),
-                  const SizedBox(height: 10),
-                  // メアドでログイン
-                  _MailSignInButton(),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'or',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  // 新規登録ボタン
-                  _CreateNewAccountButton(),
-                ],
-              ),
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 250,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Appleでログイン
+            _AppleSignInButton(_key),
+            const SizedBox(height: 10),
+            // Googleでログイン
+            _GoogleSignInButton(_key),
+            const SizedBox(height: 10),
+            // メアドでログイン
+            _MailSignInButton(),
+            const SizedBox(height: 10),
+            const Text(
+              'or',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18),
             ),
-          );
+            const SizedBox(height: 10),
+            // 新規登録ボタン
+            _CreateNewAccountButton(),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -62,11 +59,11 @@ class _AppleSignInButton extends ConsumerWidget {
   }
 }
 
-class _GoogleSignInButton extends ConsumerWidget {
+class _GoogleSignInButton extends StatelessWidget {
   _GoogleSignInButton(this._key);
   final GlobalKey<ScaffoldState> _key;
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context) {
     final Function onPress =
         () => context.read(appStartController).loginWithGoogle(_key);
 

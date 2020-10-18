@@ -4,6 +4,7 @@ import 'package:image_share_app/model/controllers/post_top_controller/post_top_c
 import 'package:image_share_app/pages/post_top/floating_buttons.dart';
 import 'package:image_share_app/pages/post_top/post_list.dart';
 import 'package:image_share_app/pages/post_top/search_bar.dart';
+import 'package:image_share_app/widget/atoms/loading_view.dart';
 
 class PostTopPage extends ConsumerWidget {
   @override
@@ -21,8 +22,7 @@ class PostTopPage extends ConsumerWidget {
             body: PostList(postTopState.posts),
             backgroundColor: Colors.white,
           ),
-          if (postTopState.isLoading)
-            const Center(child: CircularProgressIndicator()),
+          LoadingView(postTopState.isLoading),
         ],
       ),
     );
