@@ -14,7 +14,7 @@ class PostList extends StatelessWidget {
     return isEmpty
         ? const Center(
             child: Text(
-              '１件も投稿がありません。\n 右下のボタンから何か投稿してみましょう!!',
+              'まだ投稿がありません。\n 右下のボタンから何か投稿してみましょう！！',
               textAlign: TextAlign.center,
             ),
           )
