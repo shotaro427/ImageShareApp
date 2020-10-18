@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'dart:math' as math;
@@ -12,10 +13,11 @@ enum RoomType {
 }
 
 class FirestoreService {
+  final store = Firestore.instance;
+
   // ユーザー情報をFireStoreに保存する処理
   Future<UserState> saveUserInfo(UserState user) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/users/users');
+    CollectionReference _publicRef = store.collection('public/users/users');
 
     // 同じユーザーが存在するか確認
     final _documents =
@@ -42,8 +44,7 @@ class FirestoreService {
   }
 
   Future<RoomState> saveRoomInfo(RoomState room, String uid) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/rooms/rooms');
+    CollectionReference _publicRef = store.collection('public/rooms/rooms');
 
     // 同じグループがあるかどうか確認
     final _documents =
@@ -61,12 +62,14 @@ class FirestoreService {
   }
 
   // グループ一覧を取得する
-  Future<List<RoomState>> getRooms(String uid,
-      {int page = 1, RoomType type = RoomType.joinedRooms}) async {
+  Future<List<RoomState>> getRooms(
+    String uid, {
+    int page = 1,
+    RoomType type = RoomType.joinedRooms,
+  }) async {
     // ユーザーの参加グループのIDを取得
     final userData =
-        (await Firestore.instance.document('private/users/users/${uid}').get())
-            .data;
+        (await store.document('private/users/users/${uid}').get()).data;
     final List<String> roomIds = userData[describeEnum(type)].cast<String>();
     final lastCount = roomIds.length < (((page - 1) * 10) + 11)
         ? roomIds.length
@@ -75,6 +78,27 @@ class FirestoreService {
 
     return (await _getRoomsByIdList(slicedIds));
   }
+
+  // 投稿一覧を取得する
+  Future<List<PostState>> getPosts(String roomId) async {
+    final roomsByRoomId = (await store
+            .collection('memberOnly/rooms/rooms')
+            .where('id', isEqualTo: roomId)
+            .getDocuments())
+        .documents;
+
+    if (roomsByRoomId.length < 0) return [];
+
+    final posts =
+        (await roomsByRoomId[0].reference.collection('posts').getDocuments())
+            .documents
+            .map((e) => PostState.fromJson(e.data))
+            .toList();
+
+    return posts;
+  }
+
+  /// ======= PRIVATE =======
 
   // User
 
@@ -105,8 +129,7 @@ class FirestoreService {
   }
 
   Future _createUserPublic(UserState user) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/users/users');
+    CollectionReference _publicRef = store.collection('public/users/users');
 
     await _publicRef.document('${user.uid}').setData({
       'createdAt': user.createdAt,
@@ -119,8 +142,7 @@ class FirestoreService {
   }
 
   Future _createUserPrivate(UserState user) async {
-    CollectionReference _privateRef =
-        Firestore.instance.collection('private/users/users');
+    CollectionReference _privateRef = store.collection('private/users/users');
 
     await _privateRef.document('${user.uid}').setData({
       'createdAt': user.createdAt,
@@ -133,8 +155,7 @@ class FirestoreService {
   }
 
   Future _updateUserPublic(UserState user) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/users/users');
+    CollectionReference _publicRef = store.collection('public/users/users');
 
     await _publicRef.document('${user.uid}').updateData({
       'updateAt': user.updateAt,
@@ -146,8 +167,7 @@ class FirestoreService {
   }
 
   Future _updateUserPrivate(UserState user) async {
-    CollectionReference _privateRef =
-        Firestore.instance.collection('private/users/users');
+    CollectionReference _privateRef = store.collection('private/users/users');
 
     await _privateRef.document('${user.uid}').updateData({
       'updateAt': user.updateAt,
@@ -208,7 +228,7 @@ class FirestoreService {
 
   Future _createRoomMemberOnly(RoomState room) async {
     CollectionReference _memberOnlyRef =
-        Firestore.instance.collection('memberOnly/rooms/rooms');
+        store.collection('memberOnly/rooms/rooms');
 
     await _memberOnlyRef.document(room.id).setData({
       'createdAt': room.createdAt,
@@ -221,8 +241,7 @@ class FirestoreService {
   }
 
   Future _createRoomPublic(RoomState room) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/rooms/rooms');
+    CollectionReference _publicRef = store.collection('public/rooms/rooms');
 
     await _publicRef.document(room.id).setData({
       'createdAt': room.createdAt,
@@ -234,7 +253,7 @@ class FirestoreService {
 
   Future _updateRoomMemberOnly(RoomState room) async {
     CollectionReference _memberOnlyRef =
-        Firestore.instance.collection('memberOnly/rooms/rooms');
+        store.collection('memberOnly/rooms/rooms');
 
     await _memberOnlyRef.document(room.id).updateData({
       'updatedAt': room.updateAt,
@@ -246,8 +265,7 @@ class FirestoreService {
   }
 
   Future _updateRoomPublic(RoomState room) async {
-    CollectionReference _publicRef =
-        Firestore.instance.collection('public/rooms/rooms');
+    CollectionReference _publicRef = store.collection('public/rooms/rooms');
 
     await _publicRef.document(room.id).updateData({
       'updatedAt': room.updateAt,
@@ -262,8 +280,8 @@ class FirestoreService {
 
     for (final id in ids) {
       final List<DocumentSnapshot> docs = (await Future.wait([
-        Firestore.instance.document('public/rooms/rooms/${id}').get(),
-        Firestore.instance.document('memberOnly/rooms/rooms/${id}').get(),
+        store.document('public/rooms/rooms/${id}').get(),
+        store.document('memberOnly/rooms/rooms/${id}').get(),
       ]));
 
       final firstData = docs.first.data;
