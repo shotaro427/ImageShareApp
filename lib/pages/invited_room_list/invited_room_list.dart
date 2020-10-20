@@ -13,21 +13,19 @@ class RoomList extends ConsumerWidget {
 
     final onPressItem = () => {}; //TODO: アラートを表示
 
-    return state.isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : isEmpty
-            ? const Center(
-                child: Text('招待されているグループはありません'),
-              )
-            : Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: ListView.builder(
-                  itemBuilder: (BuildContext context, int index) => RoomItem(
-                    groups[index],
-                    onPressItem,
-                  ),
-                  itemCount: (groups != null) ? groups.length : 0,
-                ),
-              );
+    return isEmpty
+        ? const Center(
+            child: Text('招待されているグループはありません'),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) => RoomItem(
+                groups[index],
+                onPressItem,
+              ),
+              itemCount: (groups != null) ? groups.length : 0,
+            ),
+          );
   }
 }

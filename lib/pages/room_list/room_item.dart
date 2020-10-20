@@ -38,7 +38,9 @@ class RoomItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          group.name,
+                          (group.name.length > 10)
+                              ? '${group.name.substring(0, 10)}...'
+                              : group.name,
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

@@ -7,6 +7,7 @@ import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/flavor.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/pages/app_start/app_start_page.dart';
+import 'package:image_share_app/pages/create_post_page/create_post_page.dart';
 import 'package:image_share_app/pages/create_room/create_room_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
@@ -48,6 +49,7 @@ class DevMyApp extends StatelessWidget {
                 'invitedRoomList': (BuildContext context) =>
                     InvitedRoomListPage(),
                 'postTop': (BuildContext context) => PostTopPage(),
+                'createPost': (BuildContext context) => CreatePostPage(),
               },
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {

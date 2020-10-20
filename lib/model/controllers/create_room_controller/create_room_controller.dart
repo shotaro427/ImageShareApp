@@ -44,6 +44,7 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
 
       // 新規作成したグループのIDを追加
       final List<String> newJoinedRooms = List.from(_user.joinedRooms);
+      log(_user.joinedRooms.toString());
       newJoinedRooms.add(newRoom.id);
       final newUser = _user.copyWith(joinedRooms: newJoinedRooms);
 
@@ -62,7 +63,7 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
 
   @override
   void dispose() {
-    nameInputController.dispose();
     super.dispose();
+    nameInputController.dispose();
   }
 }
