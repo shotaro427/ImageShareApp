@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_share_app/pages/create_post_page/post_button.dart';
+import 'package:image_share_app/pages/create_post_page/post_buttons.dart';
 import 'package:image_share_app/pages/create_post_page/section_header.dart';
 import 'package:image_share_app/pages/create_post_page/tag_list.dart';
 
@@ -15,46 +16,9 @@ class CreatePost extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 108,
-                        height: 108,
-                        child: Container(
-                          child: const Icon(
-                            Icons.image,
-                            color: Colors.white,
-                            size: 60,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey[350],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 108,
-                        height: 108,
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(23.0),
-                            child: Image.asset('images/pdf-icon.png'),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey[350],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
+                  const SizedBox(height: 32),
+                  CreatePostButtons(),
+                  const SizedBox(height: 32),
                   SectionHeader(SectionType.tag),
                   TagList(),
                   SectionHeader(SectionType.memo),
