@@ -26,17 +26,20 @@ class CreatePostButtons extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
-          width: 108,
-          height: 108,
-          child: Container(
-            child: Padding(
-              padding: const EdgeInsets.all(23.0),
-              child: Image.asset('images/pdf-icon.png'),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.grey[350],
+        GestureDetector(
+          onTap: () => context.read(createPostController).pickUpPdf(),
+          child: SizedBox(
+            width: 108,
+            height: 108,
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(23.0),
+                child: Image.asset('images/pdf-icon.png'),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.grey[350],
+              ),
             ),
           ),
         )
