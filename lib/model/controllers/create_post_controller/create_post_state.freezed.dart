@@ -19,7 +19,8 @@ class _$CreatePostStateTearOff {
       File pickedFile,
       String title = '',
       String memo = '',
-      List<String> tags = const []}) {
+      List<String> tags = const [],
+      bool isInputTag = false}) {
     return _CreatePostState(
       isLoading: isLoading,
       error: error,
@@ -27,6 +28,7 @@ class _$CreatePostStateTearOff {
       title: title,
       memo: memo,
       tags: tags,
+      isInputTag: isInputTag,
     );
   }
 }
@@ -41,6 +43,7 @@ mixin _$CreatePostState {
   String get title;
   String get memo;
   List<String> get tags;
+  bool get isInputTag;
 
   $CreatePostStateCopyWith<CreatePostState> get copyWith;
 }
@@ -55,7 +58,8 @@ abstract class $CreatePostStateCopyWith<$Res> {
       File pickedFile,
       String title,
       String memo,
-      List<String> tags});
+      List<String> tags,
+      bool isInputTag});
 }
 
 class _$CreatePostStateCopyWithImpl<$Res>
@@ -74,6 +78,7 @@ class _$CreatePostStateCopyWithImpl<$Res>
     Object title = freezed,
     Object memo = freezed,
     Object tags = freezed,
+    Object isInputTag = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
@@ -83,6 +88,8 @@ class _$CreatePostStateCopyWithImpl<$Res>
       title: title == freezed ? _value.title : title as String,
       memo: memo == freezed ? _value.memo : memo as String,
       tags: tags == freezed ? _value.tags : tags as List<String>,
+      isInputTag:
+          isInputTag == freezed ? _value.isInputTag : isInputTag as bool,
     ));
   }
 }
@@ -99,7 +106,8 @@ abstract class _$CreatePostStateCopyWith<$Res>
       File pickedFile,
       String title,
       String memo,
-      List<String> tags});
+      List<String> tags,
+      bool isInputTag});
 }
 
 class __$CreatePostStateCopyWithImpl<$Res>
@@ -120,6 +128,7 @@ class __$CreatePostStateCopyWithImpl<$Res>
     Object title = freezed,
     Object memo = freezed,
     Object tags = freezed,
+    Object isInputTag = freezed,
   }) {
     return _then(_CreatePostState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
@@ -129,6 +138,8 @@ class __$CreatePostStateCopyWithImpl<$Res>
       title: title == freezed ? _value.title : title as String,
       memo: memo == freezed ? _value.memo : memo as String,
       tags: tags == freezed ? _value.tags : tags as List<String>,
+      isInputTag:
+          isInputTag == freezed ? _value.isInputTag : isInputTag as bool,
     ));
   }
 }
@@ -140,11 +151,13 @@ class _$_CreatePostState implements _CreatePostState {
       this.pickedFile,
       this.title = '',
       this.memo = '',
-      this.tags = const []})
+      this.tags = const [],
+      this.isInputTag = false})
       : assert(isLoading != null),
         assert(title != null),
         assert(memo != null),
-        assert(tags != null);
+        assert(tags != null),
+        assert(isInputTag != null);
 
   @JsonKey(defaultValue: false)
   @override
@@ -162,10 +175,13 @@ class _$_CreatePostState implements _CreatePostState {
   @JsonKey(defaultValue: const [])
   @override
   final List<String> tags;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isInputTag;
 
   @override
   String toString() {
-    return 'CreatePostState(isLoading: $isLoading, error: $error, pickedFile: $pickedFile, title: $title, memo: $memo, tags: $tags)';
+    return 'CreatePostState(isLoading: $isLoading, error: $error, pickedFile: $pickedFile, title: $title, memo: $memo, tags: $tags, isInputTag: $isInputTag)';
   }
 
   @override
@@ -185,7 +201,10 @@ class _$_CreatePostState implements _CreatePostState {
             (identical(other.memo, memo) ||
                 const DeepCollectionEquality().equals(other.memo, memo)) &&
             (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)));
+                const DeepCollectionEquality().equals(other.tags, tags)) &&
+            (identical(other.isInputTag, isInputTag) ||
+                const DeepCollectionEquality()
+                    .equals(other.isInputTag, isInputTag)));
   }
 
   @override
@@ -196,7 +215,8 @@ class _$_CreatePostState implements _CreatePostState {
       const DeepCollectionEquality().hash(pickedFile) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(memo) ^
-      const DeepCollectionEquality().hash(tags);
+      const DeepCollectionEquality().hash(tags) ^
+      const DeepCollectionEquality().hash(isInputTag);
 
   @override
   _$CreatePostStateCopyWith<_CreatePostState> get copyWith =>
@@ -210,7 +230,8 @@ abstract class _CreatePostState implements CreatePostState {
       File pickedFile,
       String title,
       String memo,
-      List<String> tags}) = _$_CreatePostState;
+      List<String> tags,
+      bool isInputTag}) = _$_CreatePostState;
 
   @override
   bool get isLoading;
@@ -224,6 +245,8 @@ abstract class _CreatePostState implements CreatePostState {
   String get memo;
   @override
   List<String> get tags;
+  @override
+  bool get isInputTag;
   @override
   _$CreatePostStateCopyWith<_CreatePostState> get copyWith;
 }

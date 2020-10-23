@@ -12,5 +12,6 @@ abstract class CreatePostState with _$CreatePostState {
     @Default('') String title,
     @Default('') String memo,
     @Default([]) List<String> tags,
+    @Default(false) bool isInputTag,
   }) = _CreatePostState;
 }
