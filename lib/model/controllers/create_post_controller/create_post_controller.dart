@@ -43,4 +43,8 @@ class CreatePostController extends StateNotifier<CreatePostState> {
       state = state.copyWith(isLoading: false, error: error.toString());
     }
   }
+
+  void switchInputTagMode() {
+    state = state.copyWith(isInputTag: !state.isInputTag);
+  }
 }
