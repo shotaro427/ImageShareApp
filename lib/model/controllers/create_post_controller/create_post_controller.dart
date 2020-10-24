@@ -8,24 +8,22 @@ import 'package:state_notifier/state_notifier.dart';
 
 final createPostController = StateNotifierProvider((ref) {
   return CreatePostController(
-    ImagePickerService(),
     FilePickerService(),
   );
 });
 
 class CreatePostController extends StateNotifier<CreatePostState> {
-  CreatePostController(this._imagePickerService, this._filePickerService)
+  CreatePostController(this._filePickerService)
       : super(const CreatePostState());
 
-  final ImagePickerService _imagePickerService;
   final FilePickerService _filePickerService;
 
   Future<void> pickUpImage() async {
     state = state.copyWith(isLoading: true);
     try {
-      final File pickedImage = await _imagePickerService.getImageInGallery();
+      final List<File> _pickedImages = await _filePickerService.getImageFile();
       state = state.copyWith(
-          isLoading: false, error: null, pickedFile: pickedImage);
+          isLoading: false, error: null, pickedFiles: _pickedImages);
     } catch (error) {
       log(error.toString());
       state = state.copyWith(isLoading: false, error: error.toString());
@@ -35,9 +33,9 @@ class CreatePostController extends StateNotifier<CreatePostState> {
   Future<void> pickUpPdf() async {
     state = state.copyWith(isLoading: true);
     try {
-      final File pickedImage = await _filePickerService.getPdfFile();
+      final List<File> _pickedPdfs = await _filePickerService.getPdfFile();
       state = state.copyWith(
-          isLoading: false, error: null, pickedFile: pickedImage);
+          isLoading: false, error: null, pickedFiles: _pickedPdfs);
     } catch (error) {
       log(error.toString());
       state = state.copyWith(isLoading: false, error: error.toString());
