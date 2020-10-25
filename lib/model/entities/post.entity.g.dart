@@ -16,8 +16,8 @@ _$_PostState _$_$_PostStateFromJson(Map<String, dynamic> json) {
     tags: (json['tags'] as List)?.map((e) => e as String)?.toList() ?? [],
     createUserId: json['createUserId'] as String ?? '',
     thumbnailUrl: json['thumbnailUrl'] as String ?? '',
-    bgramMap: (json['bgramMap'] as Map<String, dynamic>)?.map(
-          (k, e) => MapEntry(k, e as String),
+    bigramMap: (json['bigramMap'] as Map<String, dynamic>)?.map(
+          (k, e) => MapEntry(k, e as bool),
         ) ??
         {},
   );
@@ -33,5 +33,5 @@ Map<String, dynamic> _$_$_PostStateToJson(_$_PostState instance) =>
       'tags': instance.tags,
       'createUserId': instance.createUserId,
       'thumbnailUrl': instance.thumbnailUrl,
-      'bgramMap': instance.bgramMap,
+      'bigramMap': instance.bigramMap,
     };

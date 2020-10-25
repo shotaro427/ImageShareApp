@@ -5,6 +5,8 @@ import 'package:image_share_app/pages/create_post_page/section_header.dart';
 import 'package:image_share_app/pages/create_post_page/tag_list.dart';
 
 class CreatePost extends StatelessWidget {
+  CreatePost(this._key);
+  final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -43,7 +45,7 @@ class CreatePost extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: PostButton(),
+          child: PostButton(_key),
         ),
       ],
     );

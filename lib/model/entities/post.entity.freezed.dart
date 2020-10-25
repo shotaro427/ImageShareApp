@@ -25,7 +25,7 @@ class _$PostStateTearOff {
       List<String> tags = const [],
       String createUserId = '',
       String thumbnailUrl = '',
-      Map<String, String> bgramMap = const {}}) {
+      Map<String, bool> bigramMap = const {}}) {
     return _PostState(
       createdAt: createdAt,
       updateAt: updateAt,
@@ -35,7 +35,7 @@ class _$PostStateTearOff {
       tags: tags,
       createUserId: createUserId,
       thumbnailUrl: thumbnailUrl,
-      bgramMap: bgramMap,
+      bigramMap: bigramMap,
     );
   }
 }
@@ -52,7 +52,7 @@ mixin _$PostState {
   List<String> get tags;
   String get createUserId;
   String get thumbnailUrl;
-  Map<String, String> get bgramMap;
+  Map<String, bool> get bigramMap;
 
   Map<String, dynamic> toJson();
   $PostStateCopyWith<PostState> get copyWith;
@@ -70,7 +70,7 @@ abstract class $PostStateCopyWith<$Res> {
       List<String> tags,
       String createUserId,
       String thumbnailUrl,
-      Map<String, String> bgramMap});
+      Map<String, bool> bigramMap});
 }
 
 class _$PostStateCopyWithImpl<$Res> implements $PostStateCopyWith<$Res> {
@@ -90,7 +90,7 @@ class _$PostStateCopyWithImpl<$Res> implements $PostStateCopyWith<$Res> {
     Object tags = freezed,
     Object createUserId = freezed,
     Object thumbnailUrl = freezed,
-    Object bgramMap = freezed,
+    Object bigramMap = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: createdAt == freezed ? _value.createdAt : createdAt as int,
@@ -106,9 +106,9 @@ class _$PostStateCopyWithImpl<$Res> implements $PostStateCopyWith<$Res> {
       thumbnailUrl: thumbnailUrl == freezed
           ? _value.thumbnailUrl
           : thumbnailUrl as String,
-      bgramMap: bgramMap == freezed
-          ? _value.bgramMap
-          : bgramMap as Map<String, String>,
+      bigramMap: bigramMap == freezed
+          ? _value.bigramMap
+          : bigramMap as Map<String, bool>,
     ));
   }
 }
@@ -127,7 +127,7 @@ abstract class _$PostStateCopyWith<$Res> implements $PostStateCopyWith<$Res> {
       List<String> tags,
       String createUserId,
       String thumbnailUrl,
-      Map<String, String> bgramMap});
+      Map<String, bool> bigramMap});
 }
 
 class __$PostStateCopyWithImpl<$Res> extends _$PostStateCopyWithImpl<$Res>
@@ -148,7 +148,7 @@ class __$PostStateCopyWithImpl<$Res> extends _$PostStateCopyWithImpl<$Res>
     Object tags = freezed,
     Object createUserId = freezed,
     Object thumbnailUrl = freezed,
-    Object bgramMap = freezed,
+    Object bigramMap = freezed,
   }) {
     return _then(_PostState(
       createdAt: createdAt == freezed ? _value.createdAt : createdAt as int,
@@ -164,9 +164,9 @@ class __$PostStateCopyWithImpl<$Res> extends _$PostStateCopyWithImpl<$Res>
       thumbnailUrl: thumbnailUrl == freezed
           ? _value.thumbnailUrl
           : thumbnailUrl as String,
-      bgramMap: bgramMap == freezed
-          ? _value.bgramMap
-          : bgramMap as Map<String, String>,
+      bigramMap: bigramMap == freezed
+          ? _value.bigramMap
+          : bigramMap as Map<String, bool>,
     ));
   }
 }
@@ -182,14 +182,14 @@ class _$_PostState implements _PostState {
       this.tags = const [],
       this.createUserId = '',
       this.thumbnailUrl = '',
-      this.bgramMap = const {}})
+      this.bigramMap = const {}})
       : assert(id != null),
         assert(title != null),
         assert(description != null),
         assert(tags != null),
         assert(createUserId != null),
         assert(thumbnailUrl != null),
-        assert(bgramMap != null);
+        assert(bigramMap != null);
 
   factory _$_PostState.fromJson(Map<String, dynamic> json) =>
       _$_$_PostStateFromJson(json);
@@ -218,11 +218,11 @@ class _$_PostState implements _PostState {
   final String thumbnailUrl;
   @JsonKey(defaultValue: const {})
   @override
-  final Map<String, String> bgramMap;
+  final Map<String, bool> bigramMap;
 
   @override
   String toString() {
-    return 'PostState(createdAt: $createdAt, updateAt: $updateAt, id: $id, title: $title, description: $description, tags: $tags, createUserId: $createUserId, thumbnailUrl: $thumbnailUrl, bgramMap: $bgramMap)';
+    return 'PostState(createdAt: $createdAt, updateAt: $updateAt, id: $id, title: $title, description: $description, tags: $tags, createUserId: $createUserId, thumbnailUrl: $thumbnailUrl, bigramMap: $bigramMap)';
   }
 
   @override
@@ -250,9 +250,9 @@ class _$_PostState implements _PostState {
             (identical(other.thumbnailUrl, thumbnailUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.thumbnailUrl, thumbnailUrl)) &&
-            (identical(other.bgramMap, bgramMap) ||
+            (identical(other.bigramMap, bigramMap) ||
                 const DeepCollectionEquality()
-                    .equals(other.bgramMap, bgramMap)));
+                    .equals(other.bigramMap, bigramMap)));
   }
 
   @override
@@ -266,7 +266,7 @@ class _$_PostState implements _PostState {
       const DeepCollectionEquality().hash(tags) ^
       const DeepCollectionEquality().hash(createUserId) ^
       const DeepCollectionEquality().hash(thumbnailUrl) ^
-      const DeepCollectionEquality().hash(bgramMap);
+      const DeepCollectionEquality().hash(bigramMap);
 
   @override
   _$PostStateCopyWith<_PostState> get copyWith =>
@@ -288,7 +288,7 @@ abstract class _PostState implements PostState {
       List<String> tags,
       String createUserId,
       String thumbnailUrl,
-      Map<String, String> bgramMap}) = _$_PostState;
+      Map<String, bool> bigramMap}) = _$_PostState;
 
   factory _PostState.fromJson(Map<String, dynamic> json) =
       _$_PostState.fromJson;
@@ -310,7 +310,7 @@ abstract class _PostState implements PostState {
   @override
   String get thumbnailUrl;
   @override
-  Map<String, String> get bgramMap;
+  Map<String, bool> get bigramMap;
   @override
   _$PostStateCopyWith<_PostState> get copyWith;
 }
