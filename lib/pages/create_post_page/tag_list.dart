@@ -9,6 +9,7 @@ class TagList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _roomStore = watch(roomStore.state);
+    final _createPostState = watch(createPostController.state);
     return SizedBox(
       height: 150,
       child: Padding(
@@ -49,16 +50,27 @@ class TagList extends ConsumerWidget {
                 ),
               );
             } else if (index != _roomStore.tags.length) {
-              return Container(
-                child: Center(
-                  child: Text(
-                    _roomStore.tags[index],
-                    textAlign: TextAlign.center,
+              final _tag = _roomStore.tags[index];
+              return GestureDetector(
+                onTap: () => context.read(createPostController).toggleTag(_tag),
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      _tag,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: (_createPostState.tags.contains(_tag))
+                            ? Colors.black
+                            : Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(7),
+                  decoration: BoxDecoration(
+                    color: (_createPostState.tags.contains(_tag))
+                        ? Colors.white
+                        : Colors.blue,
+                    borderRadius: BorderRadius.circular(7),
+                  ),
                 ),
               );
             } else {

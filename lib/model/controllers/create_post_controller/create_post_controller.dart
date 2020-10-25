@@ -70,6 +70,18 @@ class CreatePostController extends StateNotifier<CreatePostState> {
     }
   }
 
+  void toggleTag(String tag) {
+    if (state.tags.contains(tag)) {
+      List<String> _newTags = List.from(state.tags);
+      _newTags.removeWhere((element) => element == tag);
+      state = state.copyWith(tags: _newTags);
+    } else {
+      List<String> _newTags = List.from(state.tags);
+      _newTags.add(tag);
+      state = state.copyWith(tags: _newTags);
+    }
+  }
+
   void switchInputTagMode() {
     state = state.copyWith(isInputTag: !state.isInputTag);
   }
