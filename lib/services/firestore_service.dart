@@ -98,11 +98,14 @@ class FirestoreService {
 
     if (roomsByRoomId.length < 0) return [];
 
-    final posts =
-        (await roomsByRoomId[0].reference.collection('posts').getDocuments())
-            .documents
-            .map((e) => PostState.fromJson(e.data))
-            .toList();
+    final posts = (await roomsByRoomId[0]
+            .reference
+            .collection('posts')
+            .orderBy('createdAt', descending: true)
+            .getDocuments())
+        .documents
+        .map((e) => PostState.fromJson(e.data))
+        .toList();
 
     return posts;
   }

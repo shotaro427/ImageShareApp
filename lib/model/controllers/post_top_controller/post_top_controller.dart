@@ -27,7 +27,6 @@ class PostTopController extends StateNotifier<PostTopState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      // TODO: get posts
       final posts = await _firestoreService.getPosts(_roomStore.id);
       state = state.copyWith(isLoading: false, error: null, posts: posts);
     } catch (error) {
