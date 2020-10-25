@@ -9,6 +9,8 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IMAGE_WIDTH = (MediaQuery.of(context).size.width - 40);
+
     return Card(
       elevation: 0,
       child: Column(
@@ -16,19 +18,21 @@ class PostItem extends StatelessWidget {
         children: [
           Center(
             child: SizedBox(
-              height: (MediaQuery.of(context).size.width - 40),
+              width: IMAGE_WIDTH,
+              height: (IMAGE_WIDTH * 0.7),
               child: (_postState.thumbnailUrl != null &&
                       _postState.thumbnailUrl.isNotEmpty)
-                  ? Image.network(_postState.thumbnailUrl)
+                  ? Image.network(
+                      _postState.thumbnailUrl,
+                      fit: BoxFit.cover,
+                    )
                   : Image.asset(
                       'images/icon.jpeg',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           Center(
             child: Text(
               _postState.title,
@@ -38,13 +42,9 @@ class PostItem extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           TagList(_postState.tags),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Row(
             children: [
               const Spacer(),
@@ -54,7 +54,7 @@ class PostItem extends StatelessWidget {
                   bottom: 15,
                 ),
                 child: Text(
-                  _postState.createdAt.toString() ?? '',
+                  fromAtNow(_postState.createdAt) ?? '',
                   style: const TextStyle(
                     fontSize: 10,
                   ),
@@ -65,5 +65,21 @@ class PostItem extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+String fromAtNow(int millseconds) {
+  final DateTime date = DateTime.fromMillisecondsSinceEpoch(millseconds);
+  final Duration difference = DateTime.now().difference(date);
+  final int sec = difference.inSeconds;
+
+  if (sec >= 60 * 60 * 24) {
+    return '${difference.inDays.toString()}日前';
+  } else if (sec >= 60 * 60) {
+    return '${difference.inHours.toString()}時間前';
+  } else if (sec >= 60) {
+    return '${difference.inMinutes.toString()}分前';
+  } else {
+    return '$sec秒前';
   }
 }

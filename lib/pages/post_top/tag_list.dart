@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class TagList extends StatelessWidget {
@@ -9,7 +11,8 @@ class TagList extends StatelessWidget {
     final bool isEmpty = _tags == null || _tags.length < 1;
 
     return isEmpty
-        ? SizedBox(
+        ? const SizedBox.shrink()
+        : SizedBox(
             height: 28,
             child: ListView.builder(
                 shrinkWrap: true,
@@ -40,7 +43,6 @@ class TagList extends StatelessWidget {
                   );
                 },
                 itemCount: _tags.length),
-          )
-        : const SizedBox.shrink();
+          );
   }
 }
