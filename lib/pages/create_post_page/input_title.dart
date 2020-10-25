@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/model/controllers/create_post_controller/create_post_controller.dart';
 
 class InputTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       autofocus: true,
       decoration: const InputDecoration(
         fillColor: Colors.white,
@@ -17,7 +19,7 @@ class InputTitle extends StatelessWidget {
         border: InputBorder.none,
       ),
       cursorColor: Colors.black,
-      onSubmitted: (title) {},
+      onChanged: (title) => context.read(createPostController).setTitle(title),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/create_post_controller/create_post_controller.dart';
@@ -60,15 +58,15 @@ class TagList extends ConsumerWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: (_createPostState.tags.contains(_tag))
-                            ? Colors.black
-                            : Colors.white,
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     ),
                   ),
                   decoration: BoxDecoration(
                     color: (_createPostState.tags.contains(_tag))
-                        ? Colors.white
-                        : Colors.blue,
+                        ? Colors.blue
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(7),
                   ),
                 ),

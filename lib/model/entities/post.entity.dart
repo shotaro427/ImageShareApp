@@ -13,7 +13,7 @@ abstract class PostState with _$PostState {
     @Default([]) List<String> tags,
     @Default('') String createUserId,
     @Default('') String thumbnailUrl,
-    @Default({}) Map<String, String> bgramMap,
+    @Default({}) Map<String, bool> bigramMap,
   }) = _PostState;
 
   factory PostState.fromJson(Map<String, dynamic> json) =>

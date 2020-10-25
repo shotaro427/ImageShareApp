@@ -1,5 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_share_app/model/controllers/create_post_controller/create_post_state.dart';
+import 'package:image_share_app/model/entities/image.entity.dart';
+import 'package:image_share_app/model/entities/pdf.entity.dart';
 import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
@@ -14,6 +22,7 @@ enum RoomType {
 
 class FirestoreService {
   final store = Firestore.instance;
+  final storage = FirebaseStorage.instance;
 
   // ユーザー情報をFireStoreに保存する処理
   Future<UserState> saveUserInfo(UserState user) async {
@@ -89,18 +98,60 @@ class FirestoreService {
 
     if (roomsByRoomId.length < 0) return [];
 
-    final posts =
-        (await roomsByRoomId[0].reference.collection('posts').getDocuments())
-            .documents
-            .map((e) => PostState.fromJson(e.data))
-            .toList();
+    final posts = (await roomsByRoomId[0]
+            .reference
+            .collection('posts')
+            .orderBy('createdAt', descending: true)
+            .getDocuments())
+        .documents
+        .map((e) => PostState.fromJson(e.data))
+        .toList();
 
     return posts;
   }
 
-  /// ======= PRIVATE =======
+  // 投稿を作成する
+  Future<void> createPost(
+      CreatePostState state, String roomId, String uid) async {
+    final postId = Uuid().v4().replaceAll('-', '');
+    final nowTime = DateTime.now().millisecondsSinceEpoch;
 
-  // User
+    final StorageReference storageRef =
+        storage.ref().child('images/${roomId}/${postId}/');
+
+    final thumbnailFile = state.pickedFiles[0];
+    final extension = thumbnailFile.path.split('/').last;
+
+    String thumbnailUrl = null;
+
+    if (!extension.contains('.pdf')) {
+      thumbnailUrl = await _createThumbnail(thumbnailFile, storageRef);
+    }
+
+    /// 投稿情報をFirestoreにアップロード
+    final docRef = await _savePostInfo(
+      state,
+      roomId: roomId,
+      uid: uid,
+      postId: postId,
+      thumbnailUrl: thumbnailUrl ?? '',
+      nowTime: nowTime,
+    );
+
+    // 画像やPDFの情報をStorageとFirestoreに保存する
+    await _saveImagesOrPdfs(
+      state,
+      extension.contains('.pdf'),
+      storageRef: storageRef,
+      docRef: docRef,
+      uid: uid,
+      nowTime: nowTime,
+    );
+  }
+
+  /// ========= PRIVATE =========
+
+  /// ======= USER =======
 
   Future<UserState> _createUser(UserState user) async {
     // IDを追加
@@ -197,7 +248,7 @@ class FirestoreService {
     return user.copyWith(id: id);
   }
 
-  // Room
+  /// ======= ROOM =======
 
   Future<RoomState> _createRoom(RoomState room, String userId) async {
     // uuidからIDを追加
@@ -314,5 +365,112 @@ class FirestoreService {
     }
 
     return groupList;
+  }
+
+  /// ======= POST =======
+
+  Future<String> _createThumbnail(
+      File originalFile, StorageReference postRef) async {
+    final ImageProperties _properties =
+        await FlutterNativeImage.getImageProperties(originalFile.path);
+    final File compressedFile = await FlutterNativeImage.compressImage(
+        originalFile.path,
+        targetHeight: 300,
+        targetWidth: (_properties.width / _properties.height * 300).round());
+
+    // サムネイルを保存
+    StorageUploadTask uploadTask =
+        postRef.child('thumbnail').putFile(compressedFile);
+
+    return (await (await uploadTask.onComplete).ref.getDownloadURL())
+        .toString();
+  }
+
+  List<String> _createBigramFromString(String text) {
+    List<String> _bigramList = [];
+    for (int i = 0; i < text.length - 1; i++) {
+      _bigramList.add(text.substring(i, i + 2));
+    }
+    return _bigramList;
+  }
+
+  Future<DocumentReference> _savePostInfo(
+    CreatePostState state, {
+    @required String roomId,
+    @required String uid,
+    @required String postId,
+    @required String thumbnailUrl,
+    @required int nowTime,
+  }) async {
+    /// 投稿情報をFirestoreにアップロード
+    final roomsByRoomId = (await store
+            .collection('memberOnly/rooms/rooms')
+            .where('id', isEqualTo: roomId)
+            .getDocuments())
+        .documents;
+
+    if (roomsByRoomId.length < 0) {
+      throw Exception('can not found room');
+    }
+
+    final bigram = _createBigramFromString(state.title + state.memo);
+    final tokenMap = Map<String, bool>();
+    bigram.forEach((element) {
+      tokenMap['$element'] = true;
+    });
+
+    final PostState postInfo = PostState(
+      createdAt: nowTime,
+      updateAt: nowTime,
+      id: postId,
+      title: state.title,
+      description: state.memo,
+      tags: state.tags,
+      createUserId: uid,
+      thumbnailUrl: thumbnailUrl ?? '',
+      bigramMap: tokenMap,
+    );
+
+    return await roomsByRoomId[0]
+        .reference
+        .collection('posts')
+        .add(postInfo.toJson());
+  }
+
+  Future<void> _saveImagesOrPdfs(
+    CreatePostState state,
+    bool isPdf, {
+    @required StorageReference storageRef,
+    @required DocumentReference docRef,
+    @required String uid,
+    @required int nowTime,
+  }) async {
+    // 画像やPDFの情報をStorageとFirestoreに保存する
+    Future.forEach(state.pickedFiles, (file) async {
+      final String fileId = Uuid().v4().replaceAll('-', '');
+      StorageUploadTask uploadTask = storageRef.child(fileId).putFile(file);
+      final url =
+          (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+      if (isPdf) {
+        final PdfState pdfInfo = PdfState(
+          createdAt: nowTime,
+          updateAt: nowTime,
+          id: fileId,
+          pdfUrl: url,
+          createUserId: uid,
+        );
+        docRef.collection('pdfs').add(pdfInfo.toJson());
+      } else {
+        final ImageState imageInfo = ImageState(
+          createdAt: nowTime,
+          updateAt: nowTime,
+          id: fileId,
+          imageUrl: url,
+          createUserId: uid,
+        );
+        docRef.collection('images').add(imageInfo.toJson());
+      }
+    });
   }
 }
