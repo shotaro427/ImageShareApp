@@ -16,7 +16,7 @@ class _$CreatePostStateTearOff {
   _CreatePostState call(
       {bool isLoading = false,
       String error,
-      File pickedFile,
+      List<File> pickedFiles,
       String title = '',
       String memo = '',
       List<String> tags = const [],
@@ -24,7 +24,7 @@ class _$CreatePostStateTearOff {
     return _CreatePostState(
       isLoading: isLoading,
       error: error,
-      pickedFile: pickedFile,
+      pickedFiles: pickedFiles,
       title: title,
       memo: memo,
       tags: tags,
@@ -39,7 +39,7 @@ const $CreatePostState = _$CreatePostStateTearOff();
 mixin _$CreatePostState {
   bool get isLoading;
   String get error;
-  File get pickedFile;
+  List<File> get pickedFiles;
   String get title;
   String get memo;
   List<String> get tags;
@@ -55,7 +55,7 @@ abstract class $CreatePostStateCopyWith<$Res> {
   $Res call(
       {bool isLoading,
       String error,
-      File pickedFile,
+      List<File> pickedFiles,
       String title,
       String memo,
       List<String> tags,
@@ -74,7 +74,7 @@ class _$CreatePostStateCopyWithImpl<$Res>
   $Res call({
     Object isLoading = freezed,
     Object error = freezed,
-    Object pickedFile = freezed,
+    Object pickedFiles = freezed,
     Object title = freezed,
     Object memo = freezed,
     Object tags = freezed,
@@ -83,8 +83,9 @@ class _$CreatePostStateCopyWithImpl<$Res>
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
-      pickedFile:
-          pickedFile == freezed ? _value.pickedFile : pickedFile as File,
+      pickedFiles: pickedFiles == freezed
+          ? _value.pickedFiles
+          : pickedFiles as List<File>,
       title: title == freezed ? _value.title : title as String,
       memo: memo == freezed ? _value.memo : memo as String,
       tags: tags == freezed ? _value.tags : tags as List<String>,
@@ -103,7 +104,7 @@ abstract class _$CreatePostStateCopyWith<$Res>
   $Res call(
       {bool isLoading,
       String error,
-      File pickedFile,
+      List<File> pickedFiles,
       String title,
       String memo,
       List<String> tags,
@@ -124,7 +125,7 @@ class __$CreatePostStateCopyWithImpl<$Res>
   $Res call({
     Object isLoading = freezed,
     Object error = freezed,
-    Object pickedFile = freezed,
+    Object pickedFiles = freezed,
     Object title = freezed,
     Object memo = freezed,
     Object tags = freezed,
@@ -133,8 +134,9 @@ class __$CreatePostStateCopyWithImpl<$Res>
     return _then(_CreatePostState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
-      pickedFile:
-          pickedFile == freezed ? _value.pickedFile : pickedFile as File,
+      pickedFiles: pickedFiles == freezed
+          ? _value.pickedFiles
+          : pickedFiles as List<File>,
       title: title == freezed ? _value.title : title as String,
       memo: memo == freezed ? _value.memo : memo as String,
       tags: tags == freezed ? _value.tags : tags as List<String>,
@@ -148,7 +150,7 @@ class _$_CreatePostState implements _CreatePostState {
   const _$_CreatePostState(
       {this.isLoading = false,
       this.error,
-      this.pickedFile,
+      this.pickedFiles,
       this.title = '',
       this.memo = '',
       this.tags = const [],
@@ -165,7 +167,7 @@ class _$_CreatePostState implements _CreatePostState {
   @override
   final String error;
   @override
-  final File pickedFile;
+  final List<File> pickedFiles;
   @JsonKey(defaultValue: '')
   @override
   final String title;
@@ -181,7 +183,7 @@ class _$_CreatePostState implements _CreatePostState {
 
   @override
   String toString() {
-    return 'CreatePostState(isLoading: $isLoading, error: $error, pickedFile: $pickedFile, title: $title, memo: $memo, tags: $tags, isInputTag: $isInputTag)';
+    return 'CreatePostState(isLoading: $isLoading, error: $error, pickedFiles: $pickedFiles, title: $title, memo: $memo, tags: $tags, isInputTag: $isInputTag)';
   }
 
   @override
@@ -193,9 +195,9 @@ class _$_CreatePostState implements _CreatePostState {
                     .equals(other.isLoading, isLoading)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)) &&
-            (identical(other.pickedFile, pickedFile) ||
+            (identical(other.pickedFiles, pickedFiles) ||
                 const DeepCollectionEquality()
-                    .equals(other.pickedFile, pickedFile)) &&
+                    .equals(other.pickedFiles, pickedFiles)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.memo, memo) ||
@@ -212,7 +214,7 @@ class _$_CreatePostState implements _CreatePostState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(pickedFile) ^
+      const DeepCollectionEquality().hash(pickedFiles) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(memo) ^
       const DeepCollectionEquality().hash(tags) ^
@@ -227,7 +229,7 @@ abstract class _CreatePostState implements CreatePostState {
   const factory _CreatePostState(
       {bool isLoading,
       String error,
-      File pickedFile,
+      List<File> pickedFiles,
       String title,
       String memo,
       List<String> tags,
@@ -238,7 +240,7 @@ abstract class _CreatePostState implements CreatePostState {
   @override
   String get error;
   @override
-  File get pickedFile;
+  List<File> get pickedFiles;
   @override
   String get title;
   @override

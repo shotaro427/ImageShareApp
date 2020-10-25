@@ -40,7 +40,8 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
       // グループを作成
       final room = RoomState(name: nameInputController.text);
       // firestoreに保存
-      final newRoom = (await firestoreService.saveRoomInfo(room, _user.uid));
+      final newRoom =
+          (await firestoreService.saveRoomInfo(room, uid: _user.uid));
 
       // 新規作成したグループのIDを追加
       final List<String> newJoinedRooms = List.from(_user.joinedRooms);

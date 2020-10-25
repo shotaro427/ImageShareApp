@@ -16,9 +16,7 @@ class CreatePost extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 32),
                   CreatePostButtons(),
-                  const SizedBox(height: 32),
                   SectionHeader(SectionType.tag),
                   TagList(),
                   SectionHeader(SectionType.memo),

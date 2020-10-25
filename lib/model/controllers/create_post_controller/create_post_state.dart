@@ -8,7 +8,7 @@ abstract class CreatePostState with _$CreatePostState {
   const factory CreatePostState({
     @Default(false) bool isLoading,
     String error,
-    File pickedFile,
+    List<File> pickedFiles,
     @Default('') String title,
     @Default('') String memo,
     @Default([]) List<String> tags,
