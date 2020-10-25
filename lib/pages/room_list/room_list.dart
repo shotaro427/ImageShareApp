@@ -13,7 +13,7 @@ class RoomList extends ConsumerWidget {
     final isEmpty = groups != null && groups.length < 1;
 
     final onPressItem = (RoomState room) {
-      context.read(roomStore).updateRoom(room);
+      context.read(roomStore).updateState(room);
       Navigator.of(context).pushNamed('postTop');
     };
 

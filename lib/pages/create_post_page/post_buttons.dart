@@ -9,7 +9,7 @@ class CreatePostButtons extends ConsumerWidget {
     return Scrollbar(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 32),
-        child: (_files != null && _files.length > 0)
+        child: (_files != null && _files.length > 0) // TODO: PDFを考慮する
             ? GestureDetector(
                 onTap: () {
                   final extension = _files[0].path.split('/').last;

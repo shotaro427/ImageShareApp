@@ -43,7 +43,7 @@ class FirestoreService {
     }
   }
 
-  Future<RoomState> saveRoomInfo(RoomState room, String uid) async {
+  Future<RoomState> saveRoomInfo(RoomState room, {String uid}) async {
     CollectionReference _publicRef = store.collection('public/rooms/rooms');
 
     // 同じグループがあるかどうか確認
@@ -52,7 +52,7 @@ class FirestoreService {
             .documents;
 
     // Firestoreに保存
-    if (_documents.length == 0) {
+    if (_documents.length == 0 && uid != null && uid.isNotEmpty) {
       // 新規保存
       return (await _createRoom(room, uid));
     } else {

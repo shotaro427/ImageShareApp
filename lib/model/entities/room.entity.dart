@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 part 'room.entity.freezed.dart';
 part 'room.entity.g.dart';
 
-final roomStore = StateNotifierProvider((ref) => RoomController());
+final roomStore =
+    StateNotifierProvider((ref) => RoomController(FirestoreService()));
 
 @freezed
 abstract class RoomState with _$RoomState {
@@ -24,9 +26,24 @@ abstract class RoomState with _$RoomState {
 }
 
 class RoomController extends StateNotifier<RoomState> {
-  RoomController() : super(const RoomState());
+  RoomController(this._firestoreService) : super(const RoomState());
 
-  void updateRoom(RoomState room) {
+  FirestoreService _firestoreService;
+
+  void updateRoom(RoomState room) async {
+    await _firestoreService.saveRoomInfo(room);
     state = room;
+  }
+
+  void updateState(RoomState room) {
+    state = room;
+  }
+
+  void addInputTag() {
+    final List<String> _newTags = state.tags;
+    if (!_newTags.contains(':/input')) {
+      _newTags.add(':/input');
+    }
+    state = state.copyWith(tags: _newTags);
   }
 }
