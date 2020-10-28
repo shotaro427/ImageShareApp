@@ -26,13 +26,12 @@ class _FloatingButtonsState extends State<FloatingButtons>
 
   void _navigateCreatePostPage(BuildContext context) {
     _animationController.reverse();
-    // TODO: 投稿画面への遷移
     Navigator.of(context).pushNamed('createPost');
   }
 
   void _navigateSettingsPage(BuildContext context) {
     _animationController.reverse();
-    // TODO: 設定画面への遷移
+    Navigator.of(context).pushNamed('groupSetting');
   }
 
   @override
