@@ -9,6 +9,7 @@ import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/pages/app_start/app_start_page.dart';
 import 'package:image_share_app/pages/create_post_page/create_post_page.dart';
 import 'package:image_share_app/pages/create_room/create_room_page.dart';
+import 'package:image_share_app/pages/group_setting/group_setting_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
@@ -42,14 +43,14 @@ class DevMyApp extends StatelessWidget {
               initialRoute: 'appStart',
               debugShowCheckedModeBanner: false,
               routes: {
-                'mailSignin': (BuildContext context) => MailSigninPage(),
-                'mailSignup': (BuildContext context) => MailSignupPage(),
-                'roomList': (BuildContext context) => RoomListPage(),
-                'createRoom': (BuildContext context) => CreateRoomPage(),
-                'invitedRoomList': (BuildContext context) =>
-                    InvitedRoomListPage(),
-                'postTop': (BuildContext context) => PostTopPage(),
-                'createPost': (BuildContext context) => CreatePostPage(),
+                'mailSignin': (_) => MailSigninPage(),
+                'mailSignup': (_) => MailSignupPage(),
+                'roomList': (_) => RoomListPage(),
+                'createRoom': (_) => CreateRoomPage(),
+                'invitedRoomList': (_) => InvitedRoomListPage(),
+                'postTop': (_) => PostTopPage(),
+                'createPost': (_) => CreatePostPage(),
+                'groupSetting': (_) => GroupSettingPage(),
               },
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {
