@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_share_app/constants/color.dart';
 import 'package:image_share_app/pages/group_setting/group_setting.dart';
 
 class GroupSettingPage extends StatelessWidget {
@@ -12,7 +13,9 @@ class GroupSettingPage extends StatelessWidget {
             title: const Text('設定'),
           ),
           body: GroupSetting(),
+          backgroundColor: backgroundColor,
         ),
+        // TODO add loading view
       ],
     );
   }
