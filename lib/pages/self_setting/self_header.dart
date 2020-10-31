@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class GroupHeader extends StatelessWidget {
+class SelfHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final headerHeight = MediaQuery.of(context).size.width / 3.5;
     final iconSize = headerHeight * 0.8;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 24),
       child: Column(
         children: [
           Stack(
@@ -61,13 +61,6 @@ class GroupHeader extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  Text(
-                    '俺たちの戦いはこれからだ',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],

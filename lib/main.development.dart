@@ -13,8 +13,10 @@ import 'package:image_share_app/pages/group_setting/group_setting_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
+import 'package:image_share_app/pages/member_invite/member_invite_page.dart';
 import 'package:image_share_app/pages/post_top/post_top_page.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
+import 'package:image_share_app/pages/self_setting/self_setting_page.dart';
 
 bool _isAuthorized = false;
 UserState _user = null;
@@ -51,6 +53,8 @@ class DevMyApp extends StatelessWidget {
                 'postTop': (_) => PostTopPage(),
                 'createPost': (_) => CreatePostPage(),
                 'groupSetting': (_) => GroupSettingPage(),
+                'selfSetting': (_) => SelfSettingPage(),
+                'memberInvite': (_) => MemberInvitePage(),
               },
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {
