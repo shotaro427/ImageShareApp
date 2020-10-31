@@ -20,6 +20,8 @@ class MemberList extends StatelessWidget {
             );
           } else if (index == 1) {
             return MemberItem(ItemType.addMember);
+          } else if (index == 2) {
+            return MemberItem(ItemType.me);
           } else {
             return MemberItem(ItemType.member);
           }

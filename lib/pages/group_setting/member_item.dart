@@ -5,6 +5,7 @@ enum ItemType {
   addMember,
   member,
   invited,
+  me,
 }
 
 class MemberItem extends StatelessWidget {
@@ -13,6 +14,14 @@ class MemberItem extends StatelessWidget {
   final iconSize = 48.0;
   @override
   Widget build(BuildContext context) {
+    void onTap() {
+      if (_type == ItemType.addMember) {
+        Navigator.of(context).pushNamed('memberInvite');
+      } else if (_type == ItemType.me) {
+        Navigator.of(context).pushNamed('selfSetting');
+      }
+    }
+
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -27,37 +36,40 @@ class MemberItem extends StatelessWidget {
               ))
             : null,
       ],
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-        child: Row(
-          children: [
-            SizedBox(
-              height: iconSize,
-              width: iconSize,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(iconSize / 2),
-                ),
-                child: (_type == ItemType.addMember)
-                    ? const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )
-                    : null,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Text(
-                (_type == ItemType.addMember) ? '友達の招待' : '名前です。',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+          child: Row(
+            children: [
+              SizedBox(
+                height: iconSize,
+                width: iconSize,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[400],
+                    borderRadius: BorderRadius.circular(iconSize / 2),
+                  ),
+                  child: (_type == ItemType.addMember)
+                      ? const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )
+                      : null,
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text(
+                  (_type == ItemType.addMember) ? '友達の招待' : '名前です。',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
