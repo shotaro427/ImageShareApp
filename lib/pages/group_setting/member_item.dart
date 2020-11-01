@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:image_share_app/model/entities/user.entity.dart';
 
 enum ItemType {
   addMember,
@@ -9,9 +10,13 @@ enum ItemType {
 }
 
 class MemberItem extends StatelessWidget {
-  MemberItem(this._type);
+  MemberItem(
+    this._type,
+    this._user,
+  );
   final ItemType _type;
   final iconSize = 48.0;
+  final UserState _user;
   @override
   Widget build(BuildContext context) {
     void onTap() {
@@ -25,7 +30,7 @@ class MemberItem extends StatelessWidget {
     return Slidable(
       actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
-      enabled: (_type != ItemType.addMember),
+      enabled: (_type != ItemType.addMember && _type != ItemType.me),
       secondaryActions: [
         (_type != ItemType.addMember)
             ? (IconSlideAction(
@@ -61,8 +66,8 @@ class MemberItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(
-                  (_type == ItemType.addMember) ? '友達の招待' : '名前です。',
-                  style: TextStyle(
+                  (_type == ItemType.addMember) ? '友達の招待' : _user.name ?? '',
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

@@ -17,6 +17,7 @@ import 'package:image_share_app/pages/member_invite/member_invite_page.dart';
 import 'package:image_share_app/pages/post_top/post_top_page.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/pages/self_setting/self_setting_page.dart';
+import 'package:image_share_app/services/index.dart';
 
 bool _isAuthorized = false;
 UserState _user = null;
@@ -80,14 +81,11 @@ class DevMyApp extends StatelessWidget {
 // ログインチェック
 Future<bool> handleLoginPage() async {
   FirebaseUser _fUser = null;
+  final FirestoreService _fService = FirestoreService();
   try {
     _fUser = (await FirebaseAuth.instance.currentUser());
     if (_fUser != null) {
-      _user = UserState(
-        uid: _fUser.uid,
-        name: _fUser.displayName ?? '',
-        email: _fUser.email ?? '',
-      );
+      _user = await _fService.getUser(_fUser.uid);
     }
   } catch (e) {
     log(e.toString());
