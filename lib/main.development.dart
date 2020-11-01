@@ -10,12 +10,14 @@ import 'package:image_share_app/pages/app_start/app_start_page.dart';
 import 'package:image_share_app/pages/create_post_page/create_post_page.dart';
 import 'package:image_share_app/pages/create_room/create_room_page.dart';
 import 'package:image_share_app/pages/group_setting/group_setting_page.dart';
+import 'package:image_share_app/pages/invite_member/invite_member_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
 import 'package:image_share_app/pages/member_invite/member_invite_page.dart';
 import 'package:image_share_app/pages/post_top/post_top_page.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
+import 'package:image_share_app/pages/self_editing/self_editing_page.dart';
 import 'package:image_share_app/pages/self_setting/self_setting_page.dart';
 import 'package:image_share_app/services/index.dart';
 
@@ -56,6 +58,9 @@ class DevMyApp extends StatelessWidget {
                 'groupSetting': (_) => GroupSettingPage(),
                 'selfSetting': (_) => SelfSettingPage(),
                 'memberInvite': (_) => MemberInvitePage(),
+                'editName': (_) => SelfEditingPage(EditType.name),
+                'editEmail': (_) => SelfEditingPage(EditType.email),
+                'editId': (_) => SelfEditingPage(EditType.id),
               },
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {

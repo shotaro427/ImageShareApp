@@ -6,27 +6,45 @@ class SettingItem extends ConsumerWidget {
   SettingItem(this._index);
   final int _index;
 
+  void onTap(BuildContext context) {
+    switch (_index) {
+      case 0:
+        Navigator.of(context).pushNamed('editName');
+        break;
+      case 1:
+        Navigator.of(context).pushNamed('editEmail');
+        break;
+      case 2:
+        Navigator.of(context).pushNamed('editId');
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final UserState me = watch(userStore.state);
-    return Visibility(
-      visible: _index != 3,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _itemTexts(me),
-            ),
-            const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            ),
-          ],
+    return GestureDetector(
+      onTap: () => onTap(context),
+      child: Visibility(
+        visible: _index != 3,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _itemTexts(me),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),
     );
