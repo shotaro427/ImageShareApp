@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -50,6 +51,28 @@ class FirestoreService {
     } else {
       return (await _updateUser(user));
     }
+  }
+
+  Future<UserState> getUser(String uid) async {
+    final pubDocuments = (await store
+            .collection('public/users/users')
+            .where('uid', isEqualTo: uid)
+            .getDocuments())
+        .documents;
+
+    final priDocuments = (await store
+            .collection('private/users/users')
+            .where('uid', isEqualTo: uid)
+            .getDocuments())
+        .documents;
+
+    if (pubDocuments.length < 1 || priDocuments.length < 1) return null;
+
+    Map<String, dynamic> data = {};
+    data.addAll(pubDocuments[0].data);
+    data.addAll(priDocuments[0].data);
+
+    return UserState.fromJson(data);
   }
 
   Future<RoomState> saveRoomInfo(RoomState room, {String uid}) async {
@@ -147,6 +170,27 @@ class FirestoreService {
       uid: uid,
       nowTime: nowTime,
     );
+  }
+
+  // メンバーを取得する
+  Future<List<UserState>> getMember(
+    List<String> ids,
+  ) async {
+    List<UserState> users = [];
+
+    await Future.forEach(ids, (userId) async {
+      final docsUser = (await (await store
+                  .collection('public/users/users')
+                  .where('uid', isEqualTo: ids[0]))
+              .getDocuments())
+          .documentChanges;
+
+      if (docsUser.length == 0) return;
+      final user = UserState.fromJson(docsUser[0].document.data);
+      users.add(user);
+    });
+
+    return users;
   }
 
   /// ========= PRIVATE =========
