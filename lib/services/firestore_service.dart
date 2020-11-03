@@ -249,6 +249,17 @@ class FirestoreService {
     return room.copyWith(invited: newInvited);
   }
 
+  // グループに参加する
+  Future<UserState> participateRoom(
+    RoomState room,
+    String uid,
+  ) async {
+    if (room.id.isEmpty) throw Exception("Invalid Room ID");
+
+    // グループにメンバーを追加
+    await _addMemberToRoom(room, uid);
+  }
+
   /// ========= PRIVATE =========
 
   /// ======= USER =======
@@ -574,5 +585,23 @@ class FirestoreService {
         docRef.collection('images').add(imageInfo.toJson());
       }
     });
+  }
+
+  Future<void> _addMemberToRoom(RoomState room, String uid) async {
+    // グループのinvitedから削除
+    final roomRef = store.document('memberOnly/rooms/rooms/${room.id}');
+    final List<String> newInvited = List.from(room.invited);
+    newInvited.removeWhere((invited) => invited == uid);
+
+    // グループのmemberに追加
+    final List<String> newMember = List.from(room.member);
+    if (!newMember.contains(uid)) {
+      newMember.add(uid);
+    }
+
+    await Future.wait([
+      roomRef.updateData({'invited': newInvited}),
+      roomRef.updateData({'members': newMember}),
+    ]);
   }
 }

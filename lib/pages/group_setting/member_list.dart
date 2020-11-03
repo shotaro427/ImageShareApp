@@ -14,6 +14,9 @@ class MemberList extends ConsumerWidget {
     final memberRemoveMe = List.from(groupSettingState.member);
     memberRemoveMe.removeWhere((user) => user.uid == me.uid);
 
+    log((memberRemoveMe.length + groupSettingState.invited.length + 4)
+        .toString());
+
     return Expanded(
       child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
@@ -57,7 +60,7 @@ class MemberList extends ConsumerWidget {
             //　メンバー
             return MemberItem(
               ItemType.member,
-              memberRemoveMe[index - 2],
+              memberRemoveMe[index - 3],
             );
           } else {
             return MemberItem(

@@ -1,16 +1,22 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
-void showOkDialog(BuildContext context) {
+void showOkDialog(
+  BuildContext context,
+  String title,
+  String description,
+  DialogType dialogType,
+  Function onOkPress,
+) {
   AwesomeDialog(
     context: context,
     headerAnimationLoop: false,
-    tittle: '削除しました',
-    desc: '削除が完了しました。',
+    tittle: title,
+    desc: description,
     dialogType: DialogType.SUCCES,
     animType: AnimType.SCALE,
     btnOkText: 'OK',
-    btnOkOnPress: () => Navigator.of(context).pop(),
+    btnOkOnPress: onOkPress,
   ).show();
 }
 
