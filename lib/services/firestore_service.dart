@@ -205,6 +205,19 @@ class FirestoreService {
     return room.copyWith(iconUrl: iconUrl);
   }
 
+  // ユーザーのアイコンを設定する
+  Future<UserState> setUserIcon(File icon, UserState user) async {
+    if (user.uid.isEmpty) return user;
+
+    final StorageUploadTask uploadTask =
+        storage.ref().child('users/${user.uid}/icon/').putFile(icon);
+
+    final iconUrl =
+        (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+    return user.copyWith(iconUrl: iconUrl);
+  }
+
   /// ========= PRIVATE =========
 
   /// ======= USER =======
