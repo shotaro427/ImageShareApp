@@ -11,6 +11,7 @@ import 'package:image_share_app/services/signin_service.dart';
 import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 
+// ignore: top_level_function_literal_block
 final mailSignupController = StateNotifierProvider((ref) {
   final userProvider = ref.watch(userStore);
 

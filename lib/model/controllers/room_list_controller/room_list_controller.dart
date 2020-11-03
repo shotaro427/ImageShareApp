@@ -7,6 +7,7 @@ import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final roomListController = StateNotifierProvider(
+// ignore: top_level_function_literal_block
   (ref) {
     final user = ref.watch(userStore.state);
     return RoomListController(

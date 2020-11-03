@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_share_app/model/controllers/group_setting/group_setting_state.dart';
+import 'package:image_share_app/model/controllers/group_setting_controller/group_setting_state.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
-import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
+// ignore: top_level_function_literal_block
 final groupSettingController = StateNotifierProvider((ref) {
   final _room = ref.watch(roomStore.state);
   return GroupSettingController(

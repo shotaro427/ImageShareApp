@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_share_app/model/controllers/group_setting/group_setting_controller.dart';
+import 'package:image_share_app/model/controllers/group_setting_controller/group_setting_controller.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/pages/group_setting/member_item.dart';
 

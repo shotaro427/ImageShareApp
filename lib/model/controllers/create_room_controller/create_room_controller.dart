@@ -10,6 +10,7 @@ import 'package:image_share_app/services/index.dart';
 
 import 'package:state_notifier/state_notifier.dart';
 
+// ignore: top_level_function_literal_block
 final createRoomController = StateNotifierProvider((ref) {
   final _userStore = ref.watch(userStore);
   final _user = ref.watch(userStore.state);

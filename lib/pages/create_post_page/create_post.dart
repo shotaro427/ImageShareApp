@@ -26,7 +26,7 @@ class CreatePost extends StatelessWidget {
                     height: 176,
                     child: Container(
                       color: Colors.white,
-                      child: Padding(
+                      child: const Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
                           maxLines: null,

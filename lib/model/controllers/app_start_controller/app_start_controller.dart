@@ -10,6 +10,7 @@ import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_state.dart';
 
+// ignore: top_level_function_literal_block
 final appStartController = StateNotifierProvider((ref) {
   final userProvider = ref.watch(userStore);
 

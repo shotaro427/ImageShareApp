@@ -6,6 +6,7 @@ import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
+// ignore: top_level_function_literal_block
 final invitedRoomListController = StateNotifierProvider((ref) {
   final user = ref.watch(userStore.state);
   return InvitedRoomListController(
