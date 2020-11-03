@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -35,6 +34,21 @@ class FilePickerService {
         throw Exception('too many files');
       }
       return files;
+    } else {
+      throw Exception('can not pick file');
+    }
+  }
+
+  Future<File> getSingleImageFile() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      final File file = File(result.files.single.path);
+
+      return file;
     } else {
       throw Exception('can not pick file');
     }

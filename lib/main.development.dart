@@ -10,7 +10,6 @@ import 'package:image_share_app/pages/app_start/app_start_page.dart';
 import 'package:image_share_app/pages/create_post_page/create_post_page.dart';
 import 'package:image_share_app/pages/create_room/create_room_page.dart';
 import 'package:image_share_app/pages/group_setting/group_setting_page.dart';
-import 'package:image_share_app/pages/invite_member/invite_member_page.dart';
 import 'package:image_share_app/pages/invited_room_list/invited_room_list_page.dart';
 import 'package:image_share_app/pages/mail_signup/mail_signup_page.dart';
 import 'package:image_share_app/pages/mail_singin/mail_signin_page.dart';
@@ -62,6 +61,7 @@ class DevMyApp extends StatelessWidget {
                 'editEmail': (_) => SelfEditingPage(EditType.email),
                 'editId': (_) => SelfEditingPage(EditType.id),
               },
+              // ignore: missing_return
               onGenerateRoute: (settings) {
                 if (settings.name == 'appStart') {
                   if (_isAuthorized) {

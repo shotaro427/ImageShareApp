@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -80,7 +79,7 @@ class FirestoreService {
 
     // 同じグループがあるかどうか確認
     final _documents =
-        (await _publicRef.where('uid', isEqualTo: room.id).getDocuments())
+        (await _publicRef.where('id', isEqualTo: room.id).getDocuments())
             .documents;
 
     // Firestoreに保存
@@ -181,7 +180,7 @@ class FirestoreService {
     await Future.forEach(ids, (userId) async {
       final docsUser = (await (await store
                   .collection('public/users/users')
-                  .where('uid', isEqualTo: ids[0]))
+                  .where('uid', isEqualTo: userId))
               .getDocuments())
           .documentChanges;
 
@@ -191,6 +190,64 @@ class FirestoreService {
     });
 
     return users;
+  }
+
+  // グループのアイコンを設定する
+  Future<RoomState> setGroupIcon(File icon, RoomState room) async {
+    if (room.id.isEmpty) return room;
+
+    final StorageUploadTask uploadTask =
+        storage.ref().child('images/${room.id}/icon/').putFile(icon);
+
+    final iconUrl =
+        (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+    return room.copyWith(iconUrl: iconUrl);
+  }
+
+  // ユーザーのアイコンを設定する
+  Future<UserState> setUserIcon(File icon, UserState user) async {
+    if (user.uid.isEmpty) return user;
+
+    final StorageUploadTask uploadTask =
+        storage.ref().child('users/${user.uid}/icon/').putFile(icon);
+
+    final iconUrl =
+        (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+    return user.copyWith(iconUrl: iconUrl);
+  }
+
+  // ユーザーを招待する
+  Future<RoomState> inviteUser(RoomState room, String id) async {
+    if (room.id.isEmpty) throw Exception('Invalid Room Id');
+
+    // グループのinvitedに追加
+    final pubUserRef = store.collection('public/users/users');
+
+    // IDからユーザーを検索
+    final inviteUsers =
+        (await pubUserRef.where('id', isEqualTo: id).getDocuments()).documents;
+
+    if (inviteUsers.length < 1) throw Exception('Not Found User');
+
+    final inviteUser = UserState.fromJson(inviteUsers.first.data);
+
+    final List<String> newInvited = List.from(room.invited);
+    if (!newInvited.contains(inviteUser.uid)) {
+      newInvited.add(inviteUser.uid);
+    }
+
+    final List<String> newUserInvited = List.from(inviteUser.invitedRooms);
+    if (!newUserInvited.contains(room.id)) {
+      newUserInvited.add(room.id);
+    }
+
+    await inviteUsers.first.reference.updateData({
+      'invited': newUserInvited,
+    });
+
+    return room.copyWith(invited: newInvited);
   }
 
   /// ========= PRIVATE =========
@@ -232,7 +289,8 @@ class FirestoreService {
       'id': user.id,
       'iconUrl': user.iconUrl,
       'name': user.name,
-      'uid': user.uid
+      'uid': user.uid,
+      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -245,7 +303,6 @@ class FirestoreService {
       'uid': user.uid,
       'email': user.email,
       'joinedRooms': user.joinedRooms,
-      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -257,7 +314,8 @@ class FirestoreService {
       'id': user.id,
       'iconUrl': user.iconUrl,
       'name': user.name,
-      'uid': user.uid
+      'uid': user.uid,
+      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -269,7 +327,6 @@ class FirestoreService {
       'uid': user.uid,
       'email': user.email,
       'joinedRooms': user.joinedRooms,
-      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -343,6 +400,7 @@ class FirestoreService {
       'updatedAt': room.updateAt,
       'id': room.id,
       'name': room.name,
+      'iconUrl': room.iconUrl,
     });
   }
 
@@ -366,6 +424,7 @@ class FirestoreService {
       'updatedAt': room.updateAt,
       'id': room.id,
       'name': room.name,
+      'iconUrl': room.iconUrl,
     });
   }
 

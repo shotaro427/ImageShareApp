@@ -10,6 +10,7 @@ import 'package:image_share_app/services/index.dart';
 import 'package:image_share_app/widget/organisms/advertising_banner.dart';
 import 'package:state_notifier/state_notifier.dart';
 
+// ignore: top_level_function_literal_block
 final mailSigninController = StateNotifierProvider((ref) {
   final userProvider = ref.watch(userStore);
   return MailSigninController(AppStartService(), userProvider);
