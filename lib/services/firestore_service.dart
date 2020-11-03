@@ -368,6 +368,7 @@ class FirestoreService {
       'updatedAt': room.updateAt,
       'id': room.id,
       'name': room.name,
+      'iconUrl': room.iconUrl,
     });
   }
 
@@ -391,6 +392,7 @@ class FirestoreService {
       'updatedAt': room.updateAt,
       'id': room.id,
       'name': room.name,
+      'iconUrl': room.iconUrl,
     });
   }
 

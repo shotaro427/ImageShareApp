@@ -52,8 +52,16 @@ class MemberItem extends StatelessWidget {
                 width: iconSize,
                 child: Container(
                   decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     color: Colors.grey[400],
-                    borderRadius: BorderRadius.circular(iconSize / 2),
+                    image: (_type != ItemType.addMember)
+                        ? DecorationImage(
+                            fit: BoxFit.fill,
+                            image: (_user != null && _user.iconUrl.isNotEmpty)
+                                ? NetworkImage(_user.iconUrl)
+                                : const AssetImage('images/group_icon.jpeg'),
+                          )
+                        : null,
                   ),
                   child: (_type == ItemType.addMember)
                       ? const Icon(
