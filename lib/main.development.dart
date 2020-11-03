@@ -98,3 +98,8 @@ Future<bool> handleLoginPage() async {
 
   return _fUser != null;
 }
+
+void resetLoginInfo() {
+  _isAuthorized = false;
+  _user = null;
+}

@@ -42,6 +42,7 @@ class MailSigninController extends StateNotifier<MailSigninState> {
       ));
 
       userStore.updateState(user);
+
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
