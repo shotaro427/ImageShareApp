@@ -19,6 +19,7 @@ class MemberInvitePage extends ConsumerWidget {
           ),
           body: InviteForm(_key),
           backgroundColor: backgroundColor,
+          key: _key,
         ),
         LoadingView(isLoading),
       ],

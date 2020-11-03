@@ -60,10 +60,6 @@ class MemberList extends ConsumerWidget {
               memberRemoveMe[index - 2],
             );
           } else {
-            // 招待中
-            // log(index.toString());
-            // log(groupSettingState.invited[index - (memberRemoveMe.length + 4)]
-            //     .toString());
             return MemberItem(
               ItemType.invited,
               groupSettingState.invited[index - (memberRemoveMe.length + 4)],
