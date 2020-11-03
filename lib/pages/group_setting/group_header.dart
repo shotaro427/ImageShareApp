@@ -1,78 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/model/controllers/group_setting_controller/group_setting_controller.dart';
+import 'package:image_share_app/model/entities/room.entity.dart';
 
-class GroupHeader extends StatelessWidget {
+class GroupHeader extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     final headerHeight = MediaQuery.of(context).size.width / 3.5;
     final iconSize = headerHeight * 0.8;
 
+    final RoomState _room = watch(roomStore.state);
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Column(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              SizedBox(
-                height: headerHeight,
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Image.asset(
-                          'images/take_image.png',
-                          scale: 1.1,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
+          GestureDetector(
+            onTap: context.read(groupSettingController).changeGroupHeaderImage,
+            child: SizedBox(
+              height: iconSize,
+              width: iconSize,
+              child: Stack(
                 children: [
                   Container(
-                    margin:
-                        EdgeInsets.only(top: headerHeight / 2 * 1.2, left: 8),
-                    child: SizedBox(
-                      height: iconSize,
-                      width: iconSize,
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(iconSize / 2),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Image.asset(
-                              'images/take_image.png',
-                              scale: 1.1,
-                            ),
-                          ),
-                        ],
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: (_room.iconUrl.isEmpty)
+                            ? const AssetImage('images/group_icon.jpeg')
+                            : NetworkImage(_room.iconUrl),
                       ),
                     ),
                   ),
-                  Text(
-                    '俺たちの戦いはこれからだ',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Image.asset(
+                      'images/take_image.png',
+                      scale: 1.1,
                     ),
                   ),
                 ],
               ),
-            ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 8),
+            child: Text(
+              _room.name,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),

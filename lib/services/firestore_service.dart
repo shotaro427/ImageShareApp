@@ -192,6 +192,19 @@ class FirestoreService {
     return users;
   }
 
+  // グループのアイコンを設定する
+  Future<RoomState> setGroupIcon(File icon, RoomState room) async {
+    if (room.id.isEmpty) return room;
+
+    final StorageUploadTask uploadTask =
+        storage.ref().child('images/${room.id}/icon/').putFile(icon);
+
+    final iconUrl =
+        (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+    return room.copyWith(iconUrl: iconUrl);
+  }
+
   /// ========= PRIVATE =========
 
   /// ======= USER =======
