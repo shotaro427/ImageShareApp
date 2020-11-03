@@ -79,7 +79,7 @@ class FirestoreService {
 
     // 同じグループがあるかどうか確認
     final _documents =
-        (await _publicRef.where('uid', isEqualTo: room.id).getDocuments())
+        (await _publicRef.where('id', isEqualTo: room.id).getDocuments())
             .documents;
 
     // Firestoreに保存
@@ -180,7 +180,7 @@ class FirestoreService {
     await Future.forEach(ids, (userId) async {
       final docsUser = (await (await store
                   .collection('public/users/users')
-                  .where('uid', isEqualTo: ids[0]))
+                  .where('uid', isEqualTo: userId))
               .getDocuments())
           .documentChanges;
 
@@ -216,6 +216,38 @@ class FirestoreService {
         (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
 
     return user.copyWith(iconUrl: iconUrl);
+  }
+
+  // ユーザーを招待する
+  Future<RoomState> inviteUser(RoomState room, String id) async {
+    if (room.id.isEmpty) throw Exception('Invalid Room Id');
+
+    // グループのinvitedに追加
+    final pubUserRef = store.collection('public/users/users');
+
+    // IDからユーザーを検索
+    final inviteUsers =
+        (await pubUserRef.where('id', isEqualTo: id).getDocuments()).documents;
+
+    if (inviteUsers.length < 1) throw Exception('Not Found User');
+
+    final inviteUser = UserState.fromJson(inviteUsers.first.data);
+
+    final List<String> newInvited = List.from(room.invited);
+    if (!newInvited.contains(inviteUser.uid)) {
+      newInvited.add(inviteUser.uid);
+    }
+
+    final List<String> newUserInvited = List.from(inviteUser.invitedRooms);
+    if (!newUserInvited.contains(room.id)) {
+      newUserInvited.add(room.id);
+    }
+
+    await inviteUsers.first.reference.updateData({
+      'invited': newUserInvited,
+    });
+
+    return room.copyWith(invited: newInvited);
   }
 
   /// ========= PRIVATE =========
@@ -257,7 +289,8 @@ class FirestoreService {
       'id': user.id,
       'iconUrl': user.iconUrl,
       'name': user.name,
-      'uid': user.uid
+      'uid': user.uid,
+      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -270,7 +303,6 @@ class FirestoreService {
       'uid': user.uid,
       'email': user.email,
       'joinedRooms': user.joinedRooms,
-      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -282,7 +314,8 @@ class FirestoreService {
       'id': user.id,
       'iconUrl': user.iconUrl,
       'name': user.name,
-      'uid': user.uid
+      'uid': user.uid,
+      'invitedRooms': user.invitedRooms,
     });
   }
 
@@ -294,7 +327,6 @@ class FirestoreService {
       'uid': user.uid,
       'email': user.email,
       'joinedRooms': user.joinedRooms,
-      'invitedRooms': user.invitedRooms,
     });
   }
 
