@@ -68,8 +68,8 @@ class FirestoreService {
     if (pubDocuments.length < 1 || priDocuments.length < 1) return null;
 
     Map<String, dynamic> data = {};
-    data.addAll(pubDocuments[0].data);
     data.addAll(priDocuments[0].data);
+    data.addAll(pubDocuments[0].data);
 
     return UserState.fromJson(data);
   }
@@ -94,14 +94,13 @@ class FirestoreService {
 
   // グループ一覧を取得する
   Future<List<RoomState>> getRooms(
-    String uid, {
+    UserState user, {
     int page = 1,
     RoomType type = RoomType.joinedRooms,
   }) async {
     // ユーザーの参加グループのIDを取得
-    final userData =
-        (await store.document('private/users/users/${uid}').get()).data;
-    final List<String> roomIds = userData[describeEnum(type)].cast<String>();
+    final List<String> roomIds =
+        (type == RoomType.joinedRooms) ? user.joinedRooms : user.invitedRooms;
     final lastCount = roomIds.length < (((page - 1) * 10) + 11)
         ? roomIds.length
         : (((page - 1) * 10) + 11);
@@ -244,7 +243,7 @@ class FirestoreService {
     }
 
     await inviteUsers.first.reference.updateData({
-      'invited': newUserInvited,
+      'invitedRooms': newUserInvited,
     });
 
     return room.copyWith(invited: newInvited);

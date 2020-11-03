@@ -29,7 +29,7 @@ class InvitedRoomListController extends StateNotifier<InvitedRoomState> {
 
     try {
       final groups = (await firestoreService.getRooms(
-        user.uid,
+        user,
         type: RoomType.invitedRooms,
       ));
       state = state.copyWith(isLoading: false, error: null, rooms: groups);
