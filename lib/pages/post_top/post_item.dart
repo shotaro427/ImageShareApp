@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_share_app/model/entities/post.entity.dart';
-import 'package:image_share_app/pages/post_detail/psot_detail_page.dart';
+import 'package:image_share_app/pages/post_detail/post_detail_page.dart';
 import 'package:image_share_app/pages/post_top/tag_list.dart';
 
 class PostItem extends StatelessWidget {

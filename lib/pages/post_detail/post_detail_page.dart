@@ -17,10 +17,9 @@ class PostDetailPage extends StatelessWidget {
           appBar: AppBar(
             title: Text(_postState.title),
           ),
-          body: PostDetail(),
+          body: PostDetail(_postState),
           bottomNavigationBar: BottomNavBar(),
         ),
-        // TODO add loading view
         LoadingView(false),
       ],
     );
