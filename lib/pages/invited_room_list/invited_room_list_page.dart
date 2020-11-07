@@ -17,8 +17,6 @@ class InvitedRoomListPage extends ConsumerWidget {
             title: const Text('招待されているグループ'),
           ),
           body: RoomList(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-          floatingActionButton: FloatingButtons(),
           backgroundColor: backgroundColor,
         ),
         LoadingView(isLoading),

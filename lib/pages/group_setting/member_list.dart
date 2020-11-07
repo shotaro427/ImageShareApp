@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/group_setting_controller/group_setting_controller.dart';
@@ -57,7 +55,7 @@ class MemberList extends ConsumerWidget {
             //　メンバー
             return MemberItem(
               ItemType.member,
-              memberRemoveMe[index - 2],
+              memberRemoveMe[index - 3],
             );
           } else {
             return MemberItem(

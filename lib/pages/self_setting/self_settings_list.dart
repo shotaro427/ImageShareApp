@@ -17,7 +17,10 @@ class SelfSettingsList extends StatelessWidget {
                 border: Border(
                   bottom: BorderSide(
                     width: 2,
-                    color: ([2, 3, 5].contains(index))
+                    color: ([
+                      2,
+                      3,
+                    ].contains(index))
                         ? Colors.transparent
                         : backgroundColor,
                   ),
@@ -26,7 +29,7 @@ class SelfSettingsList extends StatelessWidget {
             ),
           );
         },
-        itemCount: 6,
+        itemCount: 7,
       ),
     );
   }

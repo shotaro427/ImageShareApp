@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/main.development.dart';
 import 'package:image_share_app/model/controllers/self_setting_controller/self_setting_state.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/services/index.dart';
@@ -14,6 +16,7 @@ final selfSettingController = StateNotifierProvider((ref) {
     _userStore,
     FirestoreService(),
     FilePickerService(),
+    AppStartService(),
   );
 });
 
@@ -23,12 +26,14 @@ class SelfSettingController extends StateNotifier<SelfSettingState> {
     this._userController,
     this._firestoreService,
     this._filePickerService,
+    this._appStartService,
   ) : super(const SelfSettingState());
 
   final UserState _user;
   final UserController _userController;
   final FirestoreService _firestoreService;
   final FilePickerService _filePickerService;
+  final AppStartService _appStartService;
 
   Future<void> changeUserIcon() async {
     state = state.copyWith(isLoading: true);
@@ -38,6 +43,23 @@ class SelfSettingController extends StateNotifier<SelfSettingState> {
       await _userController.updateUser(newUser);
 
       state = state.copyWith(isLoading: false, error: null);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+    }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      await _appStartService.logout();
+      resetLoginInfo();
+      state = state.copyWith(isLoading: false, error: null);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        'appStart',
+        (route) => false,
+      );
     } catch (error) {
       log(error.toString());
       state = state.copyWith(isLoading: false, error: error.toString());

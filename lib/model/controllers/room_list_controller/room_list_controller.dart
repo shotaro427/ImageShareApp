@@ -30,7 +30,7 @@ class RoomListController extends StateNotifier<RoomListState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      final groups = (await firestoreService.getRooms(user.uid));
+      final groups = (await firestoreService.getRooms(user));
       state = state.copyWith(isLoading: false, error: null, rooms: groups);
     } catch (e) {
       log(e.toString());

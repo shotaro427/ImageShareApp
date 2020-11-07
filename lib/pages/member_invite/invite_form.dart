@@ -35,8 +35,8 @@ class InviteForm extends StatelessWidget {
                 validator: (String value) {
                   if (value.length < 1) {
                     return '招待IDを入力してください';
-                  } else if (value.length != 12) {
-                    return '招待IDは12文字です';
+                  } else if (value.length > 13) {
+                    return '招待IDは12文字以内です';
                   } else {
                     return null;
                   }

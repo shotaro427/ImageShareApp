@@ -63,7 +63,9 @@ class AppStartController extends StateNotifier<AppStartState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
-        myBanner.dispose();
+        try {
+          myBanner.dispose();
+        } catch (e) {}
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,
@@ -89,7 +91,9 @@ class AppStartController extends StateNotifier<AppStartState> {
       state = state.copyWith(error: null, isLoading: false);
 
       if (state.error == null) {
-        myBanner.dispose();
+        try {
+          myBanner.dispose();
+        } catch (e) {}
         Navigator.of(scaffoldKey.currentContext).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => RoomListPage()),
           (_) => false,
@@ -103,7 +107,9 @@ class AppStartController extends StateNotifier<AppStartState> {
 
   @override
   void dispose() {
-    myBanner.dispose();
+    try {
+      myBanner.dispose();
+    } catch (e) {}
     super.dispose();
   }
 }

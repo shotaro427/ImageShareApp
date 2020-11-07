@@ -27,6 +27,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _isAuthorized = (await handleLoginPage());
   log(_isAuthorized.toString());
+  log(_user.toString());
   runApp(DevMyApp());
 }
 
@@ -97,4 +98,9 @@ Future<bool> handleLoginPage() async {
   }
 
   return _fUser != null;
+}
+
+void resetLoginInfo() {
+  _isAuthorized = false;
+  _user = null;
 }

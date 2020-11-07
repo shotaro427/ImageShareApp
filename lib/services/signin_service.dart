@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
+import 'package:image_share_app/services/index.dart';
 
 class AppStartService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirestoreService _firestoreService = FirestoreService();
 
   // Googleアカウントでログインする
   Future<UserState> loginWithGoogle() async {
@@ -30,11 +32,10 @@ class AppStartService {
     final FirebaseUser _user =
         (await _auth.signInWithCredential(credential)).user;
 
-    return UserState(
-      email: _user.email,
-      uid: _user.uid,
-      name: _user.displayName ?? '',
-    );
+    if (_user == null || _user.uid.isEmpty)
+      throw Exception('Firebase user is null');
+
+    return await _firestoreService.getUser(_user.uid);
   }
 
   // Appleでログインする
@@ -56,13 +57,10 @@ class AppStartService {
     final FirebaseUser _user =
         (await _auth.signInWithCredential(credential)).user;
 
-    if (_user == null) throw Exception('Firebase user is null');
+    if (_user == null || _user.uid.isEmpty)
+      throw Exception('Firebase user is null');
 
-    return UserState(
-      email: _user.email,
-      uid: _user.uid,
-      name: _user.displayName ?? '',
-    );
+    return await _firestoreService.getUser(_user.uid);
   }
 
   // メールアドレスでログインする
@@ -76,7 +74,10 @@ class AppStartService {
 
     final UserState _user = UserState(email: user.email, uid: user.uid);
 
-    return _user;
+    if (_user == null || _user.uid.isEmpty)
+      throw Exception('Firebase user is null');
+
+    return await _firestoreService.getUser(_user.uid);
   }
 
   // メールアドレスで登録する
@@ -104,5 +105,14 @@ class AppStartService {
         message: 'Sign in aborted by user',
       );
     }
+  }
+
+  // ログアウトする
+  Future<void> logout() async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    await Future.wait([
+      _firebaseAuth.signOut(),
+      GoogleSignIn().signOut(),
+    ]);
   }
 }

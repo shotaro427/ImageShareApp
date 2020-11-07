@@ -68,8 +68,8 @@ class FirestoreService {
     if (pubDocuments.length < 1 || priDocuments.length < 1) return null;
 
     Map<String, dynamic> data = {};
-    data.addAll(pubDocuments[0].data);
     data.addAll(priDocuments[0].data);
+    data.addAll(pubDocuments[0].data);
 
     return UserState.fromJson(data);
   }
@@ -94,14 +94,13 @@ class FirestoreService {
 
   // グループ一覧を取得する
   Future<List<RoomState>> getRooms(
-    String uid, {
+    UserState user, {
     int page = 1,
     RoomType type = RoomType.joinedRooms,
   }) async {
     // ユーザーの参加グループのIDを取得
-    final userData =
-        (await store.document('private/users/users/${uid}').get()).data;
-    final List<String> roomIds = userData[describeEnum(type)].cast<String>();
+    final List<String> roomIds =
+        (type == RoomType.joinedRooms) ? user.joinedRooms : user.invitedRooms;
     final lastCount = roomIds.length < (((page - 1) * 10) + 11)
         ? roomIds.length
         : (((page - 1) * 10) + 11);
@@ -244,10 +243,67 @@ class FirestoreService {
     }
 
     await inviteUsers.first.reference.updateData({
-      'invited': newUserInvited,
+      'invitedRooms': newUserInvited,
     });
 
     return room.copyWith(invited: newInvited);
+  }
+
+  // グループに参加する
+  Future<void> participateRoom(
+    RoomState room,
+    String uid,
+  ) async {
+    if (room.id.isEmpty) throw Exception("Invalid Room ID");
+
+    // グループにメンバーを追加
+    await _addMemberToRoom(room, uid);
+  }
+
+  // 招待IDが使われているかを確認する(true: 使われている)
+  Future<bool> validateInviteId(String id) async {
+    final docs = await store
+        .collection('public/users/users')
+        .where('id', isEqualTo: id)
+        .getDocuments();
+
+    return docs.documents.length > 0;
+  }
+
+  //　ユーザーをグループから退会させる
+  Future<void> deleteUserFromGroup(String targetUid, String roomId) async {
+    if (targetUid.isEmpty || roomId.isEmpty) throw Exception('Not Found');
+
+    // ユーザーのjoinedRoomからルームを削除
+    final data = (await store
+            .collection('private/users/users')
+            .document(targetUid)
+            .get())
+        .data;
+    UserState targetUser = UserState.fromJson(data);
+
+    final List<String> newJoinedRoom = List.from(targetUser.joinedRooms);
+    newJoinedRoom.removeWhere((r) => r == roomId);
+    targetUser = targetUser.copyWith(joinedRooms: newJoinedRoom);
+
+    await _updateUserPrivate(targetUser);
+  }
+
+  // ユーザーの招待を取り消す
+  Future<void> deleteInvite(String targetUid, String roomId) async {
+    if (targetUid.isEmpty || roomId.isEmpty) throw Exception('Not Found');
+
+    // ユーザーのinvitedRoomからルームを削除
+    final data =
+        (await store.collection('public/users/users').document(targetUid).get())
+            .data;
+    UserState targetUser = UserState.fromJson(data);
+
+    final List<String> newInviteddRoom = List.from(targetUser.invitedRooms);
+    newInviteddRoom.removeWhere((r) => r == roomId);
+    targetUser = targetUser.copyWith(invitedRooms: newInviteddRoom);
+
+    await _updateUserPublic(targetUser);
   }
 
   /// ========= PRIVATE =========
@@ -575,5 +631,23 @@ class FirestoreService {
         docRef.collection('images').add(imageInfo.toJson());
       }
     });
+  }
+
+  Future<void> _addMemberToRoom(RoomState room, String uid) async {
+    // グループのinvitedから削除
+    final roomRef = store.document('memberOnly/rooms/rooms/${room.id}');
+    final List<String> newInvited = List.from(room.invited);
+    newInvited.removeWhere((invited) => invited == uid);
+
+    // グループのmemberに追加
+    final List<String> newMember = List.from(room.member);
+    if (!newMember.contains(uid)) {
+      newMember.add(uid);
+    }
+
+    await Future.wait([
+      roomRef.updateData({'invited': newInvited}),
+      roomRef.updateData({'members': newMember}),
+    ]);
   }
 }
