@@ -250,7 +250,7 @@ class FirestoreService {
   }
 
   // グループに参加する
-  Future<UserState> participateRoom(
+  Future<void> participateRoom(
     RoomState room,
     String uid,
   ) async {
@@ -258,6 +258,16 @@ class FirestoreService {
 
     // グループにメンバーを追加
     await _addMemberToRoom(room, uid);
+  }
+
+  // 招待IDが使われているかを確認する(true: 使われている)
+  Future<bool> validateInviteId(String id) async {
+    final docs = await store
+        .collection('public/users/users')
+        .where('id', isEqualTo: id)
+        .getDocuments();
+
+    return docs.documents.length > 0;
   }
 
   /// ========= PRIVATE =========
