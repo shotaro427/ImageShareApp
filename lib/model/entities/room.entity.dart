@@ -30,7 +30,7 @@ class RoomController extends StateNotifier<RoomState> {
 
   FirestoreService _firestoreService;
 
-  void updateRoom(RoomState room) async {
+  Future<void> updateRoom(RoomState room) async {
     await _firestoreService.saveRoomInfo(room);
     state = room;
   }

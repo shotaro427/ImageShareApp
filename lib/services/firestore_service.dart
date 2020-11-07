@@ -270,6 +270,42 @@ class FirestoreService {
     return docs.documents.length > 0;
   }
 
+  //　ユーザーをグループから退会させる
+  Future<void> deleteUserFromGroup(String targetUid, String roomId) async {
+    if (targetUid.isEmpty || roomId.isEmpty) throw Exception('Not Found');
+
+    // ユーザーのjoinedRoomからルームを削除
+    final data = (await store
+            .collection('private/users/users')
+            .document(targetUid)
+            .get())
+        .data;
+    UserState targetUser = UserState.fromJson(data);
+
+    final List<String> newJoinedRoom = List.from(targetUser.joinedRooms);
+    newJoinedRoom.removeWhere((r) => r == roomId);
+    targetUser = targetUser.copyWith(joinedRooms: newJoinedRoom);
+
+    await _updateUserPrivate(targetUser);
+  }
+
+  // ユーザーの招待を取り消す
+  Future<void> deleteInvite(String targetUid, String roomId) async {
+    if (targetUid.isEmpty || roomId.isEmpty) throw Exception('Not Found');
+
+    // ユーザーのinvitedRoomからルームを削除
+    final data =
+        (await store.collection('public/users/users').document(targetUid).get())
+            .data;
+    UserState targetUser = UserState.fromJson(data);
+
+    final List<String> newInviteddRoom = List.from(targetUser.invitedRooms);
+    newInviteddRoom.removeWhere((r) => r == roomId);
+    targetUser = targetUser.copyWith(invitedRooms: newInviteddRoom);
+
+    await _updateUserPublic(targetUser);
+  }
+
   /// ========= PRIVATE =========
 
   /// ======= USER =======

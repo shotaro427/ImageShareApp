@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/group_setting_controller/group_setting_state.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
@@ -57,6 +56,46 @@ class GroupSettingController extends StateNotifier<GroupSettingState> {
       final iconFile = await _filePickerService.getSingleImageFile();
       final newRoom = await _firestoreService.setGroupIcon(iconFile, _room);
       await _roomStore.updateRoom(newRoom);
+
+      state = state.copyWith(isLoading: false, error: null);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+    }
+  }
+
+  Future<void> removeMember(String targetUid, String roomId) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      // remove
+      RoomState newRoom = _room;
+      final List<String> newMembers = List.from(newRoom.member);
+      newMembers.removeWhere((m) => m == targetUid);
+      newRoom = newRoom.copyWith(member: newMembers);
+
+      await Future.wait([
+        _firestoreService.deleteUserFromGroup(targetUid, roomId),
+        _roomStore.updateRoom(newRoom),
+      ]);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+    }
+  }
+
+  Future<void> removeInvited(String targetUid, String roomId) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      // remove
+      RoomState newRoom = _room;
+      final List<String> newInvited = List.from(newRoom.invited);
+      newInvited.removeWhere((m) => m == targetUid);
+      newRoom = newRoom.copyWith(invited: newInvited);
+
+      await Future.wait([
+        _firestoreService.deleteInvite(targetUid, roomId),
+        _roomStore.updateRoom(newRoom),
+      ]);
 
       state = state.copyWith(isLoading: false, error: null);
     } catch (error) {
