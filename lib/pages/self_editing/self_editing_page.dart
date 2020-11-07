@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/constants/color.dart';
+import 'package:image_share_app/model/controllers/self_editing_controller/self_editing_controller.dart';
 import 'package:image_share_app/pages/self_editing/editing_form.dart';
+import 'package:image_share_app/widget/atoms/loading_view.dart';
 
 enum EditType {
   name,
@@ -8,19 +11,26 @@ enum EditType {
   id,
 }
 
-class SelfEditingPage extends StatelessWidget {
+class SelfEditingPage extends ConsumerWidget {
   SelfEditingPage(this._type);
   final EditType _type;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_appBarTitle()),
-      ),
-      body: EditingForm(_key, _type),
-      backgroundColor: backgroundColor,
+  Widget build(BuildContext context, ScopedReader watch) {
+    final isLoading = watch(selfEditingController.state).isLoading;
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(_appBarTitle()),
+          ),
+          body: EditingForm(_key, _type),
+          backgroundColor: backgroundColor,
+          key: _key,
+        ),
+        LoadingView(isLoading),
+      ],
     );
   }
 

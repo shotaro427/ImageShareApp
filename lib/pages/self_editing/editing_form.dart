@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,18 +13,18 @@ class EditingForm extends ConsumerWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   void onPress(BuildContext context) async {
-    final value =
-        context.read(selfEditingController).editController(_type).text;
-    await context.read(selfEditingController).validate(value, _type);
+    final controller = context.read(selfEditingController);
+    final value = controller.editController(_type).text;
+    await controller.validate(value, _type);
+
     if (_formKey.currentState.validate()) {
-      // TODO add confirm method
+      await controller.saveUserInfo(_type, _scaffoldKey);
     }
   }
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final validator = watch(selfEditingController.state).validate;
-    log('$validator');
     return Center(
       child: Form(
         key: _formKey,

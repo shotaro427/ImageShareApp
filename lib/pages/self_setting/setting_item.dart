@@ -3,21 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/self_setting_controller/self_setting_controller.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
 import 'package:image_share_app/widget/atoms/awesome_dialog.dart';
+import 'package:image_share_app/widget/atoms/base_snack_barf.dart';
 
 class SettingItem extends ConsumerWidget {
   SettingItem(this._index);
   final int _index;
 
   void onTap(BuildContext context) async {
+    var isShowSnackBar;
     switch (_index) {
       case 0:
-        Navigator.of(context).pushNamed('editName');
+        var result = await Navigator.of(context).pushNamed('editName');
+        isShowSnackBar = result;
         break;
       case 1:
-        Navigator.of(context).pushNamed('editEmail');
+        var result = await Navigator.of(context).pushNamed('editEmail');
+        isShowSnackBar = result;
+
         break;
       case 2:
-        Navigator.of(context).pushNamed('editId');
+        var result = await Navigator.of(context).pushNamed('editId');
+        isShowSnackBar = result;
+
         break;
       case 6:
         showOkCancelDialog(
@@ -28,6 +35,10 @@ class SettingItem extends ConsumerWidget {
         );
         break;
       default:
+    }
+
+    if (isShowSnackBar) {
+      Scaffold.of(context).showSnackBar(baseSnackBar(context, '保存しました'));
     }
   }
 

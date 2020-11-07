@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/self_editing_controller/self_editing_state.dart';
@@ -7,14 +10,17 @@ import 'package:state_notifier/state_notifier.dart';
 
 final selfEditingController = StateNotifierProvider((ref) {
   final user = ref.watch(userStore.state);
+  final action = ref.watch(userStore);
   return SelfEditingController(
     user,
+    action,
   );
 });
 
 class SelfEditingController extends StateNotifier<SelfEditingState> {
   SelfEditingController(
     this._user,
+    this._controller,
   ) : super(const SelfEditingState()) {
     nameController.text = _user.name;
     emailController.text = _user.email;
@@ -22,10 +28,30 @@ class SelfEditingController extends StateNotifier<SelfEditingState> {
   }
 
   final UserState _user;
+  final UserController _controller;
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final idController = TextEditingController();
+
+  Future<void> saveUserInfo(EditType type, GlobalKey<ScaffoldState> key) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final UserState newUser = _user.copyWith(
+        name: nameController.text,
+        email: emailController.text,
+        id: idController.text,
+      );
+      await _controller.updateUser(newUser);
+
+      state = state.copyWith(isLoading: false, error: null);
+      Navigator.of(key.currentContext).pop<bool>(true);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+      Navigator.of(key.currentContext).pop<bool>(false);
+    }
+  }
 
   TextEditingController editController(EditType type) {
     switch (type) {
