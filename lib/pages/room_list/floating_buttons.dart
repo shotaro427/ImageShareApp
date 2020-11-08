@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:image_share_app/model/controllers/self_setting_controller/self_setting_controller.dart';
+import 'package:image_share_app/widget/atoms/awesome_dialog.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FloatingButtons extends StatefulWidget {
   @override
@@ -34,6 +37,15 @@ class _FloatingButtonsState extends State<FloatingButtons>
     Navigator.of(context).pushNamed('invitedRoomList');
   }
 
+  void logout(BuildContext context) {
+    showOkCancelDialog(
+      context,
+      'ログアウトします。',
+      'このままログアウトしますか？',
+      () => context.read(selfSettingController).logout(context),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionBubble(
@@ -41,6 +53,14 @@ class _FloatingButtonsState extends State<FloatingButtons>
       // Menu items
       items: <Bubble>[
         // Floating action menu item
+        Bubble(
+          title: 'ログアウト',
+          iconColor: Colors.white,
+          bubbleColor: Colors.red,
+          icon: Icons.exit_to_app,
+          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () => logout(context),
+        ),
         Bubble(
           title: '招待グループ',
           iconColor: Colors.white,
