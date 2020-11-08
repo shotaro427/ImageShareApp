@@ -21,6 +21,10 @@ class PostDetailController extends StateNotifier<PostDetailState> {
         duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
   }
 
+  void switchMainImage(int index) {
+    state = state.copyWith(imageIndex: index);
+  }
+
   @override
   void dispose() {
     pageController.dispose();

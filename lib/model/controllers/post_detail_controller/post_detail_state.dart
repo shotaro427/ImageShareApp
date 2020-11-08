@@ -8,6 +8,7 @@ abstract class PostDetailState with _$PostDetailState {
     String error,
     @Default(false) bool isLoading,
     @Default(0) int currentIndex,
+    @Default(0) int imageIndex,
   }) = _PostDetailState;
 
   factory PostDetailState.fromJson(Map<String, dynamic> json) =>
