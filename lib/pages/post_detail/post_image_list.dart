@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_detail_controller/post_detail_controller.dart';
 import 'package:image_share_app/model/entities/post.entity.dart';
+import 'package:image_share_app/pages/image_view/image_view_page.dart';
 import 'package:image_share_app/pages/post_detail/image_item.dart';
 
 class PostImageList extends ConsumerWidget {
@@ -19,16 +22,26 @@ class PostImageList extends ConsumerWidget {
         SliverAppBar(
           stretch: true,
           automaticallyImplyLeading: false,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-              alignment: Alignment.center,
-              color: Colors.teal[100 * (mainImageIndex % 9)],
-              child: Text('grid item $mainImageIndex'),
+          flexibleSpace: GestureDetector(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ImageViewPage(
+                  _postState.title,
+                  _postState.thumbnailUrl,
+                ),
+              ),
             ),
-            // background: Image.network(
-            //   _postState.thumbnailUrl,
-            //   fit: BoxFit.cover,
-            // ),
+            child: FlexibleSpaceBar(
+              background: Container(
+                alignment: Alignment.center,
+                color: Colors.teal[100 * (mainImageIndex % 9)],
+                child: Text('grid item $mainImageIndex'),
+              ),
+              // background: Image.network(
+              //   _postState.thumbnailUrl,
+              //   fit: BoxFit.cover,
+              // ),
+            ),
           ),
           expandedHeight: MediaQuery.of(context).size.width,
         ),
