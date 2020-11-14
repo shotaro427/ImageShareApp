@@ -40,8 +40,8 @@ class PostItem extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : Image.asset(
-                        'images/icon.jpeg',
-                        fit: BoxFit.cover,
+                        'images/pdf.png',
+                        fit: BoxFit.fitHeight,
                       ),
               ),
             ),
