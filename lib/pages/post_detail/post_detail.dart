@@ -13,7 +13,7 @@ class PostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final _widgets = [
       PostImageList(_postState),
-      PostPdfList(),
+      PostPdfList(_postState),
     ];
 
     return PageView(
