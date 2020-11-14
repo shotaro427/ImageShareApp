@@ -47,8 +47,6 @@ class PostDetailController extends StateNotifier<PostDetailState> {
       final images = await _firestoreService.getPostImages(_room.id, _post);
       final pdfs = await _firestoreService.getPostPdfs(_room.id, _post);
 
-      print('images ${images}');
-
       state = state.copyWith(
         isLoading: false,
         error: null,
