@@ -3,6 +3,7 @@ import 'package:image_share_app/model/controllers/post_detail_controller/post_de
 import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/pages/post_detail/post_image_list.dart';
+import 'package:image_share_app/pages/post_detail/post_pdf_list.dart';
 
 class PostDetail extends StatelessWidget {
   PostDetail(this._postState);
@@ -12,7 +13,7 @@ class PostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final _widgets = [
       PostImageList(_postState),
-      const Placeholder(),
+      PostPdfList(_postState),
     ];
 
     return PageView(

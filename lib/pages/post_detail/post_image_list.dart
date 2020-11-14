@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,46 +13,48 @@ class PostImageList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final mainImageIndex = watch(postDetailController.state).imageIndex;
+    final state = watch(postDetailController.state);
+    final mainImageIndex = state.imageIndex;
+    final images = state.images;
 
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          stretch: true,
-          automaticallyImplyLeading: false,
-          flexibleSpace: GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ImageViewPage(
-                  _postState.title,
-                  _postState.thumbnailUrl,
+    return (images.length > 0)
+        ? CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                stretch: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ImageViewPage(
+                        _postState.title,
+                        state.images.elementAt(mainImageIndex).imageUrl,
+                      ),
+                    ),
+                  ),
+                  child: FlexibleSpaceBar(
+                    background: Image.network(
+                      images.elementAt(mainImageIndex).imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                expandedHeight: MediaQuery.of(context).size.width,
+              ),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) =>
+                      ImageItem(index, state.images.elementAt(index).imageUrl),
+                  childCount: state.images.length,
                 ),
               ),
-            ),
-            child: FlexibleSpaceBar(
-              background: Container(
-                alignment: Alignment.center,
-                color: Colors.teal[100 * (mainImageIndex % 9)],
-                child: Text('grid item $mainImageIndex'),
-              ),
-              // background: Image.network(
-              //   _postState.thumbnailUrl,
-              //   fit: BoxFit.cover,
-              // ),
-            ),
-          ),
-          expandedHeight: MediaQuery.of(context).size.width,
-        ),
-        SliverGrid(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) => ImageItem(index),
-            childCount: 100,
-          ),
-        ),
-      ],
-    );
+            ],
+          )
+        : const Center(
+            child: Text('画像の投稿はありません'),
+          );
   }
 }

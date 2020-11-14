@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_detail_controller/post_detail_controller.dart';
 
 class ImageItem extends StatelessWidget {
-  ImageItem(this.index);
+  ImageItem(this.index, this.url);
   final int index;
+  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,11 @@ class ImageItem extends StatelessWidget {
       onTap: () => context.read(postDetailController).switchMainImage(index),
       child: Container(
         alignment: Alignment.center,
-        color: Colors.teal[100 * (index % 9)],
-        child: Text('grid item $index'),
+        child: Image.network(
+          url,
+          fit: BoxFit.cover,
+          height: MediaQuery.of(context).size.width / 2,
+        ),
       ),
     );
   }
