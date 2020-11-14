@@ -306,6 +306,48 @@ class FirestoreService {
     await _updateUserPublic(targetUser);
   }
 
+  // 投稿されている画像を取得
+  Future<List<ImageState>> getPostImages(String roomId, PostState post) async {
+    if (roomId.isEmpty || post.id.isEmpty) throw Exception('Invalid Id');
+
+    final targetPost = (await store
+            .collection('memberOnly/rooms/rooms')
+            .document(roomId)
+            .collection('posts')
+            .where('id', isEqualTo: post.id)
+            .getDocuments())
+        .documents;
+
+    if (targetPost.length < 1 || targetPost.first == null) return [];
+
+    return (await targetPost.first.reference
+            .collection('images')
+            .getDocuments())
+        .documents
+        .map((e) => ImageState.fromJson(e.data))
+        .toList();
+  }
+
+  // 投稿されているPDFを取得
+  Future<List<PdfState>> getPostPdfs(String roomId, PostState post) async {
+    if (roomId.isEmpty || post.id.isEmpty) throw Exception('Invalid Id');
+
+    final targetPost = (await store
+            .collection('memberOnly/rooms/rooms')
+            .document(roomId)
+            .collection('posts')
+            .where('id', isEqualTo: post.id)
+            .getDocuments())
+        .documents;
+
+    if (targetPost.length < 1 || targetPost.first == null) return [];
+
+    return (await targetPost.first.reference.collection('pdfs').getDocuments())
+        .documents
+        .map((e) => PdfState.fromJson(e.data))
+        .toList();
+  }
+
   /// ========= PRIVATE =========
 
   /// ======= USER =======
