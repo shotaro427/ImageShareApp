@@ -17,40 +17,44 @@ class PostImageList extends ConsumerWidget {
     final mainImageIndex = state.imageIndex;
     final images = state.images;
 
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
-          stretch: true,
-          automaticallyImplyLeading: false,
-          flexibleSpace: GestureDetector(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ImageViewPage(
-                  _postState.title,
-                  state.images.elementAt(mainImageIndex).imageUrl,
+    return (images.length > 0)
+        ? CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                stretch: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ImageViewPage(
+                        _postState.title,
+                        state.images.elementAt(mainImageIndex).imageUrl,
+                      ),
+                    ),
+                  ),
+                  child: FlexibleSpaceBar(
+                    background: Image.network(
+                      images.elementAt(mainImageIndex).imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                expandedHeight: MediaQuery.of(context).size.width,
+              ),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) =>
+                      ImageItem(index, state.images.elementAt(index).imageUrl),
+                  childCount: state.images.length,
                 ),
               ),
-            ),
-            child: FlexibleSpaceBar(
-              background: Image.network(
-                images.elementAt(mainImageIndex).imageUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          expandedHeight: MediaQuery.of(context).size.width,
-        ),
-        SliverGrid(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) =>
-                ImageItem(index, state.images.elementAt(index).imageUrl),
-            childCount: state.images.length,
-          ),
-        ),
-      ],
-    );
+            ],
+          )
+        : const Center(
+            child: Text('画像の投稿はありません'),
+          );
   }
 }
