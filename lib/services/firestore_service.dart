@@ -110,7 +110,10 @@ class FirestoreService {
   }
 
   // 投稿一覧を取得する
-  Future<List<PostState>> getPosts(String roomId) async {
+  Future<List<PostState>> getPosts(
+    String roomId, {
+    String query,
+  }) async {
     final roomsByRoomId = (await store
             .collection('memberOnly/rooms/rooms')
             .where('id', isEqualTo: roomId)
@@ -119,16 +122,30 @@ class FirestoreService {
 
     if (roomsByRoomId.length < 0) return [];
 
-    final posts = (await roomsByRoomId[0]
-            .reference
-            .collection('posts')
-            .orderBy('createdAt', descending: true)
-            .getDocuments())
-        .documents
-        .map((e) => PostState.fromJson(e.data))
-        .toList();
+    if (query == null || query.isEmpty) {
+      final posts = (await roomsByRoomId[0]
+              .reference
+              .collection('posts')
+              .orderBy('createdAt', descending: true)
+              .getDocuments())
+          .documents
+          .map((e) => PostState.fromJson(e.data))
+          .toList();
 
-    return posts;
+      return posts;
+    } else {
+      final bigram = _createBigramFromString(query);
+      Query postQuery = roomsByRoomId[0].reference.collection('posts');
+
+      bigram.forEach((element) {
+        postQuery = postQuery.where('bigramMap.${element}', isEqualTo: true);
+      });
+
+      return (await postQuery.getDocuments())
+          .documents
+          .map((e) => PostState.fromJson(e.data))
+          .toList();
+    }
   }
 
   // 投稿を作成する

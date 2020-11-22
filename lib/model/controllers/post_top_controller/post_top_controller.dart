@@ -24,11 +24,11 @@ class PostTopController extends StateNotifier<PostTopState> {
   final FirestoreService _firestoreService;
   final RoomState _roomStore;
 
-  Future<void> getPosts() async {
+  Future<void> getPosts({String query}) async {
     state = state.copyWith(isLoading: true);
-
     try {
-      final posts = await _firestoreService.getPosts(_roomStore.id);
+      final posts =
+          await _firestoreService.getPosts(_roomStore.id, query: query);
       state = state.copyWith(isLoading: false, error: null, posts: posts);
     } catch (error) {
       log(error.toString());

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/model/controllers/post_top_controller/post_top_controller.dart';
 
 class SarchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       decoration: const InputDecoration(
         fillColor: Colors.white,
         filled: true,
@@ -18,7 +20,8 @@ class SarchBar extends StatelessWidget {
         ),
       ),
       cursorColor: Colors.black,
-      onSubmitted: (searchText) {},
+      onSubmitted: (searchText) =>
+          context.read(postTopController).getPosts(query: searchText),
     );
   }
 }
