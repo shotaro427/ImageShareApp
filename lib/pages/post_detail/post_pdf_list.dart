@@ -9,15 +9,17 @@ class PostPdfList extends ConsumerWidget {
   final PostState _post;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final pdfs = watch(postDetailController.state).pdfs;
-    return (pdfs.length > 0)
+    final state = watch(postDetailController.state);
+    return (state.pdfs.length > 0)
         ? GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
+              childAspectRatio: 0.8,
             ),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
             itemBuilder: (BuildContext context, int index) =>
-                PdfItem(pdfs[index], _post),
-            itemCount: pdfs.length,
+                PdfItem(state.pdfs[index], state.pdfsThumbnails[index], _post),
+            itemCount: state.pdfs.length,
           )
         : const Center(
             child: Text('PDFの投稿はありません'),

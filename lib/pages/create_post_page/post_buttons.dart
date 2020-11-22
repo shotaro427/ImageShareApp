@@ -1,3 +1,4 @@
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/create_post_controller/create_post_controller.dart';
@@ -6,13 +7,14 @@ class CreatePostButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _files = watch(createPostController.state).pickedFiles;
+    final extension = _files[0].path.split('/').last;
+
     return Scrollbar(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 32),
         child: (_files != null && _files.length > 0) // TODO: PDFを考慮する
             ? GestureDetector(
                 onTap: () {
-                  final extension = _files[0].path.split('/').last;
                   if (extension.contains('.pdf')) {
                     context.read(createPostController).pickUpPdf();
                   } else {
@@ -28,10 +30,15 @@ class CreatePostButtons extends ConsumerWidget {
                         child: SizedBox(
                           width: 108,
                           height: 108,
-                          child: Image.file(
-                            _files[index],
-                            fit: BoxFit.cover,
-                          ),
+                          child: (extension.contains('.pdf'))
+                              ? Image.asset(
+                                  'images/pdf.png',
+                                  fit: BoxFit.fitHeight,
+                                )
+                              : Image.file(
+                                  _files[index],
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       );
                     },
