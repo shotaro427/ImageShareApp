@@ -8,9 +8,6 @@ part of 'post_detail_state.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
-PostDetailState _$PostDetailStateFromJson(Map<String, dynamic> json) {
-  return _PostDetailState.fromJson(json);
-}
 
 class _$PostDetailStateTearOff {
   const _$PostDetailStateTearOff();
@@ -22,7 +19,8 @@ class _$PostDetailStateTearOff {
       int currentIndex = 0,
       int imageIndex = 0,
       List<ImageState> images = const [],
-      List<PdfState> pdfs = const []}) {
+      List<PDFDocument> pdfs = const [],
+      List<PDFPage> pdfsThumbnails = const []}) {
     return _PostDetailState(
       error: error,
       isLoading: isLoading,
@@ -30,6 +28,7 @@ class _$PostDetailStateTearOff {
       imageIndex: imageIndex,
       images: images,
       pdfs: pdfs,
+      pdfsThumbnails: pdfsThumbnails,
     );
   }
 }
@@ -43,9 +42,9 @@ mixin _$PostDetailState {
   int get currentIndex;
   int get imageIndex;
   List<ImageState> get images;
-  List<PdfState> get pdfs;
+  List<PDFDocument> get pdfs;
+  List<PDFPage> get pdfsThumbnails;
 
-  Map<String, dynamic> toJson();
   $PostDetailStateCopyWith<PostDetailState> get copyWith;
 }
 
@@ -59,7 +58,8 @@ abstract class $PostDetailStateCopyWith<$Res> {
       int currentIndex,
       int imageIndex,
       List<ImageState> images,
-      List<PdfState> pdfs});
+      List<PDFDocument> pdfs,
+      List<PDFPage> pdfsThumbnails});
 }
 
 class _$PostDetailStateCopyWithImpl<$Res>
@@ -78,6 +78,7 @@ class _$PostDetailStateCopyWithImpl<$Res>
     Object imageIndex = freezed,
     Object images = freezed,
     Object pdfs = freezed,
+    Object pdfsThumbnails = freezed,
   }) {
     return _then(_value.copyWith(
       error: error == freezed ? _value.error : error as String,
@@ -86,7 +87,10 @@ class _$PostDetailStateCopyWithImpl<$Res>
           currentIndex == freezed ? _value.currentIndex : currentIndex as int,
       imageIndex: imageIndex == freezed ? _value.imageIndex : imageIndex as int,
       images: images == freezed ? _value.images : images as List<ImageState>,
-      pdfs: pdfs == freezed ? _value.pdfs : pdfs as List<PdfState>,
+      pdfs: pdfs == freezed ? _value.pdfs : pdfs as List<PDFDocument>,
+      pdfsThumbnails: pdfsThumbnails == freezed
+          ? _value.pdfsThumbnails
+          : pdfsThumbnails as List<PDFPage>,
     ));
   }
 }
@@ -103,7 +107,8 @@ abstract class _$PostDetailStateCopyWith<$Res>
       int currentIndex,
       int imageIndex,
       List<ImageState> images,
-      List<PdfState> pdfs});
+      List<PDFDocument> pdfs,
+      List<PDFPage> pdfsThumbnails});
 }
 
 class __$PostDetailStateCopyWithImpl<$Res>
@@ -124,6 +129,7 @@ class __$PostDetailStateCopyWithImpl<$Res>
     Object imageIndex = freezed,
     Object images = freezed,
     Object pdfs = freezed,
+    Object pdfsThumbnails = freezed,
   }) {
     return _then(_PostDetailState(
       error: error == freezed ? _value.error : error as String,
@@ -132,12 +138,14 @@ class __$PostDetailStateCopyWithImpl<$Res>
           currentIndex == freezed ? _value.currentIndex : currentIndex as int,
       imageIndex: imageIndex == freezed ? _value.imageIndex : imageIndex as int,
       images: images == freezed ? _value.images : images as List<ImageState>,
-      pdfs: pdfs == freezed ? _value.pdfs : pdfs as List<PdfState>,
+      pdfs: pdfs == freezed ? _value.pdfs : pdfs as List<PDFDocument>,
+      pdfsThumbnails: pdfsThumbnails == freezed
+          ? _value.pdfsThumbnails
+          : pdfsThumbnails as List<PDFPage>,
     ));
   }
 }
 
-@JsonSerializable()
 class _$_PostDetailState implements _PostDetailState {
   const _$_PostDetailState(
       {this.error,
@@ -145,15 +153,14 @@ class _$_PostDetailState implements _PostDetailState {
       this.currentIndex = 0,
       this.imageIndex = 0,
       this.images = const [],
-      this.pdfs = const []})
+      this.pdfs = const [],
+      this.pdfsThumbnails = const []})
       : assert(isLoading != null),
         assert(currentIndex != null),
         assert(imageIndex != null),
         assert(images != null),
-        assert(pdfs != null);
-
-  factory _$_PostDetailState.fromJson(Map<String, dynamic> json) =>
-      _$_$_PostDetailStateFromJson(json);
+        assert(pdfs != null),
+        assert(pdfsThumbnails != null);
 
   @override
   final String error;
@@ -171,11 +178,14 @@ class _$_PostDetailState implements _PostDetailState {
   final List<ImageState> images;
   @JsonKey(defaultValue: const [])
   @override
-  final List<PdfState> pdfs;
+  final List<PDFDocument> pdfs;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<PDFPage> pdfsThumbnails;
 
   @override
   String toString() {
-    return 'PostDetailState(error: $error, isLoading: $isLoading, currentIndex: $currentIndex, imageIndex: $imageIndex, images: $images, pdfs: $pdfs)';
+    return 'PostDetailState(error: $error, isLoading: $isLoading, currentIndex: $currentIndex, imageIndex: $imageIndex, images: $images, pdfs: $pdfs, pdfsThumbnails: $pdfsThumbnails)';
   }
 
   @override
@@ -196,7 +206,10 @@ class _$_PostDetailState implements _PostDetailState {
             (identical(other.images, images) ||
                 const DeepCollectionEquality().equals(other.images, images)) &&
             (identical(other.pdfs, pdfs) ||
-                const DeepCollectionEquality().equals(other.pdfs, pdfs)));
+                const DeepCollectionEquality().equals(other.pdfs, pdfs)) &&
+            (identical(other.pdfsThumbnails, pdfsThumbnails) ||
+                const DeepCollectionEquality()
+                    .equals(other.pdfsThumbnails, pdfsThumbnails)));
   }
 
   @override
@@ -207,16 +220,12 @@ class _$_PostDetailState implements _PostDetailState {
       const DeepCollectionEquality().hash(currentIndex) ^
       const DeepCollectionEquality().hash(imageIndex) ^
       const DeepCollectionEquality().hash(images) ^
-      const DeepCollectionEquality().hash(pdfs);
+      const DeepCollectionEquality().hash(pdfs) ^
+      const DeepCollectionEquality().hash(pdfsThumbnails);
 
   @override
   _$PostDetailStateCopyWith<_PostDetailState> get copyWith =>
       __$PostDetailStateCopyWithImpl<_PostDetailState>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_PostDetailStateToJson(this);
-  }
 }
 
 abstract class _PostDetailState implements PostDetailState {
@@ -226,10 +235,8 @@ abstract class _PostDetailState implements PostDetailState {
       int currentIndex,
       int imageIndex,
       List<ImageState> images,
-      List<PdfState> pdfs}) = _$_PostDetailState;
-
-  factory _PostDetailState.fromJson(Map<String, dynamic> json) =
-      _$_PostDetailState.fromJson;
+      List<PDFDocument> pdfs,
+      List<PDFPage> pdfsThumbnails}) = _$_PostDetailState;
 
   @override
   String get error;
@@ -242,7 +249,9 @@ abstract class _PostDetailState implements PostDetailState {
   @override
   List<ImageState> get images;
   @override
-  List<PdfState> get pdfs;
+  List<PDFDocument> get pdfs;
+  @override
+  List<PDFPage> get pdfsThumbnails;
   @override
   _$PostDetailStateCopyWith<_PostDetailState> get copyWith;
 }

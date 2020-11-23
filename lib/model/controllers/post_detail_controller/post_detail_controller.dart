@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_detail_controller/post_detail_state.dart';
@@ -47,11 +48,24 @@ class PostDetailController extends StateNotifier<PostDetailState> {
       final images = await _firestoreService.getPostImages(_room.id, _post);
       final pdfs = await _firestoreService.getPostPdfs(_room.id, _post);
 
+      final pdfDocs = await Future.wait(
+          pdfs.map((e) => PDFDocument.fromURL(e.pdfUrl)).toList());
+
+      final thumbnails = await Future.wait(
+        pdfDocs.map(
+          (e) => e.get(
+            minScale: 1,
+            maxScale: 1,
+          ),
+        ),
+      );
+
       state = state.copyWith(
         isLoading: false,
         error: null,
         images: images,
-        pdfs: pdfs,
+        pdfs: pdfDocs,
+        pdfsThumbnails: thumbnails,
       );
     } catch (error) {
       log(error.toString());

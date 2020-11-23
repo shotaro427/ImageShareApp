@@ -1,20 +1,26 @@
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 import 'package:image_share_app/model/entities/post.entity.dart';
 
 class PdfViewPage extends StatelessWidget {
-  PdfViewPage(this._post, this._pdfPath);
+  PdfViewPage(this._post, this._pdf);
   final PostState _post;
-  final String _pdfPath;
+  final PDFDocument _pdf;
 
   @override
   Widget build(BuildContext context) {
-    return PDFViewerScaffold(
-      appBar: AppBar(
-        title: Text(_post.title),
-      ),
-      path: _pdfPath,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(_post.title),
+          ),
+          body: PDFViewer(
+            document: _pdf,
+          ),
+        ),
+      ],
     );
   }
 }
