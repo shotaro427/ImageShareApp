@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_share_app/model/controllers/create_post_controller/create_post_state.dart';
@@ -185,6 +186,51 @@ class FirestoreService {
       uid: uid,
       nowTime: nowTime,
     );
+  }
+
+  // 画像を投稿に追加
+  Future<List<ImageState>> addImages(
+    String uid,
+    String roomId,
+    String postId,
+    List<File> images,
+  ) async {
+    if (roomId.isEmpty || postId.isEmpty) throw Exception('invalid id');
+
+    final StorageReference storageRef =
+        storage.ref().child('images/${roomId}/${postId}/');
+    final nowTime = DateTime.now().millisecondsSinceEpoch;
+
+    List<ImageState> results = [];
+
+    await Future.wait(images.map((file) async {
+      final String fileId = Uuid().v4().replaceAll('-', '');
+      StorageUploadTask uploadTask = storageRef.child(fileId).putFile(file);
+      final url =
+          (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+      final ImageState imageInfo = ImageState(
+        createdAt: nowTime,
+        updateAt: nowTime,
+        id: fileId,
+        imageUrl: url,
+        createUserId: uid,
+      );
+
+      final docRef = (await store
+              .collection('memberOnly/rooms/rooms/${roomId}/posts')
+              .where('id', isEqualTo: postId)
+              .getDocuments())
+          .documents
+          .first
+          .reference;
+
+      if (docRef == null) throw Exception('not found post');
+      results.add(imageInfo);
+      return await docRef.collection('images').add(imageInfo.toJson());
+    }));
+
+    return results;
   }
 
   // メンバーを取得する

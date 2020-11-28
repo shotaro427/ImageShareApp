@@ -4,6 +4,7 @@ import 'package:image_share_app/model/controllers/post_detail_controller/post_de
 import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/pages/post_detail/bottom_nav_bar.dart';
 import 'package:image_share_app/pages/post_detail/post_detail.dart';
+import 'package:image_share_app/pages/post_detail/floating_buttons.dart';
 import 'package:image_share_app/widget/atoms/loading_view.dart';
 
 class PostDetailPage extends ConsumerWidget {
@@ -12,18 +13,7 @@ class PostDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final state = watch(postDetailController.state);
-    final isLoading = state.isLoading;
-    final currentIndex = state.currentIndex;
-
-    void onPressed() {
-      if (currentIndex == 0) {
-        context.read(postDetailController).pickUpImage();
-      } else if (currentIndex == 1) {
-        context.read(postDetailController).pickUpPdf();
-      }
-    }
-
+    final isLoading = watch(postDetailController.state).isLoading;
     return Stack(
       children: [
         Scaffold(
@@ -32,15 +22,7 @@ class PostDetailPage extends ConsumerWidget {
           ),
           body: PostDetail(_postState),
           bottomNavigationBar: BottomNavBar(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: onPressed,
-            child: const Icon(
-              Icons.add,
-              size: 33,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-          ),
+          floatingActionButton: FloatingButtons(),
         ),
         LoadingView(isLoading),
       ],
