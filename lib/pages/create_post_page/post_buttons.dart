@@ -1,4 +1,3 @@
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/create_post_controller/create_post_controller.dart';
@@ -7,7 +6,9 @@ class CreatePostButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final _files = watch(createPostController.state).pickedFiles;
-    final extension = _files[0].path.split('/').last;
+    final extension = (_files != null && _files.length > 0)
+        ? _files[0].path.split('/').last
+        : '';
 
     return Scrollbar(
       child: Container(

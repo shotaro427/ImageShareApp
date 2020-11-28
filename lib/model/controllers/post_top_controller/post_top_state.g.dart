@@ -14,6 +14,7 @@ _$_PostTopState _$_$_PostTopStateFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : PostState.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    canPost: json['canPost'] as bool,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$_$_PostTopStateToJson(_$_PostTopState instance) =>
       'isLoading': instance.isLoading,
       'error': instance.error,
       'posts': instance.posts,
+      'canPost': instance.canPost,
     };

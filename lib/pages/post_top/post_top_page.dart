@@ -10,6 +10,7 @@ class PostTopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final postTopState = watch(postTopController.state);
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Stack(

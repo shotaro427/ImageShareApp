@@ -17,11 +17,15 @@ class _$PostTopStateTearOff {
 
 // ignore: unused_element
   _PostTopState call(
-      {bool isLoading = false, String error, List<PostState> posts}) {
+      {bool isLoading = false,
+      String error,
+      List<PostState> posts,
+      bool canPost}) {
     return _PostTopState(
       isLoading: isLoading,
       error: error,
       posts: posts,
+      canPost: canPost,
     );
   }
 }
@@ -33,6 +37,7 @@ mixin _$PostTopState {
   bool get isLoading;
   String get error;
   List<PostState> get posts;
+  bool get canPost;
 
   Map<String, dynamic> toJson();
   $PostTopStateCopyWith<PostTopState> get copyWith;
@@ -42,7 +47,8 @@ abstract class $PostTopStateCopyWith<$Res> {
   factory $PostTopStateCopyWith(
           PostTopState value, $Res Function(PostTopState) then) =
       _$PostTopStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading, String error, List<PostState> posts});
+  $Res call(
+      {bool isLoading, String error, List<PostState> posts, bool canPost});
 }
 
 class _$PostTopStateCopyWithImpl<$Res> implements $PostTopStateCopyWith<$Res> {
@@ -57,11 +63,13 @@ class _$PostTopStateCopyWithImpl<$Res> implements $PostTopStateCopyWith<$Res> {
     Object isLoading = freezed,
     Object error = freezed,
     Object posts = freezed,
+    Object canPost = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
       posts: posts == freezed ? _value.posts : posts as List<PostState>,
+      canPost: canPost == freezed ? _value.canPost : canPost as bool,
     ));
   }
 }
@@ -72,7 +80,8 @@ abstract class _$PostTopStateCopyWith<$Res>
           _PostTopState value, $Res Function(_PostTopState) then) =
       __$PostTopStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, String error, List<PostState> posts});
+  $Res call(
+      {bool isLoading, String error, List<PostState> posts, bool canPost});
 }
 
 class __$PostTopStateCopyWithImpl<$Res> extends _$PostTopStateCopyWithImpl<$Res>
@@ -89,18 +98,21 @@ class __$PostTopStateCopyWithImpl<$Res> extends _$PostTopStateCopyWithImpl<$Res>
     Object isLoading = freezed,
     Object error = freezed,
     Object posts = freezed,
+    Object canPost = freezed,
   }) {
     return _then(_PostTopState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       error: error == freezed ? _value.error : error as String,
       posts: posts == freezed ? _value.posts : posts as List<PostState>,
+      canPost: canPost == freezed ? _value.canPost : canPost as bool,
     ));
   }
 }
 
 @JsonSerializable()
 class _$_PostTopState implements _PostTopState {
-  const _$_PostTopState({this.isLoading = false, this.error, this.posts})
+  const _$_PostTopState(
+      {this.isLoading = false, this.error, this.posts, this.canPost})
       : assert(isLoading != null);
 
   factory _$_PostTopState.fromJson(Map<String, dynamic> json) =>
@@ -113,10 +125,12 @@ class _$_PostTopState implements _PostTopState {
   final String error;
   @override
   final List<PostState> posts;
+  @override
+  final bool canPost;
 
   @override
   String toString() {
-    return 'PostTopState(isLoading: $isLoading, error: $error, posts: $posts)';
+    return 'PostTopState(isLoading: $isLoading, error: $error, posts: $posts, canPost: $canPost)';
   }
 
   @override
@@ -129,7 +143,9 @@ class _$_PostTopState implements _PostTopState {
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)) &&
             (identical(other.posts, posts) ||
-                const DeepCollectionEquality().equals(other.posts, posts)));
+                const DeepCollectionEquality().equals(other.posts, posts)) &&
+            (identical(other.canPost, canPost) ||
+                const DeepCollectionEquality().equals(other.canPost, canPost)));
   }
 
   @override
@@ -137,7 +153,8 @@ class _$_PostTopState implements _PostTopState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(posts);
+      const DeepCollectionEquality().hash(posts) ^
+      const DeepCollectionEquality().hash(canPost);
 
   @override
   _$PostTopStateCopyWith<_PostTopState> get copyWith =>
@@ -151,7 +168,10 @@ class _$_PostTopState implements _PostTopState {
 
 abstract class _PostTopState implements PostTopState {
   const factory _PostTopState(
-      {bool isLoading, String error, List<PostState> posts}) = _$_PostTopState;
+      {bool isLoading,
+      String error,
+      List<PostState> posts,
+      bool canPost}) = _$_PostTopState;
 
   factory _PostTopState.fromJson(Map<String, dynamic> json) =
       _$_PostTopState.fromJson;
@@ -162,6 +182,8 @@ abstract class _PostTopState implements PostTopState {
   String get error;
   @override
   List<PostState> get posts;
+  @override
+  bool get canPost;
   @override
   _$PostTopStateCopyWith<_PostTopState> get copyWith;
 }

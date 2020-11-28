@@ -9,6 +9,7 @@ abstract class PostTopState with _$PostTopState {
     @Default(false) bool isLoading,
     String error,
     List<PostState> posts,
+    bool canPost,
   }) = _PostTopState;
 
   factory PostTopState.fromJson(Map<String, dynamic> json) =>
