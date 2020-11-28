@@ -12,7 +12,18 @@ class PostDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final isLoading = watch(postDetailController.state).isLoading;
+    final state = watch(postDetailController.state);
+    final isLoading = state.isLoading;
+    final currentIndex = state.currentIndex;
+
+    void onPressed() {
+      if (currentIndex == 0) {
+        context.read(postDetailController).pickUpImage();
+      } else if (currentIndex == 1) {
+        context.read(postDetailController).pickUpPdf();
+      }
+    }
+
     return Stack(
       children: [
         Scaffold(
@@ -21,6 +32,15 @@ class PostDetailPage extends ConsumerWidget {
           ),
           body: PostDetail(_postState),
           bottomNavigationBar: BottomNavBar(),
+          floatingActionButton: FloatingActionButton(
+            onPressed: onPressed,
+            child: const Icon(
+              Icons.add,
+              size: 33,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.blue,
+          ),
         ),
         LoadingView(isLoading),
       ],

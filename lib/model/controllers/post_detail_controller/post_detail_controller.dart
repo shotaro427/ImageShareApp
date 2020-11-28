@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,17 @@ final postDetailController = StateNotifierProvider((ref) {
     _room,
     _psot,
     FirestoreService(),
+    FilePickerService(),
   );
 });
 
 class PostDetailController extends StateNotifier<PostDetailState> {
-  PostDetailController(this._room, this._post, this._firestoreService)
-      : super(const PostDetailState()) {
+  PostDetailController(
+    this._room,
+    this._post,
+    this._firestoreService,
+    this._filePickerService,
+  ) : super(const PostDetailState()) {
     pageController = PageController(initialPage: state.currentIndex);
     getPostContent();
   }
@@ -31,6 +37,7 @@ class PostDetailController extends StateNotifier<PostDetailState> {
   final RoomState _room;
   final PostState _post;
   final FirestoreService _firestoreService;
+  final FilePickerService _filePickerService;
 
   void switchIndex(int index) {
     state = state.copyWith(currentIndex: index);
@@ -40,6 +47,30 @@ class PostDetailController extends StateNotifier<PostDetailState> {
 
   void switchMainImage(int index) {
     state = state.copyWith(imageIndex: index);
+  }
+
+  Future<void> pickUpImage() async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final List<File> _pickedImages = await _filePickerService.getImageFile();
+      // state = state.copyWith(
+      //     isLoading: false, error: null, pickedFiles: _pickedImages);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+    }
+  }
+
+  Future<void> pickUpPdf() async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final List<File> _pickedPdfs = await _filePickerService.getPdfFile();
+      // state = state.copyWith(
+      //     isLoading: false, error: null, pickedFiles: _pickedPdfs);
+    } catch (error) {
+      log(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString());
+    }
   }
 
   Future<void> getPostContent() async {
