@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_detail_controller/post_detail_state.dart';
 import 'package:image_share_app/model/entities/image.entity.dart';
+import 'package:image_share_app/model/entities/pdf.entity.dart';
 import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
@@ -78,9 +79,37 @@ class PostDetailController extends StateNotifier<PostDetailState> {
     state = state.copyWith(isLoading: true);
     try {
       final List<File> _pickedPdfs = await _filePickerService.getPdfFile();
+      final List<PdfState> results = await _firestoreService.addPDFs(
+        _user.uid,
+        _room.id,
+        _post.id,
+        _pickedPdfs,
+      );
 
-      // state = state.copyWith(
-      //     isLoading: false, error: null, pickedFiles: _pickedPdfs);
+      final pdfDocs = await Future.wait(
+          results.map((e) => PDFDocument.fromURL(e.pdfUrl)).toList());
+
+      final thumbnails = await Future.wait(
+        pdfDocs.map(
+          (e) => e.get(
+            minScale: 1,
+            maxScale: 1,
+          ),
+        ),
+      );
+
+      final newPdfDocs = state.pdfs;
+      final newPdfThumbnails = state.pdfsThumbnails;
+
+      newPdfDocs.addAll(pdfDocs);
+      newPdfThumbnails.addAll(thumbnails);
+
+      state = state.copyWith(
+        isLoading: false,
+        error: null,
+        pdfs: newPdfDocs,
+        pdfsThumbnails: newPdfThumbnails,
+      );
     } catch (error) {
       log(error.toString());
       state = state.copyWith(isLoading: false, error: error.toString());

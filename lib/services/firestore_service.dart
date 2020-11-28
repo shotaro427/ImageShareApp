@@ -233,6 +233,51 @@ class FirestoreService {
     return results;
   }
 
+  // 画像を投稿に追加
+  Future<List<PdfState>> addPDFs(
+    String uid,
+    String roomId,
+    String postId,
+    List<File> pdfs,
+  ) async {
+    if (roomId.isEmpty || postId.isEmpty) throw Exception('invalid id');
+
+    final StorageReference storageRef =
+        storage.ref().child('images/${roomId}/${postId}/');
+    final nowTime = DateTime.now().millisecondsSinceEpoch;
+
+    List<PdfState> results = [];
+
+    await Future.wait(pdfs.map((file) async {
+      final String fileId = Uuid().v4().replaceAll('-', '');
+      StorageUploadTask uploadTask = storageRef.child(fileId).putFile(file);
+      final url =
+          (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+      final PdfState pdfInfo = PdfState(
+        createdAt: nowTime,
+        updateAt: nowTime,
+        id: fileId,
+        pdfUrl: url,
+        createUserId: uid,
+      );
+
+      final docRef = (await store
+              .collection('memberOnly/rooms/rooms/${roomId}/posts')
+              .where('id', isEqualTo: postId)
+              .getDocuments())
+          .documents
+          .first
+          .reference;
+
+      if (docRef == null) throw Exception('not found post');
+      results.add(pdfInfo);
+      return await docRef.collection('pdfs').add(pdfInfo.toJson());
+    }));
+
+    return results;
+  }
+
   // メンバーを取得する
   Future<List<UserState>> getMember(
     List<String> ids,
