@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/model/controllers/post_detail_controller/post_detail_controller.dart';
 import 'package:image_share_app/model/controllers/post_top_controller/post_top_controller.dart';
 import 'package:image_share_app/widget/atoms/base_snack_barf.dart';
 
@@ -40,22 +41,24 @@ class _FloatingButtonsWidget extends ConsumerWidget {
   final Animation<double> _animation;
   final AnimationController _animationController;
 
-  void _navigateSettingsPage(BuildContext context) {
-    _animationController.reverse();
-    Navigator.of(context).pushNamed('groupSetting');
-  }
-
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final postTopState = watch(postTopController.state);
+    final currentIndex = watch(postDetailController.state).currentIndex;
 
-    void _navigateCreatePostPage(BuildContext context) {
+    void onPressedAdd() {
+      if (currentIndex == 0) {
+        context.read(postDetailController).pickUpImage();
+      } else if (currentIndex == 1) {
+        context.read(postDetailController).pickUpPdf();
+      }
       _animationController.reverse();
-      if (postTopState.canPost) {
-        Navigator.of(context).pushNamed('createPost');
-      } else {
-        Scaffold.of(context)
-            .showSnackBar(baseSnackBar(context, '投稿制限に達しています。プランを更新してください。'));
+    }
+
+    void onPressedDelete() {
+      if (currentIndex == 0) {
+        // Delete image
+      } else if (currentIndex == 1) {
+        // Delete PDF
       }
     }
 
@@ -65,21 +68,21 @@ class _FloatingButtonsWidget extends ConsumerWidget {
       items: <Bubble>[
         // Floating action menu item
         Bubble(
-          title: '設定',
+          title: '削除',
           iconColor: Colors.white,
-          bubbleColor: Colors.blue,
-          icon: Icons.settings,
+          bubbleColor: Colors.red,
+          icon: Icons.delete,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () => _navigateSettingsPage(context),
+          onPress: onPressedDelete,
         ),
         // Floating action menu item
         Bubble(
-          title: '新規投稿',
+          title: '追加',
           iconColor: Colors.white,
           bubbleColor: Colors.blue,
-          icon: Icons.image,
+          icon: Icons.add,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () => _navigateCreatePostPage(context),
+          onPress: onPressedAdd,
         ),
       ],
       animation: _animation,

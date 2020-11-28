@@ -18,6 +18,7 @@ import 'package:image_share_app/pages/post_top/post_top_page.dart';
 import 'package:image_share_app/pages/room_list/room_list_page.dart';
 import 'package:image_share_app/pages/self_editing/self_editing_page.dart';
 import 'package:image_share_app/pages/self_setting/self_setting_page.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/services/index.dart';
 
 bool _isAuthorized = false;
@@ -68,6 +69,7 @@ class DevMyApp extends StatelessWidget {
                   if (_isAuthorized) {
                     context.read(userStore).updateState(_user);
                     return MaterialPageRoute(
+                      settings: const RouteSettings(name: 'グループページ'),
                       builder: (context) => RoomListPage(),
                     );
                   }
@@ -76,6 +78,9 @@ class DevMyApp extends StatelessWidget {
                   );
                 }
               },
+              navigatorObservers: [
+                AnalyticsService.observer,
+              ],
             );
           },
         ),

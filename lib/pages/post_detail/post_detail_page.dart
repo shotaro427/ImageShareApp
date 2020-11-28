@@ -4,6 +4,7 @@ import 'package:image_share_app/model/controllers/post_detail_controller/post_de
 import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/pages/post_detail/bottom_nav_bar.dart';
 import 'package:image_share_app/pages/post_detail/post_detail.dart';
+import 'package:image_share_app/pages/post_detail/floating_buttons.dart';
 import 'package:image_share_app/widget/atoms/loading_view.dart';
 
 class PostDetailPage extends ConsumerWidget {
@@ -21,6 +22,7 @@ class PostDetailPage extends ConsumerWidget {
           ),
           body: PostDetail(_postState),
           bottomNavigationBar: BottomNavBar(),
+          floatingActionButton: FloatingButtons(),
         ),
         LoadingView(isLoading),
       ],
