@@ -8,6 +8,7 @@ import 'package:image_share_app/model/controllers/create_post_controller/create_
 import 'package:image_share_app/model/controllers/post_top_controller/post_top_controller.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/services/index.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -51,6 +52,7 @@ class CreatePostController extends StateNotifier<CreatePostState> {
       state = state.copyWith(isLoading: false, error: null);
 
       if (state.error == null) {
+        AnalyticsService().sendButtonEvent(buttonName: '投稿作成完了');
         _refresh();
         _postTopController.getPosts();
         Navigator.of(key.currentContext).pop();

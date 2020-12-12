@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/create_room_controller/create_room_state.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/model/entities/user.entity.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/services/index.dart';
 
 import 'package:state_notifier/state_notifier.dart';
@@ -52,7 +53,7 @@ class CreateRoomController extends StateNotifier<CreateRoomState> {
 
       // userを保存
       await _userStore.updateUser(newUser);
-
+      AnalyticsService().sendButtonEvent(buttonName: 'グループ作成');
       state = state.copyWith(error: null, isLoading: false);
       if (state.error == null) {
         Navigator.of(scaffoldKey.currentContext).pop();

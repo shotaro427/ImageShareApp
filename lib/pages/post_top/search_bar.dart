@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_top_controller/post_top_controller.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 
 class SarchBar extends StatelessWidget {
   @override
@@ -20,8 +21,10 @@ class SarchBar extends StatelessWidget {
         ),
       ),
       cursorColor: Colors.black,
-      onSubmitted: (searchText) =>
-          context.read(postTopController).getPosts(query: searchText),
+      onSubmitted: (searchText) {
+        AnalyticsService().sendButtonEvent(buttonName: '投稿検索');
+        context.read(postTopController).getPosts(query: searchText);
+      },
     );
   }
 }

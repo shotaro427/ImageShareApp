@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:image_share_app/model/controllers/app_start_controller/app_start_controller.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/widget/atoms/index.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,8 +47,10 @@ class _AppleSignInButton extends ConsumerWidget {
   final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final Function onPress =
-        () => context.read(appStartController).loginWithApple(_key);
+    final Function onPress = () async {
+      await context.read(appStartController).loginWithApple(_key);
+      AnalyticsService().sendButtonEvent(buttonName: 'Appleでログイン');
+    };
 
     return AppleSignInButton(
       style: AppleButtonStyle.white,
@@ -64,8 +67,10 @@ class _GoogleSignInButton extends StatelessWidget {
   final GlobalKey<ScaffoldState> _key;
   @override
   Widget build(BuildContext context) {
-    final Function onPress =
-        () => context.read(appStartController).loginWithGoogle(_key);
+    final Function onPress = () async {
+      await context.read(appStartController).loginWithGoogle(_key);
+      AnalyticsService().sendButtonEvent(buttonName: 'Googleでログイン');
+    };
 
     return GoogleSignInButton(
       text: 'Googleでログイン',
@@ -79,8 +84,10 @@ class _GoogleSignInButton extends StatelessWidget {
 class _MailSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Function onPress =
-        () => context.read(appStartController).navigateToMailSignin(context);
+    final Function onPress = () async {
+      await context.read(appStartController).navigateToMailSignin(context);
+      AnalyticsService().sendButtonEvent(buttonName: 'メールアドレスでログイン');
+    };
     return SizedBox(
       height: 45,
       child: RoundRaisedButton(
@@ -95,8 +102,10 @@ class _MailSignInButton extends StatelessWidget {
 class _CreateNewAccountButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Function onPress =
-        () => context.read(appStartController).navigateToMailSignup(context);
+    final Function onPress = () async {
+      await context.read(appStartController).navigateToMailSignup(context);
+      AnalyticsService().sendButtonEvent(buttonName: 'メールアドレスで登録');
+    };
     return InkWell(
       child: const Text(
         'メールアドレスで登録',

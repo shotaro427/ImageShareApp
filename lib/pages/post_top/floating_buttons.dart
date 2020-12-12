@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/post_top_controller/post_top_controller.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/widget/atoms/base_snack_barf.dart';
 
 class FloatingButtons extends StatefulWidget {
@@ -42,6 +43,7 @@ class _FloatingButtonsWidget extends ConsumerWidget {
 
   void _navigateSettingsPage(BuildContext context) {
     _animationController.reverse();
+    AnalyticsService().sendButtonEvent(buttonName: '設定遷移');
     Navigator.of(context).pushNamed('groupSetting');
   }
 
@@ -50,6 +52,7 @@ class _FloatingButtonsWidget extends ConsumerWidget {
     final postTopState = watch(postTopController.state);
 
     void _navigateCreatePostPage(BuildContext context) {
+      AnalyticsService().sendButtonEvent(buttonName: '投稿作成(未完了)');
       _animationController.reverse();
       if (postTopState.canPost) {
         Navigator.of(context).pushNamed('createPost');
