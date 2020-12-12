@@ -4,12 +4,14 @@ import 'package:image_share_app/model/entities/post.entity.dart';
 import 'package:image_share_app/pages/post_detail/post_detail_page.dart';
 import 'package:image_share_app/pages/post_top/tag_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 
 class PostItem extends StatelessWidget {
   PostItem(this._postState);
   final PostState _postState;
 
   void onTap(BuildContext context) {
+    AnalyticsService().sendButtonEvent(buttonName: '投稿詳細遷移');
     context.read(postStore).updatePost(_postState);
     Navigator.of(context).push(
       MaterialPageRoute(

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_share_app/model/controllers/room_list_controller/room_list_controller.dart';
 import 'package:image_share_app/model/entities/room.entity.dart';
 import 'package:image_share_app/pages/room_list/room_item.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 
 class RoomList extends ConsumerWidget {
   @override
@@ -14,6 +15,7 @@ class RoomList extends ConsumerWidget {
 
     final onPressItem = (RoomState room) {
       context.read(roomStore).updateState(room);
+      AnalyticsService().sendButtonEvent(buttonName: 'トップページ遷移');
       Navigator.of(context).pushNamed('postTop');
     };
 

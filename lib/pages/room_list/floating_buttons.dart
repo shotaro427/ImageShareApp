@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:image_share_app/model/controllers/self_setting_controller/self_setting_controller.dart';
+import 'package:image_share_app/services/analytics_service.dart';
 import 'package:image_share_app/widget/atoms/awesome_dialog.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,11 +30,13 @@ class _FloatingButtonsState extends State<FloatingButtons>
 
   void _navigateCreateRoomPage(BuildContext context) {
     _animationController.reverse();
+    AnalyticsService().sendButtonEvent(buttonName: 'グループ作成(未完了)');
     Navigator.of(context).pushNamed('createRoom');
   }
 
   void _navigateInvitedRoomPage(BuildContext context) {
     _animationController.reverse();
+    AnalyticsService().sendButtonEvent(buttonName: '招待ページ遷移');
     Navigator.of(context).pushNamed('invitedRoomList');
   }
 
@@ -42,7 +45,10 @@ class _FloatingButtonsState extends State<FloatingButtons>
       context,
       'ログアウトします。',
       'このままログアウトしますか？',
-      () => context.read(selfSettingController).logout(context),
+      () {
+        AnalyticsService().sendButtonEvent(buttonName: 'ログアウト');
+        context.read(selfSettingController).logout(context);
+      },
     );
   }
 
